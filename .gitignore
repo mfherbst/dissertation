@@ -1,24 +1,10 @@
 # Temporary files
 *~
 .*.swp
+*.pyc
+__pycache__
 *.bak
 
-# Tex output files
-*.pdf
-*.aux
-*.bbl
-*.blg
-*.idx
-*.ilg
-*.ind
-*.lof
-*.log
-*.lot
-*.nlo
-*.nls
-*.out
-*.toc
-*.xmpi
-
-# include pdfs under img
-!/img/**/*.pdf
+/build
+/build_png
+/update.sh

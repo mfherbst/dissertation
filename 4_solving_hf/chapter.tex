@@ -1,0 +1,126 @@
+\chapter{Numerical solution of the HF equations}
+
+
+
+\section{Overview of standard SCF algorithms}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Talk about the common structures
+		\item Introduce a few schematically
+		\item Hint at the underlying linear algebra (eigensolvers, linear solvers)
+		\item Coefficient vs. density matrix based
+		\item DIIS
+		\item ODA
+		\item tODA
+	\end{itemize}
+}
+
+\section{Employing Slater-type orbitals}
+\defineabbr{STO}{STO\xspace}{Slater-type orbtital}
+
+\section{Employing a contracted Gaussian basis}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Brief rationale
+		\item Problems
+		\item E.g. Local energy => what happens if $\psi = 0$
+	\end{itemize}
+}
+
+\section{Employing a Finite Element basis}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Show what needs to be done
+		\item Show problems $\Rightarrow$ Lazy matrices
+		\item Hint at the underlying linear algebra (eigensolvers, linear solvers)
+		\item Multigrid methods
+		\item Refinement
+		\item How does it connect to the SCF methods
+	\end{itemize}
+}
+
+\section{Employing a Coulomb-Sturmian basis}
+% A few historic words and references
+\cite{Rotenberg1970}
+\cite{Gruzdev1990}
+\cite{Avery2006} % Blue book
+\cite{Avery2011} % Purple book
+\cite{Morales2015}
+\cite{Avery2017} % Fast evaluation of STOs
+
+
+\label{sec:BasisCS}
+\defineabbr{CS}{CS\xspace}{Coulomb-Strumian or Coulomb-Strumian basis}
+
+\begin{equation}
+	bla
+	\label{eqn:CSEquation}
+\end{equation}
+\newcommand{\kexp}{\ensuremath k_\text{exp}}
+
+% complete but not over-complete
+
+In previous work we have investigated the use of so-called generalised Sturmians as basis functions
+in electronic structure theory.
+%
+\newcommand{\rpack}{\vec{r}_1, \ldots, \vec{r}_N}
+Generalised Sturmians $\Phi_\nu(\rpack)$ are the solutions to $N$-body Schrödinger-like equation
+\begin{equation}
+	\left( -\frac12 \sum_{j=1}^N \Delta_j + \beta_\nu V_0(\rpack) - E \right) \Phi_\nu(\rpack) = 0
+	\label{eqn:GenSturm}
+\end{equation}
+where $V_0(\rpack)$ is
+a zero-th order potential.
+
+In case of atoms a good choice is the nuclear attraction:
+The electrostatic electron-nucleus interaction
+\[
+	V_0(\rpack) = - \sum_{j=1}^N \frac{Z}{r_j}.
+\]
+\todo[inline]{Is many nuclei also possible here?}
+Note that the electron-nucleus interaction is scaled by the factor $\beta_\nu$ in \eqref{eqn:GenSturm}
+such that the solutions $\Phi_\nu(\rpack)$ all become isoenergetic.
+This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
+as well as properly represent the nuclear cusp at the core.
+As such the functional form of generalised Sturmians is very much related to STOs.
+Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
+to make computing them less demanding.
+This requires, however, that the mathematical properties of the Sturmians
+can be fully exploited during the computation,
+which in turn requires the Fock matrix to be arranged in a specific way.
+Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
+but much rather only use these matrices in the form of matrix-vector products,
+since this overall saves an order of magnitude in the computational scaling.
+
+
+Coulomb-Sturmian basis function is composed of
+\[ \chi_\mu(\vec{r}) = \]
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item What are Coulomb-Sturmians and where do they come from
+		\item Show what needs to be done
+		\item Show problems $\Rightarrow$ Lazy matrices
+	\end{itemize}
+}
+
+% TODO Things to show:
+%    - The larger n, the larger the energy under the action of the fock operator
+%    - HF Kinetic energy scales with k: Lower if k lower
+%    - HF Nuclear attraction energy scales with k: Higher if k lower
+%    - HF electron-electron interaction scales with k: Lower if k lower
+% Refer to these results in the chapter about Sturmian calculations
+
+\subsection{UHF and its issues}
+
+
+\section{Basis-independence of SCF algorithms}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Make sure it comes across that SCF has very similar structure for each basis type
+		\item SCF algorithm may be formulated independent of basis type
+		\item DFT very similar
+		\item[$\Rightarrow$] Basis-function independent quantum chemical modelling
+		\item Maybe move to flexible qchem program chapter
+	\end{itemize}
+}

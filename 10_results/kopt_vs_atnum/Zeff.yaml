@@ -1,0 +1,176 @@
+# Zeff values either as defined by Slater
+# or as determined by Clementi
+Li:
+  Clementi:
+    1s: 2.691
+    2s: 1.279
+  Slater:
+    2s: 1.3
+    1s: 2.7
+  HOMO: 2s
+
+Be:
+  Clementi:
+    1s: 3.685
+    2s: 1.912
+  Slater:
+    2s: 1.95
+    1s: 3.7
+  HOMO: 2s
+
+B:
+  Clementi:
+    1s: 4.680
+    2s: 2.576
+    2p: 2.421
+  Slater:
+    2s: 2.6
+    2p: 2.6
+    1s: 4.7
+  HOMO: 2p
+
+C:
+  Clementi:
+    1s: 5.673
+    2s: 3.217
+    2p: 3.136
+  Slater:
+    2s: 3.25
+    2p: 3.25
+    1s: 5.7
+  HOMO: 2p
+
+N:
+  Clementi:
+    1s: 6.665
+    2s: 3.847
+    2p: 3.834
+  Slater:
+    2s: 3.9
+    2p: 3.9
+    1s: 6.7
+  HOMO: 2p
+
+O:
+  Clementi:
+    1s: 7.658
+    2s: 4.492
+    2p: 4.453
+  Slater:
+    2p: 4.55
+    2s: 4.55
+    1s: 7.7
+  HOMO: 2p
+
+F:
+  Clementi:
+    1s: 8.650
+    2s: 5.128
+    2p: 5.100
+  Slater:
+    2p: 5.20
+    2s: 5.20
+    1s: 8.7
+  HOMO: 2p
+
+Ne:
+  Clementi:
+    1s: 9.642
+    2s: 5.758
+    2p: 5.758
+  Slater:
+    2p: 5.85
+    2s: 5.85
+    1s: 9.7
+  HOMO: 2p
+
+# --------------------------------------------
+
+Na:
+  Clementi:
+    1s: 10.626
+    2s: 6.571
+    2p: 6.802
+    3s: 2.507
+  Slater:
+  HOMO: 3s
+
+Mg:
+  Clementi:
+    1s: 11.609
+    2s: 7.392
+    2p: 7.826
+    3s: 3.308
+  Slater:
+  HOMO: 3s
+
+Al:
+  Clementi:
+    1s: 12.591
+    2s: 8.214
+    2p: 8.963
+    3s: 4.117
+    3p: 4.066
+  Slater:
+  HOMO: 3p
+
+Si:
+  Clementi:
+    1s: 13.575
+    2s: 9.020
+    2p: 9.945
+    3s: 4.903
+    3p: 4.285
+  Slater:
+  HOMO: 3p
+
+P:
+  Clementi:
+    1s: 14.558
+    2s: 9.825
+    2p: 10.961
+    3s: 5.642
+    3p: 4.886
+  Slater:
+  HOMO: 3p
+
+S:
+  Clementi:
+    1s: 15.541
+    2s: 10.629
+    2p: 11.977
+    3s: 6.367
+    3p: 5.482
+  Slater:
+  HOMO: 3p
+
+Cl:
+  Clementi:
+    1s: 16.524
+    2s: 11.430
+    2p: 12.993
+    3s: 7.068
+    3p: 6.116
+  Slater:
+  HOMO: 3p
+
+Ar:
+  Clementi:
+    1s: 17.508
+    2s: 12.230
+    2p: 14.008
+    3s: 7.757
+    3p: 6.764
+  Slater:
+  HOMO: 3p
+
+K:
+  Clementi:
+    1s: 18.490
+    2s: 13.006
+    2p: 15.027
+    3s: 8.680
+    3p: 7.726
+    4s: 3.495
+  Slater:
+  HOMO: 4s

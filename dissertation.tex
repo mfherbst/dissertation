@@ -1,21 +1,67 @@
-\documentclass[a4paper,10pt,oneside]{MFHbook}
+\documentclass[a4paper,10pt,twoside]{MFHbook}
 
-\usepackage{MFHscience}            % Default sciency packages
-\usepackage{MFHabbr}               % Default abbreviation commands
+\input{common_configure}
+\input{common_packages}
+\usepackage{nomencl}
+\usepackage[nomencl]{MFHabbr}      % Default abbreviation commands
 \usepackage[book]{MFHtheoremdefs}  % Default theorem definitions
-\usepackage{MFHcode}               % Definitions for code
-\usepackage[british]{babel}        % Use british-english conventions
-\usepackage[useregional]{datetime2}  % for date in title page
+\usepackage{todonotes}
+\usepackage{import}                % for relative imports
+\usepackage{makeidx}               % a global index
+\usepackage[useregional]{datetime2} % for date in title page
+\usepackage[version=3]{mhchem}
+\usepackage{ctable}
+
+\usepackage{xmpincl}
+\includexmp{metadata}
 
 %---------------------------------------------------
 
-% Other places to look for images
-\graphicspath{ {img/} }
+% Start making a global index
+\makeindex
+
+% Include defined commands
+\input{commands}
+
+%---------------------------------------------------
+
+\hypersetup{pdftitle={\thesistitle}}
+\hypersetup{pdfauthor={Michael F. Herbst}}
+\hypersetup{pdfkeywords={Interdisziplinäres Zentrum für wissenschaftliches Rechnen;Ruprecht-Karls-Universität Heidelberg;}}
 
 %---------------------------------------------------
 
 \begin{document}
-
 \input{title}
+\pagenumbering{roman}	%Use Roman until after preamble
+
+\input{licence}
+\input{dedication}
+\input{abstract}
+\input{contents}
+\input{nomenclature}
+
+
+\newpage
+\pagenumbering{arabic}
+\subimport{0_intro/}     {chapter}
+
+\subimport{1_maths/}     {chapter}
+\subimport{2_qm/}        {chapter}
+\subimport{3_qchem/}     {chapter}
+
+\subimport{4_solving_hf/}{chapter}
+\subimport{6_contraction_lazy_matrices/}{chapter}
+\subimport{8_molsturm/}  {chapter}
+
+\subimport{10_results/}  {chapter}
+\subimport{15_future/}   {chapter}
+
+
+\subimport{99_appendix/} {appendix}
+\input{biblio}
+\input{acknowledgements}
+\input{versicherung}
+\input{index}
 
 \end{document}

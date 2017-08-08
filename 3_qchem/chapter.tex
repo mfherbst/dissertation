@@ -1,0 +1,103 @@
+\chapter{Numerical solution of the electronic Schrödinger equation}
+
+\section{Full-CI}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Idea
+		\item Ansatz
+	\end{itemize}
+}
+
+
+\section{Single-determinant ansatz}
+
+
+\defineabbr{HF}{HF\xspace}{Hartree-Fock}
+\nomenclature{$\OpFock, \OpFockFull$}{$1$-electron Fock operator (dependent on its eigenfunctions $\{ \varphi_i \}_{i \in \Iorb}$)}
+\nomenclature{$\Op{K}$}{One-electron exchange operator}
+\nomenclature{$\Op{J}$}{Effective Coulomb operator}
+\defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
+\nomenclature{$(ij|kl)$}{Electron repulsion integrals in chemist's or Mullikan notation, see definition at TODO}
+\nomenclature{$\Op{\rho}$}{Density operator}
+\nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{0, \ldots, \NelecA\}$ and similar for $\IoccB$.}
+\nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
+	If the error is below this value, the process should be considered converged.}
+
+% Density matrix
+% Density operator
+% Coefficient matrix
+
+\newterm{Hartree-Fock}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Idea
+		\item Discretisation
+		\item use Formalism of Cances
+		\item Derivation of HF in discretised space
+		\item Summary of the numerical task
+		\item Summary of the result (SCF orbitals)
+		\item Explain properties of the individual terms of Fock operator (locality, ..)
+		\item Show what we miss compared to FCI
+	\end{itemize}
+}
+
+The discretised Hartree-Fock equations in weak form read
+\begin{equation}
+	\forall i, j \in \Iorb :  \mbra{\varphi_i} \OpFockFull \mket{\varphi_j} = \lambda_j \braket{\varphi_i}{\varphi_j}
+	\label{eqn:HF}
+\end{equation}
+
+\begin{equation}
+	C^\alpha_{\mu i}, C^\beta_{\mu i}
+	\label{eqn:SCFalphaBetaCoeffs}
+\end{equation}
+
+% Proove the Fock operator (for fixed orbitals) is linear in the function
+% it acts upon
+
+
+\section{Capturing electronic correlation}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item What is it and where does HF fail
+		\item A couple of sentences about CI
+	\end{itemize}
+}
+
+\subsection{MP2}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Sketch perturbation theory (maybe leave that out fully)
+		\item Use Hylleras functional derivation (fits better)
+	\end{itemize}
+}
+
+\subsection{Coupled-Cluster}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Explain ansatz
+		\item Show diagrams for CCD and working exquations (needed later)
+		\item No derivation, brief
+	\end{itemize}
+}
+
+\section{Density-functional theory}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Brief rationale
+		\item Show physical and mathematical relationship to HF
+		\item Extremely brief
+	\end{itemize}
+}
+
+\section{Excited states methods}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Why HF is not good for excited states
+		\item Explain ADC ansatz
+		\item Rationalise derivation
+		\item Rationalise final equations
+		\item No derivation, brief
+	\end{itemize}
+}
+

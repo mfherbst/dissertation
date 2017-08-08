@@ -1,0 +1,21 @@
+\input{common_commands}
+
+% Transparently switch between pdf and png
+\newcommand{\includeimage}[2][]{\expandafter\includegraphics[#1]{#2.\imageformat}}
+
+% Title and subtitle of the thesis
+\newcommand{\thesistitle}{Investigation of novel basis functions for %
+quantum-chemical calculations}
+\newcommand{\thesissubtitle}{The case of Finite Elements and Sturmians}
+\newcommand{\thesisurl}{https://michael-herbst.com/publications/2018.02_phd.pdf}
+
+% Style of the header of the thesis
+\newcommand{\leftheadstyle}{\uppercase}
+
+% Index and term
+\newcommand{\newtermmark}{\textbf}
+\newcommand{\newterm}[1]{\index{#1}\newtermmark{#1}}
+\newcommand{\term}[1]{\index{#1}#1}
+
+% Inline todo shortcut
+\newcommand{\todoil}{\todo[inline]}

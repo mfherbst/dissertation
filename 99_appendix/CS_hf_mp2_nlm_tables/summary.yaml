@@ -1,0 +1,278 @@
+- {atnum: 4, hf: -14.564447856160047, k_exp: 1.988, l_max: 1, m_max: 0, mp2: -14.594272936046403,
+  n_bas: 11, n_max: 6, symbol: Be}
+- {atnum: 3, hf: -7.428124021095226, k_exp: 1.532, l_max: 1, m_max: 0, mp2: -7.447578965775283,
+  n_bas: 11, n_max: 6, symbol: Li}
+- {atnum: 5, hf: -24.512041218252566, k_exp: 2.409, l_max: 1, m_max: 0, mp2: -24.540355960930096,
+  n_bas: 11, n_max: 6, symbol: B}
+- {atnum: 3, hf: -7.428124021095176, k_exp: 1.532, l_max: 2, m_max: 0, mp2: -7.447827520070245,
+  n_bas: 15, n_max: 6, symbol: Li}
+- {atnum: 3, hf: -7.41650799633701, k_exp: 1.532, l_max: 1, m_max: 1, mp2: -7.446661116437643,
+  n_bas: 17, n_max: 5, symbol: Li}
+- {atnum: 4, hf: -14.564447856160042, k_exp: 1.988, l_max: 2, m_max: 0, mp2: -14.595308536359152,
+  n_bas: 15, n_max: 6, symbol: Be}
+- {atnum: 4, hf: -14.539155732094756, k_exp: 1.988, l_max: 1, m_max: 1, mp2: -14.597119949202414,
+  n_bas: 17, n_max: 5, symbol: Be}
+- {atnum: 6, hf: -37.06529316569826, k_exp: 2.849, l_max: 1, m_max: 0, mp2: -37.09838190429022,
+  n_bas: 11, n_max: 6, symbol: C}
+- {atnum: 6, hf: -37.58511225754844, k_exp: 2.849, l_max: 1, m_max: 1, mp2: -37.64216710072439,
+  n_bas: 17, n_max: 5, symbol: C}
+- {atnum: 5, hf: -24.46401105251951, k_exp: 2.409, l_max: 1, m_max: 1, mp2: -24.520718650378516,
+  n_bas: 17, n_max: 5, symbol: B}
+- {atnum: 5, hf: -24.51613830117207, k_exp: 2.409, l_max: 2, m_max: 0, mp2: -24.549643795516335,
+  n_bas: 15, n_max: 6, symbol: B}
+- {atnum: 6, hf: -37.070145942783896, k_exp: 2.849, l_max: 2, m_max: 0, mp2: -37.11034201281852,
+  n_bas: 15, n_max: 6, symbol: C}
+- {atnum: 3, hf: -7.4281240210952575, k_exp: 1.532, l_max: 1, m_max: 1, mp2: -7.460923938554931,
+  n_bas: 21, n_max: 6, symbol: Li}
+- {atnum: 7, hf: -52.55945369942537, k_exp: 3.287, l_max: 1, m_max: 0, mp2: -52.58734980042865,
+  n_bas: 11, n_max: 6, symbol: N}
+- {atnum: 4, hf: -14.56444785616003, k_exp: 1.988, l_max: 1, m_max: 1, mp2: -14.624694326641558,
+  n_bas: 21, n_max: 6, symbol: Be}
+- {atnum: 5, hf: -24.512041218252577, k_exp: 2.409, l_max: 1, m_max: 1, mp2: -24.573498255992426,
+  n_bas: 21, n_max: 6, symbol: B}
+- {atnum: 7, hf: -54.24894038449339, k_exp: 3.287, l_max: 1, m_max: 1, mp2: -54.30876691557865,
+  n_bas: 17, n_max: 5, symbol: N}
+- {atnum: 6, hf: -37.66284478518085, k_exp: 2.849, l_max: 1, m_max: 1, mp2: -37.72678236222875,
+  n_bas: 21, n_max: 6, symbol: C}
+- {atnum: 7, hf: -52.472457680242556, k_exp: 3.287, l_max: 2, m_max: 0, mp2: -52.51501902124907,
+  n_bas: 15, n_max: 6, symbol: N}
+- {atnum: 8, hf: -72.43275817411008, k_exp: 3.685, l_max: 1, m_max: 0, mp2: -72.47143074249358,
+  n_bas: 11, n_max: 6, symbol: O}
+- {atnum: 7, hf: -54.36501453066731, k_exp: 3.287, l_max: 1, m_max: 1, mp2: -54.4340147975203,
+  n_bas: 21, n_max: 6, symbol: N}
+- {atnum: 8, hf: -72.30757935942135, k_exp: 3.685, l_max: 2, m_max: 0, mp2: -72.36563523444032,
+  n_bas: 15, n_max: 6, symbol: O}
+- {atnum: 8, hf: -74.7497903107195, k_exp: 3.685, l_max: 1, m_max: 1, mp2: -74.84594970815074,
+  n_bas: 21, n_max: 6, symbol: O}
+- {atnum: 4, hf: -14.539155732094763, k_exp: 1.988, l_max: 2, m_max: 2, mp2: -14.602055693115643,
+  n_bas: 32, n_max: 5, symbol: Be}
+- {atnum: 3, hf: -7.416507996337024, k_exp: 1.532, l_max: 2, m_max: 2, mp2: -7.4474176149963425,
+  n_bas: 32, n_max: 5, symbol: Li}
+- {atnum: 6, hf: -37.58615037053507, k_exp: 2.849, l_max: 2, m_max: 2, mp2: -37.68801812238501,
+  n_bas: 32, n_max: 5, symbol: C}
+- {atnum: 5, hf: -24.468406103446945, k_exp: 2.409, l_max: 2, m_max: 2, mp2: -24.545873280863564,
+  n_bas: 32, n_max: 5, symbol: B}
+- {atnum: 9, hf: -95.0329971074103, k_exp: 4.099, l_max: 1, m_max: 0, mp2: -95.07273083798735,
+  n_bas: 11, n_max: 6, symbol: F}
+- {atnum: 7, hf: -54.24894038449345, k_exp: 3.287, l_max: 2, m_max: 2, mp2: -54.375261409464315,
+  n_bas: 32, n_max: 5, symbol: N}
+- {atnum: 9, hf: -94.83717378280883, k_exp: 4.099, l_max: 2, m_max: 0, mp2: -94.90897490109145,
+  n_bas: 15, n_max: 6, symbol: F}
+- {atnum: 4, hf: -14.564447856160045, k_exp: 1.988, l_max: 2, m_max: 1, mp2: -14.627801126923314,
+  n_bas: 33, n_max: 6, symbol: Be}
+- {atnum: 3, hf: -7.4281240210953134, k_exp: 1.532, l_max: 2, m_max: 1, mp2: -7.461669601901766,
+  n_bas: 33, n_max: 6, symbol: Li}
+- {atnum: 5, hf: -24.516138301171566, k_exp: 2.409, l_max: 2, m_max: 1, mp2: -24.595794531721292,
+  n_bas: 33, n_max: 6, symbol: B}
+- {atnum: 9, hf: -99.32042871884138, k_exp: 4.099, l_max: 1, m_max: 1, mp2: -99.45020491069975,
+  n_bas: 21, n_max: 6, symbol: F}
+- {atnum: 6, hf: -37.662844785181, k_exp: 2.849, l_max: 2, m_max: 1, mp2: -37.75294581065947,
+  n_bas: 33, n_max: 6, symbol: C}
+- {atnum: 7, hf: -54.365014530667295, k_exp: 3.287, l_max: 2, m_max: 1, mp2: -54.47133477756267,
+  n_bas: 33, n_max: 6, symbol: N}
+- {atnum: 10, hf: -128.09111075828164, k_exp: 4.512, l_max: 1, m_max: 1, mp2: -128.23998518760294,
+  n_bas: 17, n_max: 5, symbol: Ne}
+- {atnum: 10, hf: -121.00103827877092, k_exp: 4.512, l_max: 1, m_max: 0, mp2: -121.04046020904349,
+  n_bas: 11, n_max: 6, symbol: Ne}
+- {atnum: 8, hf: -74.75071195504982, k_exp: 3.685, l_max: 2, m_max: 1, mp2: -74.8907583945649,
+  n_bas: 33, n_max: 6, symbol: O}
+- {atnum: 10, hf: -128.42548892854722, k_exp: 4.512, l_max: 1, m_max: 1, mp2: -128.5949677747397,
+  n_bas: 21, n_max: 6, symbol: Ne}
+- {atnum: 10, hf: -121.00414778330722, k_exp: 4.512, l_max: 2, m_max: 0, mp2: -121.07381522305202,
+  n_bas: 15, n_max: 6, symbol: Ne}
+- {atnum: 10, hf: -128.09111075828156, k_exp: 4.512, l_max: 2, m_max: 2, mp2: -128.3669553000617,
+  n_bas: 32, n_max: 5, symbol: Ne}
+- {atnum: 9, hf: -99.32134018503174, k_exp: 4.099, l_max: 2, m_max: 1, mp2: -99.50701553200234,
+  n_bas: 33, n_max: 6, symbol: F}
+- {atnum: 3, hf: -7.42812402109525, k_exp: 1.532, l_max: 2, m_max: 2, mp2: -7.462166709379435,
+  n_bas: 41, n_max: 6, symbol: Li}
+- {atnum: 3, hf: -7.428124021095258, k_exp: 1.532, l_max: 3, m_max: 1, mp2: -7.4616921377621495,
+  n_bas: 42, n_max: 6, symbol: Li}
+- {atnum: 4, hf: -14.564447856160037, k_exp: 1.988, l_max: 2, m_max: 2, mp2: -14.629872325224243,
+  n_bas: 41, n_max: 6, symbol: Be}
+- {atnum: 4, hf: -14.564447856160044, k_exp: 1.988, l_max: 3, m_max: 1, mp2: -14.628328737947504,
+  n_bas: 42, n_max: 6, symbol: Be}
+- {atnum: 5, hf: -24.51613830117208, k_exp: 2.409, l_max: 2, m_max: 2, mp2: -24.59787522364946,
+  n_bas: 41, n_max: 6, symbol: B}
+- {atnum: 10, hf: -128.42548892854728, k_exp: 4.512, l_max: 2, m_max: 1, mp2: -128.65852550666975,
+  n_bas: 33, n_max: 6, symbol: Ne}
+- {atnum: 5, hf: -24.516155384912388, k_exp: 2.409, l_max: 3, m_max: 1, mp2: -24.598092632465022,
+  n_bas: 42, n_max: 6, symbol: B}
+- {atnum: 11, hf: -149.39006397179037, k_exp: 4.289, l_max: 1, m_max: 0, mp2: -149.42688671174113,
+  n_bas: 11, n_max: 6, symbol: Na}
+- {atnum: 6, hf: -37.66382346069723, k_exp: 2.849, l_max: 2, m_max: 2, mp2: -37.77146270774714,
+  n_bas: 41, n_max: 6, symbol: C}
+- {atnum: 6, hf: -37.66284478519082, k_exp: 2.849, l_max: 3, m_max: 1, mp2: -37.75607715114649,
+  n_bas: 42, n_max: 6, symbol: C}
+- {atnum: 11, hf: -159.7775320687527, k_exp: 4.289, l_max: 1, m_max: 1, mp2: -159.92851001028149,
+  n_bas: 17, n_max: 5, symbol: Na}
+- {atnum: 7, hf: -54.36501453066734, k_exp: 3.287, l_max: 2, m_max: 2, mp2: -54.49916960199445,
+  n_bas: 41, n_max: 6, symbol: N}
+- {atnum: 11, hf: -151.6107659558625, k_exp: 4.289, l_max: 2, m_max: 0, mp2: -151.66712635962017,
+  n_bas: 15, n_max: 6, symbol: Na}
+- {atnum: 7, hf: -54.365014530667274, k_exp: 3.287, l_max: 3, m_max: 1, mp2: -54.47605543932281,
+  n_bas: 42, n_max: 6, symbol: N}
+- {atnum: 11, hf: -160.92906968638007, k_exp: 4.289, l_max: 1, m_max: 1, mp2: -161.09551739261474,
+  n_bas: 21, n_max: 6, symbol: Na}
+- {atnum: 12, hf: -196.09472878059498, k_exp: 4.442, l_max: 1, m_max: 1, mp2: -196.26948827870555,
+  n_bas: 17, n_max: 5, symbol: Mg}
+- {atnum: 12, hf: -181.01978531097404, k_exp: 4.442, l_max: 1, m_max: 0, mp2: -181.0633408969088,
+  n_bas: 11, n_max: 6, symbol: Mg}
+- {atnum: 12, hf: -185.19560817594515, k_exp: 4.442, l_max: 2, m_max: 0, mp2: -185.25475837639783,
+  n_bas: 15, n_max: 6, symbol: Mg}
+- {atnum: 12, hf: -198.0275830436941, k_exp: 4.442, l_max: 1, m_max: 1, mp2: -198.2154463074868,
+  n_bas: 21, n_max: 6, symbol: Mg}
+- {atnum: 8, hf: -74.75348493482733, k_exp: 3.685, l_max: 2, m_max: 2, mp2: -74.93218360839424,
+  n_bas: 41, n_max: 6, symbol: O}
+- {atnum: 11, hf: -159.7775320687528, k_exp: 4.289, l_max: 2, m_max: 2, mp2: -160.08593565600634,
+  n_bas: 32, n_max: 5, symbol: Na}
+- {atnum: 8, hf: -74.75115037701516, k_exp: 3.685, l_max: 3, m_max: 1, mp2: -74.89818765507954,
+  n_bas: 42, n_max: 6, symbol: O}
+- {atnum: 13, hf: -220.56779723267147, k_exp: 4.649, l_max: 2, m_max: 0, mp2: -220.6264703423001,
+  n_bas: 15, n_max: 6, symbol: Al}
+- {atnum: 12, hf: -196.09472878059495, k_exp: 4.442, l_max: 2, m_max: 2, mp2: -196.45704548872868,
+  n_bas: 32, n_max: 5, symbol: Mg}
+- {atnum: 9, hf: -99.32406720644966, k_exp: 4.099, l_max: 2, m_max: 2, mp2: -99.55722428606883,
+  n_bas: 41, n_max: 6, symbol: F}
+- {atnum: 9, hf: -99.32176812157648, k_exp: 4.099, l_max: 3, m_max: 1, mp2: -99.51911846592932,
+  n_bas: 42, n_max: 6, symbol: F}
+- {atnum: 11, hf: -160.92906968638013, k_exp: 4.289, l_max: 2, m_max: 1, mp2: -161.1734345577192,
+  n_bas: 33, n_max: 6, symbol: Na}
+- {atnum: 12, hf: -198.02758304369405, k_exp: 4.442, l_max: 2, m_max: 1, mp2: -198.30812193037178,
+  n_bas: 33, n_max: 6, symbol: Mg}
+- {atnum: 14, hf: -259.21453323081545, k_exp: 4.904, l_max: 2, m_max: 0, mp2: -259.27237028386173,
+  n_bas: 15, n_max: 6, symbol: Si}
+- {atnum: 10, hf: -128.42548892854705, k_exp: 4.512, l_max: 2, m_max: 2, mp2: -128.7216284975884,
+  n_bas: 41, n_max: 6, symbol: Ne}
+- {atnum: 14, hf: -281.9673871105381, k_exp: 4.904, l_max: 2, m_max: 2, mp2: -282.34840111449273,
+  n_bas: 32, n_max: 5, symbol: Si}
+- {atnum: 13, hf: -239.50591804703322, k_exp: 4.649, l_max: 2, m_max: 1, mp2: -239.78539208422683,
+  n_bas: 33, n_max: 6, symbol: Al}
+- {atnum: 10, hf: -128.4254889285472, k_exp: 4.512, l_max: 3, m_max: 1, mp2: -128.67199055097888,
+  n_bas: 42, n_max: 6, symbol: Ne}
+- {atnum: 15, hf: -332.16490787238524, k_exp: 5.186, l_max: 1, m_max: 1, mp2: -332.2895873740659,
+  n_bas: 17, n_max: 5, symbol: P}
+- {atnum: 11, hf: -160.92906968638025, k_exp: 4.289, l_max: 2, m_max: 2, mp2: -161.2465586327161,
+  n_bas: 41, n_max: 6, symbol: Na}
+- {atnum: 14, hf: -285.7755325019823, k_exp: 4.904, l_max: 2, m_max: 1, mp2: -286.04450479759277,
+  n_bas: 33, n_max: 6, symbol: Si}
+- {atnum: 11, hf: -160.92906968638016, k_exp: 4.289, l_max: 3, m_max: 1, mp2: -161.18813625016003,
+  n_bas: 42, n_max: 6, symbol: Na}
+- {atnum: 15, hf: -275.9814513123572, k_exp: 5.186, l_max: 1, m_max: 0, mp2: -276.00433169068344,
+  n_bas: 11, n_max: 6, symbol: P}
+- {atnum: 15, hf: -301.3563525512855, k_exp: 5.186, l_max: 2, m_max: 0, mp2: -301.410349162794,
+  n_bas: 15, n_max: 6, symbol: P}
+- {atnum: 15, hf: -336.9463865857615, k_exp: 5.186, l_max: 1, m_max: 1, mp2: -337.086034020631,
+  n_bas: 21, n_max: 6, symbol: P}
+- {atnum: 12, hf: -198.0275830436941, k_exp: 4.442, l_max: 2, m_max: 2, mp2: -198.39191170398254,
+  n_bas: 41, n_max: 6, symbol: Mg}
+- {atnum: 15, hf: -332.16490787238524, k_exp: 5.186, l_max: 2, m_max: 2, mp2: -332.56871616750686,
+  n_bas: 32, n_max: 5, symbol: P}
+- {atnum: 12, hf: -198.02758304369394, k_exp: 4.442, l_max: 3, m_max: 1, mp2: -198.3244896001804,
+  n_bas: 42, n_max: 6, symbol: Mg}
+- {atnum: 13, hf: -239.5137831257291, k_exp: 4.649, l_max: 2, m_max: 2, mp2: -239.88341604706696,
+  n_bas: 41, n_max: 6, symbol: Al}
+- {atnum: 16, hf: -347.90509964329823, k_exp: 5.476, l_max: 2, m_max: 0, mp2: -347.95947044404926,
+  n_bas: 15, n_max: 6, symbol: S}
+- {atnum: 15, hf: -336.9463865857616, k_exp: 5.186, l_max: 2, m_max: 1, mp2: -337.22800873361257,
+  n_bas: 33, n_max: 6, symbol: P}
+- {atnum: 16, hf: -387.148744316577, k_exp: 5.476, l_max: 2, m_max: 2, mp2: -387.5772167855598,
+  n_bas: 32, n_max: 5, symbol: S}
+- {atnum: 14, hf: -285.7755325019821, k_exp: 4.904, l_max: 2, m_max: 2, mp2: -286.1618724163133,
+  n_bas: 41, n_max: 6, symbol: Si}
+- {atnum: 3, hf: -7.4281240210952575, k_exp: 1.532, l_max: 3, m_max: 2, mp2: -7.462204270566961,
+  n_bas: 56, n_max: 6, symbol: Li}
+- {atnum: 4, hf: -14.564447856160019, k_exp: 1.988, l_max: 3, m_max: 2, mp2: -14.6307516788181,
+  n_bas: 56, n_max: 6, symbol: Be}
+- {atnum: 5, hf: -24.516155372040956, k_exp: 2.409, l_max: 3, m_max: 2, mp2: -24.60123326746328,
+  n_bas: 56, n_max: 6, symbol: B}
+- {atnum: 17, hf: -397.6013432337525, k_exp: 5.776, l_max: 2, m_max: 0, mp2: -397.65750975576873,
+  n_bas: 15, n_max: 6, symbol: Cl}
+- {atnum: 6, hf: -37.663825214354596, k_exp: 2.849, l_max: 3, m_max: 2, mp2: -37.7766720877476,
+  n_bas: 56, n_max: 6, symbol: C}
+- {atnum: 7, hf: -54.365014530667246, k_exp: 3.287, l_max: 3, m_max: 2, mp2: -54.507514318860586,
+  n_bas: 56, n_max: 6, symbol: N}
+- {atnum: 16, hf: -392.96315592230667, k_exp: 5.476, l_max: 2, m_max: 1, mp2: -393.25294653526925,
+  n_bas: 33, n_max: 6, symbol: S}
+- {atnum: 18, hf: -512.669646533289, k_exp: 6.084, l_max: 1, m_max: 1, mp2: -512.7905841912183,
+  n_bas: 17, n_max: 5, symbol: Ar}
+- {atnum: 17, hf: -447.26631178617026, k_exp: 5.776, l_max: 2, m_max: 2, mp2: -447.7295703089794,
+  n_bas: 32, n_max: 5, symbol: Cl}
+- {atnum: 15, hf: -336.9463865857616, k_exp: 5.186, l_max: 2, m_max: 2, mp2: -337.3574197100804,
+  n_bas: 41, n_max: 6, symbol: P}
+- {atnum: 8, hf: -74.75420882318932, k_exp: 3.685, l_max: 3, m_max: 2, mp2: -74.94613083068568,
+  n_bas: 56, n_max: 6, symbol: O}
+- {atnum: 18, hf: -390.38923574849787, k_exp: 6.084, l_max: 1, m_max: 0, mp2: -390.40881996936963,
+  n_bas: 11, n_max: 6, symbol: Ar}
+- {atnum: 18, hf: -450.76745329337007, k_exp: 6.084, l_max: 2, m_max: 0, mp2: -450.82299838264,
+  n_bas: 15, n_max: 6, symbol: Ar}
+- {atnum: 15, hf: -336.9463865857613, k_exp: 5.186, l_max: 3, m_max: 1, mp2: -337.2518104720744,
+  n_bas: 42, n_max: 6, symbol: P}
+- {atnum: 18, hf: -520.7125457306902, k_exp: 6.084, l_max: 1, m_max: 1, mp2: -520.8535335303509,
+  n_bas: 21, n_max: 6, symbol: Ar}
+- {atnum: 9, hf: -99.32477879186185, k_exp: 4.099, l_max: 3, m_max: 2, mp2: -99.57831171448517,
+  n_bas: 56, n_max: 6, symbol: F}
+- {atnum: 17, hf: -454.1715310729754, k_exp: 5.776, l_max: 2, m_max: 1, mp2: -454.4714563062166,
+  n_bas: 33, n_max: 6, symbol: Cl}
+- {atnum: 18, hf: -512.6696465332891, k_exp: 6.084, l_max: 2, m_max: 2, mp2: -513.1755328286347,
+  n_bas: 32, n_max: 5, symbol: Ar}
+- {atnum: 16, hf: -392.9686702440623, k_exp: 5.476, l_max: 2, m_max: 2, mp2: -393.40463166855864,
+  n_bas: 41, n_max: 6, symbol: S}
+- {atnum: 18, hf: -520.7125457306909, k_exp: 6.084, l_max: 2, m_max: 1, mp2: -521.0347124096039,
+  n_bas: 33, n_max: 6, symbol: Ar}
+- {atnum: 10, hf: -128.42548892854717, k_exp: 4.512, l_max: 3, m_max: 2, mp2: -128.74585049467342,
+  n_bas: 56, n_max: 6, symbol: Ne}
+- {atnum: 17, hf: -454.1715310731879, k_exp: 5.776, l_max: 2, m_max: 2, mp2: -454.64350868174967,
+  n_bas: 41, n_max: 6, symbol: Cl}
+- {atnum: 11, hf: -160.92906968638007, k_exp: 4.289, l_max: 3, m_max: 2, mp2: -161.27291487618587,
+  n_bas: 56, n_max: 6, symbol: Na}
+- {atnum: 12, hf: -198.02758304369405, k_exp: 4.442, l_max: 3, m_max: 2, mp2: -198.4211145733077,
+  n_bas: 56, n_max: 6, symbol: Mg}
+- {atnum: 18, hf: -520.7125457306906, k_exp: 6.084, l_max: 2, m_max: 2, mp2: -521.2288445598399,
+  n_bas: 41, n_max: 6, symbol: Ar}
+- {atnum: 18, hf: -520.7125457306906, k_exp: 6.084, l_max: 3, m_max: 1, mp2: -521.0714663838753,
+  n_bas: 42, n_max: 6, symbol: Ar}
+- {atnum: 4, hf: -14.564447856160047, k_exp: 1.988, l_max: 3, m_max: 3, mp2: -14.631103420255679,
+  n_bas: 62, n_max: 6, symbol: Be}
+- {atnum: 3, hf: -7.428124021095264, k_exp: 1.532, l_max: 3, m_max: 3, mp2: -7.462219295041974,
+  n_bas: 62, n_max: 6, symbol: Li}
+- {atnum: 7, hf: -54.36501453066725, k_exp: 3.287, l_max: 3, m_max: 3, mp2: -54.51100002094481,
+  n_bas: 62, n_max: 6, symbol: N}
+- {atnum: 6, hf: -37.66382748724314, k_exp: 2.849, l_max: 3, m_max: 3, mp2: -37.77911269008324,
+  n_bas: 62, n_max: 6, symbol: C}
+- {atnum: 5, hf: -24.51615538806493, k_exp: 2.409, l_max: 3, m_max: 3, mp2: -24.601723118802102,
+  n_bas: 62, n_max: 6, symbol: B}
+- {atnum: 15, hf: -336.94638658576116, k_exp: 5.186, l_max: 3, m_max: 2, mp2: -337.39998045467354,
+  n_bas: 56, n_max: 6, symbol: P}
+- {atnum: 8, hf: -74.755042941486, k_exp: 3.685, l_max: 3, m_max: 3, mp2: -74.95399178137737,
+  n_bas: 62, n_max: 6, symbol: O}
+- {atnum: 9, hf: -99.32559703986564, k_exp: 4.099, l_max: 3, m_max: 3, mp2: -99.58687965152546,
+  n_bas: 62, n_max: 6, symbol: F}
+- {atnum: 16, hf: -392.9703761923197, k_exp: 5.476, l_max: 3, m_max: 2, mp2: -393.4563958477009,
+  n_bas: 56, n_max: 6, symbol: S}
+- {atnum: 10, hf: -128.4254889285471, k_exp: 4.512, l_max: 3, m_max: 3, mp2: -128.75675676389181,
+  n_bas: 62, n_max: 6, symbol: Ne}
+- {atnum: 17, hf: -454.17320887447715, k_exp: 5.776, l_max: 3, m_max: 2, mp2: -454.70609614408187,
+  n_bas: 56, n_max: 6, symbol: Cl}
+- {atnum: 11, hf: -160.92906968638013, k_exp: 4.289, l_max: 3, m_max: 3, mp2: -161.28464568807655,
+  n_bas: 62, n_max: 6, symbol: Na}
+- {atnum: 12, hf: -198.02758304369422, k_exp: 4.442, l_max: 3, m_max: 3, mp2: -198.43398371128572,
+  n_bas: 62, n_max: 6, symbol: Mg}
+- {atnum: 18, hf: -520.7125457306914, k_exp: 6.084, l_max: 3, m_max: 2, mp2: -521.2953058081473,
+  n_bas: 56, n_max: 6, symbol: Ar}
+- {atnum: 13, hf: -239.51413330756387, k_exp: 4.649, l_max: 3, m_max: 3, mp2: -239.9309445488658,
+  n_bas: 62, n_max: 6, symbol: Al}
+- {atnum: 14, hf: -285.7758337099432, k_exp: 4.904, l_max: 3, m_max: 3, mp2: -286.215649504578,
+  n_bas: 62, n_max: 6, symbol: Si}
+- {atnum: 15, hf: -336.94638658576116, k_exp: 5.186, l_max: 3, m_max: 3, mp2: -337.41863758110463,
+  n_bas: 62, n_max: 6, symbol: P}
+- {atnum: 16, hf: -392.97235189240234, k_exp: 5.476, l_max: 3, m_max: 3, mp2: -393.4825313451998,
+  n_bas: 62, n_max: 6, symbol: S}
+- {atnum: 17, hf: -454.1751366204594, k_exp: 5.776, l_max: 3, m_max: 3, mp2: -454.73332235151923,
+  n_bas: 62, n_max: 6, symbol: Cl}
+- {atnum: 18, hf: -520.7125457306915, k_exp: 6.084, l_max: 3, m_max: 3, mp2: -521.3254790488858,
+  n_bas: 62, n_max: 6, symbol: Ar}
+- {atnum: 13, hf: -239.51413330756355, k_exp: 4.649, l_max: 3, m_max: 2, mp2: -239.91817570875185,
+  n_bas: 56, n_max: 6, symbol: Al}
+- {atnum: 14, hf: -285.7758337099164, k_exp: 4.904, l_max: 3, m_max: 2, mp2: -286.1976361331191,
+  n_bas: 56, n_max: 6, symbol: Si}
