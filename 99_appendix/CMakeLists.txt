@@ -26,3 +26,29 @@ add_custom_target(
         ${CMAKE_CURRENT_LIST_DIR}/table_Be_CS_hf_mp2_fci/Be_fci_high_accuracy.yaml
 )
 add_depends(table_Be_CS_hf_mp2_fci)
+
+
+#
+# Plot images
+#
+set(PDF_OUTPUTS "")
+
+# Plot Gaussian RMSO vs l
+set(PDF_OUTPUTS ${PDF_OUTPUTS}
+        ccpvnz_rmso_period2_vs_l.pdf ccpvnz_rmso_period3_vs_l.pdf
+        ccpvnz_rms_lf_C.pdf ccpvnz_rms_lf_N.pdf ccpvnz_rms_lf_O.pdf
+)
+add_custom_command(
+        OUTPUT
+        ccpvnz_rmso_period2_vs_l.pdf ccpvnz_rmso_period3_vs_l.pdf
+        ccpvnz_rms_lf_C.pdf ccpvnz_rms_lf_N.pdf ccpvnz_rms_lf_O.pdf
+        COMMAND ${CMAKE_CURRENT_LIST_DIR}/RMSO_vs_l_ccpvnz/plot.py
+        COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
+        DEPENDS
+        ${CMAKE_CURRENT_LIST_DIR}/RMSO_vs_l_ccpvnz/plot.py
+)
+
+foreach(out ${PDF_OUTPUTS})
+        pdf_image(${CMAKE_CURRENT_BINARY_DIR}/${out} TMP)
+        add_depends(${TMP})
+endforeach()
