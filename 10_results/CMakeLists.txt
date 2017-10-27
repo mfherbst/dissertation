@@ -49,11 +49,15 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
 )
 
-# Plot RMSO vs l for period 1 and 2
-set(PDF_OUTPUTS ${PDF_OUTPUTS} rmso_period2_vs_l.pdf rmso_period3_vs_l.pdf
-        rms_lf_C.pdf rms_lf_N.pdf rms_lf_O.pdf)
+# Plot RMSO vs l for period 1, 2 and the ions
+set(PDF_OUTPUTS ${PDF_OUTPUTS}
+        rmso_period2_vs_l.pdf rmso_period3_vs_l.pdf rmso_ions_vs_l.pdf
+        rms_lf_C.pdf rms_lf_N.pdf rms_lf_O.pdf
+)
 add_custom_command(
-        OUTPUT rmso_period2_vs_l.pdf rmso_period3_vs_l.pdf rms_lf_C.pdf rms_lf_N.pdf rms_lf_O.pdf
+        OUTPUT
+        rmso_period2_vs_l.pdf rmso_period3_vs_l.pdf rmso_ions_vs_l.pdf
+        rms_lf_C.pdf rms_lf_N.pdf rms_lf_O.pdf
         COMMAND ${CMAKE_CURRENT_LIST_DIR}/RMSO_vs_l/plot.py
         COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
         DEPENDS
