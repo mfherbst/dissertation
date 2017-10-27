@@ -14,19 +14,19 @@ next_letter_idx = 0
 sources = {
     "CBL3456": {
         "letter": None,
-        "footnote": "CBS extrapolation using cc-pVTZ to cc-pv6Z"
+        "footnote": "CBS extrapolation using cc-pVTZ to cc-pv6Z on molsturm"
     },
     "CBL2345": {
         "letter": None,
-        "footnote": "CBS extrapolation using cc-pVDZ to cc-pv5Z"
+        "footnote": "CBS extrapolation using cc-pVDZ to cc-pv5Z on molsturm"
     },
     "ccpv5z": {
         "letter": None,
-        "footnote": "molsturm and libint cc-pV5Z"
+        "footnote": "cc-pV5Z calculation on molsturm"
     },
     "ccpv6z": {
         "letter": None,
-        "footnote": "molsturm and libint cc-pV6Z"
+        "footnote": "cc-pV6Z calculation on molsturm"
     },
 }
 
@@ -73,12 +73,12 @@ ret.append(r"     label=tab:HFReference,")
 ret.append(r"]{lr@{.}l@{\hspace{40pt}}lr@{.}l}{")
 
 # Add footnotes
+ret.append(r"    \tnote[U]{unrestricted HF}")
+ret.append(r"    \tnote[R]{restricted HF}")
 for s in sorted(sources.values(), key=lambda x: str(x["letter"])):
     if not s["letter"]:
         continue
     ret.append(r"    \tnote[" + s["letter"] + "]{" + s["footnote"] + "}")
-ret.append(r"    \tnote[U]{unrestricted HF}")
-ret.append(r"    \tnote[R]{restricted HF}")
 ret.append(r"}{")
 
 # Add heading
