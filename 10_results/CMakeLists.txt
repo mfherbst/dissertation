@@ -7,7 +7,7 @@ add_custom_target(
         COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
         DEPENDS
         ${CMAKE_CURRENT_LIST_DIR}/table_reference/make_table.py
-        ${CMAKE_CURRENT_LIST_DIR}/E_vs_shell/HF_literature.yaml
+        ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
 )
 add_depends(table_reference)
 
@@ -29,8 +29,7 @@ add_custom_target(
         COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
         DEPENDS
         ${CMAKE_CURRENT_LIST_DIR}/table_kopt/make_table.py
-        ${CMAKE_CURRENT_LIST_DIR}/E_vs_shell/HF_literature.yaml
-        ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/HF_literature.yaml
+        ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
 )
 add_depends(table_kopt)
 
@@ -57,6 +56,7 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_shell/O_results.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_shell/F_results.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_shell/Ne_results.yaml
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
 )
 
 # Plot RMSO vs l for period 1 and 2
@@ -83,6 +83,7 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/O_plot_data.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/N_plot_data.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/P_plot_data.yaml
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
 )
 
 # Plot change in correlation energies

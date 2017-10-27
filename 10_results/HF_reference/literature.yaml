@@ -1,0 +1,23 @@
+# Unresricted Hartree-Fock reference values for the solution.
+unrestricted:
+  Li: {value:    -7.3650734,         source: ccpv5z }
+
+
+# Restricted Hartree-Fock (either closed-shell or open-shell restricted)
+# literature values for the solution.
+restricted:
+  Be: {value:   -14.57302317,        source: Morgon1997}  # N. H. Morgon et al.
+  He: {value:    -2.861679995612,    source: Morgon1997}  # N. H. Morgon et al.
+  Ne: {value:  -128.54709811,        source: Morgon1997}  # N. H. Morgon et al.
+  Mg: {value:  -199.61463642,        source: Morgon1997}  # N. H. Morgon et al.
+  Ar: {value:  -526.81751280,        source: Morgon1997}  # N. H. Morgon et al.
+#
+  B:  {value:   -24.529060725758421, source: Malykhanov2012}
+  N:  {value:   -54.400934186034026, source: Malykhanov2012}
+  O:  {value:   -74.809398433902800, source: Malykhanov2012}
+  F:  {value:   -99.409349335524313, source: Malykhanov2012}
+#
+  Al: {value:  -241.876707138240293, source: Malykhanov2012}
+  P:  {value:  -340.718780787010424, source: Malykhanov2012}
+  S:  {value:  -397.504895648385254, source: Malykhanov2012}
+  Cl: {value:  -459.482072242166956, source: Malykhanov2012}

@@ -1,0 +1,22 @@
+restricted:
+  Al: {source: Malykhanov2012, value: -241.8767071382403}
+  Ar: {source: Morgon1997, value: -526.8175128}
+  B: {source: Malykhanov2012, value: -24.52906072575842}
+  Be: {source: Morgon1997, value: -14.57302317}
+  Cl: {source: Malykhanov2012, value: -459.48207224216696}
+  F: {source: Malykhanov2012, value: -99.40934933552431}
+  He: {source: Morgon1997, value: -2.861679995612}
+  Mg: {source: Morgon1997, value: -199.61463642}
+  N: {source: Malykhanov2012, value: -54.40093418603403}
+  Ne: {source: Morgon1997, value: -128.54709811}
+  O: {source: Malykhanov2012, value: -74.8093984339028}
+  P: {source: Malykhanov2012, value: -340.7187807870104}
+  S: {source: Malykhanov2012, value: -397.50489564838523}
+unrestricted:
+  B: {source: CBL2345, value: -24.533483095273912}
+  C: {source: CBL3456, value: -37.693775144697774}
+  F: {source: CBL3456, value: -99.41668583074647}
+  Li: {source: ccpv5z, value: -7.3650734}
+  N: {source: CBL3456, value: -54.40464086002057}
+  O: {source: CBL3456, value: -74.81920955922358}
+  P: {source: CBL3456, value: -340.71928290005104}

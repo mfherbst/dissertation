@@ -57,7 +57,7 @@ def main():
         compute("O", nlm=nlm, k_exp=3.7),
     ]
 
-    with open("./HF_literature.yaml", "r") as f:
+    with open("./HF_reference.yaml", "r") as f:
         lit = yaml.safe_load(f)
         literature_rhf = lit["restricted"]
         literature_uhf = lit["unrestricted"]

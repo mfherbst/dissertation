@@ -16,7 +16,7 @@ def plot_EHF_vs_shell(systems):
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twiny()
 
-    litfile = dir_of_this_file + "/HF_literature.yaml"
+    litfile = dir_of_this_file + "/HF_reference.yaml"
     with open(litfile, "r") as f:
         literature = yaml.safe_load(f)
 

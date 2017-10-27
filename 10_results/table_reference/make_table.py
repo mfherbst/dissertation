@@ -12,10 +12,6 @@ restricted = ["He", "Be", "Ne", "Mg", "Ar"]
 # The Orca calculations use the newer Dunning versions!
 next_letter_idx = 0
 sources = {
-    "Orca 4.0.0 ccpv5z": {
-        "letter": None, "footnote": "cc-pV5Z with ORCA~\cite{ORCA}"},
-    "Orca 4.0.0 ccpv6z": {
-        "letter": None, "footnote": "cc-pV6Z with ORCA~\cite{ORCA}"},
     "CBL3456": {
         "letter": None,
         "footnote": "CBS extrapolation using cc-pVTZ to cc-pv6Z"
@@ -24,10 +20,18 @@ sources = {
         "letter": None,
         "footnote": "CBS extrapolation using cc-pVDZ to cc-pv5Z"
     },
+    "ccpv5z": {
+        "letter": None,
+        "footnote": "molsturm and libint cc-pV5Z"
+    },
+    "ccpv6z": {
+        "letter": None,
+        "footnote": "molsturm and libint cc-pV6Z"
+    },
 }
 
 dir_of_this_script = os.path.dirname(__file__)
-with open(dir_of_this_script + "/HF_literature.yaml", "r") as f:
+with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
     literature = yaml.safe_load(f)
 
 headings = ["system", r"\multicolumn{2}{c}{$E_\text{HF}$}"]

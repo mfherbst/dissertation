@@ -8,7 +8,7 @@ import sturmint
 
 
 dir_of_this_script = os.path.dirname(__file__)
-with open(dir_of_this_script + "/HF_literature.yaml", "r") as f:
+with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
     literature = yaml.safe_load(f)
 
 

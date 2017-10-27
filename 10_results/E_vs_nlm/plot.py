@@ -74,7 +74,7 @@ def plot_EHF_vs_bas(values):
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
-    litfile = dir_of_this_file + "/HF_literature.yaml"
+    litfile = dir_of_this_file + "/HF_reference.yaml"
     with open(litfile, "r") as f:
         literature = yaml.safe_load(f)
 
