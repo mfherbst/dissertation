@@ -148,6 +148,8 @@ def main():
         return True
     data = [d for d in data if filtered(d)]
 
+    # TODO One could make this table alternatively a continuing table,
+    #      i.e. refer to all periods by the same table name.
     tble = []
     for p in range(2, 5):
         data_part = [d for d in data if is_period(d, p)]

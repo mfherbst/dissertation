@@ -379,6 +379,10 @@ Do the calculation of 8.7 but truncate m=1, m=2
 
 Does not really seem to do the trick
 
+\subsection{$n,l,m$ recommendations for HF}
+Pretty much $(n, 0, 0)$ up to Be, $(n, 1, 1)$ for N and Ne, Na, Mg, P, Ar.
+For the rest $(n, 2, 2)$ at least for description up to error less than $1e-4$
+$(n, 3, 3)$ if lower error (down to $1e-6$ is desired.
 
 \subsection{Convergence taking electron correlation into account}
 Another aspect to note is that hardly ever one is interested
@@ -916,6 +920,7 @@ we would guess, that they are very good at capturing chemical effects as well.
 
 % TODO closed or half-shell ions are ready.
 
+
 % Compare S1 and T1 of Beryllium with gaussian calculation of an equivalent basis at FCI
 % Are we also better in capturing the correlation energy at FCI level?
 
@@ -926,11 +931,19 @@ we would guess, that they are very good at capturing chemical effects as well.
 
 % For potassium l_max = m_max = 2 seems to be good for HF
 % Do some more calculations to check the correlation effects
+%
+% We want the potassium 30s atomic orbital
 
 \todo[inline,caption={}]{
 	\begin{itemize}
 		% TODO Can we actually do this?
 		% Try to do the orbital rotation thingy
 		\item hint at it or show some examples
+		\item Maybe show comparison of convergence rates (rel. error vs. basis size)
+			in the sensible Sturmian $nlm$ basis sets vs similar Gaussian ones
+		\item Look at how the Gaussian basis sets have been constructed
+			(especially the correlation consistent and pc-n ones)
+			and compare how the Sturmians behave if similar
+			Constructions are used, also motivated from the previous section.
 	\end{itemize}
 }

@@ -4,10 +4,10 @@
 unrestricted:
   Li: { value:    -7.432746005708,     source: Orca 4.0.0 ccpv5z }
   B:  { value:   -24.533483095273912,  source: CBL2345 }
-  N:  { value:   -54.404532439,        source: Orca 4.0.0 ccpv6z }
-  O:  { value:   -74.818945950795,     source: Orca 4.0.0 ccpv6z }
-  C:  { value:   -37.693729562984,     source: Orca 4.0.0 ccpv6z }
-  F:  { value:    -99.416266640402,    source: Orca 4.0.0 ccpv6z }
+  N:  { value:   -54.40464086002057,   source: CBL3456 }
+  O:  { value:   -74.81920955922358,   source: CBL3456 }
+  C:  { value:   -37.693775144697774,  source: CBL3456 }
+  F:  { value:   -99.41668583074647,   source: CBL3456 }
   P:  { value:  -340.719248697978,     source: Orca 4.0.0 ccpv6z }
 
 # Restricted Hartree-Fock (either closed-shell or open-shell restricted)
