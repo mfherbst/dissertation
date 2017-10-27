@@ -234,6 +234,8 @@ effects of symmetry-breaking in HF wavefunctions like for example in UHF.
 % The states can be stationary or unstable points rather then minima
 
 % TODO Show by similar analysis that we also have the problem for Gaussians
+% Indeed that is true for gaussians as well!
+
 
 % Sometimes we do not only have this issue, but the SCF also does not converge to
 % a minimum but only a saddle point that way, so we need to force convergence using a DIIS.
@@ -244,8 +246,6 @@ effects of symmetry-breaking in HF wavefunctions like for example in UHF.
 			to do with the occupation
 	\end{itemize}
 }
-
-% TODO Have similar plots also wrt. m ??
 
 \begin{figure}
 	\centering
@@ -267,6 +267,8 @@ effects of symmetry-breaking in HF wavefunctions like for example in UHF.
 	\caption{Plot root mean square coefficient vs $l$ and orbital index for O}
 	\label{fig:RMSLF_O}
 \end{figure}
+
+% TODO We can now do a plot RMSO_l vs. l and rms_lf vs l for the ions, too
 
 \todo[inline,caption={}]{
 	\begin{itemize}
@@ -385,6 +387,14 @@ For the rest $(n, 2, 2)$ at least for description up to error less than $1e-4$
 $(n, 3, 3)$ if lower error (down to $1e-6$ is desired.
 
 \subsection{Convergence taking electron correlation into account}
+
+% TODO
+% Plot MP2 correlation energy vs. Nbas for the computations we did on manjula
+% converge_correlation. Annotate the points with the actual basis set used.
+% Use this plot to justify the choice of basis in the nlm sense for the
+% different elements.
+
+
 Another aspect to note is that hardly ever one is interested
 in the exact description of the one-determinantal \HF solution.
 Much of the chemistry which takes place happens due to effects originating
@@ -456,6 +466,24 @@ period of the periodic system of elements.
 			but I kind of fail to see trends.
 	\end{itemize}
 }
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Ecc_vs_bas_easy}
+	\caption{Fraction of MP2 correlation energy recovered
+		relative to the calculation with a $(6,3,3)$ \CS basis for
+		atoms with a full or half-full shell in the second and third period.}
+	\label{fig:EccVsNlm}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Ecc_vs_bas_hard}
+	\caption{Fraction of MP2 correlation energy recovered
+		relative to the calculation with a $(6,4,4)$ \CS basis for
+		atoms with one or two unpaired electrons.}
+	\label{fig:EccVsNlm}
+\end{figure}
 
 \newcommand{\kopt}{\ensuremath k_\text{opt}}
 \subsection{The effect of $\kexp$}
