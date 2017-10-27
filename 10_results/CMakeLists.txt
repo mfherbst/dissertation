@@ -66,10 +66,10 @@ add_custom_command(
 )
 
 # Plot orbital energies wrt nlm
-set(PDF_OUTPUTS ${PDF_OUTPUTS} orben_vs_nlm_N.pdf ehf_vs_nlm.pdf
+set(PDF_OUTPUTS ${PDF_OUTPUTS} orben_vs_nlm_N.pdf ehf_vs_nlm.pdf ehf_vs_nlm_O.pdf
 )
 add_custom_command(
-        OUTPUT orben_vs_nlm_N.pdf ehf_vs_nlm.pdf
+        OUTPUT orben_vs_nlm_N.pdf ehf_vs_nlm.pdf ehf_vs_nlm_O.pdf
         COMMAND ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/plot.py
         COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/plot.py

@@ -14,19 +14,17 @@ next_letter_idx = 0
 sources = {
     "CBL3456": {
         "letter": None,
-        "footnote": "CBS extrapolation using cc-pVTZ to cc-pv6Z on molsturm"
+        "footnote": r"\molsturm CBS extrapolation using cc-pVTZ to cc-pv6Z "
+        r"(see appendix \ref{apx:CbsLimit})"
     },
     "CBL2345": {
         "letter": None,
-        "footnote": "CBS extrapolation using cc-pVDZ to cc-pv5Z on molsturm"
+        "footnote": r"\molsturm CBS extrapolation using cc-pVDZ to cc-pv5Z "
+        r"(see appendix \ref{apx:CbsLimit})"
     },
-    "ccpv5z": {
+    "ccpv5z-2011": {
         "letter": None,
-        "footnote": "cc-pV5Z calculation on molsturm"
-    },
-    "ccpv6z": {
-        "letter": None,
-        "footnote": "cc-pV6Z calculation on molsturm"
+        "footnote": "\molsturm cc-pV5Z~\cite{Prascher2011} calculation"
     },
 }
 
