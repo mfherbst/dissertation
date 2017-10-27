@@ -2,11 +2,15 @@
 
 This repository contains the TeX and python source code to build
 my PhD thesis.
-Work in progress, please wait ;).
+The whole thing is healily work in progress right now of course ;).
 
-Please not that whilst the compiled thesis and its content is released
-under CC-by-sa the source code by itself is released under the GPL3.
-
-Building the thesis makes heavy use of [`molsturm`](https://molsturm.org)
+## Building
+Before you can build the thesis you will need the most recent versions
+of [`molsturm`](https://molsturm.org)
 and [`gint`](https://molsturm.org/gint) to dynamically build the
-plots and tables, so these programs need to be installed for a succesful built.
+plots and tables together with the tex code.
+As the integral backends we need `sturmint` as well as another Gaussian
+library (`libint` is fine).
+
+Building should be as simple as calling a `make all` in the root
+directory of the repository.

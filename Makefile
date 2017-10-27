@@ -1,9 +1,12 @@
 all: pdf pdfa
 
-build/CMakeCache.txt:
+cmake/UseLATEX/CMakeLists.txt:
+	git submodule update --init
+
+build/CMakeCache.txt: cmake/UseLATEX/CMakeLists.txt
 	mkdir build && cd build && cmake ..
 
-build_png/CMakeCache.txt:
+build_png/CMakeCache.txt: cmake/UseLATEX/CMakeLists.txt
 	mkdir build_png && cd build_png && cmake -DIMAGE_FORMAT=png ..
 
 pdf: build/CMakeCache.txt
