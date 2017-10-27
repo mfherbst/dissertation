@@ -1,0 +1,59 @@
+[
+	inner sep=2mm,
+	node distance=1mm,
+	mostbox/.style={rectangle,draw,fill=white,minimum width=4.7cm,align=center,
+		font=\smaller},
+	box/.style={mostbox,draw=blue!50,fill=blue!20,thick,
+		node distance=0.1cm and 1.0cm,minimum width=2.5cm,minimum height=1.4em,
+		font=\smaller[2]},
+	pbox/.style={box,font=\itshape\smaller[2]\color{black!70},
+		draw=blue!30,fill=blue!10},
+	line/.style={semithick},
+	pre/.style={line,<-,shorten <=1pt,>=stealth'},
+]
+\newcommand{\snode}[2]{#1\\\smaller \textcolor{black!80!white}{#2}}
+
+\node [mostbox] (molsturm) {\snode{\molsturm}{Interface layer and \python driver}};
+\node [mostbox, minimum width=2.3cm, below=of molsturm,xshift=1.2cm] (gscf)
+	{\snode{\gscf}{\smaller SCF algorithms}};
+\node [mostbox, minimum width=2.3cm, below=of molsturm,xshift=-1.2cm] (gint)
+	{\snode{\gint}{\smaller Integral interface}};
+\node [mostbox, below=of gint,xshift=1.2cm] (law) {\snode{\lazyten}{Linear algebra interface}};
+\node [mostbox, below=of law] (krims) {\snode{\krims}{Common utilities}};
+
+% Post-HF
+\node[box, right=of molsturm] (adc) {ADC};
+\node[box, above=of adc] (mp2) {MP2};
+\node[box, below=of adc] (fci) {Full CI};
+\node[pbox, below=of fci] (cc) {Coupled Cluster};
+\node [above=0.15cm of mp2.north] (phflabel) {\smaller[2] Post HF methods};
+
+\draw [pre] (adc.west) -- (molsturm.east);
+\draw [pre] (mp2.west) -- +(-0.4,0);
+\draw [pre] (fci.west) -- +(-0.4,0);
+\draw [pre] (cc.west)  -- +(-0.4,0);
+\draw [line] ($ (mp2.west)-(0.4,0) $) -- ($ (cc.west)-(0.4,0) $);
+
+% Integrals
+\node [pbox, left=of gint] (isturm) {\smaller Ionising sturmians};
+\node [box, above=of isturm] (sturm) {Sturmians};
+\node [box, above=of sturm] (gauss) {Gaussians};
+
+\node [pbox, below=of isturm] (fe) {Finite elements};
+\node [pbox, below=of fe] (fd) {\smaller Finite differences};
+\node [pbox, below=of fd] (wave) {Wavelets};
+\node [pbox, below=of wave] (other) {\ldots};
+\draw let \p1 = (phflabel), \p2=(gauss) in node (bla) at (\x2, \y1) {\smaller[2] Integral backends};
+
+\draw [pre] (gint.west) -- (isturm.east);
+\draw [line] (sturm.east) -- +(0.4,0);
+\draw [line] (fe.east) -- +(0.4,0);
+\draw [line] (gauss.east) -- +(0.4,0);
+\draw [line] (fd.east) -- +(0.4,0);
+\draw [line] (wave.east) -- +(0.4,0);
+\draw [line] (other.east) -- +(0.4,0);
+\draw [line] ($ (gauss.east)+(0.4,0) $) -- ($ (other.east)+(0.4,0) $);
+
+\begin{scope}[on background layer]
+	\node [color=red!80,thick,draw=red!60,fill=red!30,fit=(molsturm) (gscf) (gint) (law) (krims)] (bg) {};
+\end{scope}
