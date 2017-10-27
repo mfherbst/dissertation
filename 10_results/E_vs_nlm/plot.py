@@ -21,7 +21,7 @@ def load_data(atom):
 
     molsturm.yaml_utils.install_constructors()
     with open(filename(atom), "r") as f:
-        return yaml.safe_load(f)
+        return list(yaml.safe_load(f).values())
 
 
 def setup():
@@ -43,34 +43,31 @@ def setup():
     matplotlib.rcParams.update(pgf_with_rc_fonts)
 
 
-def plot_orben_vs_bas(vals, n_alpha=12, n_beta=0, lmax=1):
+def plot_orben_vs_bas(vals, alphas=True, selection=None):
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
-    atom = vals["7_1_1"]["atom"]
-    vals = sorted(vals.values(), key=lambda x: (x["n_max"], x["l_max"]))
-    ns = np.array([v["n_max"] for v in vals if v["l_max"] == lmax])
-    alphas = np.array([v["orben_a"][:n_alpha] for v in vals
-                       if v["l_max"] == lmax])
-    betas = np.array([v["orben_b"][:n_beta] for v in vals
-                      if v["l_max"] == lmax])
+    if selection is None:
+        selection = {i: str(i) for i in range(12)}
+    orbenkey = "orben_a" if alphas else "orben_b"
 
-    alphas = alphas.transpose()
-    betas = betas.transpose()
+    vals = sorted(vals, key=lambda x: (x["n_max"], x["l_max"]))
+    ns = np.array([v["n_max"] for v in vals])
+    orbens = np.array([v[orbenkey][:20] for v in vals])
+    diff = np.diff(orbens, axis=0)
+    error = np.abs(diff / orbens[1:, :])
 
-    for i, v in enumerate(alphas):
-        plt.plot(ns, v, label=str(i) + "a " + atom)
+    error = error.transpose()
+    for i, v in enumerate(error):
+        if i not in selection:
+            continue
+        plt.semilogy(ns[:-1], v, "x-", label=selection[i])
 
-    for i, v in enumerate(betas):
-        plt.plot(ns, v, label=str(i) + "b " + atom)
-
-    plt.xlabel("Sturmian basis $(n,1,1)$")
-    plt.ylabel("$i$th orbital energy")
-
+    plt.ylabel("relative difference of orbital energies")
     plt.legend()
 
 
-def plot_EHF_vs_bas(values):
+def plot_EHF_vs_bas(values, full_O=False):
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
@@ -78,9 +75,10 @@ def plot_EHF_vs_bas(values):
     with open(litfile, "r") as f:
         literature = yaml.safe_load(f)
 
+    colors = {}
     for vals in values:
-        atom = vals["7_1_1"]["atom"]
-        vals = sorted(vals.values(), key=lambda x: (x["n_max"], x["l_max"]))
+        atom = vals[0]["atom"]
+        vals = sorted(vals, key=lambda x: (x["n_max"], x["l_max"]))
 
         n_bas = np.array([
             molsturm.construct_basis("sturmian/atomic", atom, k_exp=1.0,
@@ -94,40 +92,49 @@ def plot_EHF_vs_bas(values):
         # Get literature for RHF (closed-shell) or UHF (open-shell)
         if atom in ["N", "O", "P", "C"]:
             litval = literature["unrestricted"][atom]["value"]
-            kind = "UHF"
         else:
             litval = literature["restricted"][atom]["value"]
-            kind = "RHF"
 
         if atom in ["N", "C"]:
-            ls = [(1, 1), (2, 2)]
+            ls = [(1, 1, "-"), (2, 2, "--")]
         elif atom == "O":
-            ls = [(1, 1), (2, 2), (3, 3), (3, 2), (3, 1)]
+            if full_O:
+                ls = [(1, 1, "-"), (2, 2, "-"), (3, 1, "-"),
+                      (3, 2, "-"), (3, 3, "-")]
+            else:
+                ls = [(1, 1, "-"), (2, 2, "--")]
         elif atom == "Be":
-            ls = [(1, 1), (0, 0)]
+            ls = [(1, 1, "-"), (0, 0, ":")]
         else:
-            ls = [(1, 1)]
+            ls = [(1, 1, "-")]
 
-        for l, m in ls:
+        for l, m, style in ls:
+            if not full_O:
+                color = colors.get(atom)
+            else:
+                color = None
+
             mask = np.array([v["l_max"] == l and v["m_max"] == m
                              for v in vals])
-            label = atom + " (n," + str(l) + "," + str(m) + ") " + kind
+            label = atom + " (n," + str(l) + "," + str(m) + ") "
 
             hfdiff = (hfs - litval) / abs(litval)
-            p = plt.semilogy(n_bas[mask], hfdiff[mask], "x-",
-                             label=label)
+            p = plt.semilogy(n_bas[mask], hfdiff[mask], "x" + style,
+                             label=label, color=color)
+
+            colors[atom] = p[0].get_color()
 
             # Plot value of n at first and last point
-            for i, position in [(0, "left"), (-1, "right")]:
-                shift = -3 if position == "left" else 1
-                plt.text(n_bas[mask][i] + shift, hfdiff[mask][i],
+            for i, position in [(0, "above"), (-1, "right")]:
+                xshift = 1.5 if position == "right" else -0.5
+                yfac = 1.15 if full_O else 1.5
+                yshift = yfac if position == "above" else 1
+                plt.text(n_bas[mask][i] + xshift, hfdiff[mask][i] * yshift,
                          str(ns[mask][i]),
                          color=p[i].get_color(), size=8)
 
     plt.xlabel(r"Number of basis functions $N_\text{bas}$")
-    plt.ylabel(r"relative error in $E_\text{HF}$ compared to reference "
-               r"value in $E_\text{H}$")
-
+    plt.ylabel(r"relative error of $E_\text{HF}$")
     plt.legend(ncol=2)
 
 
@@ -139,20 +146,24 @@ def main():
     vals_o = load_data("O")
     vals_c = load_data("C")
 
-    # plot_orben_vs_bas(vals_be, lmax=1)
-    # plt.savefig("orben_vs_nlm_Be.pdf", bbox_inches="tight")
-
-    plot_orben_vs_bas(vals_n, lmax=2)
+    #
+    # Plot orben convergence
+    #
+    orben_plot_n = [v for v in vals_n if v["l_max"] == 2]
+    selection = {0: "1s", 1: "2s", 3: "2p", 5: "3s", 7: "3p", 11: "3d"}
+    plot_orben_vs_bas(orben_plot_n, selection=selection)
+    plt.xlabel("Sturmian basis $(n,2,2)$")
     plt.savefig("orben_vs_nlm_N.pdf", bbox_inches="tight")
 
-    # plot_orben_vs_bas(vals_p, lmax=1)
-    # plt.savefig("orben_vs_nlm_P.pdf", bbox_inches="tight")
-
-    # plot_orben_vs_bas(vals_o, lmax=3)
-    # plt.savefig("orben_vs_nlm_O.pdf", bbox_inches="tight")
-
+    #
+    # Plot energy convergence
+    #
     plot_EHF_vs_bas([vals_be, vals_n, vals_p, vals_o, vals_c])
+    plt.ylim([None, 1])
     plt.savefig("ehf_vs_nlm.pdf", bbox_inches="tight")
+
+    plot_EHF_vs_bas([vals_o], full_O=True)
+    plt.savefig("ehf_vs_nlm_O.pdf", bbox_inches="tight")
 
 
 if __name__ == "__main__":

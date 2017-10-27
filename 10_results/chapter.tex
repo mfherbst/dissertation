@@ -281,8 +281,6 @@ using Dunning basis sets.
 	\label{fig:RMSLF_O}
 \end{figure}
 
-% TODO We can now do a plot RMSO_l vs. l and rms_lf vs l for the ions, too
-
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item It seems that the full and half-full shells are ok and the $\RMSOl$
@@ -309,7 +307,17 @@ but we look at basis sets with a particular $\lmax < \nmax$ now.
 \begin{figure}
 	\centering
 	\includeimage{10_results/ehf_vs_nlm}
-	\caption{Plot error in $E_\text{HF}$ vs $\Nbas$}
+	\caption{Plot relative error in $E_\text{HF}$ vs $\Nbas$.
+		The reference is mentaioned in \vref{tab:HFReference}.}
+	\label{fig:ErrorHF_vs_nlm}
+\end{figure}
+
+% Plot the same elements or the same basis set kinds with the same color.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/ehf_vs_nlm_O}
+	\caption{Plot relative error in $E_\text{HF}$ vs $\Nbas$}
 	\label{fig:ErrorHF_vs_nlm}
 \end{figure}
 
@@ -361,11 +369,16 @@ Show how the orbital energies are approximated from above.
 This would help in understanding the signifficance of the coefficients
 wrt. correlation methods as well.
 }
+
 % TODO orbital energy convergence?
+% TODO Not sure if this way of plotting is ideal.
 \begin{figure}
 	\centering
 	\includeimage{10_results/orben_vs_nlm_N}
-	\caption{Plot orben vs nlm N, showing nice convergence from the top.}
+	\caption{Plot relative difference in the orbital energy vs $n$.
+		The relative difference is $1 - \varepsilon_i^{(n)} / \varepsilon_i^{(n+1)}$
+		for N.
+	}
 	\label{fig:OrbenNlmN}
 \end{figure}
 

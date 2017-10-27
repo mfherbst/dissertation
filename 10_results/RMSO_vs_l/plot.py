@@ -7,9 +7,12 @@ import numpy as np
 import os
 import yaml
 import rmsl
+import collections
 
 
 dir_of_this_file = os.path.dirname(__file__)
+OrbitalSelection = collections.namedtuple("OrbitalSelection",
+                                          ["indices", "labels"])
 
 
 def datafile(atom):
@@ -53,23 +56,48 @@ def plot_rmso_l(systems):
     plt.legend()
 
 
-def plot_rms_lf(atom, orbitals=range(10), labels=None):
+def plot_rms_lf_orbitals(atom, selection=None):
+    if selection is None:
+        selection = OrbitalSelection(list(range(10)),
+                                     [str(i) for i in range(10)])
+
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
     state = molsturm.load_hdf5(datafile(atom))
     data = rmsl.compute_rms_qf(state)
-    ls = np.arange(0, data[:, 1].size)
-
-    if labels is None:
-        labels = [str(i) for i in range(len(orbitals))]
-    for i, f in enumerate(orbitals):
-        plt.semilogy(ls, data[:, f], "x-", label=labels[i])
+    ls = np.arange(0, data[:, 0].size)
+    for i, f in enumerate(selection.indices):
+        plt.semilogy(ls, data[:, f], "x-", label=selection.labels[i])
 
     plt.ylim([1e-16, 1])
     plt.ylabel(r"root meam square coefficient value")
     plt.xlabel(r"Orbital angular momentum value $l$")
     plt.legend(loc=1)
+
+
+def plot_rms_lf_overview(orbmaps):
+    plt.close()
+    plt.figure(figsize=(5.5, 3.5))
+
+    lines = ["--", "-.", ":"]
+    colors = []
+    for a, (atom, orbmap) in enumerate(orbmaps.items()):
+        state = molsturm.load_hdf5(datafile(atom))
+        rms_lf = rmsl.compute_rms_qf(state)
+        ls = np.arange(0, rms_lf[:, 0].size)
+
+        for i, f, in enumerate(orbmap.indices):
+            if len(colors) > i:
+                color = colors[i]
+            else:
+                color = None
+
+            p = plt.semilogy(ls, rms_lf[:, f], "x" + lines[a],
+                             label=r"\ce{" + atom + "} " + orbmap.labels[i],
+                             color=color)
+            if len(colors) <= i:
+                colors.append(p[0].get_color())
 
 
 def setup():
@@ -103,14 +131,25 @@ def main():
     plot_rmso_l(["B+", "C-", "O+", "F-", "Al+", "Cl-"])
     plt.savefig("rmso_ions_vs_l.pdf", bbox_inches="tight")
 
-    plot_rms_lf("O")
-    plt.savefig("rms_lf_O.pdf")
+    selection = {
+        "C": OrbitalSelection([1, 3, 6, 8], ["2s", "2p", "3d", "3d"]),
+        "N": OrbitalSelection([1, 3, 6, 8], ["2s", "2p", "3d", "3d"]),
+        "O": OrbitalSelection([1, 3, 8, 10], ["2s", "2p", "3d", "3d"]),
+    }
 
-    plot_rms_lf("N")
-    plt.savefig("rms_lf_N.pdf")
+    plot_rms_lf_orbitals("O", selection["O"])
+    plt.savefig("rms_lf_O.pdf", bbox_inches="tight")
 
-    plot_rms_lf("C")
-    plt.savefig("rms_lf_C.pdf")
+    plot_rms_lf_orbitals("N", selection["N"])
+    plt.savefig("rms_lf_N.pdf", bbox_inches="tight")
+
+    plot_rms_lf_orbitals("C", selection["C"])
+    plt.savefig("rms_lf_C.pdf", bbox_inches="tight")
+
+    # TODO This plot could condense the three above, but it is far too busy
+    #      to be sensible
+    # plot_rms_lf_overview(selection)
+    # plt.savefig("rms_lf_CNO.pdf", bbox_inches="tight")
 
 
 if __name__ == "__main__":
