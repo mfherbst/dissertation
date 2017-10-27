@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import yaml
-import os
 import molsturm
+import numpy as np
+import os
+import yaml
 
 molsturm.yaml_utils.install_constructors()
 molsturm.yaml_utils.install_representers()
@@ -21,11 +22,22 @@ for cset in cbsdata:
         continue
 
     atom = cset["atom"]
-    value = cset["cbs"]
     source = "CBL" + "".join([str(c) for c in cset["orders"]])
+    value = cset["cbs"]
+
+    # The calculations have run with a conv_tol of 5e-7 tops,
+    # so we do not accept more than 7 digits.
+    # Other than that we use the stddev as an estimate for the
+    # number of trustworthy digits.
+    digits = min(7, int(-np.log(cset["stddev"])))
+    dfmt = "{:." + str(digits) + "f}"
+
+    # First round using numpy, then format as a string with
+    # the said nuber of digits, then convert back to float.
+    value = float(dfmt.format(value, digits))
 
     data["unrestricted"][atom] = {
-        "value": cset["cbs"],
+        "value": value,
         "source": source,
     }
 

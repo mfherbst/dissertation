@@ -13,10 +13,10 @@ restricted:
   P: {source: Malykhanov2012, value: -340.7187807870104}
   S: {source: Malykhanov2012, value: -397.50489564838523}
 unrestricted:
-  B: {source: CBL2345, value: -24.533483095273912}
-  C: {source: CBL3456, value: -37.693775144697774}
-  F: {source: CBL3456, value: -99.41668583074647}
+  B: {source: CBL2345, value: -24.5334831}
+  C: {source: CBL3456, value: -37.6937751}
+  F: {source: CBL3456, value: -99.4166858}
   Li: {source: ccpv5z, value: -7.3650734}
-  N: {source: CBL3456, value: -54.40464086002057}
-  O: {source: CBL3456, value: -74.81920955922358}
-  P: {source: CBL3456, value: -340.71928290005104}
+  N: {source: CBL3456, value: -54.4046409}
+  O: {source: CBL3456, value: -74.8192096}
+  P: {source: CBL3456, value: -340.7192829}
