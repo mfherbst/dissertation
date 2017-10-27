@@ -20,7 +20,6 @@ def generate_table(data):
         "HF",
         "MP2",
         "MP2 corr.",
-        r"$\text{corr} / \Nbas$",
     ]]
 
     for entry in data:
@@ -38,7 +37,6 @@ def generate_table(data):
             "{:9.5f}".format(float(entry["hf"])),
             "{:9.5f}".format(Emp2),
             "{:9.5f}".format(Ecorr),
-            "{:9.5f}".format(Ecorr / n_bas),
         ]
         columns.append(col)
 

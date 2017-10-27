@@ -407,18 +407,17 @@ on these results, so especially for the difficult cases,
 i.e. where $\limp > 2$,
 the results are extremely preliminary.
 
-\begin{table}
+\begin{figure}
 	\centering
-	\input{Be_hf_mp2_fci_nlm_table.tex}
-	\caption{Coulomb-Strumian calculations of the Beryllium atom
-		at Hartree-Fock, MP2 and Full-CI level of theory.
-		For all calculations $\kexp = 1.985$ was used.
-		The heading of the table shows the values for
-		$(\nmax, \lmax, \mmax)$ as well as the
-		number of basis functions
-		in the truncated CS basis.}
-	\label{tab:CStruncationEnergies}
-\end{table}
+	\includeimage{10_results/Be_fci_cc_vs_nbas}
+	\caption{Fraction of correlation energy recovered
+		relative to a FCI reference calculation with a $(10, 2, 2)$ \CS basis
+		and $\kexp = 2.1$ in beryllium.}
+	\label{fig:EccFciBe}
+\end{figure}
+Table of results in appendix \vref{apx:CSCorrelationConvergence}
+
+% TODO Plot MP2 and FCI correlation energy amount
 
 Table \vref{tab:CStruncationEnergies} shows the \HF, MP2 and
 Full-CI energies for various \CS basis sets.
@@ -450,7 +449,7 @@ is generally more significant than increasing
 $\lmax$ once a certain value of $\lmax$ has been reached
 (here about 2).
 
-In appendix \vref{apx:CSBasisSetConvergence} we show
+In appendix \vref{apx:CSCorrelationConvergence} we show
 some computational results for the 2nd and 3rd
 period of the periodic system of elements.
 
@@ -485,7 +484,7 @@ period of the periodic system of elements.
 	\label{fig:EccVsNlm}
 \end{figure}
 
-For the full set of value see appendix \vref{apx:CSBasisSetConvergence}
+For the full set of value see appendix \vref{apx:CSCorrelationConvergence}
 
 \newcommand{\kopt}{\ensuremath k_\text{opt}}
 \subsection{The effect of $\kexp$}

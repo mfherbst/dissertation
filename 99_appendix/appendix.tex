@@ -13,14 +13,30 @@ We follow \cite{Jensen2005} and use cc-pvNz basis set families
 using the builtin procedure of \molsturm.
 
 
-\chapter{Coulomb-Sturmian basis set convergence study}
-\label{apx:CSBasisSetConvergence}
+\chapter{Computational results of the Coulomb-Sturmian correlation convergence study}
+\label{apx:CSCorrelationConvergence}
+
+% TODO Maybe also plot convergence of Be FCI with the basis sets
+%      we did computations with.
+
+\begin{table}
+	\centering
+	\input{Be_hf_mp2_fci_nlm_table.tex}
+	\caption{Coulomb-Strumian calculations of the Beryllium atom
+		at Hartree-Fock, MP2 and Full-CI level of theory.
+		For all calculations $\kexp = 1.985$ was used.
+		The heading of the table shows the values for
+		$(\nmax, \lmax, \mmax)$ as well as the
+		number of basis functions
+		in the truncated CS basis.}
+	\label{tab:CStruncationEnergies}
+\end{table}
+
 
 The data in this appendix shows the CS HF and MP2 energies
 for various nlm values but the same k
 
 %\section{Second period}
-\begin{landscape}
 \input{CS_HF_MP2_Li_table.tex}
 \input{CS_HF_MP2_Be_table.tex}
 \input{CS_HF_MP2_B_table.tex}
@@ -29,10 +45,8 @@ for various nlm values but the same k
 \input{CS_HF_MP2_O_table.tex}
 \input{CS_HF_MP2_F_table.tex}
 \input{CS_HF_MP2_Ne_table.tex}
-\end{landscape}
 
 %\section{Third period}
-\begin{landscape}
 \input{CS_HF_MP2_Na_table.tex}
 \input{CS_HF_MP2_Mg_table.tex}
 \input{CS_HF_MP2_Si_table.tex}
@@ -41,6 +55,5 @@ for various nlm values but the same k
 \input{CS_HF_MP2_S_table.tex}
 \input{CS_HF_MP2_Cl_table.tex}
 \input{CS_HF_MP2_Ar_table.tex}
-\end{landscape}
 
 \end{appendix}

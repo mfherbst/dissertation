@@ -1,6 +1,8 @@
 add_inputs(chapter.tex)
 
-# Make reference table
+#
+# Tables
+#
 add_custom_target(
         table_reference
         COMMAND ${CMAKE_CURRENT_LIST_DIR}/table_reference/make_table.py
@@ -11,18 +13,6 @@ add_custom_target(
 )
 add_depends(table_reference)
 
-# Make nlm table
-add_custom_target(
-        table_Be_hf_mp2_fci_nlm
-        COMMAND ${CMAKE_CURRENT_LIST_DIR}/table_Be_hf_mp2_fci_nlm/make_table.py
-        COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
-        DEPENDS
-        ${CMAKE_CURRENT_LIST_DIR}/table_Be_hf_mp2_fci_nlm/make_table.py
-        ${CMAKE_CURRENT_LIST_DIR}/table_Be_hf_mp2_fci_nlm/Be_fci_summary.yaml
-)
-add_depends(table_Be_hf_mp2_fci_nlm)
-
-# Make kopt table
 add_custom_target(
         table_kopt
         COMMAND ${CMAKE_CURRENT_LIST_DIR}/table_kopt/make_table.py
@@ -84,6 +74,17 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/N_plot_data.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/E_vs_nlm/P_plot_data.yaml
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/HF_reference/data.yaml
+)
+
+# Plot Be correlation energy
+set(PDF_OUTPUTS ${PDF_OUTPUTS} Be_fci_cc_vs_nbas.pdf)
+add_custom_command(
+        OUTPUT Be_fci_cc_vs_nbas.pdf
+        COMMAND ${CMAKE_CURRENT_LIST_DIR}/Ecc_be_fci/plot.py
+        COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Ecc_be_fci/plot.py
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Ecc_be_fci/Be_fci_high_accuracy.yaml
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Ecc_be_fci/Be_fci_summary.yaml
 )
 
 # Plot change in correlation energies
