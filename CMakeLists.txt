@@ -21,6 +21,7 @@ add_inputs(
 	index.tex
 	licence.tex
 	nomenclature.tex
+        publications.tex
 	title.tex
 	versicherung.tex
 	#
