@@ -1,0 +1,50 @@
+[  inner sep=2mm,
+	node distance=0.5cm and 1cm,
+	box/.style={rectangle,draw=blue!50,fill=blue!20,thick,align=center,
+		minimum width=2cm,minimum height=1.5em,font=\smaller,
+		node distance=0.1cm and 1cm},
+	boxp/.style={box,font=\itshape\smaller\color{black!70},draw=blue!30,fill=blue!10},
+	lawbox/.style={rectangle,draw,fill=white,text width=2cm,align=center,
+		font=\smaller},
+	pre/.style={<-,shorten <=0.5pt,>=stealth',semithick},
+]
+
+% LA inner
+\node [lawbox,minimum height=2.65em] (inter) {common interface};
+\node [lawbox,minimum height=2.65em] (upmat) [right=of inter] {\smaller user-provided lazy matrices};
+\node [lawbox] (la) [below left=of inter,yshift=-0.05cm] {LA backends};
+\node [lawbox] (sol) [below=of inter,yshift=-0.05cm] {solvers};
+\node [lawbox] (matrix) [below right=of inter,yshift=0.3cm] {\smaller built-in lazy matrices};
+\draw [pre] (upmat) -- (inter);
+\draw [pre] (sol) -- (inter);
+\draw [pre] (la.north) -- (inter.west);
+\draw [pre] (matrix.west) -- (inter.south east);
+
+% Backends
+\node [box] (ARPACK) [below=of sol,yshift=-0.4cm] {ARPACK}
+	edge [pre] (sol);
+\node[box] (LAPACK) [below=of ARPACK] {LAPACK};
+\node [boxp] (Anasazi) [below=of LAPACK] {Anasazi};
+
+\node [box,text width=2cm] (inverse) [below=of matrix,yshift=-0.4cm] {Iterative inverse}
+	 edge [pre] (matrix);
+
+\node [box] (arma) [below=of la,yshift=-0.4cm] {Armadillo}
+	edge [pre] (la);
+\node [box] (bohrium) [below=of arma] {Bohrium};
+\node [boxp] (Eigen) [below=of bohrium] {Eigen};
+
+% Upper layers
+\node [box,text width=2cm,above=0.55cm of inter] (code) {Algorithms e.g. in \gscf};
+\node [box] (integrals) [right=of code,text width=2cm,yshift=0.155cm] {e.g. Integrals in \gint};
+\draw [pre] (integrals) -- (upmat);
+\draw [pre] (inter) -- (code);
+
+% Background and LHS labels
+\begin{scope}[on background layer]
+	\node [color=red!80,thick,draw=red!60,fill=red!30,fit=(inter) (la) (sol) (matrix) (upmat)] (bg) {};
+\end{scope}
+\node [rotate=90,color=red!80,yshift=.4cm] at (bg.west) {\smaller[2] \lazyten};
+\node [rotate=90,yshift=.4cm,xshift=2.1cm] 
+	at (bg.west) {\smaller[2] Upper layers};
+\node [rotate=90,yshift=.4cm,xshift=-2.7cm] at (bg.west) {\smaller[2] LA backend};
