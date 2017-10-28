@@ -1,6 +1,6 @@
 # Unresricted Hartree-Fock reference values for the solution.
 unrestricted:
-  Li: {value:    -7.3650734,         source: ccpv5z }   # Urgently replace by CBS value
+  Li: {value:    -7.365082,         source: ccpv5z-2011 }   # Urgently replace by CBS value
 
 
 # Restricted Hartree-Fock (either closed-shell or open-shell restricted)

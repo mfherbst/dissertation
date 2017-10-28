@@ -16,7 +16,7 @@ unrestricted:
   B: {source: CBL2345, value: -24.5334831}
   C: {source: CBL3456, value: -37.6937751}
   F: {source: CBL3456, value: -99.4166858}
-  Li: {source: ccpv5z, value: -7.3650734}
+  Li: {source: ccpv5z-2011, value: -7.365082}
   N: {source: CBL3456, value: -54.4046409}
   O: {source: CBL3456, value: -74.8192096}
   P: {source: CBL3456, value: -340.7192829}
