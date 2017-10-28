@@ -1,0 +1,505 @@
+\section{The need for modular quantum chemistry software}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item pyscf \cite{Sun2017}
+	\end{itemize}
+}
+
+\subsection{The need for a flexible quantum chemistry software platform}
+
+% TODO Ideas of Tobias Setzer:
+% Typical programs are ASCII-in -> ASCII-out
+% An idea going in a similar direction is for example TURBOMOLE
+%   -> apparently they have very modular modules, where the state of a compuation
+%      is incoded in the file on a harddrive
+%   -> issue is getting out of the TURBOMOLE ecosystem
+% Actual analysis, which is not part of the program package is compartively difficult.
+% Especially the transfer of data from one package to another is extremely tough.
+%
+% Molsturm:
+%     fully dynamic, real-time analysis
+%     future of molsturm: overcome software package boundaries
+%     Journals: JCTC, JCP  (siehe turbomole jungs)
+%
+% Overall: Focus more on the advantages of the package architecture
+
+
+% TODO copy -> build into this section
+Most existing quantum-chemistry packages
+are built around a 
+particular basis function type: either Gaussians,
+Slaters, or numerical orbitals. This is hard-coded 
+deeply in the programs, which are usually enormous
+projects written in  highly optimized \cpp or \fortran.
+This makes experimentation with different and more physically
+appropriate basis functions exceedingly difficult:
+even when all electronic integrals have been worked out,
+adapting an existing quantum chemistry code to use
+them is a daunting project.
+% end copy
+
+
+
+% TODO Flowify
+\todoil{Check and enhance the story by looking at more references}
+Starting from the exponential form of the analytical solutions of the
+Schrödinger equation for hydrogen,
+\citeauthor{Slater1930} started introducing exponentially decaying basis functions
+in order to compute atomic properties,~\cite{Slater1930}
+the nowadays well-known Slater-type orbitals~(STOs).
+
+Applying the STOs to molecules turned out to be much more
+challenging due to the demanding structure of the electron repulsion integrals~(ERIs)
+for such types of basis functions.
+\todoil{I cannot download that paper so im not too sure what is in it}
+In \citeyear{Boys1950} \citeauthor{Boys1950} realised that employing
+atom-centered Gaussian type basis functions~(GTOs) leads to integrals
+which are much easier to evaluate numerically.
+
+Since they do, however, not describe the physical reality as closely as STOs
+\todoil{Check whether the pople paper goes into this}
+much larger GTO basis sets are needed to get similar accuracies than STOs.
+
+John Pople
+\todoil{Paper: Hehre, W. J.; R. F. Stewart; J. A. Pople (1969). "Self-Consistent Molecular-Orbital Methods. I. Use of Gaussian Expansions of Slater-Type Atomic Orbitals". Journal of Chemical Physics. 51 (6): 2657–2664. Bibcode:1969JChPh..51.2657H. doi:10.1063/1.1672392.}
+later realised that one could combine the best of both worlds if one used
+basis sets of contracted GTOs.
+This set off a vivid development of quantum chemical theory and software packages,
+where a lot of work has gone into efficient algorithms
+improving the computational
+scaling as well as the overall runtime of calculations based on GTOs.
+scaling as well as the overall runtime of calculations.
+\todoil{Examples for program packages ??}
+% end flowify
+
+Almost all major quantum chemistry programs,
+\todoil{Cite a few}
+which are actively developed nowadays focus on Gaussian-type
+basis functions or Gaussian-type orbitals~(GTOs) as they are usually called.
+Compared to the Slater-type orbitals~(STOs)
+they certainly have a couple of well-known advantages.
+Most importantly the structure of the electron repulsion integrals~(ERIs)
+is much less demanding and hence makes it feasible to model much larger systems.
+
+The downside of GTOs is of course that they do not describe the physical
+reality that well and as a result fail to capture all of the properties
+of an electronic structure in a truely black-box fashion.
+For example the computation of proper electron affinities or the description
+of Rydberg-like excited states requires incorporating diffuse functions
+with small Gaussian exponents into the GTO basis set.
+
+As such it is not surprising that other types of basis sets have been attempted as well.
+Next to plane-waves or projector-augmented wave methods,
+which are commonly employed in the density-functional theory~(DFT)
+calculations of metal surfaces,
+recently a couple of projects have also investigated the use
+of so-called numerical basis functions.
+Examples would be the use of wavelets and the finite-element medhod.
+\todoil{Cite madness and Dage Sundholm}
+\todoil{The Jensen review paper has a couple of nice citations there}
+
+% structure is vastly different
+% need flexible framework to try them
+% how do they compare -> need fair comparison
+
+\begin{figure}
+	\centering
+	\missingfigure{The fock matrices are not yet in the diss framework}
+	%\includegraphics[scale=0.5]{img/matrices/fe.pdf}
+	%\includegraphics[scale=0.5]{img/matrices/sturmian.pdf}
+	%\includegraphics[scale=0.5]{img/matrices/gaussian.pdf}
+	% Different numerical properties of basis functions
+	% (show for sturmian vs. GTOs vs. FE)
+	\caption{The different structure of the Fock matrix when FEs,
+		Sturmians and GTOs are used.
+		All matrices are shown early in the SCF process with a Pulay error norm
+		larger than 0.1.
+		The matrix structures generally improve as the SCF proceeds and contain more zeros.
+		%
+		Sturmian and Gaussian are almost diagonal dominant,
+		even almost strictly diagonal dominant,
+		FE matrix is far from it (About half the rows do not satisfy the condition).
+		%
+		Only the alpha-alpha part of the fock matrix is shown in each case
+		and we perform an RHF calculation of the Berylium atom in a small basis
+		for each set of basis functions.
+		%
+		The Sturmian basis is given in lmn order.
+		% TODO maybe use mln order ?
+	}
+	\label{fig:FockStructure}
+\end{figure}
+
+The structure which is required in a program package in order to perform even a simple
+self-consistent field~(SCF) calculation
+based on GTOs and on numerical basis functions differs quite a lot.
+As can be seen in \fig~\ref{fig:FockStructure} the structure of the Fock matrix
+varies rather dramatically depending on the type of basis function,
+which is used.
+Most importantly the matrix size and matrix sparsity properties
+changes a lot between numerical approaches like
+Wavelets or Finite Elements and classical atom-centered AO approaches like GTOs.
+As a result none of the widely used program packages
+focus on exactly one type of basis function and are highly specific for exactly this type.
+
+Since the structure of the numerical problems to be solved differ
+implementing further basis function types into existing packages
+is often challenging.
+Moreover unlike the well-understood Gaussians in novel basis function types
+the kind of solver algorthims to use is less clear and one often needs to be able to experiment.
+\todoil{
+all separate packages 
+see wikipedia page
+\url{https://en.wikipedia.org/wiki/List_of_quantum_chemistry_and_solid-state_physics_software}
+}
+Furthermore we only know of very few programs which have more than experimental
+support in more than one type of basis function.
+\todoil{I do not want to make this statement to harsh to piss anyone off,
+	but the point is that those packages, which do exist are either not widespread
+	or lack features in some of the basis functions
+	or are hard to obtain (i.e. closed-source, even wikipedia knows no website)
+	or I have literally not heard of them anywhere}
+
+\todoil{I feel some more details introducing SCF in general is also appropriate here}
+
+In previous work we have investigated the use of so-called generalised Sturmians as basis functions
+in electronic structure theory.
+%
+\todoil{I think this is already done in one of the previous chapters in the diss}
+Generalised Sturmians $\Phi_\nu(\rpack)$ are the solutions to $N$-body Schrödinger-like equation
+\begin{equation}
+	\left( -\frac12 \sum_{j=1}^N \Delta_j + \beta_\nu V_0(\rpack) - E \right) \Phi_\nu(\rpack) = 0
+	\label{eqn:GenSturm}
+\end{equation}
+where $V_0(\rpack)$ is
+a zero-th order potential.
+
+In case of atoms a good choice is the nuclear attraction:
+The electrostatic electron-nucleus interaction
+\[
+	V_0(\rpack) = - \sum_{j=1}^N \frac{Z}{r_j}.
+\]
+\todoil{Is many nuclei also possible here?}
+Note that the electron-nucleus interaction is scaled by the factor $\beta_\nu$ in \eqref{eqn:GenSturm}
+such that the solutions $\Phi_\nu(\rpack)$ all become isoenergetic.
+This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
+as well as properly represent the nuclear cusp at the core.
+As such the functional form of generalised Sturmians is very much related to STOs.
+Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
+to make computing them less demanding.
+This requires, however, that the mathematical properties of the Sturmians
+can be fully exploited during the computation,
+which in turn requires the Fock matrix to be arranged in a specific way.
+Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
+but much rather only use these matrices in the form of matrix-vector products,
+since this overall saves an order of magnitude in the computational scaling.
+%
+\todoil{How much shall we go into detail here to make this clear?}
+% Not at all, do it in the lazyten section.
+%
+This rather unusual demand turned out to make it very difficult to implement Sturmians
+as a basis function type into existing packages alongside STOs and GTOs.
+
+% TODO do this do this
+\todoil{Go a bit more into why we only do SCF (Explain: Post-HF available, we only need MO basis, structure of AOs not important)}
+% TODO do this do this
+In \molsturm we have achieved to write an Hartree-Fock SCF code,
+which allows us to use both GTOs and Sturmians side by side by the means
+of so-called lazy matrices (see section \ref{sec:lazymat}).
+We achieve true generality in the type of basis function to be used
+up to the point where most of our code is entirely
+independent of the basis function types.
+Enwrapping \molsturm into a \python layer allowed us to easily re-use existing
+software modules (\adcman and \pyscf) in order to go beyond Hartree-Fock.
+Even though we currently only have support for GTOs and Sturmians,
+extending our code to numerical basis functions can be achieved rather easily
+as we will demonstrate in this paper.
+
+\todoil{Decide on one of them}
+The name \molsturm origates from \textbf{mol}ecular \textbf{sturm}ians
+or \textbf{mo}dular and \textbf{l}azy with \textbf{sturm}ians.
+
+\todoil{The previous section gets rather lengthy. It should probably be split up somehow}
+
+
+\subsection{Lazy matrices and \contraction-based algorithms}
+\label{sec:lazymat}
+\todoil{Maybe illustrate the points mentioned here using the coulomb and exchange matrices as actual examples}
+
+% TODO a good paragraph for this part:
+Whenever operations are done on a matrix \lazyten does not automatically
+evaluate them in all cases.
+Much rather it usually just builds up a datastructure,
+which keeps track of the operations which \textit{should} be done
+at some point in the future.
+Whenever an actual call to the \contraction-function happens,
+the expression history is considered and evaluated with respect
+to the other arguments supplied by the \contraction call.
+% end TODO
+
+% For the design chapter it is important to mention here that \contraction-based methods
+% are a generalisation of non-contraction based methods.
+
+\todoil{Maybe this section is too long given that we want to publish on this again}
+
+As mentioned above for some basis function types it is advantageous
+to not build the coulomb and exchange matrices in memory,
+but instead only use them in the form of matrix-vector applications.
+Since iterative solvers like Krylov-subspace based methods or Davidson's algorithm
+only need the matrix-vector product in order to find a few of the eigenvalues
+of a particular matrix,
+this is not an issue with respect to the eigenproblem which needs to be solved
+as part of the SCF.
+Note, that this approach is furthermore not new in quantum chemistry at all.
+Other examples where one typically avoids to place the matrix to diagonalise
+into memory are the configuration interaction~(CI) matrix
+or the algebraic-diagrammatic construction~(ADC) matrix to name a few.
+
+We shall refer to algorithms which focus on implementing a matrix-vector product
+instead of the full matrix as \contraction-based algorithms.
+
+This concept has been invented many times
+and has hence been called a number of different things
+in the different communities.
+Other names include \texttt{matrix}-free
+\todoil{papers from Kronbichler}
+or apply-based
+\todoil{papers from Michi Wormit}
+
+
+The latter name is supposed to indicate that such a scheme is in principle
+not only restricted to the case of multiplying a matrix with a vector,
+much rather general tensor contractions could be expressed implicitly
+by the means of a function computing the contraction rather than
+by explicitly performing the contraction form tensor elements
+which reside in memory.
+\todoil{Also mention the term \texttt{apply}-based?
+Check what term is used in literature.
+Michi Wormit's thesis uses matrix-vector product as term for ADC
+}
+% Yes mention them all.
+
+Note that a disadvantage of \contraction-based algorithms is that the expressions
+computing the tensor contraction can become rather complicated.
+Furthermore it usually is more intuitive to think of the
+numerical modelling in terms of tensors, matrices and vectors
+rather than \contraction functions.
+For this purpose we generalise the concept of a matrix
+to so-called \term{lazy matrix} objects.
+Whilst a normal or \term{stored matrix} is dense and has all its elements
+residing in memory,
+a lazy matrix is more general.
+It may follow a particular sparse storage scheme
+like compressed-row storage
+or even more general all its elements may just be arbitrary expressions.
+The values of lazy matrices are hence only computed upon request
+or whenever a contraction with another object is required.
+As such the lazy matrix may have, \ie a special \update function
+may be used to modify the expression of the lazy matrix
+at a later point.
+Note, however, that special storage schemes for storing
+sparse matrices are similarly just lazy matrices 
+\todoil{
+	Updating lazy matrices is a bit like reactive programming
+	\url{https://en.wikipedia.org/wiki/Reactive_programming}.
+	In fact one could use them to get reactive programming
+	into C++ in a simple way.
+	Mention this here (or in the \lazyten paper)
+}
+
+This on the one hand makes obtaining the lazy matrix elements
+expensive, but on the other hands gives a nice matrix-like
+interface to more complicated objects.
+All evaluation between lazy matrices
+(i.e. addition or matrix-matrix multiplication)
+is usually delayed until for example a contraction of the resulting
+expression with a vector is performed.
+One typically refers to this strategy as \term{lazy evaluation}.
+
+Since lazy matrices are a straight generalisation
+of usual matrices,
+all algorithms written in terms of lazy matrices
+are at the same time applicable to dense matrices,
+sparse matrices or special matrices like in the case of Sturmians
+where a lazy evaluation scheme is needed.
+So high-level code written in terms of lazy matrices
+does not need to be changed if the low level matrix implementation
+is changed from one basis function type to another.
+
+\todoil{One could mention the  processor-memory performance gap \ldots
+	    but I would leave it for the \lazyten paper}
+
+% 1/2 paragraph: Introducing the problem of large tensors in QM - apply based algorithms
+% 1/2 paragraph: One of the flexibilities of Molsturm is that we can switch between
+%                apply-based, sparse, and dense methods without changing high-level
+%                code (which simply mimic the formulæ). 
+%
+% define stored vs. lazy matrix
+% lazy: sparse or expressions
+% lazy matrix may have state
+% other key features of lazy matrices
+
+
+\subsection{Basis-function independence and hot-swapping}
+Conceptionally an SCF algorithm is entirely independent of the type of basis function.
+One could think of it very much as a numerical technique to solve
+an non-linear eigenvalue problem by linearisation.
+Once the SCF orbitals have been obtained,
+the remainder of a calculation (\eg a Post-HF method)
+can be formulated entirely in the SCF orbital basis
+and without any reference to the underlying type of basis functions.
+As such it should be possible to design a quantum chemistry package,
+which apart from the integral backend itself is entirely independent
+of the basis function types which are implemented.
+
+Achieving this has several advantages.
+First of all it naturally implies that trying out some new basis functions is very easy,
+since most of the code already exists and can be reused.
+Just the integral computation by itself needs to be adapted.
+Secondly comparing different basis function types can occur in a fair setting,
+since for all types of basis functions the algorithms are optimised to a similar level.
+Thirdly it even allows for a fair comparison between different integral backends,
+\eg different GTO libraries.
+
+Last but not least the ability to treat different kinds of basis functions
+in the same framework simplifies the construction of hybrid basis sets,
+where possibly numerical basis functions and GTOs or STOs are combined.
+Similarly one could employ the strengths of multiple backends for the same type of basis function
+in the sense that one mixes and matches different backends such that one can exploit
+the advantages of both implementations best.
+
+This works since at the level of the SCF all basis function types and backends
+share exactly the same common interface,
+which facilitates combinations between them.
+
+% why is basis function independence useful
+% how lazy matrices help here
+% Also discuss hybrid basis sets
+%% Coulomb Sturmians with (hot-swappable with Gaussians)
+
+\subsection{Rapid development of new QM algorithms}
+\todoil{Mention other python effords like SecondQuatizationAlgebra, pyscf, PyQuante,
+python backends ins psi4 or GPAW ??}
+% Covered in the related work
+% refer downwards?
+
+In the early stages of developing a new quantum-chemical algorithms
+it is often not clear how well these algorithms perform
+or if they even meet the expected requirements.
+Before worrying about making the algorithm fast,
+one first wants to know whether it even works.
+For this a light-weight framework which possesses the flexibility
+to quickly combine or amend the already implemented
+functionality is very important.
+Furthermore well-documented and open interfaces
+as well as compliance with the available standards
+allow easy integration of other frameworks to extend
+the functionality of a package even beyond the scope
+which was intended in the first place.
+\todoil{Define rapid development better or leave the term "RAD" out?}
+% leave the term out.
+
+The \python interface of molsturm for example is deliberately designed
+with simplicity in mind.
+The downside is that many potential symmetries when storing the data
+cannot be exploited,
+but on the upside we managed to integrate \molsturm
+with some third-party Post-HF libraries rather quickly.
+For example the Full-CI interface to \pyscf was realised in only two days,
+but still is general enough to work for Sturmians GTOs and theoretically
+all basis function types which are implemented in our integral backend.
+\todoil{Change to also mention CC if we get there}
+In another proof-of-concept project of ours we just managed to
+implement ADC(2)-x on top of \molsturm in less than 10 days in \python.
+
+The careful reader might have noticed that a well-designed interface
+might not only facilitate rapid development of new algorithms
+but also prevent one from the need to re-implement the wheel
+and much rather exploit the code which has already has been written
+for one's purposes.
+
+% why do we want that?
+% what is rapid development
+%    design of prototype to explore
+%    tests to fixate the requirements
+%    iterative update of the prototype to get to the final program
+%
+% Rapid development techniques require a flexible platform
+% well-documented and open interfaces
+% compliance to standards and easy integration with other frameworks
+
+
+% phd should not spend a year to implement something which might not work
+% need flexiblity to try things
+% code should be easy and close to the physical formulae
+%
+% We no not want to re-implement the wheel -> integrate with what exists
+
+% ADCman, MP2 
+% Full CI (two days of work), PySCF
+% ADC example? (ADCman)
+% Can we do CC (PySCF)?
+
+
+% Programmable from Python 
+% PyADC [Proof of concept, done in 10 days]
+% PyADC+Bohrium [Automatic parallel on CPU, GPU. Work in progress]
+
+\subsection{Automated visualization and data analysis}
+\todoil{This paragraph is about the user perspective. Make this more clear}
+A large part of the everyday work in quantum chemistry
+is the analysis of data which is generated by quantum-chemical programs.
+Naturally when investigating a research question it is often
+hard to tell what angle is needed to explain what is going on
+before doing any preliminary analysis.
+In other words the process of understanding what is going on is iterative
+and usually supporting calculations and further modelling
+needs to be done once more about the problem is known.
+
+\todoil{Reword. This is not the best phrasing}
+Therefore a flexible quantum-chemical framework allows to
+easily amend calculations which have already been done
+at a later stage, making maximal use of what is already known.
+Surely in many cases where a more accurate method (e.g. CCSD) is employed
+on top of preliminary results (e.g. MP2),
+the cost of re-computing the preliminary result is negligible.
+In some cases, however,
+where the further investigation just involves obtaining
+extra quantities like some density plots or similar,
+it is rather unnecessary to run the same calculation again,
+just because some parameters to request such properties
+have been forgotten in the first instance.
+Many quantum chemistry packages therefore allow
+some mechanism to reuse previous results.
+In some cases these mechanism can be rather inconvenient, however.
+
+Furthermore the analysis of obtained data should be easily scriptable.
+Most quantum chemistry programs produce human-readable plain-text output
+for this very reason.
+By the means of standard unix tools like \texttt{grep}, \texttt{awk},
+\texttt{bash} or \python or similar those files are then parsed and
+the data post-processed.
+An alternative and in our opinion more advantageous approach
+would be to instead offer a scriptable interface to control
+the program package by itself,
+along with some utility functions to print summaries
+or plot results interactively.
+This way results are fully available for a user to analyse
+and he himself can decide what information to look at
+and what not.
+By the means of utility functions
+archiving results as well as standard analysis
+like printing summary information or plotting some orbitals or densities
+should be easy.
+
+Note that on the one hand gives the user much more flexiblity and control
+what to look at,
+but on the other hand still does not prevent the traditional
+mechanism of converting the results into a human-readable output file
+by the means of a simple wrapper script.
+
+Especially the ability to archive a large portion of the calculation
+furthermore allows to exploit previous results when performing
+further calculations as well as delaying the analysis
+to a later point when \eg more knowledge about the
+problem has been obtained to decide what exactly to look at.

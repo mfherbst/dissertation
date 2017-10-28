@@ -1,0 +1,183 @@
+\section{Example scripts and use cases}
+\label{sec:examples}
+
+
+\subsection{Fitting a dissociation curve}
+\label{sec:ex:data}
+\begin{figure}
+	\lstinputlisting[firstline=9,firstnumber=9]{examples/dissociation/h2_dissociation.py}
+	\caption{A script for plotting the \ce{H2} dissociation curve. The import statements are skipped.}
+	\label{fig:codeDissociation}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{8_molsturm/h2_dissociation}
+	\caption{Result of script, dissociation fit for \ce{H2} and morse potential}
+	\label{fig:dissociation}
+\end{figure}
+
+The code in fig. \ref{fig:codeDissociation} shows an example python script,
+which computes the MP2 energy of the hydrogen molecule at various hydrogen-hydrogen bond distances
+and fits a Morse potential through the resulting data.
+In the function \code!compute_curve! the code uses a standard python
+\code!for! loop to generate a sequence of \ce{H2} molecules with varying bond lengths.
+For each of these first a Hartree-Fock calculation is run, followed by MP2.
+The result of the previous calculation is used as a guess for the next to speed things up.
+The resulting MP2 ground state energy is saved in a numpy array for the later fitting
+and returned together with the distance vector.
+The function \code!plot_morse_fit! on the other hand
+takes the computed data, fits a Morse potential through it and plots
+both the original data and the fit.
+The final part of the script just calls both functions and shows
+the resulting plot to the user.
+
+Note, how compared to the traditional ASCII-in - ASCII-out approach taken
+by most quantum chemistry program, the high-level \python interface of \molsturm
+allows to write a single readable script where everything happens.
+There is no need to write shell scripts which first extract the relevant information
+from one plain-text output file of a quantum chemistry program just to transfer the
+data to another program for plotting.
+This firstly simplifies it for people who are new to the field to get started
+with doing calculations,
+because they only need to familiarise themselves with a single framework
+before being able to amend or modify existing procedures.
+Secondly this reduces the chance that existing scripts fail
+or silently produce the wrong results,
+when the output or input format of one of the employed programs
+changes subtly in the future.
+Last but not least the present script serves automatically as documentation
+of the steps which have been followed to reach a particular result
+up to the point that others can automatically reproduce it by just re-executing
+the script as well.
+
+Furthermore the high-level access makes the scripts themselves very flexible.
+Just like the previous computation was used in \code!compute_curve!
+as a guess for the next one,
+one could supply an arbitrary guess for the SCF coefficients to \molsturm as
+a \texttt{numpy} array.
+Furthermore computational details like the eigensolver or the integral backend,
+which is used in the SCF can be changed as simple parameters.
+This is shown here with the \texttt{backend} parameter,
+which effects which backend is used to compute the basis functions.
+Switching from \libint to \libcint, just requires the substitution of the
+string in line 50.
+
+Similarly the \texttt{state} and \texttt{mp2} structures returned by the
+Hartree-Fock and MP2 calculation functions have an interface to return
+many of the final results of the relative procedures.
+For example the  fock matrix or individual terms of the fock matrix as well as
+the repulsion integrals in the orbital basis can be obtained rather easily
+for \texttt{state} as will be shown in the next example.
+
+
+\subsection{Coupled-cluster doubles~(CCD)}
+\label{sec:ex:ccd}
+\todoil{I feel we should rearrange, such that the performance drawbacks get mentioned earlier and the advantages are at the end}
+
+% TODO Show the equations and the python code side-by-side
+%      (like in the presentation I gave at the HGS school)
+
+Another case which shows how the interplay of the high-level interface
+of \molsturm and the \numpy machinery is the coupled-cluster doubles~(CCD)
+\todo{cite}
+implementation presented in \ref{fig:codeCCD}.
+
+Even though \molsturm right now has neither any coupled-cluster
+method implemented at thee moment nor does it possess an interface to any third-party
+coupled-cluster code,
+it took us only roughly 100 lines of code and two days of work
+to add this functionality.
+For this we used the convenient \numpy function \texttt{einsum} as well
+as the datastructures \molsturm provides for accessing the
+electron repulsion integrals as well as the Fock matrix in the orbital basis.
+The interfaces of both the \texttt{einsum} function as well as the
+\texttt{state.eri} and \texttt{state.fock} structures from \molsturm
+are designed such that the resulting code has a strong resemblance
+with the actual equations one needs to implement.
+This not only makes it fast to implement Post-HF methods like CCD
+on top of \molsturm,
+but it also gives rise to code which is very readable, too.
+Futhermore the design of \molsturm, where all the basis set type
+or backend-dependent things are handled in \gint implies,
+that the code shown in fig. \ref{fig:codeCCD}
+is automatically applicable to any backend library which is implemented in \gint.
+
+As such this code is ideal to teach Post-HF methods
+or to experiment with new basis types or algorithms.
+
+\begin{figure}
+	\lstinputlisting[firstline=6,firstnumber=6,lastline=90]{examples/ccd/ccd.py}
+	\caption{CCD code}
+	\label{fig:codeCCD}
+\end{figure}
+
+
+The \code{ccd} function takes a HF \texttt{state} from \molsturm and transparently
+performs a CCD computation on top.
+For this it first invokes the generation of the repulsion integral tensor
+via a call to \texttt{state.eri} and antisymmetrises it in line 66.
+\todoil{This is not what happens right now, but it will be soon}
+By an iterative quasi-newton minimisation scheme with an
+with an approximate Jacobian~(from \code{ccd_approx_jacobian})
+it then minimises the CCD residual implemented in \code{ccd_residual}.
+
+All operations inside \code{ccd_residual} are single-threaded tensor contractions
+working on blocks of the full repulsion integrals tensor or the fock matrix.
+Furthermore the code makes no use of the index or spin symmetry relationships
+inside the tensor expressions.
+Nevertheless simple calculations of small molecules with small basis sets are possible.
+For example a \ce{O2} 6-31G calculation on a recent laptop took
+about an hour to converge up to 1e-4.
+In the future we plan to work on the performance drawback by incorporating
+knowledge of the spin and symmetry inside the tensor objects
+and by the means of automatic parallelisation techniques.
+
+\subsection{Gradient-free geometry optimisation}
+\label{sec:ex:geo}
+Fig. \ref{fig:codeGeoOpt} shows a \python script,
+which performs the geometry optimisation of a water molecule.
+Even though molsturm has no interface to obtain gradients
+from backend libraries at the moment,
+one can still employ the gradient-free optimisation schemes from \texttt{scipy}
+to perform simple optimisations.
+
+Similar to the other examples presented here,
+this shows that by the combination of features offered by third-party
+libraries in \python with \molsturm's built-in high-level interface
+one is often to quickly code preliminary implementations
+for features that we as the molsturm developers did not yet think of
+or which we did not yet implement.
+
+Even though the code by itself is in fact comparatively slow
+its simplicity allows students to learn about the methods involved
+in quantum chemistry and it allows for rapid development
+of new methods as the resulting code is easily accessible.
+
+\begin{figure}
+	\lstinputlisting[firstline=7,firstnumber=7]{./examples/geo_opt.py}
+	\caption{Gradient-free geometry optimisation using Powell's method}
+	% References 103 and 104 in
+	% https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.optimize.minimize.html#r103
+	\label{fig:codeGeoOpt}
+\end{figure}
+
+Note how the code employs two optimisations in a chained manor.
+First the geometry is optimised in a rather small sto-3g basis set
+only up to a small error threshold.
+Then this is used as the initial guess for a more accurate basis set
+and the geometry is converged to a larger accuracy.
+On a recent laptop the present code needs about 6 minutes
+to converge to the equilibrium geometry shown in fig. \ref{fig:OptimalGeometryWater}.
+
+% For the H2O we could show our plotting capablilties with VTK
+% Maybe have a video of the sto-3g optimisation.
+% Show at least a density plot of the converged density at the end.
+
+\begin{figure}
+	\centering
+	\missingfigure{Final \ce{H2O} geometry}
+	\caption{Density plot of the final optimised \ce{H2O} geometry with a
+	\ce{O-H} bond length of \unit[1.79612]{\AA} and a \ce{H-O-H} bond angle of \unit{104.958}{$^\circ$}}
+	\label{fig:OptimalGeometryWater}
+\end{figure}
