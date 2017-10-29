@@ -1,6 +1,5 @@
 \chapter{Numerical solution of the HF equations}
-
-
+\newcommand{\kexp}{\ensuremath k_\text{exp}}
 
 \section{Overview of standard SCF algorithms}
 \todo[inline,caption={}]{
@@ -39,6 +38,46 @@
 	\end{itemize}
 }
 
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/fock_fe}
+	\caption{Structure of the Finite-Element Fock matrix in beryllium
+		with an error of about $0.1$}
+	\label{fig:StructureFiniteElementFock}
+\end{figure}
+
+% Reduce margin size to fit the matrix plots and switch to landscape
+\begin{landscape}
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/fock_gaussian}
+	\caption{Structure of the Fock matrix for a cGTO-based SCF
+		for the beryllium atom
+		using a pc-2 basis set.
+		The three figures show the SCF with a Pulay error
+		Frobenius norm of $0.18$, $0.0063$ and $4.1 \cdot 10^{-7}$
+		from left to right.}
+		% 12 out of 15 rows are diagonal-dominant in each case.
+		% Matrix is symmetric
+	\label{fig:StructureGaussianFock}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/fock_sturmian}
+	\caption{Structure of the Fock matrix for a Coulomb-Strumian based SCF
+		for the beryllium atom starting from using a $(5,1,1)$
+		Coulomb-Strumian basis in $mln$ order
+		and a Sturmian exponent of $\kexp = 1.99$.
+		The three figures show left to right the Fock matrix
+		at an SCF step with a Pulay error Frobenius norm of
+		$0.13$, $0.0079$, $6.7 \cdot 10^{-8}$.}
+		% 14 out of 17 are diagonal-dominant in each case.
+		% Matrix is symmetric
+	\label{fig:StructureSturmianFock}
+\end{figure}
+\end{landscape}
+
 \section{Employing a Coulomb-Sturmian basis}
 % A few historic words and references
 \cite{Rotenberg1970}
@@ -56,7 +95,6 @@
 	bla
 	\label{eqn:CSEquation}
 \end{equation}
-\newcommand{\kexp}{\ensuremath k_\text{exp}}
 
 % complete but not over-complete
 
