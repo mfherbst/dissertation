@@ -4,6 +4,7 @@ add_inputs(
         related.tex
         design.tex
         examples.tex
+        examples/ccd/ccd_numpy.tex
         state.tex
         #
         examples/dissociation/h2_dissociation.py

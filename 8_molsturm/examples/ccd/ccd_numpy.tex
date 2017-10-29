@@ -1,0 +1,82 @@
+\colorlet{CcRes}{dkred}
+\colorlet{CcEri}{dkgreen}
+\colorlet{CcTOne}{dkblue}
+\colorlet{CcTTwo}{mauve}
+
+\begin{align*}
+	\textcolor{CcRes}{r_{ij}^{ab}} =
+%		&= \langle ab||ij \rangle
+%		%
+%		+ \sum_e f_{ae} \, t_{ij}^{eb}
+%		- \sum_e f_{be} \, t_{ij}^{ea}
+%		- \sum_m f_{mi} \, t_{mj}^{ab}
+%		+ \sum_m f_{mj} \, t_{mi}^{ab} \\
+%		%
+%		&+ \frac12 \sum_{mn} \langle mn||ij \rangle \, t_{mn}^{ab}
+%		+ \frac12 \sum_{ef} \langle ab||ef \rangle \, t_{ij}^{ef} \\
+%		%
+%		&+ \sum_{me} \langle mb||ej \rangle \, t_{im}^{ae}
+%		- \sum_{me} \langle mb||ei \rangle \, t_{jm}^{ae} 
+%		- \sum_{me} \langle ma||ej \rangle \, t_{im}^{be}
+%		+ \sum_{me} \langle ma||ei \rangle \, t_{jm}^{be} \\
+		%
+		&- \frac12 \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{mn}^{af}} \, \textcolor{CcTTwo}{t_{ij}^{eb}}
+		+ \frac12  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{mn}^{bf}} \, \textcolor{CcTTwo}{t_{ij}^{ea}}
+		- \frac12  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{in}^{ef}} \, \textcolor{CcTTwo}{t_{mj}^{ab}} \\
+		&+ \frac12 \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{jn}^{ef}} \, \textcolor{CcTTwo}{t_{mi}^{ab}}
+		+ \frac14  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{mn}^{ab}} \, \textcolor{CcTTwo}{t_{ij}^{ef}}
+		+ \frac12  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{im}^{ae}} \, \textcolor{CcTTwo}{t_{jn}^{bf}} \\
+		&- \frac12 \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{jm}^{ae}} \, \textcolor{CcTTwo}{t_{in}^{bf}}
+		- \frac12  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{im}^{be}} \, \textcolor{CcTTwo}{t_{jn}^{af}}
+		+ \frac12  \sum_{mnef} \textcolor{CcEri}{\langle mn||ef \rangle} \, \textcolor{CcTOne}{t_{jm}^{be}} \, \textcolor{CcTTwo}{t_{in}^{af}}
+\end{align*}
+
+% fock = state.fock
+% eri_phys = state.eri.transpose((0, 2, 1, 3))
+% eri = eri_phys - eri_phys.transpose((1, 0, 2, 3))
+%
+% res = np.einsum("abij->iajb", eri.block("vvoo")) \
+%     + np.einsum("ae,iejb->iajb", fock.block("vv"), t2) \
+%     - np.einsum("be,ieja->iajb", fock.block("vv"), t2) \
+%     - np.einsum("mi,majb->iajb", fock.block("oo"), t2) \
+%     + np.einsum("mj,maib->iajb", fock.block("oo"), t2)
+%
+% res += \
+%     + 0.5 * np.einsum("mnij,manb->iajb", eri.block("oooo"), t2) \
+%     + 0.5 * np.einsum("abef,iejf->iajb", eri.block("vvvv"), t2) \
+%     + np.einsum("mbej,iame->iajb", eri.block("ovvo"), t2) \
+%     - np.einsum("mbei,jame->iajb", eri.block("ovvo"), t2) \
+%     - np.einsum("maej,ibme->iajb", eri.block("ovvo"), t2) \
+%     + np.einsum("maei,jbme->iajb", eri.block("ovvo"), t2)
+%
+% res += \
+%     - 0.5  * np.einsum("mnef,manf,iejb->iajb", eri.block("oovv"), t2, t2) \
+%     + 0.5  * np.einsum("mnef,mbnf,ieja->iajb", eri.block("oovv"), t2, t2) \
+%     - 0.5  * np.einsum("mnef,ienf,majb->iajb", eri.block("oovv"), t2, t2) \
+%     + 0.5  * np.einsum("mnef,jenf,maib->iajb", eri.block("oovv"), t2, t2) \
+%     + 0.25 * np.einsum("mnef,manb,iejf->iajb", eri.block("oovv"), t2, t2) \
+%     + 0.5  * np.einsum("mnef,iame,jbnf->iajb", eri.block("oovv"), t2, t2) \
+%     - 0.5  * np.einsum("mnef,jame,ibnf->iajb", eri.block("oovv"), t2, t2) \
+%     - 0.5  * np.einsum("mnef,ibme,janf->iajb", eri.block("oovv"), t2, t2) \
+%     + 0.5  * np.einsum("mnef,jbme,ianf->iajb", eri.block("oovv"), t2, t2)
+
+\newcommand{\eri}{\textcolor{CcEri}{eri.block("oovv")}}
+\newcommand{\eriIdx}{\textcolor{CcEri}{mnef}}
+\newcommand{\tampOne}{\textcolor{CcTOne}{t2}}
+\newcommand{\tampTwo}{\textcolor{CcTTwo}{t2}}
+\newcommand{\resIdx}{\textcolor{CcRes}{iajb}}
+
+\begin{BVerbatim}[commandchars=\\\{\},fontsize={\smaller}]
+eri_phys = state.eri.transpose((0, 2, 1, 3))
+eri = eri_phys - eri_phys.transpose((1, 0, 2, 3))
+{\textcolor{CcRes}{res}} = {\textbackslash}
+    - 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}manf},{\color{CcTTwo}iejb}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    + 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}mbnf},{\color{CcTTwo}ieja}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    - 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}ienf},{\color{CcTTwo}majb}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    + 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}jenf},{\color{CcTTwo}maib}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    + 0.25 * np.einsum("{\eriIdx},{\color{CcTOne}manb},{\color{CcTTwo}iejf}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    + 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}iame},{\color{CcTTwo}jbnf}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    - 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}jame},{\color{CcTTwo}ibnf}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    - 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}ibme},{\color{CcTTwo}janf}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo}) {\textbackslash}
+    + 0.5  * np.einsum("{\eriIdx},{\color{CcTOne}jbme},{\color{CcTTwo}ianf}->{\resIdx}", {\eri}, {\tampOne}, {\tampTwo})
+\end{BVerbatim}
