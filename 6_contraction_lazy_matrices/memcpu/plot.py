@@ -24,11 +24,11 @@ def plot_mem_cpu(data):
     mems = data["mems"]
     cpus = data["cpus"]
 
-    plt.semilogy(years, cpus, "x", label="CPU clock speed")
-    plt.semilogy(years, mems, "x", label="Memory bus speed")
+    plt.semilogy(years, cpus, "xC0", label="CPU clock speed")
+    plt.semilogy(years, mems, "xC1", label="Memory bus speed")
     plt.ylabel("Scale-up relative to 1980")
 
-    color = "r"
+    color = "C3"
     plt.arrow(x=2010, y=5015, dx=0, dy=7000,
               color=color,
               head_width=0.3, head_length=2000)
