@@ -1,35 +1,73 @@
-\chapter*{Publications and code contributions}
-\addcontentsline{toc}{chapter}{Publications and code contributions}
+\chapter*{Publications and contributions}
+\addcontentsline{toc}{chapter}{Publications and contributions}
 
-\section{Own code projects}
+\section*{Initiated projects}
+This section gives the list of code projects,
+which I started in collaboration with others in order to perform
+the computations or the analysis mentioned in the thesis.
+
+\begin{enumerate}
+	\item \lazyten lazy matrix library
+		\begin{itemize}
+			\item Michael F. Herbst and James E. Avery.
+				\krims 0.2.1, 2017. URL \url{https://lazyten.org/krims}
+			\item Michael F. Herbst and James E. Avery.
+				\lazyten 0.4.1, 2017. URL \url{https://lazyten.org}
+		\end{itemize}
+	\item \sturmint: Coulomb-Sturmian integral library
+		\begin{itemize}
+			\item James E. Avery and Michael F. Herbst.
+				\sturmint 0.1.0, 2017. \textit{to be released}
+		\end{itemize}
+	\item \molsturm Modular and flexible quantum chemistry package
+		\begin{itemize}
+			\item Michael F. Herbst and James E. Avery.
+				\gscf 0.2.0, 2017. URL \url{https://molsturm.org/gscf}
+			\item Michael F. Herbst and James E. Avery.
+				\gint 0.1.0, 2017. URL \url{https://molsturm.org/gint}
+			\item Michael F. Herbst and James E. Avery.
+				\molsturm 0.1.0, 2017. URL \url{https://molsturm.org}
+		\end{itemize}
+	\item \adcc: \python and \cpp interface for \adcman\todo{cite}
+		\begin{itemize}
+		\item Michael F. Herbst and Adrian L. Dempwolff.
+			\adcc 0.0.0, 2017. \textit{to be released}
+		\end{itemize}
+	\item \texttt{look4bas}: Interactive tool to search for and
+			look up Gaussian basis sets.
+		\begin{itemize}
+		\item Michael F. Herbst. \texttt{look4bas} 2017. URl \url{https://github.com/mfherbst/look4bas}
+		\end{itemize}
+\end{enumerate}
+
+\section*{Contributions to other projects}
+This section lists a few of the code projects to which I contributed
+during my PhD
+
+\begin{enumerate}
+	\item Bohrium\todo{cite}: I helped refactor the \cpp frontend and the high-level
+		\cpp interface
+\end{enumerate}
+%
+To the following projects I only contributed minor bug fixes and/or small
+usability improvements:
+\begin{enumerate}
+	\addtocounter{enumi}{1}
+	\item \dealii\todo{cite} finite-element library
+	\item Spack\todo{cite}: A package manager for supercomputers.
+	\item \libint~\cite{Libint2,Libint2_231}:
+		High-performance library for computing Gaussian integrals.
+	\item \libcint\todo{cite}: General cgto integrals for quantum chemistry
+	\item \texttt{clang-tidy}\todo{cite}: Automatic code-cleanup of \cpp code
+\end{enumerate}
+
+\section*{Lecture notes of block courses}
 \begin{itemize}
-	\item \molsturm
-	\item \lazyten
-	\item \texttt{adcc}: Python frontend for \texttt{adcman} module\todo{cite}
+	\item Bash course\cite{BashCourse2015}
+	\item Awk course\cite{AwkCourse2016}
 \end{itemize}
 
-\section{Third-party}
-Major contribution to Bohrium, namely
-\begin{itemize}
-	\item Rewrite of \cpp frontend and high-level \cpp interface
-\end{itemize}
-
-Minor contributions to a number of other projects:
-\begin{itemize}
-	\item deal.ii: Bugfixes and typos in FullMatrix
-	\item Spack: Added \lazyten to spack repository
-	\item clang-tidy: Allowed export of run-clang-tidy results
-	\item libint: Simplified build and bug fixes
-	\item libcint: Typos and minor improvements
-\end{itemize}
-
-\section{Block-courses and lectures}
-\begin{itemize}
-	\item Bash course
-	\item Awk course
-\end{itemize}
-
-\section{Journal articles and papers}
+\section*{Journal articles and papers}
 \begin{itemize}
 	\item None so far
 	\item Point at what is coming
