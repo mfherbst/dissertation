@@ -1,20 +1,25 @@
-add_inputs(appendix.tex)
+add_inputs(
+        appendix.tex
+        cbs_uhf.tex
+        rmso_Gaussian.tex
+        cs_convergence.tex
+)
 
 #
 # Build tables
 #
 add_custom_target(
-        tables_CS_hf_mp2
+        table_cs_corr_conv
         COMMAND
         ${PYTHON_EXECUTABLE}
-        ${CMAKE_CURRENT_LIST_DIR}/CS_hf_mp2_nlm_tables/make_tables.py
+        ${CMAKE_CURRENT_LIST_DIR}/table_cs_corr_conv/make_table.py
         COMMAND
         ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
         DEPENDS
-        ${CMAKE_CURRENT_LIST_DIR}/CS_hf_mp2_nlm_tables/make_tables.py
-        ${CMAKE_CURRENT_LIST_DIR}/CS_hf_mp2_nlm_tables/summary.yaml
+        ${CMAKE_CURRENT_LIST_DIR}/table_cs_corr_conv/make_table.py
+        ${CMAKE_CURRENT_LIST_DIR}/table_cs_corr_conv/summary.yaml
 )
-add_depends(tables_CS_hf_mp2)
+add_depends(table_cs_corr_conv)
 
 add_custom_target(
         table_Be_CS_hf_mp2_fci
