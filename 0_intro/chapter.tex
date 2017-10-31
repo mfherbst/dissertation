@@ -6,3 +6,167 @@
 		\item Thanks to all guys
 	\end{itemize}
 }
+
+
+% TODO Flowify
+\todoil{Check and enhance the story by looking at more references}
+Starting from the exponential form of the analytical solutions of the
+Schrödinger equation for hydrogen,
+\citet{Slater1930} started introducing exponentially decaying basis functions
+in order to compute atomic properties,
+the nowadays well-known Slater-type orbitals~(STOs).
+
+Applying the STOs to molecules turned out to be much more
+challenging due to the demanding structure of the electron repulsion integrals~(ERIs)
+for such types of basis functions.
+\todoil{I cannot download that paper so im not too sure what is in it}
+In \citeyear{Boys1950} \citeauthor{Boys1950} realised that employing
+atom-centered Gaussian type basis functions~(GTOs) leads to integrals
+which are much easier to evaluate numerically.
+
+Since they do, however, not describe the physical reality as closely as STOs
+\todoil{Check whether the pople paper goes into this}
+much larger GTO basis sets are needed to get similar accuracies than STOs.
+
+\citet{Hehre1969} later realised that one could combine the best of both
+worlds if one used
+basis sets of contracted GTOs.
+This set off a vivid development of quantum chemical theory and software packages,
+where a lot of work has gone into efficient algorithms
+improving the computational
+scaling as well as the overall runtime of calculations based on GTOs.
+scaling as well as the overall runtime of calculations.
+\todoil{Examples for program packages ??}
+% end flowify
+
+Almost all major quantum chemistry programs,
+\todoil{Cite a few}
+which are actively developed nowadays focus on Gaussian-type
+basis functions or Gaussian-type orbitals~(GTOs) as they are usually called.
+Compared to the Slater-type orbitals~(STOs)
+they certainly have a couple of well-known advantages.
+Most importantly the structure of the electron repulsion integrals~(ERIs)
+is much less demanding and hence makes it feasible to model much larger systems.
+
+The downside of GTOs is of course that they do not describe the physical
+reality that well and as a result fail to capture all of the properties
+of an electronic structure in a truely black-box fashion.
+For example the computation of proper electron affinities or the description
+of Rydberg-like excited states requires incorporating diffuse functions
+with small Gaussian exponents into the GTO basis set.
+
+As such it is not surprising that other types of basis sets have been attempted as well.
+Next to plane-waves or projector-augmented wave methods,
+which are commonly employed in the density-functional theory~(DFT)
+calculations of metal surfaces,
+recently a couple of projects have also investigated the use
+of so-called numerical basis functions.
+Examples would be the use of wavelets and the finite-element medhod.
+\todoil{Cite madness and Dage Sundholm}
+\todoil{The Jensen review paper has a couple of nice citations there}
+
+% structure is vastly different
+% need flexible framework to try them
+% how do they compare -> need fair comparison
+
+\begin{figure}
+	\centering
+	\missingfigure{Instead of having the figures here,
+	refer to fig. \vref{fig:StructureFiniteElementFock}, \vref{fig:StructureGaussianFock}
+	and \vref{fig:StructureSturmianFock}}
+	\caption{The different structure of the Fock matrix when FEs,
+		Sturmians and GTOs are used.
+		All matrices are shown early in the SCF process with a Pulay error norm
+		larger than 0.1.
+		The matrix structures generally improve as the SCF proceeds and contain more zeros.
+		%
+		Sturmian and Gaussian are almost diagonal dominant,
+		even almost strictly diagonal dominant,
+		FE matrix is far from it (About half the rows do not satisfy the condition).
+		%
+		Only the alpha-alpha part of the fock matrix is shown in each case
+		and we perform an RHF calculation of the Berylium atom in a small basis
+		for each set of basis functions.
+		%
+		The Sturmian basis is given in lmn order.
+		% TODO maybe use mln order ?
+	}
+	\label{fig:FockStructure}
+\end{figure}
+
+The structure which is required in a program package in order to perform even a simple
+self-consistent field~(SCF) calculation
+based on GTOs and on numerical basis functions differs quite a lot.
+As can be seen in \fig~\ref{fig:FockStructure} the structure of the Fock matrix
+varies rather dramatically depending on the type of basis function,
+which is used.
+Most importantly the matrix size and matrix sparsity properties
+changes a lot between numerical approaches like
+Wavelets or Finite Elements and classical atom-centered AO approaches like GTOs.
+As a result none of the widely used program packages
+focus on exactly one type of basis function and are highly specific for exactly this type.
+
+Since the structure of the numerical problems to be solved differ
+implementing further basis function types into existing packages
+is often challenging.
+Moreover unlike the well-understood Gaussians in novel basis function types
+the kind of solver algorthims to use is less clear and one often needs to be able to experiment.
+\todoil{
+all separate packages 
+see wikipedia page
+\url{https://en.wikipedia.org/wiki/List_of_quantum_chemistry_and_solid-state_physics_software}
+}
+Furthermore we only know of very few programs which have more than experimental
+support in more than one type of basis function.
+\todoil{I do not want to make this statement to harsh to piss anyone off,
+	but the point is that those packages, which do exist are either not widespread
+	or lack features in some of the basis functions
+	or are hard to obtain (i.e. closed-source, even wikipedia knows no website)
+	or I have literally not heard of them anywhere}
+
+\todoil{I feel some more details introducing SCF in general is also appropriate here}
+
+In previous work we have investigated the use of so-called generalised Sturmians as basis functions
+in electronic structure theory.
+Generalised sturmians are the solution to a special $N$-body Schrödinger-like
+equation.
+The difference is that the electron-nucleus interaction is scaled by the factor
+$\beta_\nu$ in \eqref{eqn:GenSturm}
+such that the solutions all become isoenergetic.
+This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
+as well as properly represent the nuclear cusp at the core.
+As such the functional form of generalised Sturmians is very much related to STOs.
+Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
+to make computing them less demanding.
+This requires, however, that the mathematical properties of the Sturmians
+can be fully exploited during the computation,
+which in turn requires the Fock matrix to be arranged in a specific way.
+Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
+but much rather only use these matrices in the form of matrix-vector products,
+since this overall saves an order of magnitude in the computational scaling.
+%
+\todoil{How much shall we go into detail here to make this clear?}
+% Not at all, do it in the lazyten section.
+%
+This rather unusual demand turned out to make it very difficult to implement Sturmians
+as a basis function type into existing packages alongside STOs and GTOs.
+
+% TODO do this do this
+\todoil{Go a bit more into why we only do SCF (Explain: Post-HF available, we only need MO basis, structure of AOs not important)}
+% TODO do this do this
+In \molsturm we have achieved to write an Hartree-Fock SCF code,
+which allows us to use both GTOs and Sturmians side by side by the means
+of so-called lazy matrices (see section \ref{sec:lazymat}).
+We achieve true generality in the type of basis function to be used
+up to the point where most of our code is entirely
+independent of the basis function types.
+Enwrapping \molsturm into a \python layer allowed us to easily re-use existing
+software modules (\adcman and \pyscf) in order to go beyond Hartree-Fock.
+Even though we currently only have support for GTOs and Sturmians,
+extending our code to numerical basis functions can be achieved rather easily
+as we will demonstrate in this paper.
+
+
+\todoil{The previous section gets rather lengthy. It should probably be split up somehow}
+
+
