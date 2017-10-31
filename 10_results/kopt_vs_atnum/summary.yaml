@@ -50,10 +50,10 @@
   l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.58533171953499, k_opt: 2.8725972490134053,
   l_max: 1, m_max: 1, multiplicity: 3, n_max: 5, valid: true}
-- {atom_number: 6, charge: -1, ground_state_energy: -37.4920217359923, k_opt: 2.6809691711620514,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.586375905725774, k_opt: 2.8754698462724186,
   l_max: 2, m_max: 2, multiplicity: 3, n_max: 5, valid: false}
+- {atom_number: 6, charge: -1, ground_state_energy: -37.4920217359923, k_opt: 2.6809691711620514,
+  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.662844670212735, k_opt: 2.849404527563345,
   l_max: 1, m_max: 1, multiplicity: 3, n_max: 6, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.681885777751134, k_opt: 2.8264831219458837,
@@ -84,10 +84,10 @@
   l_max: 2, m_max: 2, multiplicity: 3, n_max: 7, valid: true}
 - {atom_number: 9, charge: -1, ground_state_energy: -97.79139700355117, k_opt: 4.025094828612554,
   l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
-- {atom_number: 9, charge: -1, ground_state_energy: -98.87422705705175, k_opt: 3.9570675341245614,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
 - {atom_number: 9, charge: 0, ground_state_energy: -99.07686049662217, k_opt: 4.162333127232859,
   l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+- {atom_number: 9, charge: -1, ground_state_energy: -98.87422705705175, k_opt: 3.9570675341245614,
+  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
 - {atom_number: 9, charge: 0, ground_state_energy: -99.320428773516, k_opt: 4.09891277001537,
   l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: true}
 - {atom_number: 9, charge: 0, ground_state_energy: -99.3848185658933, k_opt: 4.037621204892503,

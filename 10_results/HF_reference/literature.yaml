@@ -1,7 +1,5 @@
 # Unresricted Hartree-Fock reference values for the solution.
-unrestricted:
-  Li: {value:    -7.365082,         source: ccpv5z-2011 }   # Urgently replace by CBS value
-
+unrestricted: {}
 
 # Restricted Hartree-Fock (either closed-shell or open-shell restricted)
 # literature values for the solution.

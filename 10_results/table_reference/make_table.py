@@ -8,23 +8,21 @@ import string
 
 restricted = ["He", "Be", "Ne", "Mg", "Ar"]
 
-# TODO Cite basis sets
-# The Orca calculations use the newer Dunning versions!
 next_letter_idx = 0
 sources = {
+    # TODO This is not actuall true ... for Na we use a different source
+    # in reality, namely the "internal" basis set definitions by D. Feller.
+    # and not the "official" ones by Prasher2011 and Dunning.
     "CBL3456": {
         "letter": None,
-        "footnote": r"\molsturm CBS extrapolation using cc-pVTZ to cc-pv6Z "
-        r"(see appendix \ref{apx:CbsLimit})"
+        "footnote": r"CBS extrapolation using cc-pVTZ to "
+        "cc-pv6Z~\cite{Dunning1989,Woon1993,Wilson1996,VanMourik2000,"
+        "Prascher2011}"
     },
     "CBL2345": {
         "letter": None,
-        "footnote": r"\molsturm CBS extrapolation using cc-pVDZ to cc-pv5Z "
-        r"(see appendix \ref{apx:CbsLimit})"
-    },
-    "ccpv5z-2011": {
-        "letter": None,
-        "footnote": "\molsturm cc-pV5Z~\cite{Prascher2011} calculation"
+        "footnote": r"CBS extrapolation using cc-pVDZ to "
+        "cc-pv5Z~\cite{Dunning1989,Woon1993}"
     },
 }
 
@@ -59,13 +57,18 @@ for i in range(1, 100):
     mark = r"\tmark[" + sources[src]["letter"] + "," + hfmark + "]"
     rows.append([symbol, str(lit["value"]) + mark])
 
+cap = r"\HF reference values"
+caption = r"Reference values used for comparison of the \CS-based results " + \
+    r"and for estimating errors in the \CS values. " + \
+    r"The CBS extrapolation was done with a builtin routine provided by " + \
+    "\molsturm following \citet{Jensen2005}. " + \
+    r"For more details regarding the extrapolation procedure see appendix " + \
+    r"\vref{apx:CbsLimit}."
 
 ret = []
 ret.append(r"\ctable[")
-ret.append(r"    cap=\HF reference values,")
-ret.append(r"    caption=Reference values used in chapter \ref{CSQChem}")
-ret.append(r"       to compare to obtained results and estimate errors ")
-ret.append(r"       in the \CS calculations,")
+ret.append(r"    cap=" + cap + ",")
+ret.append(r"    caption=" + caption + ",")
 ret.append(r"    botcap,")
 ret.append(r"     label=tab:HFReference,")
 ret.append(r"]{lr@{.}l@{\hspace{40pt}}lr@{.}l}{")
