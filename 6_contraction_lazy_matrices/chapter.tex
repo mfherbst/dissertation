@@ -67,6 +67,20 @@
 	\item For convenience: All matrix operations (including element retrieval) allowed.
 \end{itemize}
 
+Let $\mat{U}$ and $\mat{A}$ be lazy matrices and $\vec{x}$ be a normal vector.
+We wish to compute the expression
+\[ (\mat{I} - \mat{U} \tp{\mat{U}}) \mat{A} (\mat{I} - \mat{U} \tp{\mat{U}}) \vec{x} \]
+which occurs in Jacobi-Davidson procedure.
+A typical code is
+\begin{lstlisting}
+DiagonalMatrix<matrix_type> I(std::vector<scalar_type>(100, 1));
+auto projector = I - U * transpose(U);
+auto mat = projector * A * projector;
+auto res = mat * x
+\end{lstlisting}
+
+
+% See for example slide 15 of iwr school talk
 % Code example
 % Resulting expression tree
 % Evaluation order
