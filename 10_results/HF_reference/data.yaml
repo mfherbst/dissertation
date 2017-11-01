@@ -18,6 +18,6 @@ unrestricted:
   F: {source: CBL3456, value: -99.4166858}
   Li: {source: CBL2345, value: -7.4327376}
   N: {source: CBL3456, value: -54.4046409}
-  Na: {source: CBL2345, value: -161.8587909}
+  Na: {source: CBL2345, value: -161.8589459}
   O: {source: CBL3456, value: -74.8192096}
   P: {source: CBL3456, value: -340.7192829}
