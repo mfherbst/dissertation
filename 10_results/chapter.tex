@@ -1,6 +1,6 @@
 \chapter[Coulomb-Sturmian based quantum chemistry]%
 {Initial results of Coulomb-Sturmian based quantum chemistry}
-\label{CSQChem}
+\label{ch:CSQChem}
 
 In this chapter we will turn our attention to performing
 quantum-chemical calculations using Coulomb-Strumian~(\CS) functions
@@ -8,11 +8,12 @@ as the discretisation basis in our Ritz-Galerkin ansatz.
 
 The first section is concerned with the fundamental properties
 of the Coulomb-Strumian basis,
-i.e. the behaviour of the computational results obtained
+i.e. the convergence behaviour of the computational results
 when fundamental parameters of the basis are changed.
-Our investigation focuses on the computation
-of energies at the Hartree-Fock and MP2 level of theory
-and only touches some of the potential routes for investigation.
+Our investigation focuses on finding sensible sets of parameters
+for the computation of energies at the Hartree-Fock and MP2 level of theory
+and concludes with a recommendation for Coulomb-Strumian basis
+sets for computations of atoms of the second and third period.
 
 The second section tries to contrast Coulomb-Strumian basis sets
 with Gaussian basis sets.
@@ -20,25 +21,27 @@ with Gaussian basis sets.
 
 Last but not least we will briefly look at a couple of examples,
 where we computed excited states using Coulomb-Strumian basis sets
-and try to show that especially the description of $s$-like
+and try to hint that especially the description of $s$-like
 Rydberg states in alkaline metals is a possible application
 for Coulomb-Strumian basis sets.
 \todoil{Extend and reword once the final section has been written}
 
-
 \section{Convergence properties of Coulomb-Strumian basis sets}
-In this section we will take a rather informal look
-onto the convergence behaviour of HF, MP2 and Full-CI
-if a Coulomb-Strumian basis set is used for the discretisation.
+For our initial investigation of Coulomb-Strumian basis sets
+we have mainly focused on Hartree-Fock as well as MP2
+calculations of the atoms of the second and third
+row of the periodic table.
+A few selected calculations at Full-CI level have also
+been performed for reference and to compare the trends,
+mostly with MP2.
 
-Even though the results in this section are mostly
-preliminary,
-the focus on Hartree-Fock as the most basic quantum-chemical method,
-Full-CI as a method which solves the full Schrödinger equation
-and MP2 as a method to perturbatively capture electronic correlation
-on top of HF,
-allows to get an overview of the expected convergence properties
-of Coulomb-Sturmian based quantum chemistry in general.
+Even though these methods represent only a small selection
+of the wide-range of possible quantum-chemical methods,
+we think that Hartree-Fock as a self-consistent field method
+and MP2 to perturbatively capture correlation effects
+provide good insight into what could be expected
+for other single-reference ground state methods as well
+if Coulomb-Strumian basis sets are to be used.
 
 \newcommand{\nmax}{\ensuremath n_\text{max}}
 \newcommand{\lmax}{\ensuremath l_\text{max}}
@@ -53,6 +56,9 @@ that in general a Coulomb-Sturmian basis function
 	Y_l^m(\theta, \varphi)
 	\label{eqn:FormCSBasisFunction}
 \end{equation}
+with $L^{2l+1}_{n-l-1}$ being an associated Legendre polynomial,
+$Y_l^m$ being a spherical harmonic and $\mathcal{N}_\mu$ being a normalisation
+constant,
 can be uniquely described by its quantum numbers $\mu \equiv (n,l,m)$
 as well as the its Coulomb-Sturmian exponent $\kexp$ (\cf section \vref{sec:BasisCS}).
 Since the exponent $\kexp$ is shared amongst all Coulomb-Strumians in a basis,
@@ -64,80 +70,116 @@ present in the basis set.
 Theoretically any selection of quantum number triples for forming a basis
 is possible.
 In this work, however, we have restricted ourselves to basis sets of the form
-\[ \big\{ (n, l, m) \, \big| \, n \le \nmax, l \le \lmax, m \le \mmax \big\} \]
+\[ \big\{ (n, l, m) \, \big| \, n \le \nmax, l \le \lmax, -\mmax \le m \le \mmax \big\} \]
 i.e. where all three quantum numbers are bound from above.
-We will sometimes refer to such a \CS basis set, which is restricted in this
-manor by the triple $(\nmax, \lmax, \mmax)$.
-In other words a $(3,2,2)$ basis set denotes a basis set with
+We will sometimes refer to such a \CS basis set by the triple
+$(\nmax, \lmax, \mmax)$ of the three maximal quantum numbers itself.
+In other words a $(3,2,2)$-basis set shall denote a basis set with
 $\nmax = 3$, $\lmax = 2$ and $\mmax = 2$.
 
-The selection to basis sets of the above form,
-where all quantum numbers are bound by a common upper bound $(\nmax, \lmax, \mmax)$
-is entirely arbitrary.
-In fact parts of our results indicate that for some cases
-constructing more sophisticated basis sets could yield
-smaller basis sets with similar computational results.
-\todo{Make sure to refer back to that}
+The selection to basis sets of this particular form is entirely arbitrary
+and mainly done for the sake of reducing the search space at hand
+and to get some initial insight into the properties \CS basis sets.
 
-Before we start our discussion about the \CS convergence properties,
-let us define some quantities in analogy to the terms used for actual atomic orbitals.
-
-\begin{defn} The $n$-th \newterm{Coulomb-Sturmian shell} or just $n$-th shell
-	is the set
-	\[ \{ \chi_{n'l'm'} \, | \, n' = n \}. \]
-	In other words a shell is just a set of \CS basis functions with a common
-	principle quantum number.
-\end{defn}
-
-\begin{defn}
-	A \CS basis set is called \newterm{full-shell} if it consists exactly of the
-	first $\nmax$ shells of Coulomb-Strumians, i.e. if it is the set
-	\[ \{ \chi_{n'l'm'} \, | \, n' \leq \nmax \}. \]
-\end{defn}
-
-\subsection{Convergence of \HF for full-shell \CS basis sets}
+\subsection{Reference results}
 \defineabbr{CBS}{CBS\xspace}{complete basis set limit}
 
-Considering the close similarity between the \CS basis and the actual
-hydrogenic orbitals,
-a very natural approach to constructing \CS basis sets is to
-start from a very small full-shell set and add more and more shells.
-
-If we employ such basis sets for solving the restricted and unrestricted
-\HF equations an almost linear convergence is obtained
-as can be seen in fig. \vref{fig:ErrorHF_vs_shell}.
-As the reference to compare our \CS results we either
-take the numerical RHF solutions determined by \citet{Morgon1997} or
-the UHF complete basis set~(\CBS) limit extrapolated using the Dunning
-cc-pV$n$Z family of basis sets following the extrapolation procedure of
-\citet{Jensen2005}.
-See table \vref{tab:HFReference} and appendix \vref{apx:CbsLimit} for more details.
-
+In order to estimate errors as well as the quality of the \CS-based \HF
+results obtained,
+we compare against the reference values given in table \vref{tab:HFReference}.
+For the closed-shell atoms we use the very accurate numerical RHF results
+from \citet{Morgon1997}.
+For the open-shell atoms we take the UHF complete basis set~(\CBS)
+limit extrapolated from calculations using the Dunning cc-pV$n$Z family
+of Gaussian basis sets and following the method of \citet{Jensen2005}.
+See appendix \vref{apx:CbsLimit} for more details on the extrapolation
+procedure which lead to the tabulated results.
 \input{table_reference.tex}
 
-\todoil{Should we also give the raw HF energies?}
+
+\subsection{Convergence of \HF for full-shell \CS basis sets}
+Let us use the term \newterm{shell} to refer to the set
+\[ \{ \chi_{n'l'm'} \, | \, n' = n \} \]
+of \CS basis functions with the same principle quantum number
+in analogy of the same term used for hydrogenic orbitals.
+Naturally this allows us to build up a \CS basis set by considering
+all the shells up to and including the $\nmax$-th shell.
+The result is a \newterm{full-shell} \CS basis of the type
+\[ \{ \chi_{n'l'm'} \, | \, n' \leq \nmax \}. \]
+
 \begin{figure}
 	\centering
 	\includeimage{10_results/Delta_EHF_vs_shell}
-	\caption{Plot error in $E_\text{HF}$ vs number of basis functions.
-		The HF reference is either the CBS limit estimated as described in
-		\vref{apx:CbsLimit} for UHF
-		or for RHF the difference to the limits given in  \cite{Morgon1997}
+	\caption{
+		Plot of the error in the \HF energy vs the number of basis
+		functions in the full-shell \CS basis containing
+		the specified number of shells.
+		As the error we use the absolute error between \CS-based \HF energy
+		$E_\text{HF}^\text{CS}$ as well as the reference value
+		$E_\text{HF}^\text{ref}$ of table \vref{tab:HFReference}.
+		All energies are given in Hartree.
 }
 	\label{fig:ErrorHF_vs_shell}
 \end{figure}
+By the means of the similarity between the \CS basis and the actual
+hydrogenic orbitals,
+we would expect such a basis to show convergence to the reference \HF result.
+In fact this is more or less what is observed:
+Figure \vref{fig:ErrorHF_vs_shell} shows the absolute error in the \HF energy
+for the second period versus the number of basis functions.
+Even though the convergence rate drops a little until 4 shells have been reached,
+the tail end of the graphs still indicates a linear convergence
+for all example calculations shown.
+This result is certainly rather nice,
+but in the light of the completeness property of the Coulomb-Strumians
+not really surprising either.
 
-Even though this result shows almost linear convergence,
-the fast increase of the number of basis functions $\Nbas$ with the
-number of shells in the full-shell \CS basis
-quickly limits the feasibility of this procedure.
-Consider for example a \CS basis with all shells up to $\nmax$.
-The number of basis functions is
-\[ \sum_{n=1}^{\nmax} \sum_{l=0}^{n-1} 2l + 1 = \sum_{n=1}^{\nmax} n^2
-	= \frac{(2\nmax+1)(\nmax+1)\nmax}{6}
-	\in \bigO(\nmax^3),
-\]
-in other words increases with the third power of $\nmax$.
+The question is now if and how we could improve this convergence rate.
+Let us consider the number of basis functions $\Nbas$
+in a \CS basis including all shells up to $\nmax$.
+We find
+\begin{align}
+	\nonumber
+	\Nbas(\nmax) &= \sum_{n=1}^{\nmax} \sum_{l=0}^{n-1} \sum_{m=-l}^l 1
+		= \sum_{n=1}^{\nmax} \sum_{l=0}^{n-1} 2l+1 \\
+		&= \sum_{n=1}^{\nmax} n^2
+		= \frac{(2\nmax+1)(\nmax+1)\nmax}{6}
+		\in \bigO(\nmax^3),
+	\label{eqn:NbaxFullShellBasis}
+\end{align}
+i.e. a dependency as the third power of $\nmax$.
+In contrast a basis, which is not only limited by $\nmax$, but by $\lmax$ as well,
+exhibits only a linear dependency of $\Nbas$ wrt. $\nmax$, namely
+\begin{align}
+	\nonumber
+	\Nbas(\nmax) &= \sum_{n=1}^{\nmax} \ \sum_{l=0}^{\min(\lmax, n-1)} 2l + 1 \\
+	&= \sum_{n=1}^{\nmax} \Big( \min(\lmax+1, n) \Big)^2 \\
+	\nonumber
+	&\le \sum_{n=1}^{\nmax} (\lmax+1)^2 = (\nmax-1) (\lmax+1)^2
+	\in \bigO(\nmax \lmax^2).
+\end{align}
+
+
+
+As we will show now,
+for many atoms it is sensible to limit both $\nmax$ as well as $\lmax$
+as the \CS basis functions with large values of $l$ are not selected
+by the SCF procedure for the occupied MOs.
+Leaving them out hence typically does not effect convergence.
+What this implies is that for these atoms the convergence rate
+will be increased by choosing a basis with $\nmax$ and $\lmax$ restriced.
+
+
+% The argument is that we want to explain the reduced convergence
+% rate by saying that the basis grows as n^3 whilst
+% only some of the l values really play a role, i.e.
+% if we restrict l as well we could get something growing only linearly in n
+
+
+
+
+
+
 If we would leave the terrain of full-shell basis sets
 and allow ourselves to limit the maximal angular momentum quantum
 number as well by a constant $\lmax$ as introduced above,
@@ -293,6 +335,9 @@ using Dunning basis sets.
 }
 
 \subsection{Convergence of \HF for \CS basis sets with $\nmax$ and $\lmax$}
+% Hint at the general property James mentioned
+
+
 From the discussion of the previous section
 it becomes clear that at least in some cases it makes sense to
 limit not only $\nmax$, but on top of that $\lmax$ as well.
