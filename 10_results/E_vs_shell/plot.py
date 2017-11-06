@@ -33,7 +33,7 @@ def plot_EHF_vs_shell(systems):
             lit = literature["restricted"][atom]["value"]
         ax1.semilogy(nbas, hfs - lit, "x-", label=atom)
 
-    ax1.set_ylabel(r"Error $\Delta E_\text{HF}$")
+    ax1.set_ylabel(r"Absolute error $E_\text{HF}^\text{CS} - E_\text{HF}^\text{ref}$")
     ax1.set_xlabel(r"Number of basis functions $N_\text{bas}$")
     ax1.legend()
 
