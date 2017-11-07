@@ -117,7 +117,11 @@ The result is a \newterm{full-shell} \CS basis of the type
 		As the error we use the absolute error between \CS-based \HF energy
 		$E_\text{HF}^\text{CS}$ as well as the reference value
 		$E_\text{HF}^\text{ref}$ of table \vref{tab:HFReference}.
-		All energies are given in Hartree.
+		For the closed-shell atoms Be and Ne restricted \HF results are shown,
+		whereas for all other open-shell systems unrestricted \HF results
+		are plotted.
+		All energies are given in Hartree
+		and the $y$-axis has a logarithmic scaling.
 }
 	\label{fig:ErrorHF_vs_shell}
 \end{figure}
@@ -127,16 +131,99 @@ we would expect such a basis to show convergence to the reference \HF result.
 In fact this is more or less what is observed:
 Figure \vref{fig:ErrorHF_vs_shell} shows the absolute error in the \HF energy
 for the second period versus the number of basis functions.
-Even though the convergence rate drops a little until 4 shells have been reached,
-the tail end of the graphs still indicates a linear convergence
-for all example calculations shown.
-This result is certainly rather nice,
-but in the light of the completeness property of the Coulomb-Strumians
-not really surprising either.
+Even though the convergence rate drops visibly
+over the selected sequence of basis functions,
+we still clearly note the systematic convergence over the progression
+of basis functions.
 
 The question is now if and how we could improve this convergence rate.
-Let us consider the number of basis functions $\Nbas$
-in a \CS basis including all shells up to $\nmax$.
+From a physical point of view,
+we would not expect all angular momentum to be equally important
+for the description of the electronic structure of a particular atom.
+In beryllium for example we would imagine that only $l == 0$ is really required,
+since a ground state beryllium atom only has the 1s and the 2s orbitals occupied,
+which of course both have only $l == 0$.
+To investigate this more quantitatively,
+let us introduce the \newterm{root mean square occupied coefficient}
+per angular momentum $l$:
+
+\defineabbr{RMS}{RMS\xspace}{root mean square}
+\newcommand{\RMSOl}{\text{RMSO}_l}
+\begin{defn}
+	The root mean square~(\RMS) occupied coefficient per angular momentum $l$
+	is the quantity
+	\begin{equation}
+	\RMSOl =
+		\sqrt{
+		\sum_{(n,l,m) \in \Ibas} \
+		\sum_{i \in \IoccA} \frac{1}{\NelecA \ N_{\text{bas}, l}}
+			\Big(C^\alpha_{nlm, i} \Big)^2
+			+ \sum_{i \in \IoccB} \frac{1}{\NelecB \ N_{\text{bas}, l}}
+			\Big( C^\beta_{nlm, i} \Big)^2
+		}
+		\label{eqn:DefRMSOl}
+	\end{equation}
+	where $C^\alpha_{\mu i}$ and $C^\beta_{\mu i}$
+	are the orbital coefficients of the $\alpha$ and $\beta$ orbitals
+	(see \eqref{eqn:SCFalphaBetaCoeffs})
+	and
+	\[
+		N_{\text{bas}, l} := \abs{ \{ (n',l',m') \, |\, (n',l',m') \in \Ibas
+			\ \text{and} \ l' = l \} }
+	\]
+	is the number of basis functions in the \CS basis which has angular momentum
+	quantum number $l$.
+\end{defn}
+Since $\RMSOl$ is the \RMS-averaged coefficient for a particular angular
+momentum quantum number $l$ in the occupied SCF orbitals,
+it provides a measure for the importance of those \CS basis functions
+with quantum number $l$ for the description of this particular system.
+Loosely speaking a drop in $\RMSOl$ to values below the desired
+accuracy of the calculation indicates that basis functions with
+this value of $l$ can be omitted from the \CS basis for this system
+at \HF level.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rmso_period2_vs_l}
+	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 2}
+	\label{fig:RMSOl_period2}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rmso_period3_vs_l}
+	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 3}
+	\label{fig:RMSOl_period3}
+\end{figure}
+If we consider the neutral atoms of the second and the third period of
+the periodic table in a $(6,5,5)$ \CS basis set
+and plot $\RMSOl$ vs $l$,
+we observe two types of behaviours in figures \vref{fig:RMSOl_period2}
+and \vref{fig:RMSOl_period3}.
+
+Half-filled 2p or 3p subshell
+or closed-shell
+
+% Look up in Keeler Wothers
+Elements which have a closed-shell or half-full-shell 
+
+
+If we plot $\RMSOl$ vs $l$ for the neutral atoms of the
+second and the third period
+we observe a clear drop in $\RMSOl$ only for the closed-shell
+and the half-closed-shell systems,
+that is Li, Be, N, Ne, Na, Mg, P and Ar.
+For all other systems the drop in $\RMSOl$ is only comparatively slow.
+
+
+
+
+
+
+
+For this let us consider at first the relationship of the number of basis
+functions $\Nbas$ in a \CS basis including all shells up to $\nmax$.
 We find
 \begin{align}
 	\nonumber
@@ -158,6 +245,10 @@ exhibits only a linear dependency of $\Nbas$ wrt. $\nmax$, namely
 	&\le \sum_{n=1}^{\nmax} (\lmax+1)^2 = (\nmax-1) (\lmax+1)^2
 	\in \bigO(\nmax \lmax^2).
 \end{align}
+In other words if we manage to find a particular value for $\lmax$,
+for which
+
+
 
 
 
@@ -198,53 +289,11 @@ In order to see this let us introduce the
 \newterm{root mean square occupied coefficient}
 per angular momentum $l$:
 
-\defineabbr{RMS}{RMS\xspace}{root mean square}
-\newcommand{\RMSOl}{\text{RMSO}_l}
-\begin{defn}
-	The root mean square~(\RMS) occupied coefficient per angular momentum $l$
-	is the quantity given by
-	\begin{equation}
-	\RMSOl =
-		\sqrt{
-		\sum_{(n,l,m) \in \Ibas} \
-		\sum_{i \in \IoccA} \frac{1}{\NelecA \ N_{\text{bas}, l}}
-			\Big(C^\alpha_{nlm, i} \Big)^2
-			+ \sum_{i \in \IoccB} \frac{1}{\NelecB \ N_{\text{bas}, l}}
-			\Big( C^\beta_{nlm, i} \Big)^2
-		}
-		\label{eqn:DefRMSOl}
-	\end{equation}
-	where $C^\alpha_{\mu i}$ and $C^\beta_{\mu i}$
-	are the orbital coefficients of the $\alpha$ and $\beta$ orbitals
-	(see \eqref{eqn:SCFalphaBetaCoeffs})
-	and
-	\[
-		N_{\text{bas}, l} := \abs{ \{ (n',l',m') \, |\, (n',l',m') \in \Ibas
-			\ \text{and} \ l' = l \} }
-	\]
-	is the number of basis functions in the \CS basis which has angular momentum
-	quantum number $l$.
-\end{defn}
-
-\begin{figure}
-	\centering
-	\includeimage{10_results/rmso_period2_vs_l}
-	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 2}
-	\label{fig:RMSO_period2_l}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includeimage{10_results/rmso_period3_vs_l}
-	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 3}
-	\label{fig:RMSO_period3_l}
-\end{figure}
-
 \begin{figure}
 	\centering
 	\includeimage{10_results/rmso_ions_vs_l}
 	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 766$ and the ions}
-	\label{fig:RMSO_period3_l}
+	\label{fig:RMSOl_ions}
 \end{figure}
 
 Loosely speaking $\RMSOl$ gives us the importance of the basis functions
