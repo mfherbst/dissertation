@@ -1,0 +1,30 @@
+sudo: false
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - texlive-fonts-recommended
+      - texlive-latex-extra
+      - texlive-fonts-extra
+      - texlive-latex-recommended
+      - python3-yaml
+
+script:
+  - cd "${TRAVIS_BUILD_DIR}"
+  #
+  # Setup mfh tex templates:
+  # - git clone "https://github.com/mfherbst/mfhTex.git"
+  # - . mfhTex/setup.sh
+  - mkdir ~/texmf/tex
+  - git clone "https://github.com/mfherbst/mfhTex.git" ~/texmf/tex/latex
+  #
+  # Setup build and build overlay
+  - git clone git@github.com:mfherbst/dissertation-build-overlay.git
+  - mkdir ${TRAVIS_BUILD_DIR}/build && cd ${TRAVIS_BUILD_DIR}/build
+  - cmake ..
+  - . ../dissertation-build-overlay/setup.sh
+  #
+  # Build the documents
+  - cmake --build .
+
