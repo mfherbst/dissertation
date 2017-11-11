@@ -1,21 +1,31 @@
-language: c
 sudo: false
 dist: trusty
+language: python
+python:
+  - "3.5"
 
 addons:
   apt:
     packages:
-      - texlive-fonts-recommended
-      - texlive-latex-extra
-      - texlive-fonts-extra
       - texlive-latex-recommended
-      - python3-yaml
+      - texlive-latex-extra
+      - texlive-pictures
+      - texlive-science
+      - pgf
+      #
+      - texlive-fonts-recommended
+      - texlive-fonts-extra
+      - lmodern
+
+install:
+  - pip install pyyaml matplotlib numpy scipy
+cache: pip
 
 env:
   - secure: "H7qnDjxiYeCDv7nVW8QyOnhzw44AmVYPRChyHxpD7yH3DqVDjzkstDLBpD9t97qtMIPLeULss22rFz/q2tmEI5+8G8uHQCd1jBzoT7Qb5shZaUQAQawx8HUp3Krj9OpCBQENH/Uyo5N6UkZg0JcLLtkc+ZwgBCEkjokcksx7hvRPSYmHnm1ILTsThNvAZkMre2bGi7Uirpmyj77GndbaZHmXq77XS06g7JW8gRHEjp/tLlyGCSRz4cxk3v55PmCsoccLJSfRvAY/S3dGJtiux3BTU4U0lNNhZ+iEg7V/Ffr3Z/naXY/zV4OpNFLN07MU/33RscZRWnaZS5LZnADZ56ECIzNx+tnj+0NkvOvSpRA8iTcEaSGOuTJND9jO58n5u0HMmbwFdhw5eXbOvkvBxQUQ/5vDfUTnZKtl4OKgPs9ZjeJeKhuKG0vmo+wP8uxL/LLDSSPDByDDwZvtpqguOUlMy81uJ+bAheZoV97LpL6xJSZ8QXFD61AE/tZo+aNtyXLTzaPcc6m7RUcTO0tCjiXWMLAacoW8kjVgcv7lSxzu7bPRUD2jg7AIenOxG0G8VFBdw1aGuBXoFUS+kAfAizP1aoI6UpAhElpzrHsHhY87kRO3qNgPgcB9KZG+7rRMpKWPKxJJj2qKr2Mu7pNMNNbiy4ftsjvHBehkbPLt6Ig="
 
 before_script:
-  # Need a display for matplotlib
+  # We need to setup a display for matplotlib plotting
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3  # Some time to start xvfb
@@ -24,9 +34,8 @@ script:
   - cd "${TRAVIS_BUILD_DIR}"
   #
   # Setup mfh tex templates:
-  # - git clone "https://github.com/mfherbst/mfhTex.git"
-  # - . mfhTex/setup.sh
-  - mkdir ~/texmf/tex
+  # TODO This first version *should* work as well, but it does not:
+  # - git clone "https://github.com/mfherbst/mfhTex.git" mfhTex && . mfhTex/setup.sh
   - git clone "https://github.com/mfherbst/mfhTex.git" ~/texmf/tex/latex
   #
   # Setup build and build overlay
@@ -35,6 +44,5 @@ script:
   - cmake ..
   - . ../dissertation-build-overlay/setup.sh
   #
-  # Build the documents
+  # Build the document
   - cmake --build .
-
