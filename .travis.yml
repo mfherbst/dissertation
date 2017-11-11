@@ -1,3 +1,4 @@
+language: c
 sudo: false
 dist: trusty
 
@@ -9,6 +10,12 @@ addons:
       - texlive-fonts-extra
       - texlive-latex-recommended
       - python3-yaml
+
+before_script:
+  # Need a display for matplotlib
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3  # Some time to start xvfb
 
 script:
   - cd "${TRAVIS_BUILD_DIR}"
