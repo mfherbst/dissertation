@@ -80,12 +80,7 @@ def plot_EHF_vs_bas(values, full_O=False):
         atom = vals[0]["atom"]
         vals = sorted(vals, key=lambda x: (x["n_max"], x["l_max"]))
 
-        n_bas = np.array([
-            molsturm.construct_basis("sturmian/atomic", atom, k_exp=1.0,
-                                     n_max=v["n_max"], l_max=v["l_max"],
-                                     m_max=v["m_max"]).size
-            for v in vals
-        ])
+        n_bas = np.array([v["n_bas"] for v in vals])
         ns = np.array([v["n_max"] for v in vals])
         hfs = np.array([v["energy_ground_state"] for v in vals])
 

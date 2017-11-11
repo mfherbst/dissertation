@@ -71,6 +71,7 @@ def run_calculation(args):
         "n_max": n,
         "l_max": l,
         "m_max": m,
+        "n_bas": res["n_bas"],
         "orben_a": list(np.sort(res["orben_f"][:noa])),
         "orben_b": list(np.sort(res["orben_f"][noa:])),
         "orben_occ_a": list(np.sort(

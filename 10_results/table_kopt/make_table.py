@@ -4,8 +4,6 @@ import yaml
 import os
 import gint
 import molsturm
-import sturmint
-
 
 dir_of_this_script = os.path.dirname(__file__)
 with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
@@ -65,9 +63,7 @@ def prepare_rows(data):
             raise NotImplementedError()
         hfstr = hfstr.split(".")
 
-        n_bas = str(sturmint.atomic.cs.Basis(1.0, n_max=dset["n_max"],
-                                             l_max=dset["l_max"],
-                                             m_max=dset["m_max"]).size())
+        n_bas = str(dset["n_bas"])
         basis = r"$(" + str(dset["n_max"]) + ", " + str(dset["l_max"]) + \
                 ", " + str(dset["m_max"]) + r")$"
         kopt = "{:.4f}".format(dset["k_opt"]).split(".")

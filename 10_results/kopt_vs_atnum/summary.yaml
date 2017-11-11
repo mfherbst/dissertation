@@ -1,246 +1,246 @@
 - {atom_number: 3, charge: 0, ground_state_energy: -7.244629569542828, k_opt: 1.5858330765730808,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 3, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 14, n_max: 3, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.384827927560701, k_opt: 1.5615354869861042,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.384828005166298, k_opt: 1.5630970224830902,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.416515801814155, k_opt: 1.5394757430696588,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.4165158293329, k_opt: 1.538778987888921,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.428123977571486, k_opt: 1.5328669656560299,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 3, charge: 0, ground_state_energy: -7.431213843963153, k_opt: 1.5348660573508843,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.118625972592167, k_opt: 2.0313101375734726,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 3, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 14, n_max: 3, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.467964689367927, k_opt: 2.016682426841117,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.467964689405793, k_opt: 2.016682426841117,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.539156805697019, k_opt: 1.9896896934293402,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.539156872220245, k_opt: 1.9902633051481804,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.564447843924999, k_opt: 1.987700003725911,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 4, charge: 0, ground_state_energy: -14.570107862447333, k_opt: 1.9956781537263377,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -23.64846769566384, k_opt: 2.479808866715321,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 3, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 14, n_max: 3, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.32117449077847, k_opt: 2.4639385785874244,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 5, charge: 1, ground_state_energy: -24.14107250694684, k_opt: 2.664729106787974,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.325942223263354, k_opt: 2.4664025171760118,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.464110760455842, k_opt: 2.426071274253629,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 5, charge: 1, ground_state_energy: -24.211966876663258, k_opt: 2.6571642913454014,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.46852083930742, k_opt: 2.4282388744110097,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.512041318149464, k_opt: 2.409495595748553,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 5, charge: 0, ground_state_energy: -24.52731372639892, k_opt: 2.4024172729189464,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.344903107176606, k_opt: 2.9160303218959567,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 6, charge: -1, ground_state_energy: -37.10526460882775, k_opt: 2.742131726839705,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.58533171953499, k_opt: 2.8725972490134053,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 5, valid: true}
-- {atom_number: 6, charge: 0, ground_state_energy: -37.586375905725774, k_opt: 2.8754698462724186,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 5, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 6, charge: -1, ground_state_energy: -37.4920217359923, k_opt: 2.6809691711620514,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
+- {atom_number: 6, charge: 0, ground_state_energy: -37.586375905725774, k_opt: 2.8754698462724186,
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 32, n_max: 5, valid: false}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.662844670212735, k_opt: 2.849404527563345,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 6, charge: 0, ground_state_energy: -37.681885777751134, k_opt: 2.8264831219458837,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 7, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 50, n_max: 7, valid: false}
 - {atom_number: 7, charge: 0, ground_state_energy: -52.15282322880718, k_opt: 3.3660880731467904,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 3, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 14, n_max: 3, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -53.882212922486104, k_opt: 3.3640716906013757,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -53.88221292251741, k_opt: 3.3640716906013757,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -54.249396291173845, k_opt: 3.3200037291868414,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -54.24939580126223, k_opt: 3.3191213995583753,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -54.365014500318864, k_opt: 3.2866914098611266,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 7, charge: 0, ground_state_energy: -54.39166661738927, k_opt: 3.2600000000000002,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 8, charge: 1, ground_state_energy: -73.89790889437845, k_opt: 3.993653736385362,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 8, charge: 0, ground_state_energy: -74.57762845910561, k_opt: 3.738303310722419,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 8, charge: 1, ground_state_energy: -74.25420790061176, k_opt: 3.965442777174896,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 8, charge: 0, ground_state_energy: -74.74979033970992, k_opt: 3.685266637184536,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 8, charge: 0, ground_state_energy: -74.79613130048173, k_opt: 3.637772695913426,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 9, charge: -1, ground_state_energy: -97.79139700355117, k_opt: 4.025094828612554,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
-- {atom_number: 9, charge: 0, ground_state_energy: -99.07686049662217, k_opt: 4.162333127232859,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 9, charge: -1, ground_state_energy: -98.87422705705175, k_opt: 3.9570675341245614,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
+- {atom_number: 9, charge: 0, ground_state_energy: -99.07686049662217, k_opt: 4.162333127232859,
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 9, charge: 0, ground_state_energy: -99.320428773516, k_opt: 4.09891277001537,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 9, charge: 0, ground_state_energy: -99.3848185658933, k_opt: 4.037621204892503,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -122.30853948040223, k_opt: 4.614157895510943,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 3, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 14, n_max: 3, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -127.05282178044035, k_opt: 4.636555844010855,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 13, n_max: 4, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -127.05282178041917, k_opt: 4.636555844010855,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -128.0943435158901, k_opt: 4.58483317156365,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -128.09434298506528, k_opt: 4.58434687563971,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -128.4254891779935, k_opt: 4.512402293800152,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 10, charge: 0, ground_state_energy: -128.50725681348194, k_opt: 4.448200499426494,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -156.7055837935034, k_opt: 4.53184557935336,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -159.81324766166207, k_opt: 4.449087169910982,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -159.81324766103268, k_opt: 4.449087169910982,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -160.92906916693607, k_opt: 4.286007747401395,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -160.9290694288865, k_opt: 4.289101537728626,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -161.40284864641012, k_opt: 4.095691756881063,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -161.40284781046967, k_opt: 4.095027894150368,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 11, charge: 0, ground_state_energy: -161.6199742026463, k_opt: 3.916872709785455,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 8, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 29, n_max: 8, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -190.84467950186277, k_opt: 4.63970530856598,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -196.13621035673833, k_opt: 4.5829439618069445,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -196.13621035647125, k_opt: 4.5829439618069445,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -198.02758225013497, k_opt: 4.441660524727671,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -198.02758230324562, k_opt: 4.441680513726384,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -198.87050717789532, k_opt: 4.2666457920715315,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -198.8705072972607, k_opt: 4.268699275526163,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 12, charge: 0, ground_state_energy: -199.24453520486333, k_opt: 4.1073039580208865,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 8, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 29, n_max: 8, valid: true}
 - {atom_number: 13, charge: 1, ground_state_energy: -232.35587371912231, k_opt: 5.106366270227711,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 13, charge: 1, ground_state_energy: -238.19290553167028, k_opt: 5.047051131484398,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 13, charge: 0, ground_state_energy: -236.69430171349683, k_opt: 4.775678378473912,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: false}
 - {atom_number: 13, charge: 0, ground_state_energy: -239.50589742172835, k_opt: 4.650183226999787,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: false}
 - {atom_number: 13, charge: 0, ground_state_energy: -239.51378279741198, k_opt: 4.648777407476837,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 13, charge: 0, ground_state_energy: -240.78124538830548, k_opt: 4.484603830164592,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 13, charge: 0, ground_state_energy: -240.78849293357095, k_opt: 4.485097783795803,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 13, charge: 0, ground_state_energy: -241.34203676775172, k_opt: 4.335210685309303,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 8, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 29, n_max: 8, valid: false}
 - {atom_number: 14, charge: -1, ground_state_energy: -267.9578631326966, k_opt: 4.792643222374609,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -271.61626522434017, k_opt: 5.008758400800844,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 14, charge: -1, ground_state_energy: -280.19494987527577, k_opt: 4.823528922682518,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -282.00092334058286, k_opt: 5.009065668227519,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -285.76774128700015, k_opt: 4.9060860408408375,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 6, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 21, n_max: 6, valid: false}
 - {atom_number: 14, charge: 0, ground_state_energy: -285.77553343500676, k_opt: 4.904372619282322,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -287.468210236835, k_opt: 4.7542574972033265,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -287.4751381424826, k_opt: 4.75468529428772,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 14, charge: 0, ground_state_energy: -288.1994590766642, k_opt: 4.616411894041357,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 8, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 29, n_max: 8, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -318.96017301284, k_opt: 5.224626560534535,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -332.1876272916674, k_opt: 5.26754848853743,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -336.9463860714318, k_opt: 5.185782271026874,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -336.94638655817073, k_opt: 5.185992618709047,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -339.07243249405724, k_opt: 5.049014222768723,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -339.07243333851255, k_opt: 5.049296394762064,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 15, charge: 0, ground_state_energy: -339.96507421008164, k_opt: 4.922236259948939,
-  l_max: 1, m_max: 1, multiplicity: 4, n_max: 8, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 4, n_bas: 29, n_max: 8, valid: true}
 - {atom_number: 16, charge: 1, ground_state_energy: -374.48517919449773, k_opt: 5.658293804995651,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 16, charge: 0, ground_state_energy: -370.8868761425315, k_opt: 5.451024131447636,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 16, charge: 1, ground_state_energy: -388.71407071933345, k_opt: 5.710345032675191,
-  l_max: 2, m_max: 2, multiplicity: 4, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 4, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 16, charge: 0, ground_state_energy: -387.16347849963574, k_opt: 5.540282838192424,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 16, charge: 0, ground_state_energy: -392.9613386458059, k_opt: 5.474937177953749,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 6, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 21, n_max: 6, valid: false}
 - {atom_number: 16, charge: 0, ground_state_energy: -392.9686707027545, k_opt: 5.476220122185134,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 16, charge: 0, ground_state_energy: -395.55093303089956, k_opt: 5.347362618936312,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 7, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 25, n_max: 7, valid: false}
 - {atom_number: 16, charge: 0, ground_state_energy: -395.5525526835881, k_opt: 5.347437714388112,
-  l_max: 2, m_max: 2, multiplicity: 3, n_max: 7, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 3, n_bas: 50, n_max: 7, valid: false}
 - {atom_number: 16, charge: 0, ground_state_energy: -396.6225893971864, k_opt: 5.225932992924777,
-  l_max: 1, m_max: 1, multiplicity: 3, n_max: 8, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 3, n_bas: 29, n_max: 8, valid: false}
 - {atom_number: 17, charge: -1, ground_state_energy: -423.6723421146488, k_opt: 5.518298148564244,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 17, charge: 0, ground_state_energy: -427.78117394024264, k_opt: 5.690866118867167,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 4, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 23, n_max: 4, valid: false}
 - {atom_number: 17, charge: -1, ground_state_energy: -445.22985373290055, k_opt: 5.6695617042842,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 17, charge: 0, ground_state_energy: -447.27444214330296, k_opt: 5.820819524270817,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 17, charge: 0, ground_state_energy: -454.1644468803929, k_opt: 5.77634531216471,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 6, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 21, n_max: 6, valid: false}
 - {atom_number: 17, charge: 0, ground_state_energy: -454.1715327857095, k_opt: 5.776641980167751,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 17, charge: 0, ground_state_energy: -457.23245574002755, k_opt: 5.655343912067302,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 7, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 25, n_max: 7, valid: false}
 - {atom_number: 17, charge: 0, ground_state_energy: -457.23874149150373, k_opt: 5.656075979557262,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 17, charge: 0, ground_state_energy: -458.4818986152551, k_opt: 5.5403874578577,
-  l_max: 1, m_max: 1, multiplicity: 2, n_max: 8, valid: false}
+  l_max: 1, m_max: 1, multiplicity: 2, n_bas: 29, n_max: 8, valid: false}
 - {atom_number: 18, charge: 0, ground_state_energy: -489.78691079669784, k_opt: 5.941369477668041,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 4, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 23, n_max: 4, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -512.6726267641321, k_opt: 6.109367650805392,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 17, n_max: 5, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -512.6726267640879, k_opt: 6.109367650805392,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 5, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 32, n_max: 5, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -520.7125456320248, k_opt: 6.083614437960542,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 21, n_max: 6, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -520.7125457432048, k_opt: 6.083734560876215,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 6, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 41, n_max: 6, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -524.2770410010528, k_opt: 5.970464976552748,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 25, n_max: 7, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -524.2770429723041, k_opt: 5.971031191527668,
-  l_max: 2, m_max: 2, multiplicity: 1, n_max: 7, valid: true}
+  l_max: 2, m_max: 2, multiplicity: 1, n_bas: 50, n_max: 7, valid: true}
 - {atom_number: 18, charge: 0, ground_state_energy: -525.7054207118515, k_opt: 5.861613852581089,
-  l_max: 1, m_max: 1, multiplicity: 1, n_max: 8, valid: true}
+  l_max: 1, m_max: 1, multiplicity: 1, n_bas: 29, n_max: 8, valid: true}
 - {atom_number: 19, charge: 0, ground_state_energy: -582.1661464316717, k_opt: 6.402803355070545,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 5, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 32, n_max: 5, valid: false}
 - {atom_number: 19, charge: 0, ground_state_energy: -591.5693458489152, k_opt: 6.378024821420786,
-  l_max: 2, m_max: 2, multiplicity: 2, n_max: 6, valid: false}
+  l_max: 2, m_max: 2, multiplicity: 2, n_bas: 41, n_max: 6, valid: false}
 - {atom_number: 19, charge: 0, ground_state_energy: -591.57119717964, k_opt: 6.378024821420786,
-  l_max: 3, m_max: 3, multiplicity: 2, n_max: 6, valid: false}
+  l_max: 3, m_max: 3, multiplicity: 2, n_bas: 62, n_max: 6, valid: false}

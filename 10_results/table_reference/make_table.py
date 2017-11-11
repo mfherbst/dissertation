@@ -32,7 +32,7 @@ with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
 
 headings = ["system", r"\multicolumn{2}{c}{$E_\text{HF}$}"]
 rows = []
-for i in range(1, 100):
+for i in range(1, 20):
     symbol = gint.element.find(i).symbol
 
     if symbol in restricted:
