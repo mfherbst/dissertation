@@ -168,20 +168,19 @@ per angular momentum $l$:
 	(see \eqref{eqn:SCFalphaBetaCoeffs})
 	and
 	\[
-		N_{\text{bas}, l} := \abs{ \{ (n',l',m') \, |\, (n',l',m') \in \Ibas
-			\ \text{and} \ l' = l \} }
+		N_{\text{bas}, l} := \abs{ \left\{ (n',l',m') \, \big|\, (n',l',m') \in \Ibas
+			\ \text{and} \ l' = l \right\} }
 	\]
 	is the number of basis functions in the \CS basis which has angular momentum
 	quantum number $l$.
 \end{defn}
 Since $\RMSOl$ is the \RMS-averaged coefficient for a particular angular
 momentum quantum number $l$ in the occupied SCF orbitals,
-it provides a measure for the importance of those \CS basis functions
+it provides a measure for the importance of the \CS basis functions
 with quantum number $l$ for the description of this particular system.
-Loosely speaking a drop in $\RMSOl$ to values below the desired
-accuracy of the calculation indicates that basis functions with
-this value of $l$ can be omitted from the \CS basis for this system
-at \HF level.
+Loosely speaking a drop in $\RMSOl$ to values below the
+accuracy desired for the calculation indicates that basis functions with
+this value of $l$ can be omitted from the basis without a change in \HF energy.
 
 \begin{figure}
 	\centering
@@ -196,11 +195,35 @@ at \HF level.
 	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 3}
 	\label{fig:RMSOl_period3}
 \end{figure}
-If we consider the neutral atoms of the second and the third period of
-the periodic table in a $(6,5,5)$ \CS basis set
-and plot $\RMSOl$ vs $l$,
-we observe two types of behaviours in figures \vref{fig:RMSOl_period2}
-and \vref{fig:RMSOl_period3}.
+Let us now consider the neutral atoms of the second and third period of
+the periodic table in a $(6,5,5)$ \CS basis set.
+If we plot $\RMSOl$ vs $l$ like in figures \vref{fig:RMSOl_period2}
+and \vref{fig:RMSOl_period3}, we observe two types of behaviour.
+
+Those atoms which consist of a fully filled or half-filled valence subshell
+, i.e. Li, Be, N, Ne and Na, Mg, P and Ar,
+show a very distinct drop in $\RMSOl$ once a certain value
+for $l$ is reached.
+This suggests that for lithium and beryllium only $l=0$,
+i.e. $s$-functions are required for a description of these atoms,
+whilst for the others we only need $l \leq 1$, i.e. $s$- and $p$-functions.
+This is in perfect agreement to what one would expected
+considering the Aufbau principle and the Madelung rule (see \vref{sec:PSEAufbau})
+for atoms,
+since these principles suggest that only $s$ and $p$-orbitals will be
+occupied for the second and third period of the periodic table.
+
+On the other hand the atoms which do not consist
+of a closed or half-filled subshell,
+i.e. B, C, O, F and Al, Si, S, Cl,
+only show a rather moderate decrease in $\RMSOl$ over the range of the plot.
+% TODO HERE
+
+
+
+The first kind applies for closed-shell atoms or atoms
+with a half-filled subshell
+
 
 Half-filled 2p or 3p subshell
 or closed-shell
@@ -412,7 +435,7 @@ but we look at basis sets with a particular $\lmax < \nmax$ now.
 	\centering
 	\includeimage{10_results/ehf_vs_nlm_O}
 	\caption{Plot relative error in $E_\text{HF}$ vs $\Nbas$}
-	\label{fig:ErrorHF_vs_nlm}
+	\label{fig:ErrorHF_vs_nlm_O}
 \end{figure}
 
 As can be seen the convergence is greatly improved
@@ -591,7 +614,7 @@ period of the periodic system of elements.
 	\caption{Fraction of MP2 correlation energy recovered
 		relative to the calculation with a $(6,3,3)$ \CS basis for
 		atoms with a full or half-full shell in the second and third period.}
-	\label{fig:EccVsNlm}
+	\label{fig:EccVsNlmEasy}
 \end{figure}
 
 \begin{figure}
@@ -600,7 +623,7 @@ period of the periodic system of elements.
 	\caption{Fraction of MP2 correlation energy recovered
 		relative to the calculation with a $(6,4,4)$ \CS basis for
 		atoms with one or two unpaired electrons.}
-	\label{fig:EccVsNlm}
+	\label{fig:EccVsNlmHard}
 \end{figure}
 
 For the full set of value see appendix \vref{apx:CSCorrelationConvergence}
