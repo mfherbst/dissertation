@@ -87,8 +87,8 @@ ret.append(r"    \FL")
 ret.append(r"    " + " & ".join(2 * headings) + r" \ML")
 
 # Add content (in two columns)
-off = len(rows) // 2
-for i in range(len(rows) - off):
+off = (len(rows) + 1) // 2
+for i in range(off):
     def make_row(row):
         return row[0] + " & " + " & ".join(row[1].split("."))
 
