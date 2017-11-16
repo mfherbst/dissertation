@@ -13,11 +13,15 @@ restricted:
   P: {source: Malykhanov2012, value: -340.7187807870104}
   S: {source: Malykhanov2012, value: -397.50489564838523}
 unrestricted:
+  Al: {source: CBL3456, value: -241.8808503}
   B: {source: CBL2345, value: -24.5334831}
   C: {source: CBL3456, value: -37.6937751}
+  Cl: {source: CBL3456, value: -459.4899302}
   F: {source: CBL3456, value: -99.4166858}
   Li: {source: CBL2345, value: -7.4327376}
   N: {source: CBL3456, value: -54.4046409}
   Na: {source: CBL2345, value: -161.8589459}
   O: {source: CBL3456, value: -74.8192096}
   P: {source: CBL3456, value: -340.7192829}
+  S: {source: CBL3456, value: -397.5133666}
+  Si: {source: CBL3456, value: -288.8589476}
