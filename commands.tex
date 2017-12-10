@@ -1,5 +1,17 @@
 \input{common_commands}
 
+% Transparently switch between pdf and png
+\newcommand{\includeimage}[2][]{\expandafter\includegraphics[#1]{#2.\imageformat}}
+
+% Title and subtitle of the thesis
+\newcommand{\thesistitle}{Development of a modular quantum-chemistry framework
+for the investigation of novel basis functions}
+\newcommand{\thesissubtitle}{The case of Couloumb-Sturmians}
+\newcommand{\thesisurl}{https://michael-herbst.com/publications/2018.02_phd.pdf}
+
+% Style of the header of the thesis
+\newcommand{\leftheadstyle}{\uppercase}
+
 % Include a quote at the beginning of a chapter
 \newcommand{\chapquote}[2]{%
 	\begin{minipage}{0.9\textwidth}%
@@ -9,18 +21,6 @@
 	\end{minipage}%
 	\vspace{1em}
 }
-
-% Transparently switch between pdf and png
-\newcommand{\includeimage}[2][]{\expandafter\includegraphics[#1]{#2.\imageformat}}
-
-% Title and subtitle of the thesis
-\newcommand{\thesistitle}{Development of a modular quantum-chemistry framework
-for the investigation of novel basis functions}
-\newcommand{\thesissubtitle}{The case of Finite Elements and Sturmians}
-\newcommand{\thesisurl}{https://michael-herbst.com/publications/2018.02_phd.pdf}
-
-% Style of the header of the thesis
-\newcommand{\leftheadstyle}{\uppercase}
 
 % Index and term
 \newcommand{\newtermmark}{\textbf}
