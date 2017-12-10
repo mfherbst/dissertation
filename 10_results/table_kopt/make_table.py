@@ -43,8 +43,10 @@ def prepare_rows(data):
             else:
                 dset["multiplicity"] = 1
 
-        sys = molsturm.MolecularSystem(atom, charge=dset["charge"],
-                                       multiplicity=dset["multiplicity"])
+        sys = molsturm.System(atom)
+        sys.adjust_electrons(charge=dset["charge"],
+                             multiplicity=dset["multiplicity"])
+
         if sys.multiplicity == 1:
             lit = literature["restricted"]
             mark = r"\tmark[R]"

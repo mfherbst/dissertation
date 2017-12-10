@@ -6,7 +6,7 @@ import scipy.constants
 
 def optimize_h2o(rHO_guess, angHO_guess, conv_tol, **params):
     def geometry(r, theta):
-        return molsturm.MolecularSystem(
+        return molsturm.System(
             ["O", "H", "H"],
             [(0, 0, 0), (r, 0, 0), (r*np.cos(theta), r*np.sin(theta), 0)]
         )

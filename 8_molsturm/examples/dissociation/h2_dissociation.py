@@ -13,7 +13,7 @@ def compute_curve(atom, basis_set_name, backend="libint", conv_tol=1e-6,
     previous_hf = None
 
     for i, z in enumerate(distances):
-        sys = molsturm.MolecularSystem(
+        sys = molsturm.System(
             atoms=[atom, atom],
             coords=[(0, 0, 0), (0, 0, z)],
         )

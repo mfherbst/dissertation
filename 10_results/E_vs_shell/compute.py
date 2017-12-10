@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from molsturm import MolecularSystem
+from molsturm import System
 import molsturm
 import yaml
 import collections
@@ -60,14 +60,14 @@ def run_job(args):
 
 def main():
     jobs = []
-    jobs.append(JobArguments(MolecularSystem("Li", multiplicity=2), 1.533))
-    jobs.append(JobArguments(MolecularSystem("Be"), 1.985))
-    jobs.append(JobArguments(MolecularSystem("B", multiplicity=2), 2.409))
-    jobs.append(JobArguments(MolecularSystem("C", multiplicity=3), 2.849))
-    jobs.append(JobArguments(MolecularSystem("N", multiplicity=4), 3.287))
-    jobs.append(JobArguments(MolecularSystem("O", multiplicity=3), 3.685))
-    jobs.append(JobArguments(MolecularSystem("F", multiplicity=2), 4.099))
-    jobs.append(JobArguments(MolecularSystem("Ne"), 4.512))
+    jobs.append(JobArguments(System("Li", multiplicity=2), 1.533))
+    jobs.append(JobArguments(System("Be"), 1.985))
+    jobs.append(JobArguments(System("B", multiplicity=2), 2.409))
+    jobs.append(JobArguments(System("C", multiplicity=3), 2.849))
+    jobs.append(JobArguments(System("N", multiplicity=4), 3.287))
+    jobs.append(JobArguments(System("O", multiplicity=3), 3.685))
+    jobs.append(JobArguments(System("F", multiplicity=2), 4.099))
+    jobs.append(JobArguments(System("Ne"), 4.512))
 
     nproc = multiprocessing.cpu_count()
     with multiprocessing.Pool(processes=nproc) as pool:

@@ -90,7 +90,7 @@ def ccd(state):
 
 
 if __name__ == "__main__":
-    sys = molsturm.MolecularSystem(
+    sys = molsturm.System(
         atoms=["O", "O"],
         coords=[(0, 0, 0), (0, 0, 2.8535)],
         multiplicity=3
