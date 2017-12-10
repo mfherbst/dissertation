@@ -1,5 +1,15 @@
 \input{common_commands}
 
+% Include a quote at the beginning of a chapter
+\newcommand{\chapquote}[2]{%
+	\begin{minipage}{0.9\textwidth}%
+	\begin{quotation}\noindent \textit{#1}\end{quotation}%
+	\vspace{0.1em}
+	\begin{flushright}--- #2\end{flushright}%
+	\end{minipage}%
+	\vspace{1em}
+}
+
 % Transparently switch between pdf and png
 \newcommand{\includeimage}[2][]{\expandafter\includegraphics[#1]{#2.\imageformat}}
 
