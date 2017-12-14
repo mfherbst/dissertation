@@ -1,4 +1,4 @@
-\chapter{Mathematical background}
+\chapter{Mathematical structure of quantum mechanics}
 \chapquote{
 	It is a well-known experience that the only truly
 	enjoyable and profitable way of studying mathematics
@@ -6,7 +6,29 @@
 	own efforts.
 }{Cornelius Lanczos~(1893--1974)}
 
+At the turn of the 19th century it was discovered
+that classical mechanics in the formulations provided
+by Lagrange, Hamilton and Poission
+are not able to capture all effects experimentially observed.
+This lead to the alternative theory of Quantum Mechanics,
+which was developed in close analogy to the classical formulation.
+
+In this chapter we will discuss the mathematical structure
+of quantum mechanics in light of the problems of atomic phyics
+and quantum chemistry.
+Our discussion will focus on explaining both the mathematical
+peculiarities of quantum mechanics as well as hinting
+at the tricks required to make progress in a phyisical setting.
+We follow mostly the excellent materical by \citet{Mueller2000},
+\citet{Davies2007} and \citet{Helffer2013} is our discussion.
+
+\input{1_qm/correspondence.tex}
+
 \section{Hilbert spaces}
+The setting of Quantum Mechanics are the Hilbert spaces
+as all states 
+
+
 Next we turn our attention to Hilbert spaces, which will turn out to be the abstract counterparts of Euclidean space. \\
 
 In order to know what we are talking about, it is necessary to properly define some mathematical structures.
@@ -590,6 +612,37 @@ The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty in
 \nomenclature{$H^2(\Omega, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
 
 
+
+Sobolev spaces lift 
+
+
+
+\begin{defn}
+	% bounded
+\end{defn}
+
+\begin{defn}
+	A metric space $M$ is complete if every sequence in $M$
+	which is Cauchy converges to a limit, which is in $M$ as well.
+\end{defn}
+
+\begin{defn}
+	A set is compact if it is bounded and complete.
+\end{defn}
+
+\begin{defn}
+	A subset $S$ is dense in a complete metric space $M$ if it is a proper subset
+	and each sequence in $S$ which is Cauchy converges to a point in $M$.
+\end{defn}
+
+$C^\infty_0$ is dense in $L^2$ (Hachbusch 1986)
+and dense in $H^1$
+
+also define $H_0^n(\Omega, \C)$
+Give inclusions including $C^\infty_0$
+Mention what is dense
+
+
 \section{Spectral theory}
 \todo[inline,caption={}]{
 	\begin{itemize}
@@ -599,6 +652,287 @@ The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty in
 		\item Keep it short, just what is needed for HF
 	\end{itemize}
 }
+
+\url{https://en.wikipedia.org/wiki/Self-adjoint_operator}
+\url{https://en.wikipedia.org/wiki/Spectral_theorem}
+\url{https://en.wikipedia.org/wiki/Extensions_of_symmetric_operators}
+
+% Discuss the spectral properties of the Laplace and Schrödinger operators
+
+
+% Important:
+%https://en.wikipedia.org/wiki/Self-adjoint_operator
+%If A is symmetric and D o m ( A ) = H {\displaystyle \mathrm {Dom} (A)=H} {\displaystyle \mathrm {Dom} (A)=H}, then A is necessarily bounded.
+%Hence if the operator is not bounded (as most operators in QM) in cannot be self-adjoint.
+
+
+self-adjoint operator
+(show that it has real eigenvalues)
+
+symmetric operator
+
+
+% This section should make clear
+% The importance of the Sobolev space $H_2$ for quantum mechanics
+
+\subsection{The Laplace operator}
+\label{sec:SpectrumLaplace}
+Let us consider the $N$-dimensional \newterm{Laplace operator}
+in Cartesian coordinates,
+\[ \Delta = \sum_{i=1}^d \frac{\partial^2}{\partial x_i^2}. \]
+This operator plays a crucial role in quantum mechanics.
+We will see later\todo{refer} that this operator is part of the
+kinetic operator of the Schrödinger equation.
+For a physical equation we expect that the operator has
+real, i.e. measurable, eigenvalues.
+This typically requires the operator to be self-adjoint.
+In other words from a physical standpoint we would expect
+the Laplace operator to have real eigenvalues.
+
+As it turns out,
+the Laplacian operator $T_0 = \Delta$ with the domain $D(T_0) = L^2(\R^d)$
+does not have \emph{any}
+eigenfunctions $u \in L^2(\R^d)$,
+not even in the weak sense of distributions~\cite{Helffer2013}.
+In other words we are unable to find an eigenfunctions $u \in L^2(\R^d)$
+and a $\lambda \in \R$,
+such that it holds
+\[ \forall \phi \in C^\infty_0(\R^d):  \int_{\R^d}\phi(x) (\Delta u)(x) \D x = \lambda \int_{\R^d} \phi(x) u(x) \D x. \]
+Furthermore the Laplacian operator $T_0$ is not self-adjoint.
+
+It turns out that the domain of the operator is the culprit here.
+Converse to the problem we posed it is actually possible
+to find \emph{for each} $\lambda \in \C$ an eigenfunction from the
+slightly different so-called space of distributions $D'(\R^d)$.
+This suggests that the construction of an appropriate, related
+operator $T_1$, for which we can find an eigenspectrum.
+In fact one may do so in a way, that $T_1$ is even self-adjoint
+by the means of the \newterm{Friedrichs extension}.
+In the particular case we discussed, there are actually
+multiple ways to achieve this.
+One way assumes a Dirichlet boundary, where the potential
+eigenfunctions go to zero
+one obtains the restricted domain
+$D(T_1) = H^2(\R^d) \cap H^1_0(\R^d)$
+for the self-adjoint Laplacian extension.
+Unlike for other operators such an extension for the Laplacian
+is not unique.
+Another construction assuming a Neumann boundary is possible, too.
+It again yields a subset of $H^2(\R^d)$ just with an appropriate
+so-called trace condition enforcing the derivative to go to zero
+at the boundary.
+Most notably this implies that only under specification
+of the boundary condition the operator has an eigenspectrum.
+This is an observation which is true for many operators in quantum mechanics.
+
+If $u \in H^2(\R^d)$ then $\Delta u \in L^2(\R^d)$
+
+\subsection{The Laplace-Beltrami operator on the unit sphere}
+\label{sec:SpectrumLaplaceBeltrami}
+\nomenclature{$Y_l^m(\theta, \varphi)$}{Spherical harmonic function with angular
+momentum quantum number $l$ and azimuthal quantum number $m$}
+\nomenclature{$P^{m}_l$}{Associated Legendre polynomial with orders $l$ and $m$.}
+
+In the previous section, we saw that the Laplace operator $\Delta$
+is self-adjoint and has hence real eigenvalues provided that
+we choose for its domain a subdomain of $D(\Delta) = H^2(\R^3)$.
+
+In this section we want to discuss the solution of Laplace's equation
+on the surface of the unit sphere
+\[
+	\set{S}^2 := \{ \vec{r} \in \R^3 | x^2 + y^2 + z^2 = 1 \}.
+\]
+For this it is most convenient to consider
+the spherical polar coordinate system,
+\ie instead of specifying the vector $\vec{r} = (x, y, z)^T$,
+we specify the parameters $r, \theta, \phi$ or
+\[ \vec{r} = \mm{ r \, \sin \theta \, \cos \phi \\ r \, \sin \theta \sin \phi \\
+r \, \cos \theta }. \]
+The condition for the unit sphere than reduces to $r=1$
+
+Since the sphere is no longer a Euclidean geometry
+but much rather a curved manifold some of the treatment presented
+in the previous chapter no longer holds.
+Nevertheless an equivalent to the Friedrichs extension can be found
+in order to make the Laplace-Beltrami operator
+\[ \Delta_{\set{S}^2} u = \frac{1}{\sin \theta} \frac{\partial}{\partial \varphi}
+\left( \sin \varphi \frac{\partial u}{\partial \varphi}  \right)
++ \frac{1}{(\sin \varphi)^2} \frac{\partial^2}{\partial \theta^2} u\]
+self-adjoint.
+\todoil{Insert details}
+
+The above polar expression for the Laplace-Beltrami operator
+allows to explicitly solve the equation
+\newcommand{\laplaceSphere}{\Delta_{\set{S}^2}}
+\[ \laplaceSphere u = \lambda u \]
+for eigenfunctions $u$ and eigenvalues $\lambda$,
+which results in the spherical harmonics
+\[ Y_l^m(\theta, \varphi) = N_{lm} P_l^m(\cos \theta) e^{im\varphi} \]
+where $N_{lm}$ is a normalisation constant
+and eigenvalues $-l (l+1)$:
+\begin{equation}
+	-\laplaceSphere Y_l^m(\theta, \varphi) = l (l+1) Y_l^m(\theta, \varphi)
+	\label{eqn:Laplace}
+\end{equation}
+Importantly the quantum number $l$ is positive and $m$ is restricted by
+\[ -l \le m \le l, \]
+such that there are exactly $(2l+1)$ spherical harmonics with the same eigenvalue
+$-l (l+1)$.
+
+For our following arguments it will be important to note
+that the 3d Laplacian in spherical polar coordinates
+and the Laplace-Beltrami operator for the unit sphere
+are related by
+\newcommand{\laplaceRadial}{\frac{\partial}{\partial r} \left( r^2 \frac{\partial}{\partial r} \right)}
+\begin{equation}
+r^2 \Delta = \laplaceRadial + \laplaceSphere
+	\label{eqn:LaplaceCorrespondance}
+\end{equation}
+such that
+\begin{equation}
+	- r^2 \Delta Y_l^m(\theta, \varphi) = -\laplaceSphere Y_l^m(\theta, \varphi) = l (l+1) Y_l^m(\theta, \varphi)
+	\label{eqn:LaplaceSphericalHarmonic}
+\end{equation}
+
+
+\subsection{The Schrödinger operator for a Hydrogenic atom}
+We will discuss in the next chapter the physical origin.
+For now we will just state that the Schrödinger operator for the Hydrogenic atom
+(in so-called atomic units)
+is given by the expression
+\begin{equation}
+	\Op{H} = - \frac12 \Delta - \frac{Z}{r} = -\frac{1}{2r^2} \laplaceRadial -\frac{1}{2r^2} \laplaceSphere - \frac{Z}{r}
+	\label{eqn:HydrogenOperator}
+\end{equation}
+in other words the scaled Laplace operator and a term for a radial-symmetric Coulombic
+potential.
+
+The Hilbert space for this operator is $L^2(\R^3, \C)$
+and the domain is $C^\infty_0(\R^3, \C)$
+By a similar argument to section \vref{sec:SpectrumLaplace} based on the
+Friedrichs extension one notices that this operator is self-adjoint
+if the domain is chosen to be $H^2(\R^3, \C$.
+Let us now find the analytic expressions of the eigenfunctions of this operator,
+i.e. solve the time-independent Schrödinger equation
+\begin{equation}
+	( \Op{H} - E ) \Psi = 0
+	\label{eqn:HydrogenEigenproblem}
+\end{equation}
+where $\Psi \in L^2(\R^3, \C)$ and $E \in \R$.
+\todoil{More details on this later}
+
+Without jumping ahead too far let us assume that both the energy as well
+as the state $\Psi$ are characterised by three quantum numbers $n$, $l$ and $m$.
+A further careful inspection of \eqref{eqn:HydrogenEigenproblem}
+in contrast with \eqref{eqn:Laplace} suggests a product ansatz
+\[ \Psi_{nlm}(\vec{r}) = R_{nl}(r) Y_l^m(\theta, \phi) \]
+This yields to the radial equation
+\begin{equation}
+	- \left( \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2} - \frac{Z}{r} - E \right) R_{nl}(r) = 0
+	\label{eqn:HydrogenRadial}
+\end{equation}
+which has the solutions~\cite{Mueller2000}
+\begin{equation}
+	 R_{nl}(r) = N_{nl} \left(\frac{2Zr}{n}\right)^l \exp\left(-\frac{Zr}{n} \right)
+\;_1F_1\left(l+1-n | 2l+2|\frac{2Zr}{n}\right)
+	\label{eqn:HydrogenRadialSolution}
+\end{equation}
+where $_1F_1\left(a|b|\zeta\right)$ is a confluent hypergeometric function,
+namely~\cite{Avery2006}
+\[ _1F_1\left(a \middle| b \middle| \zeta\right) =
+\sum_{k=0}^\infty \frac{a^{\bar{k}}}{k! \, b^{\bar{k}}} \zeta^k =
+1 + \frac{a}{b} \zeta + \frac{a(a+1)}{2b(b+1)} \zeta^2 + \cdots \]
+where $a^{\bar{k}}$ is the rising factorial of $a$.
+The normalisaton constant is
+\[ N_{nl} = \frac{2 \left( \frac{Z}{n} \right)^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}} \]
+The energy eigenvalues are
+\[ E_{nlm} = - \frac{1}{2n^2}. \]
+\todoil{One should mention that these are all to be found,
+	since the radial functions are complete in the radial sense
+and the spherical harmonics are complete in the angular sense.}
+
+If one walks through the derivation properly,
+one notices that the principle quantum number $n$ is always larger than zero
+and that $l < n$ applies as well.
+\todoil{If I remember correctly this is a result of Sturm-Liouville theory}
+Together with the restrictions on $l$ and $m$ itself this results in the
+following restrictions on the quantum numbers:
+\begin{align*}
+	n &> 0 & 0 \leq l &< n & -l \leq &m \leq l
+\end{align*}
+Taking a look at the confluent hypergeometric function we use, it is easy to see
+that the power of the polynomial in $r$ is between zero and
+\[
+	\deg \;_1F_1\left(l + 1 -m \middle| 2l+2 \middle| \frac{2Zr}{n} \right) = n - l -1 \]
+such that overall the polynomial part of the radial function
+has a power between $l$ and
+\[ \deg \frac{R_{nl}(r)}{\exp(2Zr/n)} = n - 1. \]
+
+We will now argue that the solutions $\Psi \in H^1(\R^3, \C)$.
+It is easy to see that the derivative of $\Psi$ is continuous and bound
+everywhere but the origin.
+See \cite{Kato1957} and references therein for details.
+Since the smoothness at the origin is better the larger
+the larger the exponents of the polynomial in $r$,
+let us consider the worst case, i.e. the $s$-functions with $l = 0$.
+Taking a look at the definition of $_1F_1(a,b,\zeta)$
+one notices that the smallest exponent, irrespective of the value of $n$ is $0$.
+Thus we will discuss the smoothness properties of
+\[
+	\Psi_{1s}(r, \theta, \phi) = \Psi_{100}(r, \theta, \phi)
+	= \sqrt{\frac{Z^3}{\pi}} \exp(-Z r)
+\]
+at the origin,
+which in fact is the least smooth of all hydrogen solutions.
+
+Since this function is radially symmetric,
+we only need to consider the derivative along one direction.
+Without loss of generality we choose the $x$ direction.
+Taking the first derivative we find
+\[
+	\frac{\partial \Psi_{1s}}{\partial x} = -\sqrt{\frac{Z^5}{\pi}} \frac{x}{r} \exp(-Z r)
+\]
+As expected at the origin we encounter a discontinuity in the derivative.
+Inserting $x = r \sin\theta \cos \phi$ we do notice
+\[
+	\lim_{r \to 0} \frac{\partial \Psi_{1s}}{\partial x} = -\sqrt{\frac{Z^5}{\pi}} \sin\theta \cos \phi,
+\]
+which stays finite. The derivative is thus bounded at zero as well
+and as a result square-integrable.
+On the other hand the second derivative
+\[
+	\frac{\partial^2 \Psi_{1s}}{\partial x^2}
+	= \left( -\frac{Z x^2}{r^2} -\frac{x^2}{r^3} + \frac{1}{r} \right)
+		\sqrt{\frac{Z^5}{\pi}} \exp(-Z r)
+\]
+is unbound at the origin.
+Careful inspection shows that it is not square-integrable.
+\todoil{Do that}
+Therefore $\Psi_{1s} \in H^1(\R^3,\C)$, but $\Psi_{1s} \not\in H^2(\R^3, \C)$.
+
+
+
+
+
+
+
+Show that Solutions are in $H^2$ by considering
+the least smooth (i.e. the 1s orbital) and showing that this
+is in $H^2$.
+That way we know that $H^1$ is a good space for approximating the solutions
+$\Rightarrow$ FE formalism can be applied.
+
+\todoil{Try to check whether a productansatz for regularising the nuclear potential
+	in combination with CS for the nuclear cusp factor and FE for the rest
+could actually work}
+
+
+% Derivative is smooth and bounded everywhere but at origin
+% Argue that the worst function is for l = 0.
+% Take derivative wrt. x
+% Then show that it's absolute value at the origin just contains a hole
+% hence derivative is L^2 integrable in the weak sense
+
 
 \section{Optimisation theory}
 \todo[inline,caption={}]{
@@ -610,6 +944,12 @@ The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty in
 }
 
 \section{Numerical solution of partial differential equations}
+We can relax $H^2(\R^3)$ to $H^1(\R^3)$ if we use test functions
+from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
+\todo{Ask guido}
+Is this the energetic extension
+\url{https://en.wikipedia.org/wiki/Energetic_space}
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Define the problem
@@ -617,12 +957,22 @@ The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty in
 	\end{itemize}
 }
 
-\subsection{Intoduction to Finite Elements}
+\subsection{Introduction to Finite Elements}
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Basic ideas and properties
 	\end{itemize}
 }
+
+% Use as an example to explain the ideas of finite elements
+An important equation from classical electrodynamics which
+involves the Laplace operator is Poisson's equation
+\begin{equation}
+	\Delta V_H(\vec{r}) = \rho(\vec{r})
+	\label{eqn:Poisson}
+\end{equation}
+relating the potential to the charge density $\rho$ which generates it.
+
 
 \subsection{Diagonalisation algorithms}
 \todo[inline,caption={}]{

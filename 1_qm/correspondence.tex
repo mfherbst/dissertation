@@ -1,0 +1,148 @@
+\section{The correspondence of classical and quantum mechanics}
+According to the Hamiltonian formulation of classical mechanics
+a physical system with $N$ degrees of freedom
+is described by a set of generalised coordinates
+$q_1, \ldots, q_N$ along with their canonical momenta $p_1, \ldots, p_N$.
+Any physically measurable quantity $F$
+can now be obtained as a function of these system parameters.
+In other words one may define a so-called \newterm{observable}
+\newcommand{\clphase}{(q_1, \ldots, q_N, p_1, \ldots p_N)}
+$F\clphase$ as a function $\R^{2N} \to \R$
+from the phase space to the measured value.
+Naturally the coordinates $q_i$ and $p_i$ are observables as well.
+The most important observable is the total energy function or \newterm{Hamlitonian}
+\begin{equation}
+	H\clphase
+	\equiv \underbrace{\frac{1}{2} \sum_{k=1}^N m_k p_k^2}_{= T(p_1, \ldots, p_N)}
+	+ V(q_1, \ldots, q_N),
+	\label{eqn:HamiltonianClassical}
+\end{equation}
+where $m_k$ is the mass of the particle associated with
+the degree of freedom $k$,
+$T$ is the kinetic energy observable and $V$ the total potential energy observable.
+In the formalism of Hamiltonian mechanics $H$ governs the time evolution
+of the system, namely
+\begin{align}
+	\frac{\D p_i}{\D t} &= - \frac{\partial H}{\partial q_i} &
+	\frac{\D q_i}{\D t} &= \frac{\partial H}{\partial p_i}.
+	\label{eqn:HamiltonianEqnMotion}
+\end{align}
+
+Using these expressions one may of course describe the time evolution
+any arbitrary observable as well.
+To make the connection to quantum mechanics more apparent,
+let us introduce for this purpose the so-called \newterm{Poisson bracket}.
+It is the skew-symmetric form
+\begin{equation}
+	\left\{ F, G \right\}_P \equiv \sum_{j=1}^n \left(
+	\frac{\partial  F}{\partial q_j} \frac{\partial G}{\partial p_j}
+	- \frac{\partial  F}{\partial p_j} \frac{\partial G}{\partial q_j}
+	\right)
+	\label{eqn:PoissonBracket}
+\end{equation}
+and according to
+\begin{equation}
+	\frac{\D F}{\D t} = \frac{\partial F}{\partial t} + \left\{ F, H \right\}_P.
+	\label{eqn:PoissonTimeEvolution}
+\end{equation}
+it relates the Hamiltonian to the time evolution of any arbitrary observable.
+One may also show the relationships
+\begin{align}
+	\{ q_k, q_l \}_P = \{p_k, p_l\}_P &= 0 & \{ p_k, q_l\}_P = - \delta_{kl} &&\forall k,l \in \{1, \ldots, N\}
+	\label{eqn:PoissonProperties}
+\end{align}
+between the principle system observables.
+
+\subsection{The move to quantum mechanics}
+\defineabbr{QM}{QM\xspace}{quantum mechanics}
+We will now introduce quantum mechanics~(QM) in a rather pragmatic manor,
+namely as a recipe for deducing the \QM formulation
+from the classical one
+employing the so-called \newterm{correspondence principle}.
+Some of the mathematical terms used in this section
+will only be mentioned here and discussed in more detail
+later on in this chapter.
+
+The most important changes do be underdone for
+moving from classical mechanics to \QM%
+\footnote{More precisely: We consider here the position representation of \QM.}
+are:
+\begin{enumerate}
+	\item Instead of phase space vectors $\clphase \in \R^{2N}$,
+		employ functions $\Psi : \R^N \to \C$ from a
+		complex separable Hilbert space $\mathcal{H}$
+		in order to describe the state of the system.
+	\item A classical observable $F$ is represented by a
+		self-adjoint operator $\Op{F}$ on the Hilbert space $\mathcal{H}$.
+	\item For each classical observable one may construct an equivalent
+		corresponding quantum-mechanical operator.
+		For example the observable $q_k$ corresponds to
+		\[ q_k \longrightarrow \op{x}_k = x_k, \]
+		\ie just the multiplication with $x_k$,
+		the $k$-th coordinate of the system.
+		On the other hand $p_k$ corresponds to
+		\[ p_k \longrightarrow \op{p}_k
+			= \frac{\hbar}{\I} \frac{\partial}{\partial x_k}, \]
+		the scaled derivative with respect to $x_k$.
+	\item All occurrences of the Poisson bracket with observables
+		is to be replaced by the commutator
+		\begin{equation}
+			\comm{\Op{F}}{\Op{G}} = \Op{F} \Op{G} - \Op{G} \Op{F}
+			\label{eqn:Operator}
+		\end{equation}
+		and corresponding operators, \ie
+		\[ \{F, G\}_P \longrightarrow \frac{\comm{\Op{F}}{\Op{G}}}{\I \hbar}. \]
+	\item The measured values of an observable $F$
+		are the eigenvalues $\lambda_k$ of $\Op{F}$ \emph{only}.
+		This implies, that for a pure state $\Psi$ with $\norm{\Psi} = 1$
+		one may compute the expectation value of a measurement as
+		\[ \langle \Op{F} \rangle = \int_{\R^N} \cc{\Psi}(\vec{x}) \left(\Op{F} \Psi\right)(\vec{x}) \D \vec{x} = \sum_{k\in\mathcal{I}} \int_{\R^N} \lambda_k \cc{\psi}_k(\vec{x}) \Psi(\vec{x}) \D x \]
+		where we assume that we can find a complete and countable set
+		of eigenpairs $\{ (\lambda_k, \psi_k) \}_{k \in \mathcal{I}}$
+		of the operator $\Op{F}$, i.e. that
+		\[ \Op{F} \psi_k = \lambda_k \psi_k \]
+		Note, that this is not always possible.
+		See \cite{Helffer2013} for a more general treatment.
+\end{enumerate}
+Even though these guidelines probably seem rather \textit{ad hoc},
+they are closely related to the postulates of quantum mechanics.
+For example from \eqref{eqn:PoissonProperties}
+we may immediately deduce the compatibility relations between the space
+and position operators
+\begin{align}
+	\comm{\op{x}_k}{\op{x}_l} &= \comm{\op{p}_k}{\op{p}_l} = 0 & \comm{\op{x}_k}{\op{p}_l} = \frac{\hbar}{\I} \delta_{kl}
+	\label{eqn:compatibilityOperator}
+\end{align}
+
+The correspondence principle is backed up on a more rigorous
+theoretical bases (into which we will not go into).
+Consider for example the Ehrenfest theorem
+\[
+	\frac{\D \langle \Op{F} \rangle}{\D t} = \frac{\partial \langle \Op{F} \rangle}{\partial t} + \frac{1}{\I \hbar} \left\langle \comm{\Op{F}}{\Op{H}} \right\rangle
+\]
+and its similarity to the classical \eqref{eqn:PoissonTimeEvolution},
+suggesting that classical Mechanics still --- on average --- still holds.
+
+For our treatment the most important result of quantum mechanics
+is the so-called Schrödinger equation,
+which governs the evolution of a system state $\Psi(\vec{x})$ over time:
+\[
+alb
+\]
+where $\Op{H}$ is the analogon to the classical Hamiltonian,
+namely the Hamiltonian operator.
+Its eigenvalues are the energy levels of the system
+\[ \Op{H} \Psi = E \Psi \]
+The first is the time-dependent
+the second the time-independent Schrödinger equation.
+
+Let us build the expression of the \QM Hamiltonian for the
+Hydrogen atom according to the correspondence principle
+
+\subsection{Atomic units}
+A very natural system of units for the exploration of \QM systems
+
+
+We will use atomic units for all our considerations from here on.
+
+
