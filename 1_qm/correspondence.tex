@@ -8,7 +8,7 @@ can now be obtained as a function of these system parameters.
 In other words one may define a so-called \newterm{observable}
 \newcommand{\clphase}{(q_1, \ldots, q_N, p_1, \ldots p_N)}
 $F\clphase$ as a function $\R^{2N} \to \R$
-from the phase space to the measured value.
+from a vector in \newterm{phase space} to the measured value.
 Naturally the coordinates $q_i$ and $p_i$ are observables as well.
 The most important observable is the total energy function or \newterm{Hamlitonian}
 \begin{equation}
@@ -56,34 +56,34 @@ between the principle system observables.
 \subsection{The move to quantum mechanics}
 \defineabbr{QM}{QM\xspace}{quantum mechanics}
 We will now introduce quantum mechanics~(QM) in a rather pragmatic manor,
-namely as a recipe for deducing the \QM formulation
-from the classical one
-employing the so-called \newterm{correspondence principle}.
-Some of the mathematical terms used in this section
-will only be mentioned here and discussed in more detail
-later on in this chapter.
+namely by stating a summary what changes in \QM formulation
+compared to the classical one.
+In most cases one can even deduce a one-to-one correspondence
+between the classical and the \QM expression.
+In the following overview we will use most of the mathematical terms without explanation
+in order to motivate a more detailed discussion further down this chapter.
 
-The most important changes do be underdone for
-moving from classical mechanics to \QM%
-\footnote{More precisely: We consider here the position representation of \QM.}
-are:
 \begin{enumerate}
 	\item Instead of phase space vectors $\clphase \in \R^{2N}$,
 		employ functions $\Psi : \R^N \to \C$ from a
 		complex separable Hilbert space $\mathcal{H}$
-		in order to describe the state of the system.
+		to describe the state of the system.
 	\item A classical observable $F$ is represented by a
-		self-adjoint operator $\Op{F}$ on the Hilbert space $\mathcal{H}$.
+		self-adjoint operator $\Op{F}$ on the Hilbert space $\mathcal{H}$ in \QM.
 	\item For each classical observable one may construct an equivalent
 		corresponding quantum-mechanical operator.
-		For example the observable $q_k$ corresponds to
+		For example the observable $q_k$ corresponds%
+		\footnote{In fact alternative constructions for the position and momentum
+				operator are possible as well. We present the so-called
+				\textit{position representation} here.}
+		to
 		\[ q_k \longrightarrow \op{x}_k = x_k, \]
 		\ie just the multiplication with $x_k$,
 		the $k$-th coordinate of the system.
 		On the other hand $p_k$ corresponds to
 		\[ p_k \longrightarrow \op{p}_k
 			= \frac{\hbar}{\I} \frac{\partial}{\partial x_k}, \]
-		the scaled derivative with respect to $x_k$.
+		an appropriately scaled derivative with respect to $x_k$.
 	\item All occurrences of the Poisson bracket with observables
 		is to be replaced by the commutator
 		\begin{equation}
@@ -91,58 +91,145 @@ are:
 			\label{eqn:Operator}
 		\end{equation}
 		and corresponding operators, \ie
-		\[ \{F, G\}_P \longrightarrow \frac{\comm{\Op{F}}{\Op{G}}}{\I \hbar}. \]
+		\[ \{F, G\}_P \longrightarrow \frac{\I}{\hbar} \comm{\Op{F}}{\Op{G}}. \]
 	\item The measured values of an observable $F$
 		are the eigenvalues $\lambda_k$ of $\Op{F}$ \emph{only}.
-		This implies, that for a pure state $\Psi$ with $\norm{\Psi} = 1$
-		one may compute the expectation value of a measurement as
-		\[ \langle \Op{F} \rangle = \int_{\R^N} \cc{\Psi}(\vec{x}) \left(\Op{F} \Psi\right)(\vec{x}) \D \vec{x} = \sum_{k\in\mathcal{I}} \int_{\R^N} \lambda_k \cc{\psi}_k(\vec{x}) \Psi(\vec{x}) \D x \]
-		where we assume that we can find a complete and countable set
-		of eigenpairs $\{ (\lambda_k, \psi_k) \}_{k \in \mathcal{I}}$
-		of the operator $\Op{F}$, i.e. that
-		\[ \Op{F} \psi_k = \lambda_k \psi_k \]
-		Note, that this is not always possible.
-		See \cite{Helffer2013} for a more general treatment.
+	\item Assume that we can find a complete and countable
+		set of eigenpairs $\{ (\lambda_\mu, \psi_\mu) \}_{\mu \in \mathcal{I}}$
+		for the operator $\Op{F}$
+		indexed by elements of the set $\mathcal{I}$%
+		\footnote{See \cite{Helffer2013} for a more general treatment.}.
+		One may then compute the expectation value of a measurement
+		for a pure state $\Psi$ with $\norm{\Psi} = 1$ as
+		\begin{equation}
+			\langle \Op{F} \rangle = \int_{\R^N} \cc{\Psi}(\vec{x}) \left(\Op{F} \Psi\right)(\vec{x}) \D \vec{x} = \sum_{\mu\in\mathcal{I}} \int_{\R^N} \lambda_\mu \cc{\psi}_\mu(\vec{x}) \Psi(\vec{x}) \D \vec{x}.
+			\label{eqn:QMExpectation}
+		\end{equation}
+		Here we identified
+		\[ \vec{x} \equiv (x_1, \ldots, x_N) \quad \text{and} \quad \D \vec{x} = \D x_1 \cdots \D x_N \]
+		for ease of notation.
 \end{enumerate}
 Even though these guidelines probably seem rather \textit{ad hoc},
-they are closely related to the postulates of quantum mechanics.
-For example from \eqref{eqn:PoissonProperties}
-we may immediately deduce the compatibility relations between the space
-and position operators
+they are follow directly from the postulates of quantum mechanics.
+Let us apply the sketched correspondence rules to \eqref{eqn:PoissonProperties}.
+We immediately deduce the important relations for the commutator
+between position and momentum operators:
 \begin{align}
-	\comm{\op{x}_k}{\op{x}_l} &= \comm{\op{p}_k}{\op{p}_l} = 0 & \comm{\op{x}_k}{\op{p}_l} = \frac{\hbar}{\I} \delta_{kl}
+	\comm{\op{x}_k}{\op{x}_l} &= \comm{\op{p}_k}{\op{p}_l} = 0 & \comm{\op{x}_k}{\op{p}_l} = \frac{\hbar}{\I} \delta_{kl}.
 	\label{eqn:compatibilityOperator}
 \end{align}
+Similarly from \eqref{eqn:PoissonTimeEvolution} we obtain
+\begin{equation}
+	\frac{\D \Op{F}}{\D t} = \frac{\partial \Op{F}}{\partial t} + \frac{\I}{\hbar} \comm{\Op{F}}{\Op{H}},
+	\label{eqn:HeisenbergEqnMotion}
+\end{equation}
+the equation of motion, which governs the time-evolution of the operator $\Op{F}$
+in the so-called \newterm{Heisenberg picture} of \QM.
+Taking the statistical average over \eqref{eqn:HeisenbergEqnMotion}
+results in the Ehrenfest theorem
+\begin{equation}
+	\frac{\D \langle \Op{F} \rangle}{\D t} = \frac{\partial \langle \Op{F} \rangle}{\partial t} + \frac{1}{\I \hbar} \left\langle \comm{\Op{F}}{\Op{H}} \right\rangle.
+	\label{eqn:EhrenfestTheorem}
+\end{equation}
+This results allows to rationalise the \newterm{correspondence principle}
+of classical mechanics and \QM,
+which we have developed so far.
+Comparing \eqref{eqn:EhrenfestTheorem} and \eqref{eqn:PoissonTimeEvolution}
+and keeping in mind that the expectation value $\langle \Op{F} \rangle$
+as well as the classical observable $F$ both tell us about the result
+of a measurement,
+we can deduce that --- on average --- classical mechanics still holds.
+Thus we may expect the classical expressions to carry some meaning
+in the \QM sense as well.
 
-The correspondence principle is backed up on a more rigorous
-theoretical bases (into which we will not go into).
-Consider for example the Ehrenfest theorem
-\[
-	\frac{\D \langle \Op{F} \rangle}{\D t} = \frac{\partial \langle \Op{F} \rangle}{\partial t} + \frac{1}{\I \hbar} \left\langle \comm{\Op{F}}{\Op{H}} \right\rangle
-\]
-and its similarity to the classical \eqref{eqn:PoissonTimeEvolution},
-suggesting that classical Mechanics still --- on average --- still holds.
+\subsection{The Schrödinger equation}
+Even though the Heisenberg picture we developed
+in the previous section is great for deducing the analogy between
+classical mechanics and \QM,
+it is not very suitable for the kinds of problems we will be looking
+at in the remainder of this thesis.
+Our problems are best described in the \newterm{Schrödinger picture} of \QM,
+which differs to the Heisenberg picture by the way it treats time evolution.
+In the Heisenberg picture the state function $\Psi$ is time-independent
+and the operators evolve.
+In the Schrödinger picture it is the other way round, i.e. $\Psi$ may change over time
+and the operators are static.
+Both pictures are related by a unitary transformation
+in the Hilbert space $\mathcal{H}$,
+see the Stone-von Neumann theorem for details.
 
-For our treatment the most important result of quantum mechanics
-is the so-called Schrödinger equation,
-which governs the evolution of a system state $\Psi(\vec{x})$ over time:
-\[
-alb
-\]
-where $\Op{H}$ is the analogon to the classical Hamiltonian,
-namely the Hamiltonian operator.
-Its eigenvalues are the energy levels of the system
-\[ \Op{H} \Psi = E \Psi \]
-The first is the time-dependent
-the second the time-independent Schrödinger equation.
-
-Let us build the expression of the \QM Hamiltonian for the
-Hydrogen atom according to the correspondence principle
+The equivalent expression to \eqref{eqn:HeisenbergEqnMotion}
+in the Schrödinger picture is the \newterm{time-dependent Schrödinger equation}
+\begin{equation}
+	\Op{H} \Psi(\vec{x}) = \I \hbar \frac{\partial}{\partial t} \Psi(\vec{x}).
+	\label{eqn:TDSE}
+\end{equation}
+Similar to \eqref{eqn:HeisenbergEqnMotion} the key operator governing the
+time-evolution of the system is $\Op{H}$, the \QM Hamiltonian,
+named exactly like the corresponding classical observable $H$.
+In fact many useful spectroscopic properties of a system described by $\Op{H}$
+may already be deduced by considering the eigendecomposition of this operator.
+In light of this one typically refers to the ansatz
+\begin{equation}
+	\Op{H} \Psi_\mu(\vec{x}) = E_\mu \Psi_\mu(\vec{x})
+	\label{eqn:TISE}
+\end{equation}
+for obtaining the eigenpairs
+$\{(E_\mu, \Psi_\mu) \}_{\mu \in \mathcal{I}} \subset \R \times \mathcal{H}$
+by the name \newterm{time-independent Schrödinger equation} as well.
 
 \subsection{Atomic units}
-A very natural system of units for the exploration of \QM systems
+Employing the correspondence principle it is often very convenient
+to construct the \QM Hamiltonian of a system from the classical energy expression.
+Let us consider the hydrogen-like system,
+where a particle of positive charge $Z \cdot e$
+is clamped at the origin and is surrounded by a single electron.
+In Cartesian coordinates the position of the electron can be described by the Cartesian
+vector $\vec{r} \equiv (x, y, z)$.
+Such a system has the classical kinetic energy and potential energy
+\begin{align*}
+	T &= \frac{\vec{p} \cdot \vec{p}}{2 m_e} & V &= - \frac{Ze^2}{\norm{\vec{r}}} = - \frac{Ze^2}{r}.
+\end{align*}
+respectively. The appropriate \QM analogues are
+\begin{align}
+	\Op{T} &= -\frac{\hbar^2}{2 m_e} \Delta & \Op{V} = - \frac{Ze^2}{r}
+	\label{eqn:OpHydrogenConventional}
+\end{align}
+where the \newterm{Laplace operator}
+\begin{align}
+	\Delta = \sum_{\alpha \in \{x,y,z\}} \frac{\partial^2}{\partial \alpha^2}
+	\label{eqn:LaplaceOperatorHydrogen}
+\end{align}
+was introduced. The full Hamiltonian therefore reads
+\[ \Op{H} = \Op{T} + \Op{V} = -\frac{\hbar^2}{2 m_e} \Delta - \frac{Ze^2}{r}. \]
 
-
-We will use atomic units for all our considerations from here on.
-
-
+For considering more complicated systems,
+it is often convenient to employ so-called \newterm{atomic units}.
+These are generated by a unitary transformation of the Hilbert space,
+which effectively yields
+\[ \hbar \equiv e \equiv m_e \equiv a_0 \equiv E_h \equiv 1. \]
+See table \vref{tab:AtomicUnits} for the values of these quantities
+in terms of the usual SI units.
+The hydrogen-like Hamiltonian \vref{eqn:OpHydrogenConventional}
+in atomic units takes the simple form
+\begin{equation}
+	\Op{H} = -\frac12 \Delta - \frac{Z}{r}
+	\label{eqn:OpHydrogen}
+\end{equation}
+We will from now work exclusively in these units.
+\begin{table}
+	\centering
+	\begin{tabular}{lllll}
+		\toprule
+		symbol & name & atomic unit of & value in SI units \\
+		\midrule
+		$\hbar$ & Planck constant & momentum & $\unit[1.055\E{-34}]{Js}$ \\
+		$e$ & elementary charge & charge & $\unit[1.602\E{-19}]{C}$ \\
+		$m_e$ & electron mass & mass & $\unit[9.110\E{-31}]{kg}$ \\
+		$a_0$ & Bohr radius & length & $\unit[5.292\E{-11}]{m}$ \\
+		$E_h$ & Hartree energy & energy & $\unit[4.360\E{-18}]{J}$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{Atomic units and their relationship to SI units}
+	\label{tab:AtomicUnits}
+\end{table}
