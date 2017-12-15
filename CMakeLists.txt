@@ -34,7 +34,7 @@ add_depends(${CCBYSA})
 
 add_subdirectory(0_intro)
 add_subdirectory(1_qm)
-add_subdirectory(2_atom)
+add_subdirectory(2_numeigen)
 add_subdirectory(3_qchem)
 add_subdirectory(4_solving_hf)
 add_subdirectory(6_contraction_lazy_matrices)

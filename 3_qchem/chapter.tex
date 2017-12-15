@@ -1,4 +1,5 @@
 \chapter{Numerical solution of the electronic Schrödinger equation}
+\label{ch:qchem}
 \chapquote{%
 The word ``reality'' is also a word,
 a word which we must learn to use correctly.}
@@ -9,6 +10,106 @@ Bohr believes as much as we do in the reality of phenomena of
 which he speaks, and then the difference between the views
 of Bohr and mine is more a difference of language than a
 difference of content}{Vladimir Fock~(1898--1974)}
+
+This chapter reviews the basic concepts of quantum mechanics,
+which we require for our treatment.
+
+
+\todoil{Explain coordinate system choices, convention for $\vec{r}$, $r$, $\uvec{r}$}
+
+\section{Hydrogenic atoms}
+\todoil{This should be done already in chapter 1}
+\label{sec:HAtom}
+
+
+
+note aufbau principle
+discuss some properties of the solution
+
+\todoil{Show that generally it makes sense that larger values of $n$ give rise to larger
+	energy due to the kinetic energy operator. Maybe just generally take $\mbra{\Psi} \Delta \mket{\Psi}$ or argue it.}
+
+In an analogous manor to section \vref{sec:HAtom}
+one can argue for molecules that larger principle quantum numbers
+$n$ give rise to an associated Lagrange polynomial of higher degree,
+thus more sign changes in the basis function.
+This in turn implies a larger curvature and thus a higher kinetic energy.
+The potential energy of a basis function, however,
+is not affected very much,
+since the radial extent is pretty much unchanged by $n$
+(exponential decay does not depend on $n$).
+
+\subsection{The Aufbau principle for the periodic table}
+\label{sec:PSEAufbau}
+Mention the Madelung rule
+
+\section{$N$-body Schrödinger equation}
+% Argue that we can do the mathematical background in real function
+% arithmetic only and still use the results for complex input due to linearity.
+
+$ \Psi \in H^2(\R^{3d}, \R)$
+\nomenclature{$\Psi$}{State of an $N$-body quantum system, typically the \emph{exact} ground state solution to the $N$-electron electronic TISE}
+\defineabbr{TISE}{TISE\xspace}{Time-independent Schrödinger equation,
+usually only the electronic part}
+\nomenclature{$\Phi$}{Slater determinant or $N$-particle basis functions}
+\nomenclature{$\varphi_i$}{One-particle function, typically solutions to the Hartree-Fock equation, i.e. a Hartree-Fock orbital}
+\nomenclature{$\Op{H}$}{$N$-electron Schrödinger Hamiltonian}
+\nomenclature{$\Delta$}{Laplace operator}
+\nomenclature{$\Op{T}$}{Kinetic energy operator}
+\nomenclature{$\Op{V}$}{Combined potential energy operator (nuclear attraction and Coulombic electron-electron repulsion)}
+
+\nomenclature{$\Ibas$}{Index set of the one-particle basis functions.
+	Typically a set of multi-indices of quantum numbers.}
+\nomenclature{$\Nbas$}{Cardinality of $\Ibas$, i.e. the number of one-particle basis functions.}
+\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{0, \ldots \Norb\}$}
+\nomenclature{$\Norb$}{The number of computed SCF orbitals.
+Note, that $\Norb \le \Nbas$.}
+\nomenclature{$\Nelec, \NelecA, \NelecB$}{Number of electrons, number of $\alpha$ electrons, number of $\beta$ electrons. Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \le \NelecB$ by convention.}
+\nomenclature{$\chi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\chi_\mu\}_{\mu \in \Ibas}$}
+
+\nomenclature{$\vec{x}$}{Vector in $\R^{3 \Nelec}$, which typically specifies the positions of all electrons of the system.}
+\nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of a particle in space}
+
+
+
+% show the equation
+% rationalise it
+% name the terms
+
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Define it
+		\item TDSE and TISE
+		\item Properties
+		\item Show how difficult
+	\end{itemize}
+}
+
+\section{BO separation}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Eckard conditions
+		\item Rotational, vibrational, translational, electronic separate
+		\item PES and electronic schrödinger
+	\end{itemize}
+
+	% follow conical intersection talk of ivona
+}
+
+%\section{Second quantisation and Fock spaces}
+%\todo[inline,caption={}]{
+%	\begin{itemize}
+%		\item Structure of the spaces
+%		\item Properties
+%	\end{itemize}
+%}
+
+
+
+
+
+
 
 \section{Full-CI}
 \todo[inline,caption={}]{
