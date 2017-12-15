@@ -8,12 +8,7 @@ The whole thing is heavily work in progress right now of course ;).
 ## Building
 Should be as simple as
 ```sh
-# Checkout and setup
 git clone --recursive https://github.com/mfherbst/dissertation
-git clone --recursive https://github.com/mfherbst/mfhTex
-. mfhTex/setup.sh
-
-# Building the pdf
 cd dissertation
 make pdf
 ```
@@ -38,7 +33,6 @@ If you want to do the same, this is roughly what you need to do
 ```sh
 # Checkout repos
 git clone --recursive https://github.com/mfherbst/dissertation
-git clone --recursive https://github.com/mfherbst/mfhTex
 git clone --recursive https://github.com/mfherbst/dissertation-build-overlay
 
 # Setup build directory
@@ -46,7 +40,6 @@ mkdir dissertation/build
 cd dissertation/build
 cmake ..
 . ../../dissertation-build-overlay/setup.sh
-. ../../mfhTex/setup.sh
 
 # Run the build
 make

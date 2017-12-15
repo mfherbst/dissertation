@@ -1,3 +1,6 @@
 [submodule "cmake/UseLATEX"]
 	path = cmake/UseLATEX
 	url = https://github.com/kmorel/UseLATEX
+[submodule "mfhTex"]
+	path = mfhTex
+	url = https://github.com/mfherbst/mfhTex.git

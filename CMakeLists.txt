@@ -7,6 +7,21 @@ include(cmake/UseLATEX/UseLATEX.cmake)
 include(cmake/TexInputs.cmake)
 include(cmake/ImageConversion.cmake)
 
+# Make sure the documentclasses and tex packages we require
+# from mfhTex are found
+# This needs to be called before doing anything with the
+# commands provided by cmake/ImageConversion.cmake
+add_custom_documentclasses(mfhTex/mfh/MFHbook.cls)
+
+add_custom_packages(
+	mfhTex/mfh/MFHabbr.sty
+	mfhTex/mfh/MFHcode.sty
+	mfhTex/mfh/MFHcolours.sty
+	mfhTex/mfh/MFHdefault.sty
+	mfhTex/mfh/MFHscience.sty
+	mfhTex/mfh/MFHtheoremdefs.sty
+)
+
 # Tex files
 add_inputs(
 	abstract.tex

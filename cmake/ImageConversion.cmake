@@ -34,8 +34,22 @@ function(tikz_image INFILE DEPENDVAR)
 		"${TIKZ_IMAGE_MODULE_DIR}/convert_tikz.py"
 	)
 
+	set(CUSTPACKDEP "")
+	foreach(custpack ${MFH_LATEX_CUSTOM_PACKAGES})
+		add_custom_command(
+			OUTPUT "${custpack}.sty"
+			COMMAND
+			${CMAKE_COMMAND} -E copy
+				"${MFH_LATEX_BINARY_DIR}/${custpack}.sty" ${custpack}.sty
+			DEPENDS
+			"${custpack}_copy"
+		)
+		set(CUSTPACKDEP ${CUSTPACKDEP} ${custpack}.sty)
+	endforeach()
+
 	# Make the actual pdf image
-	add_latex_document("${GENERATED_TEX_FILE}" EXCLUDE_FROM_ALL DEPENDS "${GENERATED_TEX_FILE}")
+	add_latex_document("${GENERATED_TEX_FILE}" EXCLUDE_FROM_ALL
+		DEPENDS "${GENERATED_TEX_FILE};${CUSTPACKDEP}")
 	latex_get_output_path(OUTPUT)
 	set(GENERATED_PDF_FILE "${OUTPUT}/${INFILE_NOTIKZ}.pdf")
 

@@ -33,11 +33,6 @@ before_script:
 script:
   - cd "${TRAVIS_BUILD_DIR}"
   #
-  # Setup mfh tex templates:
-  # TODO This first version *should* work as well, but it does not:
-  # - git clone "https://github.com/mfherbst/mfhTex.git" mfhTex && . mfhTex/setup.sh
-  - git clone "https://github.com/mfherbst/mfhTex.git" ~/texmf/tex/latex
-  #
   # Setup build and build overlay
   - ${TRAVIS_BUILD_DIR}/.travis/checkout_overlay.sh
   - mkdir ${TRAVIS_BUILD_DIR}/build && cd ${TRAVIS_BUILD_DIR}/build
