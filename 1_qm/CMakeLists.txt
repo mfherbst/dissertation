@@ -1,2 +1,5 @@
 add_inputs(chapter.tex)
 add_inputs(correspondence.tex)
+add_inputs(hilbert.tex)
+add_inputs(funcana.tex)
+add_inputs(spectral.tex)
