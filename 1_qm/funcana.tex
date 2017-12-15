@@ -1,4 +1,490 @@
 \section{Elements of functional analysis}
+
+In section \vref{sec:IntroQM} we discussed that the state
+of a \QM system is governed by a vector in a complex-valued Hilbert space,
+whilst information about the system itself can be obtained by studying
+appropriate self-adjoint operators defined on such Hilbert spaces.
+Precisely this is the mathematical field of functional analysis,
+which we will briefly review in this section.
+We assume basic familiarity with the concepts of a field and a vector space
+in this section.
+\todoil{Cite standard literature}
+See the standard mathematical literature or the handout for an earlier talk
+by the author~\cite{DiracNotation} for more information about these concepts.
+
+
+\subsection{Hilbert spaces}
+\label{sec:Hilbert}
+\nomenclature{$\F$}{Either the field of real numbers $\R$ or the field of complex numbers $\C$.}
+
+
+
+
+
+
+
+\begin{defn}
+	A vector space over a field $\F$ is a non-empty set $V$
+	with the binary operations
+	\begin{itemize}
+		\item Vector addition: $V \times V \to V : (x,y) \mapsto x+y$
+		\item Scalar multiplication $\F \times V \to V: (\alpha,x) \mapsto \alpha x$
+	\end{itemize}
+	that satisfy some axioms listed below. The elements of $V$ are referred to as vectors
+	and the elements of the field $\F$ are called scalars.
+
+	The axioms to be satisfied are:
+	\begin{itemize}
+		\item $(V,+)$ is an abelian group, i.e. it holds
+		\begin{align}
+			\label{eqn:vectorAss}        \forall x,y,z \in V: &\quad x + (y + z) = (x + y) + z		&&\text{"associativity of addition"} \\
+			\label{eqn:vectorZero}       \exists 0 \in V: &\quad \forall x \in V : x + 0 = x		&&\text{"existence of zero vector"} \\
+			\label{eqn:vectorInverse}    \forall x \in V: &\quad \exists -x \in V : x + (-x) = 0	&&\text{"existence of additive inverses"} \\
+			\label{eqn:vectorComm}       \forall x,y \in V: &\quad x + y = y + x			&&\text{"commutativity of addition"}
+		\end{align}
+		\item The so-called compatibility of scalar multiplication and
+			field multiplication:
+			\begin{equation}
+				\forall \alpha,\beta \in \F, x \in V: \quad (\alpha \beta) x = \alpha (\beta x)
+				\label{eqn:vectorCompField}
+			\end{equation}
+		\item The scalar multiplication with the multiplicative identity of
+			$\F$ (i.e. the scalar $1$) should satisfy
+			\begin{equation}
+				\forall x \in V: \quad 1\, x = x
+				\label{eqn:vectorMultIdent}
+			\end{equation}
+		\item The following distributivity relations:
+			\begin{align}
+				\label{eqn:vectorDistrVecAdd}\forall \alpha \in \set{F}, x,y \in V: & \quad \alpha (x+y) = \alpha x + \alpha y\\
+				\label{eqn:vectorDistrFldAdd}\forall \alpha,\beta \in \set{F}, x \in V: & \quad (\alpha + \beta) x = \alpha x + \beta x
+			\end{align}
+	\end{itemize}
+\end{defn}
+
+\begin{nte}
+	As stated above, this is all rather technical, so let us sum briefly up the rationale and the key ideas:
+	\begin{itemize}
+		\item Recall the picture of \eqref{eqn:vectorEuclidAdd} where we pasted arrows together in order to add them. 
+			It is obvious that such an operation should satisfy \eqref{eqn:vectorAss} and \eqref{eqn:vectorComm}, just because the precise order in which we apply the vectors does not matter.
+			Surely if one adds the zero vector to any arrow, that arrow is unchanged, rationalising \eqref{eqn:vectorZero}.
+			\eqref{eqn:vectorInverse} is also easy to understand if one sees the inverse as the original arrow with head and tail swapped.
+		\item Condition \eqref{eqn:vectorCompField} establishes a formal consistency when scaling vectors multiple times.
+		\item \eqref{eqn:vectorMultIdent} gives us a uniquely defined scalar multiplication, since it defines the outcome of the multiplication operator for one specific scalar.
+			The result for other scalars can than be deduced by applying distributivity and \eqref{eqn:vectorCompField}. 
+			It is remotely comparable to choosing the potential offset when calculating the energy.
+		\item The distributivity relations \eqref{eqn:vectorDistrVecAdd} and \eqref{eqn:vectorDistrFldAdd} just give us the intuitive result that the order of vector/scalar addition and scaling of vectors does not matter.
+	\end{itemize}
+\end{nte}
+
+\noindent
+The next step is to add a scalar product, also known as an inner product.
+\begin{defn}
+	An \emph{inner product space} over $\set{F}$ is a vector space $V$ (over the same field) that is further equipped with an inner product, i.e. a map
+	\[ (\cdot,\cdot) : V \times V \to \set{F} \]
+	that satisfies (for all vectors $x,y,z \in V$ and all $\alpha \in \set{F}$)
+	\begin{align}
+		\label{eqn:innProdConjSym}  &(x,y)^\ast = (y,x) &&                                                 \text{"Conjugate symmetry"} \\
+		\label{eqn:innProdLinLeft}  &(\alpha x + y,z) = \alpha (x,z) + (y,z) &&                            \text{"Linearity in the first argument"} \\
+		\label{eqn:innProdPosDef}   &(x,x) \ge 0 \quad \text{and} \quad (x,x) = 0 ~\Rightarrow~ x = 0  &&  \text{"Positive-definiteness"}
+	\end{align}
+	here the asterisk $^\ast$ denotes complex conjugation.
+\end{defn}
+
+\begin{rem}
+	%TODO: have that?
+	Some other well-known properties of the inner product are in fact not axioms but can be easily deduced by combining two of the above:
+	\begin{itemize}
+		\item Conjugate symmetry \eqref{eqn:innProdConjSym} implies \emph{antilinearity} (or \emph{conjugate linearity}) in the second argument
+			\begin{equation}
+				(z, \alpha x + y) = \alpha^\ast (z,x) + (z,y)
+				\label{eqn:innProdAntiLinRight}
+			\end{equation}
+			In other words the inner product is what is called a \emph{sesquilinear form}.
+
+		\item If $\set{F} = \R$, then Conjugate symmetry \eqref{eqn:innProdConjSym} simplifies to proper symmetry, ie
+			\[ (x,y) = (y,x). \]
+			The antilinearity in the second argument then also reduces to proper linearity
+			\begin{equation}
+				(z, \alpha x + y) = \alpha (z,x) + (z,y),
+				\label{eqn:innProdLinRight}
+			\end{equation}
+			such that this time we get a so-called \emph{bilinear form}.
+	\end{itemize}
+\end{rem}
+
+\begin{nte}
+	From your previous encounters with Dirac notation $\langle \cdot | \cdot \rangle$ you might think that it satisfies all these properties and should be regarded as an inner product as well.
+	In a loose sense this is not actually a bad description and it probably suffices as working knowledge.
+	From a mathematically precise perspective this is, however, not correct. 
+	Nevertheless both objects, the inner product $(\cdot,\cdot)$ and the Dirac bra-c-ket $\langle \cdot | \cdot \rangle$, are highly related. This will become clear from the formal definition of the latter, which we will present later.
+\end{nte}
+
+
+
+\noindent
+Next we proceed to discuss the norm:
+\begin{defn}
+	Given a vector space over the field $\set{F}$, a \emph{norm} is a map
+	\[ \norm{\cdot} : V \to \R \]
+	such that the following axioms hold for all vectors $x,y \in V$ and all $\alpha \in \set{F}$:
+	\begin{align} 
+		\label{eqn:normScalability}  &\norm{\alpha x} = \abs{\alpha} \norm{x} &&                           \text{"Absolute scalability"} \\
+		\label{eqn:normTriaIneq}     &\norm{x + y} \le \norm{x} + \norm{y}    &&                           \text{"Triangle inequality"} \\
+		\label{eqn:normPointSep}     &\text{If}~\norm{x} = 0 \quad \Rightarrow \quad \text{$x$ is the zero vector} &&  \text{"Norm separates points"}
+	\end{align}
+\end{defn}
+
+\begin{rem}
+	Whilst absolute scalability \eqref{eqn:normScalability} seems like a reasonable thing to ask for when defining the norm (again think about scaling arrows), the other two might not be as obvious from the start.
+	\begin{itemize}
+		\item The abstract formulation of the triangle inequality \eqref{eqn:normTriaIneq} is --- as the name suggests --- a direct generalisation of the geometric constraints for a basic triangle:
+			One side always has to be shorter than the sum of the two others. 
+			From the triangular structure that vector addition gives (see fig. \vref{fig:TriangleInequality}) the axiom can be easily illustrated in the case of Euclidean vectors.
+		\item The norm separates points condition again is one of those axioms to give a uniquely defined structure, like \eqref{eqn:vectorMultIdent} for the scaling of vectors.
+			The choice is the most natural as it leads to a positive norm which can be seen as follows.
+			From absolute scalability we have $\norm{-x} = \norm{x}$ for each vector $x \in V$ and furthermore for the zero vector $\norm{0} = 0$.
+			By the triangle inequality $0 = \norm{0} = \norm{x-x} \le \norm{-x} + \norm{x} = 2 \norm{x}$. 
+			Dividing both sides by 2 gives the result $\norm{x} \ge 0$.
+	\end{itemize}
+\end{rem}
+
+
+\begin{prop}
+	For every inner product space there exists a norm given by 
+	\begin{equation}
+		\norm{x} = \sqrt{ (x,x) } \qquad \forall x \in V,
+		\label{eqn:normInduced}
+	\end{equation}
+	the so-called \emph{induced norm}.
+\end{prop}
+\begin{proof}
+	Consider arbitrary $x,y \in V$ and $\alpha \in \set{F}$
+	\begin{itemize}
+		\item The point separating property \eqref{eqn:normPointSep} is a trivial consequence of \eqref{eqn:innProdPosDef}.
+		\item We get absolute scalability from linearity \eqref{eqn:innProdLinLeft} and antilinearity \eqref{eqn:innProdAntiLinRight} of the scalar product
+			\[ \norm{\alpha x} = \sqrt{ (\alpha x,\alpha x) } = \sqrt{ \alpha \alpha^\ast (x,x) } = \abs{\alpha} \norm{x} \]
+		\item Using \eqref{eqn:normPointSep} and again linearity we find
+			\begin{align}
+				\nonumber
+				0 &\le \norm{x \pm y}^2 \\
+				\nonumber
+				  &= (x \pm y, x \pm y) = (x,x) \pm (x,y) \pm (y,x) + (y,y) \\
+				\nonumber
+				  &= (x \pm y, x \pm y) = (x,x) \pm (x,y) \pm (x,y)^\ast + (y,y) \\
+				  &= \norm{x}^2 + \norm{y}^2 \pm 2\Re (x,y)
+				\label{eqn:normInducedProof1}
+			\end{align}
+			Now define normalised vectors $\tilde{x} = \frac{x}{\norm{x}}$ and $\tilde{y} = \frac{y}{\norm{y}}$.
+			In an analogous way to the negative branch in \eqref{eqn:normInducedProof1} above, we have
+			\[ 0 \le \norm{\tilde{x}}^2 + \norm{\tilde{y}}^2 - 2\Re (\tilde{x},\tilde{y}) = 2 - 2 \Re (\tilde{x},\tilde{y}) ,\]
+			such that $\Re  (\tilde{x},\tilde{y}) \le 1$.
+			Now consider
+			\begin{align}
+				\nonumber
+				\left(\norm{x} + \norm{y}\right)^2 - \norm{x + y}^2 &\stackrel{\eqref{eqn:normInducedProof1}}{=} 2 \norm{x} \norm{y} - 2 \Re (x,y) \\
+				\nonumber
+				&= 2 \norm{x} \norm{y} - 2 \Re ( \norm{x} \tilde{x}, \norm{y} \tilde{y} )  \\
+				\nonumber
+				&= 2 \norm{x} \norm{y} \left[ 1 - \Re (\tilde{x},\tilde{y}) \right] \\
+				&\ge 0
+				\label{eqn:normInducedProof2}
+			\end{align}
+			where we used linearity in the penultimate step, to get the (real) factors $\norm{x}$ and $\norm{y}$ out front. 
+			Taking the square root proves the triangle inequality \eqref{eqn:normTriaIneq}.
+	\end{itemize}
+\end{proof}
+
+\begin{cor}[Cauchy-Schwarz Inequality]
+	\label{eqn:CS}
+	Let $V$ be an inner product space with inner product $(\cdot,\cdot)$ and induced norm $\norm{\cdot}$. Then for all $x,y \in V$
+	\[ \norm{x} \norm{y} \ge \Re (x,y) \]
+	and furthermore
+	\[ \sqrt{2} \norm{x} \norm{y} \ge \abs{(x,y)}. \]
+\end{cor}
+\begin{proof}
+	The first part has been implicitly achieved in \eqref{eqn:normInducedProof2}. For the second part, note
+	\[ \abs{(x,y)}^2 = \Big( \Re (x,y) \Big)^2 + \Big( \Im (x,y) \Big)^2  = \Big( \Re (x,y) \Big)^2 + \Big( \Re (y,x) \Big)^2 \le 2 \norm{x}^2 \norm{y}^2.\]
+	Taking the square-root shows the claim.
+\end{proof}
+
+\noindent
+Finally, we arrive at the definition of a \emph{Hilbert space}:
+\begin{defn}
+	A Hilbert space $V$ is an inner product space over the field $\set{F}$, that is complete with respect to the induced norm.
+\end{defn}
+
+\begin{nte}
+	A formal discussion of completeness is omitted here.
+	The picture we developed in section \vref{ideaCompleteness} will be sufficient for our purposes and shall serve as an intuitive guideline whenever the term \emph{complete} arises. \\
+
+	As we said in the last chapter, Euclidean space is indeed complete under its induced norm and can hence be regarded as a Hilbert space.
+	We therefore succeeded in finding an abstract formalism that represents large parts of the internal mathematical structure of Euclidean space.
+\end{nte}
+
+\section{Lebesgue space}
+In this subsection we will try to get a little insight into the space of square-integrable functions $L^2$.
+As it will turn out later, this space is the mathematical object on which Dirac Notation lives in most practical scenarios.
+In a similar fashion to completeness, the precise formulation of \emph{integrability} is well out of scope here\footnote{In fact the whole topic of measure theory deals with just this definition.}. 
+For us this section is merely meant to scratch the surface and introduce the formalism we will need later on. \\
+
+\noindent
+The first problem one runs into very quickly when considering square-integrable functions is that our familiar Riemann integral definition is too tight. 
+This means that there are too few functions that can be properly Riemann-integrated in order to prove the theorems in this subsection.
+The way to make progress is to broaden the definition of the integral and integrability. 
+Hence we consider
+
+\begin{rem}[The Lebesgue integral] 
+	\label{intLebesgue}
+	Instead of a formal definition of the Lebesgue integral, we will just state a few of its properties in order to get a feeling for how it works.
+	\begin{itemize}
+		\item Whenever the Riemann integral exists, the values of the Riemann and the Lebesgue integrals agree. 
+			The only difference between the two integral definitions is that there exist some ``problematic cases'' where the Lebesgue integral still allows integration, but the Riemann integral does not.
+			So if the Riemann integral exists (i.e. if we can do the usual integration and the result is a finite value), we can evaluate it and we are done for the calculation of the integral in both definitions.
+		\item For a Lebesgue integral over a domain $\Omega \subset \R^1$, changing the value of the integrand at up to countably infinite number of points (in an arbitrary way) does not change the value of the integral. 
+			Note, that this means for example 
+			\begin{align}
+				\nonumber
+				&\int_\R \left\{
+				\begin{array}{ll}
+					1 & \text{for $x \in \set{Q}$} \\
+					0 & \text{for $x \in \R \backslash \set{Q}$}
+				\end{array}
+				\right\} \D[x] &&\text{only Lebesgue-integrable} \\
+				%
+				\nonumber
+				= &\int_\R 0 \D[x] && \text{Lebesgue- and Riemann-integrable}\\
+				= &\int_\R \left\{
+				\begin{array}{ll}
+					1 & \text{for $x \in \{\pi, e, 3, 15, 42\}$} \\
+					0 & \text{else}
+				\end{array}
+				\right\} \D[x] &&\text{Lebesgue- and Riemann-integrable}, 			
+				\label{exampleLebesqueIntegral}
+			\end{align}
+			which trivially evaluates to zero (Consider the Riemann-integrable second term).
+			For higher dimensions analogous statements are true:
+			e.g. for integrals over subsets of $\R^2$, we can change the value of the integrand at up to countably infinite number of lines or points; 
+			similarly for 3D integrals at planes, lines or points, \ldots. 
+			Often this allows us to alter an integrand in a way that integration in a Riemann sense is possible. 
+			For example in the first integral of \eqref{exampleLebesqueIntegral}, we changed the points where the function is 1 to 0 in order to get a Riemann-integrable version. 
+			This is possible since $\set{Q}$ is a set with only up to countably infinite number of elements\footnote{It is not necessarily intuitive to understand, what this means. Just imagine there are two kinds of infinities: For one kind one can abstractly speaking find a way to enumerate each element (the ``countable infinity''), for the other one this is not possible.}.
+		\item A direct consequence of the above point is that for each $\Omega \subset \R^n$ there exist an infinitely large number of functions $f : \Omega \to \C$, such that $\int_\Omega f \D[x] = 0$. This will be important very soon.
+		\item From now on all integrals in this script are to be understood as Lebesgue integrals.
+	\end{itemize}
+\end{rem}
+
+\noindent
+That being said, let us consider complex integrability. 
+\begin{defn}
+We call a \emph{complex-valued} function $g : \Omega \to \C$ \emph{integrable} on the domain $\Omega \subset \R^n$ if
+	\begin{equation}
+		\abs{ \int_\Omega g(x) \D x } < \infty,
+		\label{defIntegrable}
+	\end{equation}
+i.e. if the modulus of the integral over the domain remains finite. 
+\end{defn}
+\begin{defn}
+	A complex-valued function $f : \Omega \to \C$ is called \emph{square-integrable} on the domain $\Omega \subset \R^n$ if
+	the function $\abs{f}^2 : \Omega \to \R : x \mapsto \abs{f(x)}^2$ is integrable on that very same domain. 
+	This means nothing else but 
+	\[ \int_\Omega \abs{f}^2 \D x < \infty. \]
+\end{defn}
+
+\nomenclature{$L^2(\Omega, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{lem:L2HilbertSpace}}
+\begin{nte}
+	Usually one denotes the set of square-integrable functions as
+	\begin{equation} 
+		L^2(\Omega, \C) := \big\{ f : \Omega \to \C~\big|~\text{$f$ is square-integrable} \big\}.
+		\label{defL2}
+	\end{equation}
+\end{nte}
+
+\pagebreak[2]
+\noindent
+Before we will eventually proceed to show that $L^2(\Omega)$ is actually a Hilbert space we need a few more intermediate results.
+\begin{lem}[Minkowski’s inequality in $L^2$]
+	\label{lemMinkowski}
+	Let $f,g \in L^2(\Omega)$, i.e. square-integrable, then
+	\begin{itemize}
+		\item $f + g$ is square-integrable on $\Omega$ as well
+		\item $\sqrt{\int_\Omega \abs{f + g}^2 \D[x]} \le \sqrt{\int_\Omega \abs{f}^2 \D[x]} + \sqrt{\int_\Omega \abs{g}^2 \D[x]}$
+	\end{itemize}
+\end{lem}
+\begin{proof}
+	See for example \cite{Adams2003}.
+\end{proof}
+
+\begin{nte}
+	When we say the resulting function $f \circ g$ of an operation $\circ$ is to be \emph{defined pointwise},
+	we mean that $f\circ g$ can be defined by considering the action of $\circ$ in each point $x \in \Omega$ on the function values $f(x)$ and $g(x)$.
+	For example the function $f+g$ from lemma \ref{lemMinkowski} could be defined as the function for which
+	\[ \Big(f+g\Big)(x) = f(x) + g(x) \qquad \forall x \in \Omega.\]
+	Similarly $\Re f$ is the function with
+	\[ \Big( \Re f \Big)(x) = \Re \Big( f(x) \Big) \qquad \forall x \in \Omega.\]
+\end{nte}
+
+\begin{lem}
+	\label{aLittleHoelder}
+	For all complex-valued functions $f,g$, which are defined and integrable on $\Omega \subset \R^n$
+	\[ \int_\Omega \abs{ f g } \D x \le \sqrt {\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x}. \]
+\end{lem}
+\begin{proof}
+	This is a special case of the so-called Hölder's inequality, a proof of which can be found in \cite{Adams2003}.
+\end{proof}
+\noindent
+From this we deduce
+\begin{lem}
+	\label{WellDefL2InnProd}
+	For all complex-valued functions $f,g$ integrable on $\Omega \subset \R^n$, it holds
+	\begin{align*}
+		&\abs{ \int_\Omega f g^\ast \D x } \le \sqrt{ \int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x} \\
+		\intertext{and}
+		&f,g \in L^2(\Omega) \quad \Rightarrow \quad \text{$f g^\ast$ is integrable},
+	\end{align*}
+	where the function $f g^\ast$ is to be constructed from $f$ and $g$ in a pointwise sense.
+\end{lem}
+\begin{proof}
+	Consider first an integrable function $h$ which is defined on $\Omega \subset \R^n$, we have
+	\[ \int_\Omega \abs{h} \D x = \int_\Omega \sqrt{ \left( \Re h \right)^2 + \left( \Im h \right)^2 } \D x \ge \int_\Omega \abs{ \Re h } \D x.\]
+	Noting that $\abs{ \Re h } \ge \pm \Re h$ and thus 
+	\[ \int_\Omega \abs{ \Re h } \D x \ge \pm \int_\Omega \Re h \D x\]
+	we get
+	\begin{equation}
+		\int_\Omega \abs{h} \D x \ge \abs{\int_\Omega \Re h \D x}.
+		\label{ProofWellDefL2InnProd1}
+	\end{equation}
+	Now note that for each complex number $z$ we may find a $\phi \in \R$ such that $z\exp(\I \phi)$ is a real number. 
+	So specifically we can choose $\phi$ such that
+	\begin{align*}
+		\exp(\I \phi) \int_\Omega h \D x &= \Re \left( \exp(\I \phi) \int_\Omega h \D x \right) \\
+		&=\Re \left(  \int_\Omega \exp(\I \phi) h \D x \right) \\
+		&=\int_\Omega \Re \Big( \exp(\I \phi) h \Big) \D x \\
+	\end{align*}
+	and therefore
+	\[ \abs{\int_\Omega h \D x} = \abs{\exp(\I \phi) \int_\Omega h \D x} = \abs{\int_\Omega \Re \Big( \exp(\I \phi) h \Big) \D x} \stackrel{\eqref{ProofWellDefL2InnProd1}}{\le} \int_\Omega \abs{\exp(\I \phi)  h} \D x = \int_\Omega \abs{h} \D x \]
+	Now set $h = f g^\ast$ and use lemma \ref{aLittleHoelder} to obtain the first result
+	\begin{equation}
+		\abs{ \int_\Omega f g^\ast \D x } \le \int_\Omega \abs{f g^\ast}\D x = \int_\Omega \abs{f g}\D x \le  \sqrt{\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x}.
+		\label{ProofWellDefL2InnProd2}
+	\end{equation}
+	If furthermore $f,g \in L^2(\Omega)$ then the integrals in the RHS of \eqref{ProofWellDefL2InnProd2} are finite (since the functions are square-integrable) and thus
+	\[ \abs{ \int_\Omega f g^\ast \D x } \le \int_\Omega \abs{f g}\D x \le  \sqrt{\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x} < \infty, \]
+	which implies the second result, that $f g^\ast$ is integrable.
+\end{proof}
+
+%TODO
+\begin{rem} For this lemma it is easy to see that an equivalent version cannot be constructed if the Riemann integral definition is to be used. 
+	To see this first define the two complex-valued functions $f,g : \R \to \C$ with
+	\begin{align*}
+		f(x) &= \left\{
+		\begin{array}{ll}
+			-1 & \text{for $x \in \set{Q}$} \\
+			1 & \text{for $x \in \R \backslash \set{Q}$}
+		\end{array}
+		\right.
+		&
+		g(x) &= \left\{
+		\begin{array}{ll}
+			\I & \text{for $x \in \set{Q}$} \\
+			1 & \text{for $x \in \R \backslash \set{Q}$}
+		\end{array}
+		\right. .
+	\end{align*}
+	Clearly 
+	\[ \forall x \in \R:\qquad \abs{f(x)} = \abs{g(x)} = 1,\]
+	such that in both the Riemann and the Lebesgue sense
+	\[ \int_{[0,1]} \abs{f}^2 \D x = \int_{[0,1]} 1 \D x = 1 = \int_{[0,1]} 1 \D x = \int_{[0,1]} \abs{g}^2 \D x.\]
+	This makes $f$ and $g$ square-integrable functions on the domain $\Omega = [0,1]$. 
+	On the other hand 
+	\[ \big(f g^\ast\big)(x) = \left\{
+		\begin{array}{ll}
+			\I & \text{for $x \in \set{Q}$} \\
+			1 & \text{for $x \in \R \backslash \set{Q}$}
+		\end{array}
+		\right., \]
+	which makes $(f g^\ast)$ Lebesgue, but not Riemann integrable. 
+	For lemma \ref{WellDefL2InnProd} this provides a counterexample if the Riemann integral definition is used.
+\end{rem}
+
+\begin{lem}
+	\label{lem:L2HilbertSpace}
+	For $\Omega \subset \R^n$, $L^2(\Omega)$ is an inner product space over $\C$ with the inner product given by the form
+	 \begin{equation}
+		(u,v)_\Omega = \int_\Omega u v^\ast \D x.
+		\label{L2innerProduct}
+	\end{equation}
+	and a pointwise definition of vector addition and scalar multiplication, i.e. for functions $f$ and $g$
+	\[ \Big(f+g\Big)(x) = f(x) + g(x) \qquad \forall x \in \Omega\]
+	and a scalar multiple of $f$ with $\alpha \in \C$
+	\[ \Big(\alpha f\Big)(x) = \alpha f(x)\qquad \forall x \in \Omega.\]
+
+\end{lem}
+\begin{proof}
+	First of all we need to verify that the pointwise vector operations are well-defined. 
+	This is the case if for all $f,g \in L^2(\Omega)$ and all $\alpha \in \C$ uniquely defined functions $\alpha f$ and $f+g$ exist that are also a member of $L^2(\Omega)$.
+	Uniqueness follows from the properties of $\C$. 
+	For the sum $f+g$ the first part of Minkowski’s inequality \eqref{lemMinkowski} guaranties that $f+g \in L^2(\Omega)$ if $f,g \in L^2(\Omega)$.
+	For the scalar product this is a consequence of the linearity of the integral, i.e.
+	\begin{align*}
+				&\text{$f$ is square-integrable on $\Omega$} \\
+		\Leftrightarrow \quad &\int_\Omega \abs{f(x)}^2 \D x < \infty \\
+		\Leftrightarrow \quad& \int_\Omega \abs{\alpha f(x)}^2 \D x = \abs{\alpha}^2~\underbrace{\int_\Omega \abs{f(x)}^2 \D x}_{<\infty} < \infty \qquad \forall \alpha \in \C \\
+		\Leftrightarrow \quad& \text{$\alpha f$ is square-integrable on $\Omega$} \qquad \forall \alpha \in \C
+	\end{align*}
+	Showing now that $L^2(\Omega)$ is a vector space is pretty simple.
+	The zero vector is just the zero function and the additive inverse to $f$ is $-f$, i.e. the function with the signs of all function values reversed. 
+	To illustrate the argument we will show that the distributivity relation \eqref{vectorDistrVecAdd} holds. 
+	The remaining steps are left as an exercise for the reader.
+	
+	\noindent
+	So consider arbitrary $\alpha \in \C$ and arbitrary $f,g \in L^2(\Omega)$. We have 
+	\[ \forall x \in \Omega: \qquad \Big( \alpha (f+g) \Big)(x) = \alpha (f(x) + g(x)) = \alpha f(x) + \alpha g(x) = \Big( \alpha f + \alpha g \Big)(x). \]
+	Therefore the functions given by $\alpha (f+g)$ and $\alpha f + \alpha g$ have to be identical (since they are identical at all points $x$), which indeed proves \eqref{vectorDistrVecAdd}. \\
+
+	\noindent
+	Now we try to show that $L^2(\Omega)$ is an inner product space. 
+	The integral in the definition of the inner product \eqref{L2innerProduct} exists due to the second part of lemma \ref{WellDefL2InnProd}, which gives that $u v^\ast$ is integrable.
+	Conjugate symmetry \eqref{innProdConjSym} and linearity in the first argument \eqref{innProdLinLeft} are trivially satisfied by \eqref{L2innerProduct}, due to the properties of the integral itself.
+	Furthermore for all $f \in L^2(\Omega)$
+	\[(f,f)_\Omega = \int_\Omega f f^\ast \D x = \int_\Omega \abs{f}^2 \ge 0.\]
+	The remaining point to show in order to verify that \eqref{L2innerProduct} gives indeed a positive-definite inner product is
+	\begin{equation}
+		(f,f)_\Omega = 0 \Rightarrow f = 0.
+		\label{eqnL2PosDef}
+	\end{equation}
+	Recall the properties of the Lebesgue integral from remark \ref{intLebesgue}. 
+	If the integral in $(f,f)_\Omega$ is zero for one specific function $f$ then we can construct arbitrarily many functions for which this is the case as well.
+	In a strict sense statement \eqref{eqnL2PosDef} can hence never be satisfied. 
+	The mathematical trick we employ here to overcome this limitation is to redefine the meaning of the equality $=$ when comparing functions from $L^2(\Omega)$.
+	One calls this new meaning of $=$ ``equality almost everywhere'' and it describes something along the lines\footnote{The mathematical precise formalism uses the notion of an equivalence relation and factor groups for the proper definition of $L^2(\Omega)$.} of
+	\[ f = g \quad \text{almost everywhere} \qquad \Leftrightarrow \qquad \int_\Omega f \D x = \int_\Omega g \D x .\]
+	In this weaker sense of equality between the $L^2(\Omega)$ functions $f$ and $0$, the relation \eqref{eqnL2PosDef} can indeed be proved, which makes $L^2(\Omega)$ a proper inner product space.
+\end{proof}
+
+\noindent
+The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty involved and we will just state the result here:
+\begin{thm}
+	\label{l2hilbert}
+	For (most) $\Omega \subset \R^n$, $L^2(\Omega)$ is a Hilbert space under the induced norm
+	\begin{equation}
+		\norm{f}_{L^2(\Omega)} = \sqrt{(f,f)_\Omega} = \sqrt{\int_\Omega \abs{f}^2 \D x} .
+		\label{L2norm}
+	\end{equation}
+\end{thm}
+\begin{proof}
+	See \cite{Adams2003}
+\end{proof}
+
+\begin{rem}
+	Now what have these 4 pages of (more or less) rigorous mathematical labour given us?
+	The important point is that we were able to show how the infinite dimensional function space $L^2(\Omega)$ behaves abstractly very similar to the finite dimensional Euclidean space.
+	In other words one could well do analysis or linear algebra with functions instead of numbers or vectors. 
+	This might seem a little odd in the first place, but the fact that $L^2(\Omega)$ is a Hilbert space lets us deal with this in a fairly intuitive way.
+	For Quantum Mechanics, where the wave functions are pretty much all members of (subspaces of) $L^2(\Omega)$, getting an idea of the structure of $L^2(\Omega)$ and the operations we can perform in this space can become quite important.
+\end{rem}
+
+
 \nomenclature{$H^1(\Omega, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
 \nomenclature{$H^2(\Omega, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
 
