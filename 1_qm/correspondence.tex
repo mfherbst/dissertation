@@ -10,7 +10,7 @@ In other words one may define a so-called \newterm{observable}
 $F\clphase$ as a function $\R^{2N} \to \R$
 from a vector in \newterm{phase space} to the measured value.
 Naturally the coordinates $q_i$ and $p_i$ are observables as well.
-The most important observable is the total energy function or \newterm{Hamlitonian}
+The most important observable is the total energy function or \newterm{Hamiltonian}
 \begin{equation}
 	H\clphase
 	\equiv \underbrace{\frac{1}{2} \sum_{k=1}^N m_k p_k^2}_{= T(p_1, \ldots, p_N)}
@@ -59,16 +59,15 @@ between the principle system observables.
 We will now introduce quantum mechanics~(QM) in a rather pragmatic manor,
 namely by stating a summary what changes in \QM formulation
 compared to the classical one.
-In most cases one can even deduce a one-to-one correspondence
-between the classical and the \QM expression.
-In the following overview we will use most of the mathematical terms without explanation
-in order to motivate a more detailed discussion further down this chapter.
+We will abstain from stating all details at the moment
+as the following overview should mainly motivate a more detailed
+treatment of the involved mathematical concepts further down this chapter.
 
 \begin{enumerate}
 	\item Instead of phase space vectors $\clphase \in \R^{2N}$,
-		employ functions $\Psi : \R^N \to \C$ from a
-		complex separable Hilbert space $\mathcal{H}$
-		to describe the state of the system.
+		in \QM one employs functions $\Psi : \R^N \to \C^m$
+		living in a complex separable Hilbert space $\mathcal{H}$
+		in order to describe a particular state of the system.
 	\item A classical observable $F$ is represented by a
 		self-adjoint operator $\Op{F}$ on the Hilbert space $\mathcal{H}$ in \QM.
 	\item For each classical observable one may construct an equivalent
@@ -85,8 +84,10 @@ in order to motivate a more detailed discussion further down this chapter.
 		\[ p_k \longrightarrow \op{p}_k
 			= \frac{\hbar}{\I} \frac{\partial}{\partial x_k}, \]
 		an appropriately scaled derivative with respect to $x_k$.
-	\item All occurrences of the Poisson bracket with observables
-		is to be replaced by the commutator
+	\item Relationships originating from classical mechanics
+		can (usually) be transformed into their \QM analogue.
+		For this replace all occurrences of the Poisson bracket
+		and the contained classical observables with the commutator
 		\begin{equation}
 			\comm{\Op{F}}{\Op{G}} = \Op{F} \Op{G} - \Op{G} \Op{F}
 			\label{eqn:Operator}
@@ -101,20 +102,24 @@ in order to motivate a more detailed discussion further down this chapter.
 		indexed by elements of the set $\mathcal{I}$%
 		\footnote{See \cite{Helffer2013} for a more general treatment.}.
 		One may then compute the expectation value of a measurement
-		for a pure state $\Psi$ with $\norm{\Psi} = 1$ as
+		for a pure state $\Psi$ normalised to unity as
 		\begin{equation}
-			\langle \Op{F} \rangle = \int_{\R^N} \cc{\Psi}(\vec{x}) \left(\Op{F} \Psi\right)(\vec{x}) \D \vec{x} = \sum_{\mu\in\mathcal{I}} \int_{\R^N} \lambda_\mu \cc{\psi}_\mu(\vec{x}) \Psi(\vec{x}) \D \vec{x}.
+			\langle \Op{F} \rangle
+				= \braket{\Psi}{\Op{F} \, \Psi}_\mathcal{H}
+				= \sum_{\mu\in\mathcal{I}} \lambda_\mu \,
+							\abs{\braket{\psi_\mu}{\Psi}_\mathcal{H}}^2,
 			\label{eqn:QMExpectation}
 		\end{equation}
-		Here we identified
-		\[ \vec{x} \equiv (x_1, \ldots, x_N) \quad \text{and} \quad \D \vec{x} = \D x_1 \cdots \D x_N \]
-		for ease of notation.
+		where $\braket{~\cdot~}{~\cdot~}_\mathcal{H}$ is the inner product
+		of the Hilbert space $\mathcal{H}$.
 \end{enumerate}
-Even though these guidelines probably seem rather \textit{ad hoc},
-they are follow directly from the postulates of quantum mechanics.
-Let us apply the sketched correspondence rules to \eqref{eqn:PoissonProperties}.
-We immediately deduce the important relations for the commutator
-between position and momentum operators:
+The statements we present above are in fact very much related
+to the postulates of \QM and probably similarly appear as
+an \textit{ad hoc} modification of classical mechanics.
+One may, however, deduce useful results of \QM from the correspondence
+we sketched.
+For example from \eqref{eqn:PoissonProperties} one can immediately
+deduce important commutator relations between the position and momentum operators:
 \begin{align}
 	\comm{\op{x}_k}{\op{x}_l} &= \comm{\op{p}_k}{\op{p}_l} = 0 & \comm{\op{x}_k}{\op{p}_l} = \frac{\hbar}{\I} \delta_{kl}.
 	\label{eqn:compatibilityOperator}

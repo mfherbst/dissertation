@@ -7,357 +7,225 @@ appropriate self-adjoint operators defined on such Hilbert spaces.
 Precisely this is the mathematical field of functional analysis,
 which we will briefly review in this section.
 We assume basic familiarity with the concept of a vector space as well
-as Lebesgue integrability for this section as well as the remainder of the chapter.
-A more basic treatment developing these concepts by generalising
-Euclidean geometry can be found in a related work by the author~\cite{DiracNotation}.
-
-\todoil{Discuss which Hilbert space to take for the \QM description
-and give a brief rationalisation why}
+as Lebesgue integrability for our treatment.
+A more basic material developing the concept of Lebesgue integrability
+and Hilbert spaces from standard Euclidean geometry can be found
+in a related work by the author~\cite{DiracNotation}.
 
 \subsection{Hilbert spaces}
 \label{sec:Hilbert}
 \nomenclature{$\F$}{Either the field of real numbers $\R$ or the field of complex numbers $\C$.}
 
+\todoil{Rephrase}
+The key structures,
+which a Hilbert space possesses on top of a usual vector space
+is the so-called completeness under the norm induced
+by the inner product of the Hilbert space.
+For our treatment the field $\F$ can be identified
+either with the field of all real numbers $\R$
+or the field of all complex numbers $\C$.
 
 \begin{defn}
-	An \emph{inner product space} over $\set{F}$ is a vector space $V$ (over the same field) that is further equipped with an inner product, i.e. a map
-	\[ (\cdot,\cdot) : V \times V \to \set{F} \]
+	An \newterm{inner product space} over a field $\F$
+	is a vector space $V$ (over the same field)
+	that is further equipped with an inner product, i.e. a map
+	\[ \braket{~\cdot~}{~\cdot~}_V : V \times V \to \F \]
 	that satisfies (for all vectors $x,y,z \in V$ and all $\alpha \in \set{F}$)
 	\begin{align}
-		\label{eqn:innProdConjSym}  &(x,y)^\ast = (y,x) &&                                                 \text{"Conjugate symmetry"} \\
-		\label{eqn:innProdLinLeft}  &(\alpha x + y,z) = \alpha (x,z) + (y,z) &&                            \text{"Linearity in the first argument"} \\
-		\label{eqn:innProdPosDef}   &(x,x) \ge 0 \quad \text{and} \quad (x,x) = 0 ~\Rightarrow~ x = 0  &&  \text{"Positive-definiteness"}
+		\label{eqn:innProdConjSym}
+			&\braket{x}{y}_V^\ast = \braket{y}{x}_V &&
+			\text{\textit{(conjugate symmetry)}} \\
+		\label{eqn:innProdLinLeft}
+			&\braket{x}{\alpha y + z}_V = \alpha \braket{x}{y}_V + \braket{x}{y}_V &&
+			\text{\textit{(linearity in the first argument)}} \\
+		\label{eqn:innProdPosDef}
+			&\braket{x}{x}_V \ge 0 \quad \text{and}
+			\quad \braket{x}{x}_V = 0 ~\Rightarrow~ x = 0  &&
+			\text{\textit{(positive-definiteness)}},
 	\end{align}
-	here the asterisk $^\ast$ denotes complex conjugation.
+	where the asterisk ``$^\ast$'' denotes complex conjugation.
+	We typically drop the ``$V$'' subscript from the notation of the inner
+	product if the underlying vector space is clear from context.
 \end{defn}
 
-\noindent
-Next we proceed to discuss the norm:
 \begin{defn}
-	Given a vector space over the field $\set{F}$, a \emph{norm} is a map
-	\[ \norm{\cdot} : V \to \R \]
+	Given a vector space $V$ over the field $\F$, a \newterm{norm} is a map
+	$\norm{~\cdot~}_V : V \to \R$
 	such that the following axioms hold for all vectors $x,y \in V$ and all $\alpha \in \set{F}$:
-	\begin{align} 
-		\label{eqn:normScalability}  &\norm{\alpha x} = \abs{\alpha} \norm{x} &&                           \text{"Absolute scalability"} \\
-		\label{eqn:normTriaIneq}     &\norm{x + y} \le \norm{x} + \norm{y}    &&                           \text{"Triangle inequality"} \\
-		\label{eqn:normPointSep}     &\text{If}~\norm{x} = 0 \quad \Rightarrow \quad \text{$x$ is the zero vector} &&  \text{"Norm separates points"}
+	\begin{align}
+		\label{eqn:normScalability}
+			&\norm{\alpha x}_V = \abs{\alpha} \, \norm{x}_V &&
+			\text{\textit{(absolute scalability)}} \\
+		\label{eqn:normTriaIneq}
+			&\norm{x + y}_V \le \norm{x}_V + \norm{y}_V &&
+			\text{\textit{(triangle inequality)}} \\
+		\label{eqn:normPointSep}
+			&\text{If}~\norm{x}_V = 0 \quad \Rightarrow
+			\quad \text{$x$ is the zero vector} &&
+			\text{\textit{(norm separates points)}}
 	\end{align}
+	Again we may drop the subscript if the norm employed is clear from context.
 \end{defn}
 
 \begin{prop}
-	For every inner product space there exists a norm given by 
+	For every inner product space exists the so-called \newterm{induced norm}
 	\begin{equation}
-		\norm{x} = \sqrt{ (x,x) } \qquad \forall x \in V,
+		\norm{x} = \sqrt{ \braket{x}{x} } \qquad \forall x \in V.
 		\label{eqn:normInduced}
 	\end{equation}
-	the so-called \emph{induced norm}.
 	\begin{proof}
 		See~\cite{DiracNotation}.
 	\end{proof}
 \end{prop}
 
 \begin{defn}
-	\todoil{Completeness}
+	A vector space%
+	\footnote{Completeness is a more general property,
+		which also applies to sets with less structure
+		called metric spaces}
+	$V$ is called \newterm{complete} if every Cauchy sequence
+	of vectors in $V$ has a limit which is in $V$ as well,
+	i.e. if for every converging sequence in $V$ the limit
+	is in $V$ as well.
 \end{defn}
 
-\noindent
-Finally, we arrive at the definition of a \emph{Hilbert space}:
 \begin{defn}
-	A Hilbert space $V$ is an inner product space over the field $\set{F}$, that is complete with respect to the induced norm.
+	A \newterm{Hilbert space} $\mathcal{H}$ is an inner product space,
+	which is complete with respect to the induced norm.
 \end{defn}
 
+\nomenclature{$L^2(\R^N, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{prop:L2HilbertSpace}}
 \begin{prop}
-	\todoil{Shorten the next section to essentially
-	just a proposition showing $L^2$ to be a Hilbert space}
+	\label{prop:L2HilbertSpace}
+	Given two functions $f, g : \R^N \to \C$
+	let us define the inner product
+	\begin{equation}
+		\braket{f}{g}_{L^2} := \int_{\R^N} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
+		\label{eqn:defL2InnProd}
+	\end{equation}
+	and the corresponding induced norm
+	\begin{equation}
+		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^N} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2}.
+		\label{eqn:defL2Norm}
+	\end{equation}
+	In both cases the integral is to be understood in the Lebesgue sense
+	and we identify
+	\[ \vec{x} \equiv (x_1, \ldots, x_N) \]
+	for ease of notation.
+
+	The set of \newterm{square-integrable functions}
+	\[ L^2(\R^N, \C) := \big\{ f : \R^N \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
+	where the norm $\norm{~\cdot~}_{L^2}$ stays finite
+	is a Hilbert space over the field $\C$.
 	\begin{proof}
-	See~\cite{Adams2003}
+		See~\cite{Adams2003}
 	\end{proof}
 \end{prop}
 
+\todoil{Separable space}
 
-\section{Lebesgue space}
-In this subsection we will try to get a little insight into the space of square-integrable functions $L^2$.
-As it will turn out later, this space is the mathematical object on which Dirac Notation lives in most practical scenarios.
-In a similar fashion to completeness, the precise formulation of \emph{integrability} is well out of scope here\footnote{In fact the whole topic of measure theory deals with just this definition.}. 
-For us this section is merely meant to scratch the surface and introduce the formalism we will need later on. \\
+\subsection{Hilbert spaces in Quantum Mechanics}
+\todoil{Say that this is general and other domains are possible as well.}
 
-\noindent
-The first problem one runs into very quickly when considering square-integrable functions is that our familiar Riemann integral definition is too tight. 
-This means that there are too few functions that can be properly Riemann-integrated in order to prove the theorems in this subsection.
-The way to make progress is to broaden the definition of the integral and integrability. 
-Hence we consider
 
-\begin{rem}[The Lebesgue integral] 
-	\label{intLebesgue}
-	Instead of a formal definition of the Lebesgue integral, we will just state a few of its properties in order to get a feeling for how it works.
-	\begin{itemize}
-		\item Whenever the Riemann integral exists, the values of the Riemann and the Lebesgue integrals agree. 
-			The only difference between the two integral definitions is that there exist some ``problematic cases'' where the Lebesgue integral still allows integration, but the Riemann integral does not.
-			So if the Riemann integral exists (i.e. if we can do the usual integration and the result is a finite value), we can evaluate it and we are done for the calculation of the integral in both definitions.
-		\item For a Lebesgue integral over a domain $\Omega \subset \R^1$, changing the value of the integrand at up to countably infinite number of points (in an arbitrary way) does not change the value of the integral. 
-			Note, that this means for example 
-			\begin{align}
-				\nonumber
-				&\int_\R \left\{
-				\begin{array}{ll}
-					1 & \text{for $x \in \set{Q}$} \\
-					0 & \text{for $x \in \R \backslash \set{Q}$}
-				\end{array}
-				\right\} \D[x] &&\text{only Lebesgue-integrable} \\
-				%
-				\nonumber
-				= &\int_\R 0 \D[x] && \text{Lebesgue- and Riemann-integrable}\\
-				= &\int_\R \left\{
-				\begin{array}{ll}
-					1 & \text{for $x \in \{\pi, e, 3, 15, 42\}$} \\
-					0 & \text{else}
-				\end{array}
-				\right\} \D[x] &&\text{Lebesgue- and Riemann-integrable}, 			
-				\label{exampleLebesqueIntegral}
-			\end{align}
-			which trivially evaluates to zero (Consider the Riemann-integrable second term).
-			For higher dimensions analogous statements are true:
-			e.g. for integrals over subsets of $\R^2$, we can change the value of the integrand at up to countably infinite number of lines or points; 
-			similarly for 3D integrals at planes, lines or points, \ldots. 
-			Often this allows us to alter an integrand in a way that integration in a Riemann sense is possible. 
-			For example in the first integral of \eqref{exampleLebesqueIntegral}, we changed the points where the function is 1 to 0 in order to get a Riemann-integrable version. 
-			This is possible since $\set{Q}$ is a set with only up to countably infinite number of elements\footnote{It is not necessarily intuitive to understand, what this means. Just imagine there are two kinds of infinities: For one kind one can abstractly speaking find a way to enumerate each element (the ``countable infinity''), for the other one this is not possible.}.
-		\item A direct consequence of the above point is that for each $\Omega \subset \R^n$ there exist an infinitely large number of functions $f : \Omega \to \C$, such that $\int_\Omega f \D[x] = 0$. This will be important very soon.
-		\item From now on all integrals in this script are to be understood as Lebesgue integrals.
-	\end{itemize}
-\end{rem}
 
-\noindent
-That being said, let us consider complex integrability. 
+\todoil{Discuss which Hilbert space to take for the \QM description
+and give a brief rationalisation why}
+
+
+		
+		in \QM.
+
+
+
+
+		in \QM we employ functions $\Psi : \R^N \to \C^m$ from a
+		complex separable Hilbert space $\mathcal{H}$
+		to describe the state of the system.
+		The number of spin components $m$ is determined by the precise
+		\QM treatment we employ.
+		For the remainder of this chapter we will restrict ourselves
+		to a non-relativistic spin-free \QM, which implies $m=1$.
+
+
+
+
+		The so-called \newterm{Born interpretation} of \QM
+		associates the meaning of a probability density
+		with the norm $\norm{\Psi(x_1, \ldots x_N)}$
+		of a state at each point in space $(x_1, \ldots x_N)$.
+		
+		
+		with a probability density at a particular
+		point in space $(x_1, \ldots x_N)$.
+		
+
+		Such a statistical 
+		This requires the $\Psi$
+
+		Since the Born interpretation associates with the
+		norm $\norm{\Psi(x_1, \ldots x_N)}$ of the state at a particular
+		point in space $(x_1, \ldots x_N)$ in 
+
+		For reasons related to the Born interpretation,
+		which associates with the modulus $\norm{\Psi(x_1, \ldots x_N)}$
+
+		Typical choices for the Hilbert space are the Lebesgue spaces
+		$L^2(\R^N, \C^m)$,
+		where $m$ is $1, 2$ or $4$ depending on the number of spin components.
+
+
+\subsection{Sobolev spaces}
+Many operators of quantum mechanics involve derivatives as well.
+Whilst Lebesgue spaces are natural when it comes to doing statistics,
+they are too weak to make sure 
+
+\todo[inline,caption={}]{
+	If needed: \\
 \begin{defn}
-We call a \emph{complex-valued} function $g : \Omega \to \C$ \emph{integrable} on the domain $\Omega \subset \R^n$ if
-	\begin{equation}
-		\abs{ \int_\Omega g(x) \D x } < \infty,
-		\label{defIntegrable}
-	\end{equation}
-i.e. if the modulus of the integral over the domain remains finite. 
+	A set $\Omega$ is bounded iff 
 \end{defn}
 \begin{defn}
-	A complex-valued function $f : \Omega \to \C$ is called \emph{square-integrable} on the domain $\Omega \subset \R^n$ if
-	the function $\abs{f}^2 : \Omega \to \R : x \mapsto \abs{f(x)}^2$ is integrable on that very same domain. 
-	This means nothing else but 
-	\[ \int_\Omega \abs{f}^2 \D x < \infty. \]
+	A set $\Omega$ is compact iff it is bounded and complete.
 \end{defn}
 
-\nomenclature{$L^2(\Omega, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{lem:L2HilbertSpace}}
-\begin{nte}
-	Usually one denotes the set of square-integrable functions as
-	\begin{equation} 
-		L^2(\Omega, \C) := \big\{ f : \Omega \to \C~\big|~\text{$f$ is square-integrable} \big\}.
-		\label{defL2}
-	\end{equation}
-\end{nte}
+\nomenclature{$C^\infty_0(\R^N, \C)$}{The Banach space of infinitely differentiable
+complex-valued functions with compact support}
+\begin{defn}
+	Define $C^\infty_0$
+\end{defn}
+}
 
-\pagebreak[2]
-\noindent
-Before we will eventually proceed to show that $L^2(\Omega)$ is actually a Hilbert space we need a few more intermediate results.
-\begin{lem}[Minkowski’s inequality in $L^2$]
-	\label{lemMinkowski}
-	Let $f,g \in L^2(\Omega)$, i.e. square-integrable, then
-	\begin{itemize}
-		\item $f + g$ is square-integrable on $\Omega$ as well
-		\item $\sqrt{\int_\Omega \abs{f + g}^2 \D[x]} \le \sqrt{\int_\Omega \abs{f}^2 \D[x]} + \sqrt{\int_\Omega \abs{g}^2 \D[x]}$
-	\end{itemize}
-\end{lem}
-\begin{proof}
-	See for example \cite{Adams2003}.
-\end{proof}
-
-\begin{nte}
-	When we say the resulting function $f \circ g$ of an operation $\circ$ is to be \emph{defined pointwise},
-	we mean that $f\circ g$ can be defined by considering the action of $\circ$ in each point $x \in \Omega$ on the function values $f(x)$ and $g(x)$.
-	For example the function $f+g$ from lemma \ref{lemMinkowski} could be defined as the function for which
-	\[ \Big(f+g\Big)(x) = f(x) + g(x) \qquad \forall x \in \Omega.\]
-	Similarly $\Re f$ is the function with
-	\[ \Big( \Re f \Big)(x) = \Re \Big( f(x) \Big) \qquad \forall x \in \Omega.\]
-\end{nte}
-
-\begin{lem}
-	\label{aLittleHoelder}
-	For all complex-valued functions $f,g$, which are defined and integrable on $\Omega \subset \R^n$
-	\[ \int_\Omega \abs{ f g } \D x \le \sqrt {\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x}. \]
-\end{lem}
-\begin{proof}
-	This is a special case of the so-called Hölder's inequality, a proof of which can be found in \cite{Adams2003}.
-\end{proof}
-\noindent
-From this we deduce
-\begin{lem}
-	\label{WellDefL2InnProd}
-	For all complex-valued functions $f,g$ integrable on $\Omega \subset \R^n$, it holds
-	\begin{align*}
-		&\abs{ \int_\Omega f g^\ast \D x } \le \sqrt{ \int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x} \\
-		\intertext{and}
-		&f,g \in L^2(\Omega) \quad \Rightarrow \quad \text{$f g^\ast$ is integrable},
-	\end{align*}
-	where the function $f g^\ast$ is to be constructed from $f$ and $g$ in a pointwise sense.
-\end{lem}
-\begin{proof}
-	Consider first an integrable function $h$ which is defined on $\Omega \subset \R^n$, we have
-	\[ \int_\Omega \abs{h} \D x = \int_\Omega \sqrt{ \left( \Re h \right)^2 + \left( \Im h \right)^2 } \D x \ge \int_\Omega \abs{ \Re h } \D x.\]
-	Noting that $\abs{ \Re h } \ge \pm \Re h$ and thus 
-	\[ \int_\Omega \abs{ \Re h } \D x \ge \pm \int_\Omega \Re h \D x\]
-	we get
-	\begin{equation}
-		\int_\Omega \abs{h} \D x \ge \abs{\int_\Omega \Re h \D x}.
-		\label{ProofWellDefL2InnProd1}
-	\end{equation}
-	Now note that for each complex number $z$ we may find a $\phi \in \R$ such that $z\exp(\I \phi)$ is a real number. 
-	So specifically we can choose $\phi$ such that
-	\begin{align*}
-		\exp(\I \phi) \int_\Omega h \D x &= \Re \left( \exp(\I \phi) \int_\Omega h \D x \right) \\
-		&=\Re \left(  \int_\Omega \exp(\I \phi) h \D x \right) \\
-		&=\int_\Omega \Re \Big( \exp(\I \phi) h \Big) \D x \\
-	\end{align*}
-	and therefore
-	\[ \abs{\int_\Omega h \D x} = \abs{\exp(\I \phi) \int_\Omega h \D x} = \abs{\int_\Omega \Re \Big( \exp(\I \phi) h \Big) \D x} \stackrel{\eqref{ProofWellDefL2InnProd1}}{\le} \int_\Omega \abs{\exp(\I \phi)  h} \D x = \int_\Omega \abs{h} \D x \]
-	Now set $h = f g^\ast$ and use lemma \ref{aLittleHoelder} to obtain the first result
-	\begin{equation}
-		\abs{ \int_\Omega f g^\ast \D x } \le \int_\Omega \abs{f g^\ast}\D x = \int_\Omega \abs{f g}\D x \le  \sqrt{\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x}.
-		\label{ProofWellDefL2InnProd2}
-	\end{equation}
-	If furthermore $f,g \in L^2(\Omega)$ then the integrals in the RHS of \eqref{ProofWellDefL2InnProd2} are finite (since the functions are square-integrable) and thus
-	\[ \abs{ \int_\Omega f g^\ast \D x } \le \int_\Omega \abs{f g}\D x \le  \sqrt{\int_\Omega \abs{f}^2 \D x} \cdot \sqrt{\int_\Omega \abs{g}^2 \D x} < \infty, \]
-	which implies the second result, that $f g^\ast$ is integrable.
-\end{proof}
-
-%TODO
-\begin{rem} For this lemma it is easy to see that an equivalent version cannot be constructed if the Riemann integral definition is to be used. 
-	To see this first define the two complex-valued functions $f,g : \R \to \C$ with
-	\begin{align*}
-		f(x) &= \left\{
-		\begin{array}{ll}
-			-1 & \text{for $x \in \set{Q}$} \\
-			1 & \text{for $x \in \R \backslash \set{Q}$}
-		\end{array}
-		\right.
-		&
-		g(x) &= \left\{
-		\begin{array}{ll}
-			\I & \text{for $x \in \set{Q}$} \\
-			1 & \text{for $x \in \R \backslash \set{Q}$}
-		\end{array}
-		\right. .
-	\end{align*}
-	Clearly 
-	\[ \forall x \in \R:\qquad \abs{f(x)} = \abs{g(x)} = 1,\]
-	such that in both the Riemann and the Lebesgue sense
-	\[ \int_{[0,1]} \abs{f}^2 \D x = \int_{[0,1]} 1 \D x = 1 = \int_{[0,1]} 1 \D x = \int_{[0,1]} \abs{g}^2 \D x.\]
-	This makes $f$ and $g$ square-integrable functions on the domain $\Omega = [0,1]$. 
-	On the other hand 
-	\[ \big(f g^\ast\big)(x) = \left\{
-		\begin{array}{ll}
-			\I & \text{for $x \in \set{Q}$} \\
-			1 & \text{for $x \in \R \backslash \set{Q}$}
-		\end{array}
-		\right., \]
-	which makes $(f g^\ast)$ Lebesgue, but not Riemann integrable. 
-	For lemma \ref{WellDefL2InnProd} this provides a counterexample if the Riemann integral definition is used.
-\end{rem}
-
-\begin{lem}
-	\label{lem:L2HilbertSpace}
-	For $\Omega \subset \R^n$, $L^2(\Omega)$ is an inner product space over $\C$ with the inner product given by the form
-	 \begin{equation}
-		(u,v)_\Omega = \int_\Omega u v^\ast \D x.
-		\label{L2innerProduct}
-	\end{equation}
-	and a pointwise definition of vector addition and scalar multiplication, i.e. for functions $f$ and $g$
-	\[ \Big(f+g\Big)(x) = f(x) + g(x) \qquad \forall x \in \Omega\]
-	and a scalar multiple of $f$ with $\alpha \in \C$
-	\[ \Big(\alpha f\Big)(x) = \alpha f(x)\qquad \forall x \in \Omega.\]
-
-\end{lem}
-\begin{proof}
-	First of all we need to verify that the pointwise vector operations are well-defined. 
-	This is the case if for all $f,g \in L^2(\Omega)$ and all $\alpha \in \C$ uniquely defined functions $\alpha f$ and $f+g$ exist that are also a member of $L^2(\Omega)$.
-	Uniqueness follows from the properties of $\C$. 
-	For the sum $f+g$ the first part of Minkowski’s inequality \eqref{lemMinkowski} guaranties that $f+g \in L^2(\Omega)$ if $f,g \in L^2(\Omega)$.
-	For the scalar product this is a consequence of the linearity of the integral, i.e.
-	\begin{align*}
-				&\text{$f$ is square-integrable on $\Omega$} \\
-		\Leftrightarrow \quad &\int_\Omega \abs{f(x)}^2 \D x < \infty \\
-		\Leftrightarrow \quad& \int_\Omega \abs{\alpha f(x)}^2 \D x = \abs{\alpha}^2~\underbrace{\int_\Omega \abs{f(x)}^2 \D x}_{<\infty} < \infty \qquad \forall \alpha \in \C \\
-		\Leftrightarrow \quad& \text{$\alpha f$ is square-integrable on $\Omega$} \qquad \forall \alpha \in \C
-	\end{align*}
-	Showing now that $L^2(\Omega)$ is a vector space is pretty simple.
-	The zero vector is just the zero function and the additive inverse to $f$ is $-f$, i.e. the function with the signs of all function values reversed. 
-	To illustrate the argument we will show that the distributivity relation \eqref{vectorDistrVecAdd} holds. 
-	The remaining steps are left as an exercise for the reader.
+\begin{defn}
+	A function $f \in L^2(\R^N, \C)$ has a \newterm{weak partial derivative}
+	$g \in L^2(\R^N, \C)$ with respect to $x_i$ if
+	\[ \forall \varphi \in C^\infty_0(\R^N): \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
+	where $C^\infty_0(\R^N)$ is the of infinitely differential
+	functions $\R^N \to \C$ with compact support.
+	To denote the weak derivative
+	one may write $g = \partial_{x_i} f$ like in the usual case.
+	It can further be shown that if $f$ has a classical, strong derivative
+	then it also has a weak derivative, which coincides with the strong derivative.
 	
-	\noindent
-	So consider arbitrary $\alpha \in \C$ and arbitrary $f,g \in L^2(\Omega)$. We have 
-	\[ \forall x \in \Omega: \qquad \Big( \alpha (f+g) \Big)(x) = \alpha (f(x) + g(x)) = \alpha f(x) + \alpha g(x) = \Big( \alpha f + \alpha g \Big)(x). \]
-	Therefore the functions given by $\alpha (f+g)$ and $\alpha f + \alpha g$ have to be identical (since they are identical at all points $x$), which indeed proves \eqref{vectorDistrVecAdd}. \\
+	For ease of notation we also write 
+	\[ D^\alpha f \]
+\end{defn}
 
-	\noindent
-	Now we try to show that $L^2(\Omega)$ is an inner product space. 
-	The integral in the definition of the inner product \eqref{L2innerProduct} exists due to the second part of lemma \ref{WellDefL2InnProd}, which gives that $u v^\ast$ is integrable.
-	Conjugate symmetry \eqref{innProdConjSym} and linearity in the first argument \eqref{innProdLinLeft} are trivially satisfied by \eqref{L2innerProduct}, due to the properties of the integral itself.
-	Furthermore for all $f \in L^2(\Omega)$
-	\[(f,f)_\Omega = \int_\Omega f f^\ast \D x = \int_\Omega \abs{f}^2 \ge 0.\]
-	The remaining point to show in order to verify that \eqref{L2innerProduct} gives indeed a positive-definite inner product is
-	\begin{equation}
-		(f,f)_\Omega = 0 \Rightarrow f = 0.
-		\label{eqnL2PosDef}
-	\end{equation}
-	Recall the properties of the Lebesgue integral from remark \ref{intLebesgue}. 
-	If the integral in $(f,f)_\Omega$ is zero for one specific function $f$ then we can construct arbitrarily many functions for which this is the case as well.
-	In a strict sense statement \eqref{eqnL2PosDef} can hence never be satisfied. 
-	The mathematical trick we employ here to overcome this limitation is to redefine the meaning of the equality $=$ when comparing functions from $L^2(\Omega)$.
-	One calls this new meaning of $=$ ``equality almost everywhere'' and it describes something along the lines\footnote{The mathematical precise formalism uses the notion of an equivalence relation and factor groups for the proper definition of $L^2(\Omega)$.} of
-	\[ f = g \quad \text{almost everywhere} \qquad \Leftrightarrow \qquad \int_\Omega f \D x = \int_\Omega g \D x .\]
-	In this weaker sense of equality between the $L^2(\Omega)$ functions $f$ and $0$, the relation \eqref{eqnL2PosDef} can indeed be proved, which makes $L^2(\Omega)$ a proper inner product space.
-\end{proof}
-
-\noindent
-The last step --- showing that $L^2(\Omega)$ is a Hilbert space --- is pretty involved and we will just state the result here:
-\begin{thm}
-	\label{l2hilbert}
-	For (most) $\Omega \subset \R^n$, $L^2(\Omega)$ is a Hilbert space under the induced norm
-	\begin{equation}
-		\norm{f}_{L^2(\Omega)} = \sqrt{(f,f)_\Omega} = \sqrt{\int_\Omega \abs{f}^2 \D x} .
-		\label{L2norm}
-	\end{equation}
-\end{thm}
-\begin{proof}
-	See \cite{Adams2003}
-\end{proof}
-
-\begin{rem}
-	Now what have these 4 pages of (more or less) rigorous mathematical labour given us?
-	The important point is that we were able to show how the infinite dimensional function space $L^2(\Omega)$ behaves abstractly very similar to the finite dimensional Euclidean space.
-	In other words one could well do analysis or linear algebra with functions instead of numbers or vectors. 
-	This might seem a little odd in the first place, but the fact that $L^2(\Omega)$ is a Hilbert space lets us deal with this in a fairly intuitive way.
-	For Quantum Mechanics, where the wave functions are pretty much all members of (subspaces of) $L^2(\Omega)$, getting an idea of the structure of $L^2(\Omega)$ and the operations we can perform in this space can become quite important.
-\end{rem}
-
-
-\nomenclature{$H^1(\Omega, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
-\nomenclature{$H^2(\Omega, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
-
-
-
-Sobolev spaces lift 
-
-
-
+\nomenclature{$H^1(\R^N, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
+\nomenclature{$H^2(\R^N, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
 \begin{defn}
-	% bounded
+	Definition of \newterm{Sobolev space}
+	\begin{equation}
+		H^k(\R^N, \C) := \left\{ f \in L^2(\R^N, \C) \middle| D^\alpha f \in L^2(\R^N, \C) \text{ for $\abs{\alpha} \le k$} \right\}
+		\label{eqn:defSobolev}
+	\end{equation}
+	with inner product
+	\[ \braket{f}{g}_{H^k} := \sum_{\abs{\alpha} \le k} \braket{D^\alpha f}{D^\alpha g}_{L^2}. \]
+	All spaces of this sequence are Hilbert spaces
 \end{defn}
 
 \begin{defn}
-	A metric space $M$ is complete if every sequence in $M$
-	which is Cauchy converges to a limit, which is in $M$ as well.
-\end{defn}
-
-\begin{defn}
-	A set is compact if it is bounded and complete.
+	The completion of $C^\infty_0(\R^N, \C)$ with respect to the norm $\norm{~\cdot~}_{H^k}$ is called $H^k_0(\R^N, \C)$. It is a proper subspace of $H^k$ and also a Hilbert space.
 \end{defn}
 
 \begin{defn}
@@ -365,11 +233,18 @@ Sobolev spaces lift
 	and each sequence in $S$ which is Cauchy converges to a point in $M$.
 \end{defn}
 
+Overview of dense embeddings to do with Sobolev spaces
+and how completion under respective norms yields different sobolev spaces.
+
+
+
 $C^\infty_0$ is dense in $L^2$ (Hachbusch 1986)
-and dense in $H^1$
+and dense in $H^1$ and dense in $H^1_0$
 
 also define $H_0^n(\Omega, \C)$
 Give inclusions including $C^\infty_0$
 Mention what is dense
 
-Sobolev spaces
+\begin{thm}
+	Sobolev embedding theorem
+\end{thm}
