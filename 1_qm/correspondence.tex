@@ -1,20 +1,20 @@
 \section{The correspondence of classical and quantum mechanics}
 According to the Hamiltonian formulation of classical mechanics
-a physical system with $N$ degrees of freedom
+a physical system with $d$ degrees of freedom
 is described by a set of generalised coordinates
-$q_1, \ldots, q_N$ along with their canonical momenta $p_1, \ldots, p_N$.
+$q_1, \ldots, q_d$ along with their canonical momenta $p_1, \ldots, p_d$
 Any physically measurable quantity $F$
 can now be obtained as a function of these system parameters.
 In other words one may define a so-called \newterm{observable}
-\newcommand{\clphase}{(q_1, \ldots, q_N, p_1, \ldots p_N)}
-$F\clphase$ as a function $\R^{2N} \to \R$
+\newcommand{\clphase}{(q_1, \ldots, q_d, p_1, \ldots p_d)}
+$F\clphase$ as a function $\R^{2d} \to \R$
 from a vector in \newterm{phase space} to the measured value.
 Naturally the coordinates $q_i$ and $p_i$ are observables as well.
 The most important observable is the total energy function or \newterm{Hamiltonian}
 \begin{equation}
 	H\clphase
-	\equiv \underbrace{\frac{1}{2} \sum_{k=1}^N m_k p_k^2}_{= T(p_1, \ldots, p_N)}
-	+ V(q_1, \ldots, q_N),
+	\equiv \underbrace{\frac{1}{2} \sum_{k=1}^d m_k p_k^2}_{= T(p_1, \ldots, p_d)}
+	+ V(q_1, \ldots, q_d),
 	\label{eqn:HamiltonianClassical}
 \end{equation}
 where $m_k$ is the mass of the particle associated with
@@ -34,7 +34,7 @@ To make the connection to quantum mechanics more apparent,
 let us introduce for this purpose the so-called \newterm{Poisson bracket}.
 It is the skew-symmetric form
 \begin{equation}
-	\left\{ F, G \right\}_P \equiv \sum_{j=1}^n \left(
+	\left\{ F, G \right\}_P \equiv \sum_{j=1}^d \left(
 	\frac{\partial  F}{\partial q_j} \frac{\partial G}{\partial p_j}
 	- \frac{\partial  F}{\partial p_j} \frac{\partial G}{\partial q_j}
 	\right)
@@ -48,7 +48,7 @@ and according to
 it relates the Hamiltonian to the time evolution of any arbitrary observable.
 One may also show the relationships
 \begin{align}
-	\{ q_k, q_l \}_P = \{p_k, p_l\}_P &= 0 & \{ p_k, q_l\}_P = - \delta_{kl} &&\forall k,l \in \{1, \ldots, N\}
+	\{ q_k, q_l \}_P = \{p_k, p_l\}_P &= 0 & \{ p_k, q_l\}_P = - \delta_{kl} &&\forall k,l \in \{1, \ldots, d\}
 	\label{eqn:PoissonProperties}
 \end{align}
 between the principle system observables.
@@ -56,7 +56,8 @@ between the principle system observables.
 \subsection{The move to quantum mechanics}
 \label{sec:IntroQM}
 \defineabbr{QM}{QM\xspace}{quantum mechanics}
-We will now introduce quantum mechanics~(QM) in a rather pragmatic manor,
+We will now introduce (non-relativistic)
+quantum mechanics~(QM) in a rather pragmatic manor,
 namely by stating a summary what changes in \QM formulation
 compared to the classical one.
 We will abstain from stating all details at the moment
@@ -64,8 +65,8 @@ as the following overview should mainly motivate a more detailed
 treatment of the involved mathematical concepts further down this chapter.
 
 \begin{enumerate}
-	\item Instead of phase space vectors $\clphase \in \R^{2N}$,
-		in \QM one employs functions $\Psi : \R^N \to \C^m$
+	\item Instead of phase space vectors $\clphase \in \R^{2d}$,
+		in \QM one employs functions $\Psi : \R^d \to \C$
 		living in a complex separable Hilbert space $\mathcal{H}$
 		in order to describe a particular state of the system.
 	\item A classical observable $F$ is represented by a

@@ -1,0 +1,19 @@
+[
+	node distance = 0.2cm
+]
+\node (L2) {$L^2(\R^d, \C)$};
+\node [right=of L2]  (L2s)  {$\supset$};
+
+\node [right=of L2s] (H1)   {$H^1(\R^d, \C)$};
+\node [right=of H1]  (H1s)  {$\supset$};
+\node [right=of H1s] (H2)   {$H^2(\R^d, \C)$};
+\node [right=of H2]  (H2s)  {$\supset \cdots$};
+
+\node [below=of H1,rotate=-90] (H1u)  {$\supset$};
+\node [below=of H2,rotate=-90] (H2u)  {$\supset$};
+
+\node [below=of H1s, yshift=-0.35cm]  (H10s) {$\supset$};
+\node [left=of H10s]  (H10)  {$H^1_0(\R^d, \C)$};
+\node [right=of H10s] (H20)  {$H^2_0(\R^d, \C)$};
+\node [right=of H20]  (H20s) {$\supset \cdots \supset$};
+\node [right=of H20s] (Cinf) {$C^\infty_0(\R^d, \C)$};

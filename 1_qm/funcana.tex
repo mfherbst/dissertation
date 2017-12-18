@@ -54,197 +54,373 @@ or the field of all complex numbers $\C$.
 	such that the following axioms hold for all vectors $x,y \in V$ and all $\alpha \in \set{F}$:
 	\begin{align}
 		\label{eqn:normScalability}
-			&\norm{\alpha x}_V = \abs{\alpha} \, \norm{x}_V &&
+			&\norm{\alpha x} = \abs{\alpha} \, \norm{x} &&
 			\text{\textit{(absolute scalability)}} \\
 		\label{eqn:normTriaIneq}
-			&\norm{x + y}_V \le \norm{x}_V + \norm{y}_V &&
+			&\norm{x + y} \le \norm{x} + \norm{y} &&
 			\text{\textit{(triangle inequality)}} \\
 		\label{eqn:normPointSep}
-			&\text{If}~\norm{x}_V = 0 \quad \Rightarrow
+			&\text{If}~\norm{x} = 0 \quad \Rightarrow
 			\quad \text{$x$ is the zero vector} &&
 			\text{\textit{(norm separates points)}}
 	\end{align}
-	Again we may drop the subscript if the norm employed is clear from context.
+	If such a norm can be found for a particular vector space $V$,
+	one typically refers to $V$ as a \newterm{normed vector space} as well.
 \end{defn}
 
 \begin{prop}
 	For every inner product space exists the so-called \newterm{induced norm}
 	\begin{equation}
-		\norm{x} = \sqrt{ \braket{x}{x} } \qquad \forall x \in V.
+		\norm{x}_V = \sqrt{ \braket{x}{x}_V } \qquad \forall x \in V.
 		\label{eqn:normInduced}
 	\end{equation}
+	One may drop the subscript on the norm
+	if it is clear from context.
 	\begin{proof}
 		See~\cite{DiracNotation}.
 	\end{proof}
 \end{prop}
 
 \begin{defn}
-	A vector space%
-	\footnote{Completeness is a more general property,
-		which also applies to sets with less structure
-		called metric spaces}
-	$V$ is called \newterm{complete} if every Cauchy sequence
-	of vectors in $V$ has a limit which is in $V$ as well,
-	i.e. if for every converging sequence in $V$ the limit
-	is in $V$ as well.
+	\label{def:Completeness}
+	A vector space $V$ is called \newterm{complete} if every Cauchy sequence
+	of vectors in  $V$ has a limit which is in $V$ as well.
 \end{defn}
+Remember that a sequence $(x_n) \in V$ is called Cauchy if
+\[ \forall \varepsilon > 0 \quad
+	\exists M \in \N \quad \text{such that} \quad
+	\norm{x_n - x_m}_V < \varepsilon \quad \forall n,m > M,
+\]
+which is equivalent to the sequence converging to a limit.
+An equivalent way of phrasing \abbr{def}{n} \vref{def:Completeness}
+is therefore,
+that a space $V$ is complete if every converging sequence
+converges inside $V$.
+Note that the completeness property of a space is
+tightly bound to the norm which is used.
+A space might well be complete with respect to one norm,
+but not with respect to another.
 
+\begin{exmp}
+	To make this a little more clear let us consider a counterexample.
+	It is well known that the sequence
+	\[ x_n = \sum_{k=0}^n \frac{1}{k!} \in \set{Q} \]
+	converges to Euler's number, \ie
+	\[ \lim_{n\to\infty} x_n = e \not\in \set{Q}. \]
+	In other words $\set{Q}$ (seen as a vector space over itself)
+	is not complete.
+
+	One may, however, build the \newterm{completion} of $\set{Q}$
+	with respect to a norm by just including all limiting points of
+	all sequences in $\set{Q}$. In fact this is one way
+	of defining the set of real numbers $\R$.
+\end{exmp}
+
+\begin{defn}
+	A subspace $S$ of a vector space $V$ is called \newterm{dense in $V$}
+	if each vector $x \in V$ either is a member of $S$ or one may find
+	a Cauchy sequence in $S$ for which $x$ is the limit point.
+\end{defn}
+In other words $S$ is dense in $V$ if it amounts to approximate
+all vectors of $V$ up to an arbitrarily desired accuracy.
+
+\begin{exmp}
+	$\set{Q}$ is dense in $\R$. 
+	Essentially this is the reason why we may approximate any real number
+	up to arbitrary accuracy by an appropriate sum of countably many fractions.
+\end{exmp}
+
+\begin{nte}
+	The concepts of complete spaces and dense subspaces
+	are applicable to more mathematical structures than just vector spaces.
+	In the broadest sense these properties can be applied to so-called
+	metric spaces, which are related to normed vector spaces,
+	but in fact have less structure.
+\end{nte}
+
+With the concept of completeness in mind,
+we have all we need to properly define a Hilbert space.
 \begin{defn}
 	A \newterm{Hilbert space} $\mathcal{H}$ is an inner product space,
 	which is complete with respect to the induced norm.
 \end{defn}
+In other words a Hilbert space is a space,
+where the inner product naturally defines a way to measure distances
+and take limits and where we can be sure that these limits are in the space as well.
+If you think back to standard calculus in $\R^d$,
+this in some sense makes sure that we can perform any kinds of limiting processes
+like differentiation inside Hilbert spaces without ever having to worry
+about leaving them.
+For our goal of defining differential operators on them,
+this is exactly what we need.
 
-\nomenclature{$L^2(\R^N, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{prop:L2HilbertSpace}}
+\nomenclature{$L^2(\R^d, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{prop:L2HilbertSpace}}
 \begin{prop}
 	\label{prop:L2HilbertSpace}
-	Given two functions $f, g : \R^N \to \C$
+	Given two functions $f, g : \R^d \to \C$,
 	let us define the inner product
 	\begin{equation}
-		\braket{f}{g}_{L^2} := \int_{\R^N} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
+		\braket{f}{g}_{L^2} := \int_{\R^d} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
 		\label{eqn:defL2InnProd}
 	\end{equation}
 	and the corresponding induced norm
 	\begin{equation}
-		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^N} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2}.
+		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2}.
 		\label{eqn:defL2Norm}
 	\end{equation}
 	In both cases the integral is to be understood in the Lebesgue sense
 	and we identify
-	\[ \vec{x} \equiv (x_1, \ldots, x_N) \]
-	for ease of notation.
-
-	The set of \newterm{square-integrable functions}
-	\[ L^2(\R^N, \C) := \big\{ f : \R^N \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
+	\[ \vec{x} \equiv (x_1, \ldots, x_d) \]
+	for ease of notation. The set
+	\[ L^2(\R^d, \C) := \big\{ f : \R^d \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
 	where the norm $\norm{~\cdot~}_{L^2}$ stays finite
-	is a Hilbert space over the field $\C$.
+	is the set of \newterm{square-integrable functions}.
+	It forms a is a Hilbert space over the field $\C$.
 	\begin{proof}
 		See~\cite{Adams2003}
 	\end{proof}
 \end{prop}
 
-\todoil{Separable space}
+Finally let us note some important properties of $L^2(\R^d, \C)$.
+
+\begin{defn}
+	A Hilbert space is \newterm{separable}%
+	\footnote{In the broader context of metric spaces,
+	a separable space has a countable, dense subset}
+	iff it admits a countable orthonormal basis.
+\end{defn}
+One can show that all separable Hilbert spaces are
+isometrically isomorphic towards another,
+since they are all isometrically isomorphic to the space of
+square-summable sequences $l^2$ in $\C$
+by the means of a suitable basis chosen in each space.
+
+\begin{prop}
+	$L^2(\R^d, \C)$ is separable.
+	\begin{proof}
+		\todoil{TODO Find reference}
+	\end{proof}
+\end{prop}
+
+In other words the space $L^2(\R^d, \C)$ is rather nice,
+because all functions inside it can be approximated
+by only a countable set of basis functions
+and it further admits for limits to be taken.
 
 \subsection{Hilbert spaces in Quantum Mechanics}
-\todoil{Say that this is general and other domains are possible as well.}
+\todo[caption={},inline]{
+	Make sure to bring across:
+	\begin{itemize}
+		\item In \QM we need $L^2$ because of statistics
+		\item All separable Hilbert spaces are equivalent
+		\item Separability is nice, because this allows for a countable set to be good enough.
+	\end{itemize}
+}
 
+Having discussed Hilbert spaces, let us return to the question,
+which Hilbert space is most applicable in \QM.
 
+In our introduction \vref{sec:IntroQM} we said that
+we employ functions $\Psi : \R^d \to \C$ from a
+complex separable Hilbert space $\mathcal{H}$.
+Now the so-called \newterm{Born interpretation} of \QM
+associates the meaning of a probability density
+with the norm $\norm{\Psi(x_1, \ldots x_N)}$
+of a state at each point in space $(x_1, \ldots x_N)$.
+From a more detailed analysis with respect to the implications
+for the statistical properties of $\Psi$
+this requires us to take a $\Psi \in L^2(\R^d, \C)$.
 
-\todoil{Discuss which Hilbert space to take for the \QM description
-and give a brief rationalisation why}
+In fact the choice of states from $L^2(\R^d, \C)$
+is only correct for \emph{non-relativistic, spin-free} \QM.
+If more than one spin component are required,
+like $4$ in relativistic \QM or $2$ in spin-adapted \QM,
+we need to take states from the spaces $L^2(\R^d, \C^4)$ or $L^2(\R^d, \C^2)$,
+respectively.
+Since this thesis only deals with non-relativistic \QM
+we only care about $L^2(\R^d, \C^2)$ or $L^2(\R^d, \C)$.
+For simplicity we will only analyse the mathematical structures
+based on $L^2(\R^d, \C)$ in this and the next chapter
+and introduce spin \textit{ad-hoc} whenever needed
+keeping in mind that all results from this and the next chapter
+can be trivially generalised to a \QM based on $L^2(\R^d, \C^2)$ as well.
 
-
-		
-		in \QM.
-
-
-
-
-		in \QM we employ functions $\Psi : \R^N \to \C^m$ from a
-		complex separable Hilbert space $\mathcal{H}$
-		to describe the state of the system.
-		The number of spin components $m$ is determined by the precise
-		\QM treatment we employ.
-		For the remainder of this chapter we will restrict ourselves
-		to a non-relativistic spin-free \QM, which implies $m=1$.
-
-
-
-
-		The so-called \newterm{Born interpretation} of \QM
-		associates the meaning of a probability density
-		with the norm $\norm{\Psi(x_1, \ldots x_N)}$
-		of a state at each point in space $(x_1, \ldots x_N)$.
-		
-		
-		with a probability density at a particular
-		point in space $(x_1, \ldots x_N)$.
-		
-
-		Such a statistical 
-		This requires the $\Psi$
-
-		Since the Born interpretation associates with the
-		norm $\norm{\Psi(x_1, \ldots x_N)}$ of the state at a particular
-		point in space $(x_1, \ldots x_N)$ in 
-
-		For reasons related to the Born interpretation,
-		which associates with the modulus $\norm{\Psi(x_1, \ldots x_N)}$
-
-		Typical choices for the Hilbert space are the Lebesgue spaces
-		$L^2(\R^N, \C^m)$,
-		where $m$ is $1, 2$ or $4$ depending on the number of spin components.
-
+From a computational point the choice of $L^2(\R^d, \C)$ is rather convenient,
+because this allows us to approximate a \QM state with only a countable
+set of parameters
+encoded in the countable dense subset of $L^2(\R^d, \C)$ we employ for the
+approximation.
+And by choosing more and more parameters and better suitable parameters
+the denseness ensures that we converge to a sensible limiting state
+in $L^2(\R^d, \C)$.
 
 \subsection{Sobolev spaces}
 Many operators of quantum mechanics involve derivatives as well.
 Whilst Lebesgue spaces are natural when it comes to doing statistics,
-they are too weak to make sure 
-
-\todo[inline,caption={}]{
-	If needed: \\
-\begin{defn}
-	A set $\Omega$ is bounded iff 
-\end{defn}
-\begin{defn}
-	A set $\Omega$ is compact iff it is bounded and complete.
-\end{defn}
-
-\nomenclature{$C^\infty_0(\R^N, \C)$}{The Banach space of infinitely differentiable
-complex-valued functions with compact support}
-\begin{defn}
-	Define $C^\infty_0$
-\end{defn}
-}
+they are too weak to make sure
+that derivatives of these functions are in $L^2(\R^d, \C)$ as well.
+As many \QM operators (like the momentum operator) involve
+derivatives this space is often not suitable.
 
 \begin{defn}
-	A function $f \in L^2(\R^N, \C)$ has a \newterm{weak partial derivative}
-	$g \in L^2(\R^N, \C)$ with respect to $x_i$ if
-	\[ \forall \varphi \in C^\infty_0(\R^N): \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
-	where $C^\infty_0(\R^N)$ is the of infinitely differential
-	functions $\R^N \to \C$ with compact support.
+	A function $f \in L^2(\R^d, \C)$ has a \newterm{weak partial derivative}
+	$g \in L^2(\R^d, \C)$ with respect to $x_i$ if
+	\[ \forall \varphi \in C^\infty_0(\R^d): \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
+	where $C^\infty_0(\R^d, \C)$ is the space of all
+	infinitely differentiable complex-valued functions with compact support.
 	To denote the weak derivative
-	one may write $g = \partial_{x_i} f$ like in the usual case.
+	one may write $g = \frac{\partial}{\partial x_i} f$ like in the usual case.
 	It can further be shown that if $f$ has a classical, strong derivative
 	then it also has a weak derivative, which coincides with the strong derivative.
-	
-	For ease of notation we also write 
-	\[ D^\alpha f \]
+	For ease of notation we also write
+	\[ D^\alpha f = \frac{\partial^{\abs{\alpha}}}{ \prod_{i=1}^d \partial x_i^{\alpha_i} }. \]
 \end{defn}
 
-\nomenclature{$H^1(\R^N, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
-\nomenclature{$H^2(\R^N, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
+\nomenclature{$H^1(\R^d, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
+\nomenclature{$H^2(\R^d, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
 \begin{defn}
-	Definition of \newterm{Sobolev space}
+	The \newterm{Sobolev space} defined by
 	\begin{equation}
-		H^k(\R^N, \C) := \left\{ f \in L^2(\R^N, \C) \middle| D^\alpha f \in L^2(\R^N, \C) \text{ for $\abs{\alpha} \le k$} \right\}
+		H^k(\R^d, \C) := \left\{ f \in L^2(\R^d, \C) \middle| D^\alpha f \in L^2(\R^d, \C) \text{ for $\abs{\alpha} \le k$} \right\}
 		\label{eqn:defSobolev}
 	\end{equation}
 	with inner product
-	\[ \braket{f}{g}_{H^k} := \sum_{\abs{\alpha} \le k} \braket{D^\alpha f}{D^\alpha g}_{L^2}. \]
-	All spaces of this sequence are Hilbert spaces
+	\begin{equation}
+	\braket{f}{g}_{H^k} := \sum_{\abs{\alpha} \le k} \braket{D^\alpha f}{D^\alpha g}_{L^2}.
+		\label{eqn:defSobolevInnProd}
+	\end{equation}
+	and induced norm
+	\begin{equation}
+		\norm{f}_{H^k} = \sum_{\abs{\alpha} \le k} \norm{D^\alpha f}_{L^2}
+		\label{eqn:defSobolevNorm}
+	\end{equation}
+	is a Hilbert space.
 \end{defn}
 
 \begin{defn}
-	The completion of $C^\infty_0(\R^N, \C)$ with respect to the norm $\norm{~\cdot~}_{H^k}$ is called $H^k_0(\R^N, \C)$. It is a proper subspace of $H^k$ and also a Hilbert space.
+	The completion of $C^\infty_0(\R^d, \C)$
+	with respect to the norm $\norm{~\cdot~}_{H^k}$
+	is the Sobolev space $H^k_0(\R^d, \C)$.
+	It is a proper subspace of $H^k$ and also a Hilbert space.
 \end{defn}
+\todoil{Explanation what this means}
 
-\begin{defn}
-	A subset $S$ is dense in a complete metric space $M$ if it is a proper subset
-	and each sequence in $S$ which is Cauchy converges to a point in $M$.
-\end{defn}
+\begin{figure}
+	\centering
+	\includeimage{1_qm/sobolev}
+	\caption{Overview of the spaces discussed in this chapter.
+		Apart from $C^\infty_0(\R^d, \C)$ all mentioned spaces are Hilbert spaces.
+		In each case $A \subset B$ denotes that $A$ is a proper, dense
+		subspace of $B$.}
+	\label{fig:sobolevRelations}
+\end{figure}
+The various relationships between the spaces we discussed
+in this chapter have been summarised in \fig \vref{fig:sobolevRelations}.
+Note that by definition
+\[ L^2(\R^d, \C) = H^0(\R^d, \C) = H^0_0(\R^d, \C). \]
 
-Overview of dense embeddings to do with Sobolev spaces
-and how completion under respective norms yields different sobolev spaces.
+\begin{exmp}
+	\label{exmp:H1sH1}
+	The function
+	\[ \Psi_{1s}(\vec{r}) = \exp\left(- \sqrt{x^2 + y^2 + z^2} \right) = \exp(-r), \]
+	which arises as an eigenfunction
+	of the hydrogen-like Hamiltonian \eqref{eqn:OpHydrogen}%
+	~(see section \vref{sec:HydrogenAtom})
+	belongs to $H^1(\R^3, \C)$
+	\begin{proof}
+	Since the function is bounded, we clearly have $\Psi_{1s} \in L^2(\R^3, \C)$.
+	Furthermore for any $\alpha \in \{x, y, z\}$:
+	\begin{equation}
+		\norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
+		= \norm{ - \frac{\alpha}{r} \exp(-r) }_{L^2}
+		= \int_{\R^3} \frac{\alpha^2}{r^2} \exp(-2r) \D\vec{r}
+		\label{eqn:ProofH1sH1}
+	\end{equation}
+	Due to the properties of the Lebesgue integral,
+	we may ignore the removable discontinuity at $\vec{r} = \vec{0}$
+	and instead write
+	\[ \norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
+		= \int_{\R^3} \exp(-2r) \D\vec{r} = \norm{\Psi_{1s}}_{L^2} < \infty. \]
+	This shows that $\exp(-r) \in H^1(\R^3, \C)$,
+	since each term of \eqref{eqn:defSobolevNorm} is bound.
+	\end{proof}
+\end{exmp}
 
+\begin{prop}[Hardy's inequality]
+	\label{prop:Hardy}
+	For all $u \in H^1(\R^3, \C)$, we have
+	\[ \int_{\R^3} \norm{\nabla u}_2^2 \D\vec{r}
+		\geq \frac{1}{4} \int_{\R^3} \frac{\abs{u}^2}{r^2} \D\vec{r} \]
+	\begin{proof}
+		For a proof of the special case $u \in C_0^\infty(\R^3, \C)$
+		see \cite[p. 30]{Helffer2013}.
+		The more general case we claim here,
+		follows from the denseness of $C_0^\infty(\R^3, \C)$ in $H^1(\R^3, \C)$
+		and continuity of the integrands on both sides
+		with respect to the $H^1$ norm.
+		\todoil{I do not think I understand this}
+	\end{proof}
+\end{prop}
 
+\begin{cor}
+	\label{cor:Hardy}
+	If $u \in H^1(\R^3, \C)$, then $\frac{u}{r} \in L^2(\R^3, \C)$.
+	\begin{proof}
+		One easily rewrites Hardy's inequality to
+		\[
+			\norm{u}_{H^1} \geq  \sum_{\alpha\in\{x,y,z\}} \int_{\R^3} \abs{\frac{\partial u}{\partial \alpha}} \D\vec{r}
+			\geq \int_{\R^3} \norm{\nabla u}_2^2 \D\vec{r}
+			\geq \frac{1}{4} \int_{\R^3} \frac{\abs{u}^2}{r^2} \D\vec{r}
+			= \frac{1}{4} \norm{\frac{u}{r}}_{L^2}
+		\]
+		which proves the claim.
+	\end{proof}
+\end{cor}
 
-$C^\infty_0$ is dense in $L^2$ (Hachbusch 1986)
-and dense in $H^1$ and dense in $H^1_0$
+\begin{exmp}
+	\label{exmp:H1sH2}
+	We now want to use corollary \vref{cor:Hardy} to prove that
+	$\Psi_{1s} \in H^2(\R^3,\C)$.
+	\begin{proof}
+		Considering our result from \eqref{eqn:ProofH1sH1}
+		we find that for all $\alpha, \beta \in \{x,y,z\}$:
+		\begin{align*}
+			\norm{\frac{\partial^2 \Psi_{1s}}{\partial \alpha \partial \beta}}_{L^2}
+			&\leq \norm{ \frac{\delta_{\alpha\beta}}{r} \exp(-r)}_{L^2}
+			+ \norm{\frac{\alpha\beta}{r^3}\exp(-r)}_{L^2}
+			+ \norm{\frac{\alpha\beta}{r^2}\exp(-r)}_{L^2} \\
+			&< \infty
+		\end{align*}
+		\todoil{Work on this further}
+		Together with results we already showed in example \vref{exmp:H1sH1}
+		this shows the claimed result.
+\end{proof}
+\end{exmp}
 
-also define $H_0^n(\Omega, \C)$
-Give inclusions including $C^\infty_0$
-Mention what is dense
+\begin{exmp}
+	In an analogous manner to examples \vref{exmp:H1sH1} and \vref{exmp:H1sH2}
+	one could attempt to probe whether the one-dimensional function
+	$f(x) = \exp(-\abs{x})$ lives in $H^1(\R,\C)$ or $H^2(\R,\C)$.
+	Whilst the former can be easily verified,
+	one finds $f \not\in H^2(\R,\C)$.
+	\todoil{Show this}
+\end{exmp}
 
-\begin{thm}
-	Sobolev embedding theorem
+This rather surprising result is a consequence of the second part of
+the Sobolev embedding theorem
+of which we only present a slightly specialised form  here.
+\begin{thm}[Sobolev embedding]
+	Given $r, k, d \in \N$ with
+	\[ k > \frac{d}{2} > 0 \quad \text{and} \quad k -\frac{d}{2} > r \]
+	one may find an embedding
+	\[ H^k(\R^d) \subset C^r(\R^d) \]
+	between the Sobolev space $H^k(\R^d)$ and the space of the $r$ times
+	continuously differentiable functions, $C^r(\R^d)$.
 \end{thm}
+This embedding theorem allows to give an idea what is to be expected about
+the smoothness of a function in $H^k$.
+Interestingly the smaller the dimension the more smooth such a function
+has to be.
+
+\subsection{Representation theorems}
+\todoil{If there is time talk about the Ritz and the Lax-Milgram}
