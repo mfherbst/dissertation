@@ -334,13 +334,14 @@ Note that by definition
 		\norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
 		= \norm{ - \frac{\alpha}{r} \exp(-r) }_{L^2}
 		= \int_{\R^3} \frac{\alpha^2}{r^2} \exp(-2r) \D\vec{r}
+		\leq \int_{\R^3} \frac{r^2}{r^2} \exp(-2r) \D\vec{r}
 		\label{eqn:ProofH1sH1}
 	\end{equation}
 	Due to the properties of the Lebesgue integral,
 	we may ignore the removable discontinuity at $\vec{r} = \vec{0}$
 	and instead write
 	\[ \norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
-		= \int_{\R^3} \exp(-2r) \D\vec{r} = \norm{\Psi_{1s}}_{L^2} < \infty. \]
+		\leq \int_{\R^3} \exp(-2r) \D\vec{r} = \norm{\Psi_{1s}}_{L^2} < \infty. \]
 	This shows that $\exp(-r) \in H^1(\R^3, \C)$,
 	since each term of \eqref{eqn:defSobolevNorm} is bound.
 	\end{proof}
@@ -388,12 +389,22 @@ Note that by definition
 			\norm{\frac{\partial^2 \Psi_{1s}}{\partial \alpha \partial \beta}}_{L^2}
 			&\leq \norm{ \frac{\delta_{\alpha\beta}}{r} \exp(-r)}_{L^2}
 			+ \norm{\frac{\alpha\beta}{r^3}\exp(-r)}_{L^2}
-			+ \norm{\frac{\alpha\beta}{r^2}\exp(-r)}_{L^2} \\
-			&< \infty
+			+ \norm{\frac{\alpha\beta}{r^2}\exp(-r)}_{L^2}
 		\end{align*}
-		\todoil{Work on this further}
-		Together with results we already showed in example \vref{exmp:H1sH1}
-		this shows the claimed result.
+		Now let us employ $\abs{\alpha\beta} \le r^2$
+		and the fact that a removable singularity
+		can be ignored in the Lebesgue integral to arrive at
+		\begin{align*}
+			\norm{\frac{\partial^2 \Psi_{1s}}{\partial \alpha \partial \beta}}_{L^2}
+			&\leq \norm{\frac{1}{r} \exp(-r)}_{L^2}
+			+ \norm{\frac{r^2}{r^3}\exp(-r)}_{L^2}
+			+ \norm{\frac{r^2}{r^2}\exp(-r)}_{L^2} \\
+			&= 2\norm{\frac{1}{r} \exp(-r)}_{L^2} + \norm{\exp(-r)}_{L^2} \\
+			&< \infty,
+		\end{align*}
+		where in the last line we used that
+		$\exp(-r) \in·H^1(\R^3, \C)$ and corrollary \vref{cor:Hardy}.
+		This implies the claimed statement.
 \end{proof}
 \end{exmp}
 
@@ -419,7 +430,7 @@ of which we only present a slightly specialised form  here.
 \end{thm}
 This embedding theorem allows to give an idea what is to be expected about
 the smoothness of a function in $H^k$.
-Interestingly the smaller the dimension the more smooth such a function
+Interestingly the smaller the dimensionality the more smooth such a function
 has to be.
 
 \subsection{Representation theorems}
