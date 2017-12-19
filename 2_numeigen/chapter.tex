@@ -7,30 +7,108 @@
 	own efforts.
 }{Cornelius Lanczos~(1893--1974)}
 
-
 \section{Ritz-Galerkin projection}
-% min - max principle
-% see Helffer2013 p.144
+Let us consider in this chapter a self-adjoint operator $\Op{A}$
+on a Hilbert space $\hilbert$ with domain $D(\Op{A})$.
+We already saw in \eqref{eqn:formA} that one is able
+to associate to such an operator an appropriate quadratic form
+\[ a(u, v) = \braket{u}{\Op{A} v}_\hilbert. \]
+Whilst $\Op{A}$ might only be self-adjoint the domain $D(\Op{A})$,
+one may define the \newterm{form domain} $Q(\Op{A})$ as the largest
+natural Hilbert space on which the quadratic form $a(u, v)$
+is defined and continuous by the means of functional calculus.
+We have
+\[ D(\Op{A}) \subseteq Q(\Op{A}) \subseteq \hilbert. \]
 
-\section{Numerical solution of partial differential equations}
-We can relax $H^2(\R^3)$ to $H^1(\R^3)$ if we use test functions
-from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
-\todo{Ask guido}
-Is this the energetic extension
-\url{https://en.wikipedia.org/wiki/Energetic_space}
+Clearly an eigenpair $(\lambda_i, v_i) \in \sigma_P(\Op{A}) \times D(\Op{A})$
+satisfies the variational formulation of the eigenproblem
+\[ \forall u \in \hilbert: a(u, v_i) = \lambda_i \braket{u}{v_i}_\hilbert. \]
+This suggests the \newterm{Ritz-Galerkin projection},
+which attempts to find an approximate solution by considering
+the related variational problem
+\begin{align}
+	\text{Search $(\lambda_i^{(n)}, v_i^{(n)}) \in \R \times S_n$ such that} \\
+	\forall u^{(n)} \in S_n \quad a(u^{(n)}, v_i^{(n)})
+		= \lambda_i^{(n)} \braket{u^{(n)}}{v_i^{(n)}}_\hilbert \\
+	\norm{v_i^{(n)}}_\hilbert = 1
+	\label{eqn:varProblem}
+\end{align}
+in a sequence of finite-dimensional subspaces $(S_n)_{n\in\N}$
+of $Q(\Op{A})$ satisfying
+\[ \forall v \in \Op{A} \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0. \]
+For ease of future discussion let $\Op{A}^{(n)}$ denote the self-adjoint
+operator on $S_n$ defined by the variational problem, \ie
+\[ \forall (u^{(n)}, v^{(n)}) \in S_n \times S_n \quad \braket{\Op{A}^{(n)} u^{(n)}}{v^{(n)}}_\hilbert = a(u^{(n)}, v^{(n)}). \]
+
+Since $S_n$ is finite-dimensional and hence $\Op{A}^{(n)}$ compact,
+which allows us to find a discrete spectrum for $\Op{A}^{(n)}$.
+Our hope is now to construct such a sequence of subspaces,
+that $\sigma(\Op{A}^{(n)})$ converges to $\sigma(\Op{A})$.
+Unfortunately this is \emph{not} possible in general.
+See~\cite{Helffer2013} for details.
+
+We will discuss in this section some results,
+which hold for some special cases, which are applicable to us.
+
+
+
+
+
+% TODO define semi-bounded operator and bounded below and above
+
+In the following we assume the convention,
+that the eigenvalues in the discrete spectrum $\sigma_\text{disc}$
+are indexed as such
+\[ \lambda_0 \leq \lambda_1 \leq \lambda_2 \leq \cdots. \]
+\todoil{Check that the discrete spectrum is countable}
+
+\begin{thm}[Courant-Fischer min-max theorem]
+	\label{thm:CourantFischer}
+	Let $\Op{A}$ be a self-adjoint operator on $\hilbert$,
+	which is bounded below with form domain $Q(\Op{A})$
+	and associated quadratic form $a(\slot,\slot)$.
+	For each $0 < i \in \N$, we define
+	\begin{equation}
+		\lambda_i(\Op{A}) = \inf_{W \in \set{S}_i} \sup_{w \in W \backslash \{0\}}
+		\frac{a(w,w)}{\norm{w}_\hilbert^2}
+		\label{eqn:CourantFischer}
+	\end{equation}
+	where $\set{S}_i$ is the set of all $i$-dimensional subspaces of $Q(\Op{A})$.
+	Then
+	\begin{itemize}
+		\item if $\Op{A}$ has at least $i$ eigenvalues lower
+			than $\min \sigma_\text{ess}(\Op{A})$ (counting multiplicities multiple times),
+			then $\lambda_i(\Op{A})$ is the $i$th eigenvalue of the discrete spectrum
+			of $\Op{A}$.
+		\item otherwise, $\lambda_i(\Op{A}) = \min \sigma_\text{ess}(\Op{A})$.
+	\end{itemize}
+% see Helffer2013 p.144
+\end{thm}
+
+\begin{thm}
+	If we are in the setting of theorem \vref{thm:CourantFischer}
+	and follow the Ritz-Galerkin ansatz, then
+	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}) \]
+	where the convergence is always from above.
+	% TODO I copied this from Eric \ldots check where he got this from
+\end{thm}
+
 
 \todo[inline,caption={}]{
 	\begin{itemize}
-		\item Define the problem
-		\item Galerkin projection
+		\item Note examples where it breaks down
+		\item Note some stuff, how to do this in practice
+		\item Make the connection to matrices and linear algebra
 	\end{itemize}
+
+We can relax $H^2(\R^3)$ to $H^1(\R^3)$ if we use test functions
+from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
 }
-
-
 
 \section{Diagonalisation algorithms}
 \todo[inline,caption={}]{
 	\begin{itemize}
+		\item Introduce linear algebra and sketch some diagonalisation algos
 		\item Brief rationale
 		\item Basic ideas
 		\item Sketch Davidson and Lanczos
