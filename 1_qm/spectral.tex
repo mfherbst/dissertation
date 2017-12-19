@@ -8,31 +8,244 @@
 	\end{itemize}
 }
 
-\subsection{General discussion}
+\subsection{Bounded and self-adjoint operators}
 
-\url{https://en.wikipedia.org/wiki/Self-adjoint_operator}
-\url{https://en.wikipedia.org/wiki/Spectral_theorem}
-\url{https://en.wikipedia.org/wiki/Extensions_of_symmetric_operators}
+\begin{defn}
+	A \newterm{linear operator} on a Hilbert space $\hilbert$
+	is the linear map $\Op{A} : D(\Op{A}) \to \hilbert$,
+	where $D(\Op{A}) \subset \hilbert$ is a subspace
+	called the \newterm{domain} of $\Op{A}$.
+\end{defn}
+Typically we employ just the term \newterm{operator} to refer to linear operators.
+Recall that a mapping is called \newterm{linear} if the condition
+\[ TODO \]
+holds.
+Even though not strictly necessary, we will assume for our treatment
+that the Hilbert space is separable and that the domain of an operator
+is always dense in it.
 
-% Discuss the spectral properties of the Laplace and Schrödinger operators
+\newcommand{\opnorm}[1]{\norm{#1}_{\mathcal{L}(\hilbert)}}
+\begin{defn}
+	The inner product of $\hilbert$ induces an operator norm
+	\[ \opnorm{\Op{A}} := \sup_{u \in \hilbert, u\neq0} \frac{\norm{A u}_\hilbert}{\norm{u}_{\hilbert}}. \]
+\end{defn}
+
+\begin{defn}
+	A operator $\Op{A}$ on $\hilbert$ is \newterm{bounded} iff
+	\[ \opnorm{\Op{A}} < \infty, \]
+	\ie if it has finite operator norm.
+\end{defn}
+A bounded operator is also sometimes referred to as \newterm{continuous}%
+~\footnote{In fact this is a consequence from the fact that a bounded linear operator
+between normed vector spaces is always continuous}.
+
+\begin{prop}
+	Any linear operator on a finite-dimensional Hilbert space $\hilbert$ is bounded.
+	\todoil{Maybe even compact}
+\end{prop}
+This allows it to be viewed as a multiplication by a finite matrix.
+
+\begin{defn}
+	Let $\Op{A}$ and $\Op{B}$ be operators on $\hilbert$.
+	$\Op{B}$ is an \newterm{extension} of $\Op{A}$ if $D(\Op{A}) \subset D(\Op{B})$
+	and if $\forall u \in D(\Op{A}: \Op{A}u = \Op{B}u$.
+\end{defn}
+
+\begin{defn}
+	A operator $\Op{A}$ on $\hilbert$ which does not possess
+	a bounded extension is called an \newterm{unbounded operator} on $\hilbert$.
+\end{defn}
+
+\begin{rem}
+By the means of the Riesz representation theorem \vref{thm:Riesz}
+we are able to uniquely define an operator $\Op{A}$ by
+specifying the values of the sesquilinear form
+\[ \hilbert \times \hilbert \ni (u, v) \mapsto \braket{u}{\Op{A} v}_\hilbert \in \C\]
+% TODO define this as a(.,.) for future use
+\end{rem}
+
+\begin{defn}
+	A operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric} if
+	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
+\end{defn}
+
+\begin{defn}
+	Let $\Op{A}$ be a linear operator on $\hilbert$ with (dense) domain $D(\Op{A})$
+	and let $D(\tp{\Op{A}})$ be the vector space
+	\[ D(\tp{\Op{A}}) = \left\{ v \in \hilbert \middle|
+		\exists f_v \in \hilbert \ \text{such that} \
+		\forall u \in D(\Op{A}): \braket{\Op{A} u}{v} = \braket{u}{f_v} \right\}.
+	\]
+	Then the linear operator $\tp{\Op{A}}$ with domain $D(\tp{\Op{A}})$,
+	defined by
+	\[ \forall v \in D(\tp{\Op{A}}) \quad \braket{\Op{A} u}{v} = \braket{u}{\tp{\Op{A}} v} \]
+	is called the \newterm{adjoint} of $\Op{A}$.
+\end{defn}
+Note due to the Riesz theorem and the denseness of $D(\Op{A})$ in $\hilbert$
+the $f_v$ is unique.
+
+\begin{defn}
+	A self-adjoint operator is an operator $\Op{A}$ for which $\tp{\Op{A}} = \Op{A}$.
+	Note, that this implies both that the operator is symmetric \emph{and}
+	that $D(\Op{A}) = D(\tp{\Op{A}})$.
+\end{defn}
+
+\begin{rem}
+	For a bounded linear operator $\Op{A}$ with $D(\Op{A}) = \hilbert$
+	the adjoint $\tp{\Op{A}}$ can be uniquely defined by
+	\[ \forall (u,v) \in \hilbert \times \hilbert \quad \braket{\Op{A} u}{v} = \braket{u}{\tp{\Op{A}} v} \]
+	This operator will be bounded, too.
+
+	Comparing with the definition of a symmetric operator we find that for
+	bounded operators the property of symmetric and self-adjoint are equivalent.
+\end{rem}
+
+It is important to note that
+\begin{itemize}
+	\item There is a simpler definition for adjoint for bounded operators
+	\item For unbounded operators only self-adjoint $\Rightarrow$ symmetric
+		and they are not equivalent
+	\item Symmetric operators are not very interesting
+		as they do not have the nice mathematical properties (real spectrum, spectral decomposition)
+	\item Many \QM operators are not self-adjoint.
+		They are ways to get around it by the means of special extensions.
+	\item We will discuss those by the means of a couple of examples
+		further down.
+\end{itemize}
+
+\subsection{Spectra of self-adjoint operators}
+\begin{defn}
+	A linear operator $\Op{A}$ is closed if its graph
+	\[ \{ (u, \Op{A}u) | u \in D(\Op{A}) \} \]
+	is a closed subspace of $\hilbert \times \hilbert$.
+\end{defn}
+
+\begin{prop}
+	The adjoint of a linear operator is closed.
+	\begin{proof}
+		See \cite[p. 17]{Helffer2013}
+	\end{proof}
+\end{prop}
+As a result all self-adjoint operators are closed.
+
+\newcommand{\shiftop}{(\Op{A} - \lambda \id_{\hilbert})}
+\begin{defn}
+	Let $\Op{A}$ be a closed linear operator on $\Op{H}$.
+	We call
+	\begin{itemize}
+		\item the open set
+			\[ \rho(\Op{A}) = \left\{ \lambda \in \C \ \middle| \
+				\shiftop \
+				\text{is bijective on $D(\Op{A})$} \right\} \]
+			the \newterm{resolvent set} of $\Op{A}$.
+		\item the closed set $\sigma{\Op{A}} = \C \backslash \rho(\Op{A})$
+			the \newterm{spectrum} of $\Op{A}$.
+	\end{itemize}
+\end{defn}
+In infinite dimensions invertibility (bijectivity) is not idential to injectivity,
+but in finite dimensions it can be made such.
+
+\begin{prop}
+	If $\Op{A}$ is self-adjoint (and hence closed), then $\sigma(\Op{A}\subset \R$.
+	\begin{proof}
+		See~\cite[p. 102]{Helffer2013}
+	\end{proof}
+\end{prop}
+
+\begin{defn}
+	If $\Op{A}$ is self-adjoint, we can decompose $\sigma(\Op{A}) = \sigma_P(\Op{A}) \dot{\cup} \sigma_C(\Op{A})$ where these sets are defined as
+	\begin{itemize}
+		\item the \newterm{point spectrum}
+			\[ \sigma_P(\Op{A}) = \left\{ \lambda \in \R \middle| \shiftop\ \text{is non-injective} \right\}
+				= \{ \text{eigenvalues of $\Op{A}$} \}\]
+		\item the \newterm{continuous spectrum}
+			\[ \sigma_C(\Op{A}) = \overline{\left\{ \lambda \in \R \middle| \shiftop\ \text{injective, but not surjective} \right\}}\]
+			\ie the closure under the set
+	\end{itemize}
+\end{defn}
+The RAGE theorem allows for the interpretation of the
+point and the continuous spectrum in a physical way.
+The point spectrum corresponds to the eigenstates of bound states,
+whereas the (slide 25 eric october lectures)
+
+From a numerical point of view another way of splitting the spectrum is interesting
+\begin{defn}
+	For any closed operator, we can decompose $\sigma(\Op{A}) = \sigma_\text{disc}(\Op{A}) \dot{\cup} \sigma_\text{ess}(\Op{A})$
+	where
+	\begin{itemize}
+		\item the discrete spectrum%
+			\footnote{For a mathematically more precise description, see~\cite[p.103 and p.132]{Helffer2013}.}
+			\[ \sigma_\text{disc}(\Op{A}) \simeq \left\{ \lambda \in \R \middle| \text{$\lambda$ is an isolated eigenvalues of $\Op{A}$ with finite multiplicity} \right\} \]
+		\item the essential spectrum
+			\[\sigma_\text{ess}(\Op{A}) = \sigma(\Op{A}) \backslash \sigma_\text{disc}(\Op{A})\]
+	\end{itemize}
+\end{defn}
+Bye construction it is clear that the essential spectrum consists of
+\begin{itemize}
+	\item The continuous spectrum
+	\item Eigenvalues of infinite multiplicities
+	\item Eigenvalues embedded in the continuous spectrum
+\end{itemize}
+
+\begin{defn}
+	A operator $\Op{A} : D(\Op{A}) \to \hilbert$ on a Hilbert space $\hilbert$
+	is \newterm{compact}
+	if for any sequence $(x_n)$ that converges weakly in $\hilbert$,
+	$\Op{A} x_n$ converges strongly in $\hilbert$.
+	% use norm of D(A) in weak convergence and norm of H in strong
+\end{defn}
+
+Note: Laplacian and Hydrogen operator are both not compact.
+But they are almost.
+Most notably for the Laplacian its inverse is compact
+and for the Schrödinger operators (which occur in HF)
+the point and the continuous spectra are well-separated,
+so approximating with the min-max principle is ok.
 
 
-% Important:
-%https://en.wikipedia.org/wiki/Self-adjoint_operator
-%If A is symmetric and D o m ( A ) = H {\displaystyle \mathrm {Dom} (A)=H} {\displaystyle \mathrm {Dom} (A)=H}, then A is necessarily bounded.
-%Hence if the operator is not bounded (as most operators in QM) in cannot be self-adjoint.
+\begin{prop}
+	If $\Op{A}$ is compact:
+	\begin{itemize}
+		\item $0 \in \sigma(\Op{A})$
+		\item $\sigma(\Op{A}) \backslash {0} = \sigma_P(\Op{A}) \backslash {0}$
+		\item Only one of these cases is true:
+			\begin{itemize}
+				\item $\sigma(\Op{A}) = {0}$
+				\item $\sigma(\Op{A}) \backslash {0}$ is finite.
+				\item $\sigma(\Op{A}) \backslash {0}$ can be described
+					as a sequence of points tending to $0$.
+			\end{itemize}
+	\end{itemize}
+	\begin{proof}
+		See~\cite[p. 56]{Helffer2013}.
+	\end{proof}
+\end{prop}
 
+\begin{prop}
+	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
+	self-adjoint operator on $\hilbert$,
+	then $\hilbert$ admits for a Hilbertian basis,
+	\ie a basis set $\{ u_k \}_{k \in \mathcal{I}}$ with
+	\[ \braket{u_k}{u_l} = \delta_{kl} \quad \forall k,l \in \mathcal{I}. \]
+	and
+	\[ \text{span} \{ u_k \}_{k \in \mathcal{I}} = \hilbert \]
+	\begin{proof}
+		See~\cite[p. 60]{Helffer2013}.
+	\end{proof}
+\end{prop}
 
-self-adjoint operator
-(show that it has real eigenvalues)
+\begin{rem}
+If $\hilbert$ is finite-dimensional, then all operators are compact,
+which has a lot of noteworthy consequences:
+\begin{itemize}
+	\item 
+\end{itemize}
+\end{rem}
 
-symmetric operator
-
-
+\subsection{The Laplace operator}
 % This section should make clear
 % The importance of the Sobolev space $H_2$ for quantum mechanics
 
-\subsection{The Laplace operator}
 
 or alternatively in spherical polar coordinates
 as $(r, \theta, \varphi)$ with
