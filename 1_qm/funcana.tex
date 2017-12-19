@@ -29,7 +29,7 @@ or the field of all complex numbers $\C$.
 	An \newterm{inner product space} over a field $\F$
 	is a vector space $V$ (over the same field)
 	that is further equipped with an inner product, i.e. a map
-	\[ \braket{~\cdot~}{~\cdot~}_V : V \times V \to \F \]
+	\[ \braket{\slot}{\slot}_V : V \times V \to \F \]
 	that satisfies (for all vectors $x,y,z \in V$ and all $\alpha \in \set{F}$)
 	\begin{align}
 		\label{eqn:innProdConjSym}
@@ -50,7 +50,7 @@ or the field of all complex numbers $\C$.
 
 \begin{defn}
 	Given a vector space $V$ over the field $\F$, a \newterm{norm} is a map
-	$\norm{~\cdot~}_V : V \to \R$
+	$\norm{\slot}_V : V \to \R$
 	such that the following axioms hold for all vectors $x,y \in V$ and all $\alpha \in \set{F}$:
 	\begin{align}
 		\label{eqn:normScalability}
@@ -173,7 +173,7 @@ this is exactly what we need.
 	\[ \vec{x} \equiv (x_1, \ldots, x_d) \]
 	for ease of notation. The set
 	\[ L^2(\R^d, \C) := \big\{ f : \R^d \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
-	where the norm $\norm{~\cdot~}_{L^2}$ stays finite
+	where the norm $\norm{\slot}_{L^2}$ stays finite
 	is the set of \newterm{square-integrable functions}.
 	It forms a is a Hilbert space over the field $\C$.
 	\begin{proof}
@@ -299,7 +299,7 @@ derivatives this space is often not suitable.
 
 \begin{defn}
 	The completion of $C^\infty_0(\R^d, \C)$
-	with respect to the norm $\norm{~\cdot~}_{H^k}$
+	with respect to the norm $\norm{\slot}_{H^k}$
 	is the Sobolev space $H^k_0(\R^d, \C)$.
 	It is a proper subspace of $H^k$ and also a Hilbert space.
 \end{defn}
@@ -438,8 +438,6 @@ has to be.
 
 \begin{thm}[Rietz's representation theorem]
 	\label{thm:Riesz}
-	
-
 	bla
 	\begin{proof}
 		\todoil{Find reference}

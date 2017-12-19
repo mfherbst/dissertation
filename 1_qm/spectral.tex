@@ -60,8 +60,10 @@ This allows it to be viewed as a multiplication by a finite matrix.
 By the means of the Riesz representation theorem \vref{thm:Riesz}
 we are able to uniquely define an operator $\Op{A}$ by
 specifying the values of the sesquilinear form
-\[ \hilbert \times \hilbert \ni (u, v) \mapsto \braket{u}{\Op{A} v}_\hilbert \in \C\]
-% TODO define this as a(.,.) for future use
+\begin{equation}
+	\hilbert \times \hilbert \ni (u, v) \mapsto a(u, v) := \braket{u}{\Op{A} v}_\hilbert \in \C
+	\label{eqn:formA}
+\end{equation}
 \end{rem}
 
 \begin{defn}
@@ -238,7 +240,11 @@ so approximating with the min-max principle is ok.
 If $\hilbert$ is finite-dimensional, then all operators are compact,
 which has a lot of noteworthy consequences:
 \begin{itemize}
-	\item 
+	\item Eigenfunctions of any self-adjoint operator are a basis for the
+		Hilbert space $\hilbert$.
+		Their eigenvalues are real.
+	\item All symmetric operators are self-adjoint.
+	\item The essential spectrum is empty: There are only discrete eigenvalues
 \end{itemize}
 \end{rem}
 
