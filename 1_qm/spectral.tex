@@ -56,6 +56,13 @@ This allows it to be viewed as a multiplication by a finite matrix.
 	a bounded extension is called an \newterm{unbounded operator} on $\hilbert$.
 \end{defn}
 
+\begin{defn}
+	An operator is semi-bounded from
+	\todoil{TODO}
+% TODO define semi-bounded operator and bounded below and above
+% Page 29 in Helffer2013
+\end{defn}
+
 \begin{rem}
 By the means of the Riesz representation theorem \vref{thm:Riesz}
 we are able to uniquely define an operator $\Op{A}$ by
@@ -247,6 +254,20 @@ which has a lot of noteworthy consequences:
 	\item The essential spectrum is empty: There are only discrete eigenvalues
 \end{itemize}
 \end{rem}
+
+
+Most operators of \QM are not bounded and thus not compact.
+But at least all we will cover are semi-bounded.
+This first of all allows to find a self-adjoint extension as we will see in the examples
+in the next section.
+They additionally have the nice property that the first few eigenvalues are
+solely part of the discrete spectrum and the essential spectrum only starts at a
+later point, \ie that
+\[ \forall \lambda \in \sigma_\text{disc}(\Op{A}), \mu \in \sigma_\text{ess}{\Op{A}) \quad \lambda < \mu \]
+We will see in section \vref{sec:RitzGalerkin} in the next chapter,
+how this allows to construct sensible approximations
+for these discrete eigenvalues even though the operators are not compact
+(and neither are their resolvents in some cases).
 
 \subsection{The Laplace operator}
 % This section should make clear
