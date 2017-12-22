@@ -1,4 +1,4 @@
-\chapter{Numerical treatment of eigenvalue problems}
+\chapter{Numerical treatment of spectral problems}
 
 \chapquote{
 	It is a well-known experience that the only truly
@@ -26,17 +26,25 @@ satisfies the variational formulation of the eigenproblem
 \[ \forall u \in \hilbert: a(u, v_i) = \lambda_i \braket{u}{v_i}_\hilbert. \]
 This suggests the \newterm{Ritz-Galerkin projection},
 which attempts to find an approximate solution by considering
-the related variational problem
+the related variational problem:
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+	Search $(\lambda_i^{(n)}, v_i^{(n)}) \in \R \times S_n$ such that
+\end{minipage} \\[-1.3em]
 \begin{align}
-	\text{Search $(\lambda_i^{(n)}, v_i^{(n)}) \in \R \times S_n$ such that} \\
-	\forall u^{(n)} \in S_n \quad a(u^{(n)}, v_i^{(n)})
-		= \lambda_i^{(n)} \braket{u^{(n)}}{v_i^{(n)}}_\hilbert \\
-	\norm{v_i^{(n)}}_\hilbert = 1
-	\label{eqn:varProblem}
+	\label{eqn:varProblem1}
+	\forall u^{(n)} \in S_n: \quad a(u^{(n)}, v_i^{(n)})
+		&= \lambda_i^{(n)} \braket{u^{(n)}}{v_i^{(n)}}_\hilbert \\
+	\label{eqn:varProblem2}
+	\norm{v_i^{(n)}}_\hilbert &= 1
 \end{align}
+\end{center}
 in a sequence of finite-dimensional subspaces $(S_n)_{n\in\N}$
 of $Q(\Op{A})$ satisfying
-\[ \forall v \in \Op{A} \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0. \]
+\begin{equation}
+	\forall v \in Q(\Op{A}) \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0.
+	\label{eqn:CondSubspaces}
+\end{equation}
 For ease of future discussion let $\Op{A}^{(n)}$ denote the self-adjoint
 operator on $S_n$ defined by the variational problem, \ie
 \[ \forall (u^{(n)}, v^{(n)}) \in S_n \times S_n \quad \braket{\Op{A}^{(n)} u^{(n)}}{v^{(n)}}_\hilbert = a(u^{(n)}, v^{(n)}). \]
@@ -57,9 +65,9 @@ which hold for some special cases, which are applicable to us.
 
 In the following we assume the convention,
 that the eigenvalues in the discrete spectrum $\sigma_\text{disc}$
-are indexed as such
-\[ \lambda_0 \leq \lambda_1 \leq \lambda_2 \leq \cdots. \]
-\todoil{Check that the discrete spectrum is countable}
+are indexed such that
+\[ \lambda_1 \leq \lambda_2 \leq \lambda_3 \leq \cdots \]
+in case this set is countable.
 
 \begin{thm}[Courant-Fischer min-max theorem]
 	\label{thm:CourantFischer}
@@ -85,13 +93,37 @@ are indexed as such
 \end{thm}
 
 \begin{thm}
-	If we are in the setting of theorem \vref{thm:CourantFischer}
-	and follow the Ritz-Galerkin ansatz, then
+	Let $\Op{A}$ be a bounded below, self-adjoint operator on $\hilbert$
+	and let $\Op{A}^{(n)}$ be the approximation to $\Op{A}$
+	according to the variational Ritz-Galerkin ansatz
+	\eqref{eqn:varProblem1}--\eqref{eqn:varProblem2}
+	in a sequence of subspaces $(S_n)$,
+	which satisfy condition \eqref{eqn:CondSubspaces}.
+	Then
 	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}) \]
 	where the convergence is always from above.
-	% TODO I copied this from Eric \ldots check where he got this from
+	\begin{proof}
+		\todoil{Find reference}
+	\end{proof}
 \end{thm}
 
+This implies that we can approximate the first few eigenvalues
+of a semibounded operator,
+which sit below the essential spectrum via a variational approximation.
+For the hydrogenic operator of section \vref{sec:HydrogenAtom}
+this implies that we are fine
+as long as the subspaces we construct satisfy \eqref{eqn:CondSubspaces},
+which is always the case for dense subspaces.
+
+Since all $\Nbas$-dimensional complex-valued Hilbert spaces $S_n \subseteq \hilbert$
+are isomorphic to $\C^{\Nbas}$ by the means of choosing an appropriate
+basis set $\{\chi_\mu\}_{\mu \in \Ibas}$ to express the space $S_n$.
+We denote with $\chi_\mu$ the $\mu$-th basis function.
+In this convention we can identify $\Op{A}^{(n)}$ with the matrix $\mat{A}$
+consisting of elements
+\[ A_{\mu\nu} = a(\chi_\mu, \chi_\nu) \]
+and thus a plain diagonalisation of $\mat{A}$ yields $\sigma(\mat{A})$,
+an approximation to the spectrum of $\Op{A}$.
 
 \todo[inline,caption={}]{
 	\begin{itemize}
@@ -105,11 +137,53 @@ from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
 }
 
 \section{Diagonalisation algorithms}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Introduce linear algebra and sketch some diagonalisation algos
-		\item Brief rationale
-		\item Basic ideas
-		\item Sketch Davidson and Lanczos
-	\end{itemize}
-}
+This section tries to shine some light on a few numerical techniques
+to obtain the exact eigenspectrum or an approximation for the eigenspectrum
+of a matrix $\mat{A}$.
+
+In this thesis we will only discuss combinations of operators
+and discretisation methods which have the property
+that
+\[ a(\chi_\mu, \chi_\nu) \in \R \]
+such that we are overall only left with symmetric matrices
+$\mat{A} \in \R^{\Nbas \times \Nbas}$.
+In this section we will therefore restrict our discussion
+of diagonalisation algorithms to plainly real-symmetric matrices.
+We can thus assume that both the matrix element
+as well as the eigenvalues and eigenvectors are entirely real.
+
+\subsection{Power method}
+The most simple numerical method to obtain
+a single eigenvalue from a particular matrix $\mat{A}$
+is the Power method.
+The algorithmic scheme consists of the steps
+
+\todoil{Algorithm}
+
+where
+\[ \rho_R(\vec{u}) := \frac{\vec{u}^T \mat{A} \vec{u}}{\vec{u}^T \vec{u}} \]
+is known as the Reighleigh quotient,
+the discretised version of \eqref{eqn:CourantFischer}.
+
+Let us define
+\[ \lambda_\text{max} = \argmax_{\lambda \in \sigma(\mat{A})} \abs{\lambda}. \]
+Provided that $\lambda_\text{max}$ is unique,
+\ie no other eigenvalue of this magnitude exists,
+this algorithm converges to $\lambda_\text{max}$.
+To see this, let us write
+\begin{align}
+	a
+\end{align}
+
+
+
+\todoil{Do later if time}
+
+\subsection{Shift and invert}
+\todoil{Do later if time}
+
+\subsection{Arnoldi's method}
+\todoil{Do later if time}
+
+\subsection{Davidson's method}
+\todoil{Do later if time}
