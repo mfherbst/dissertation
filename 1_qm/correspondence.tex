@@ -1,15 +1,19 @@
-\section{The correspondence of classical and quantum mechanics}
+\section{Correspondence of classical and quantum mechanics}
+\todoil{One could add a few more references for the general QM introduction part,
+	\eg to the original Schrödinger paper, the Stone-von Neumann theorem
+	or so}
+\newcommand{\clphase}{(q_1, \ldots, q_d, p_1, \ldots p_d)}
+%
 According to the Hamiltonian formulation of classical mechanics
 a physical system with $d$ degrees of freedom
 is described by a set of generalised coordinates
-$q_1, \ldots, q_d$ along with their canonical momenta $p_1, \ldots, p_d$
-Any physically measurable quantity $F$
-can now be obtained as a function of these system parameters.
+$q_1, \ldots, q_d$ along with their canonical momenta $p_1, \ldots, p_d$.
+It is assumed that any physically measurable quantity $F$
+only depends on these system parameters.
 In other words one may define a so-called \newterm{observable}
-\newcommand{\clphase}{(q_1, \ldots, q_d, p_1, \ldots p_d)}
-$F\clphase$ as a function $\R^{2d} \to \R$
+$F\clphase$ as a function $\R^{2d} \to \R$, \ie
 from a vector in \newterm{phase space} to the measured value.
-Naturally the coordinates $q_i$ and $p_i$ are observables as well.
+Clearly the coordinates $q_i$ and momenta $p_i$ are observables as well.
 The most important observable is the total energy function or \newterm{Hamiltonian}
 \begin{equation}
 	H\clphase
@@ -23,13 +27,14 @@ $T$ is the kinetic energy observable and $V$ the total potential energy observab
 In the formalism of Hamiltonian mechanics $H$ governs the time evolution
 of the system, namely
 \begin{align}
-	\frac{\D p_i}{\D t} &= - \frac{\partial H}{\partial q_i} &
-	\frac{\D q_i}{\D t} &= \frac{\partial H}{\partial p_i}.
+	\frac{\D p_k}{\D t} &= - \frac{\partial H}{\partial q_k}, &
+	\frac{\D q_k}{\D t} &= \frac{\partial H}{\partial p_k}
+	&&\forall k \in \{1, \ldots, d\}.
 	\label{eqn:HamiltonianEqnMotion}
 \end{align}
 
-Using these expressions one may of course describe the time evolution
-any arbitrary observable as well.
+These expressions allow to generalise the description of the time evolution
+to any other arbitrary observable as well.
 To make the connection to quantum mechanics more apparent,
 let us introduce for this purpose the so-called \newterm{Poisson bracket}.
 It is the skew-symmetric form
@@ -37,15 +42,15 @@ It is the skew-symmetric form
 	\left\{ F, G \right\}_P \equiv \sum_{j=1}^d \left(
 	\frac{\partial  F}{\partial q_j} \frac{\partial G}{\partial p_j}
 	- \frac{\partial  F}{\partial p_j} \frac{\partial G}{\partial q_j}
-	\right)
+	\right).
 	\label{eqn:PoissonBracket}
 \end{equation}
-and according to
+According to the Liouville equation
 \begin{equation}
 	\frac{\D F}{\D t} = \frac{\partial F}{\partial t} + \left\{ F, H \right\}_P.
 	\label{eqn:PoissonTimeEvolution}
 \end{equation}
-it relates the Hamiltonian to the time evolution of any arbitrary observable.
+it relates the Hamiltonian $H$ to the time evolution of any arbitrary observable $F$.
 One may also show the relationships
 \begin{align}
 	\{ q_k, q_l \}_P = \{p_k, p_l\}_P &= 0 & \{ p_k, q_l\}_P = - \delta_{kl} &&\forall k,l \in \{1, \ldots, d\}
@@ -57,19 +62,20 @@ between the principle system observables.
 \label{sec:IntroQM}
 \defineabbr{QM}{QM\xspace}{quantum mechanics}
 We will now introduce (non-relativistic)
-quantum mechanics~(QM) in a rather pragmatic manor,
-namely by stating a summary what changes in \QM formulation
+quantum mechanics~(QM) in a rather pragmatic manner,
+namely by stating a summary what changes in the \QM formulation
 compared to the classical one.
-We will abstain from stating all details at the moment
-as the following overview should mainly motivate a more detailed
-treatment of the involved mathematical concepts further down this chapter.
+We will abstain from stating all mathematical details at this point.
+The reader should take this overview as a motivation
+for a more detailed treatment of the mathematical concepts
+further down this chapter.
 
 \newcommand{\hilbert}{\mathcal{H}}
 \begin{enumerate}
 	\item Instead of phase space vectors $\clphase \in \R^{2d}$,
-		in \QM one employs functions $\Psi : \R^d \to \C$
-		living in a complex separable Hilbert space $\hilbert$
-		in order to describe a particular state of the system.
+		in \QM a particular state of the system is represented
+		by functions $\Psi : \R^d \to \C$
+		living in a complex separable Hilbert space $\hilbert$.
 	\item A classical observable $F$ is represented by a
 		self-adjoint operator $\Op{F}$ on the Hilbert space $\hilbert$ in \QM.
 	\item For each classical observable one may construct an equivalent
@@ -78,11 +84,11 @@ treatment of the involved mathematical concepts further down this chapter.
 		\footnote{In fact alternative constructions for the position and momentum
 				operator are possible as well. We present the so-called
 				\textit{position representation} here.}
-		to
+		to~\cite{Shankar1994, Mueller2000}
 		\[ q_k \longrightarrow \op{x}_k = x_k, \]
 		\ie just the multiplication with $x_k$,
 		the $k$-th coordinate of the system.
-		On the other hand $p_k$ corresponds to
+		On the other hand $p_k$ corresponds to~\cite{Shankar1994, Mueller2000}
 		\[ p_k \longrightarrow \op{p}_k
 			= \frac{\hbar}{\I} \frac{\partial}{\partial x_k}, \]
 		an appropriately scaled derivative with respect to $x_k$.
@@ -94,17 +100,24 @@ treatment of the involved mathematical concepts further down this chapter.
 			\comm{\Op{F}}{\Op{G}} = \Op{F} \Op{G} - \Op{G} \Op{F}
 			\label{eqn:Operator}
 		\end{equation}
-		and corresponding operators, \ie
+		and corresponding operators, \ie~\cite{Shankar1994}
 		\[ \{F, G\}_P \longrightarrow \frac{\I}{\hbar} \comm{\Op{F}}{\Op{G}}. \]
 	\item The measured values of an observable $F$
 		are the eigenvalues $\lambda_k$ of $\Op{F}$ \emph{only}.
 	\item Assume that we can find a complete and countable
 		set of eigenpairs $\{ (\lambda_\mu, \psi_\mu) \}_{\mu \in \mathcal{I}}$
-		for the operator $\Op{F}$
-		indexed by elements of the set $\mathcal{I}$%
-		\footnote{See \cite{Helffer2013} for a more general treatment.}.
+		for the operator $\Op{F}$%
+		\footnote{Note that this is \emph{not} possible in general
+		as we will see in section \vref{sec:spectral}.
+		A more general treatment of spectral theory involving
+		\textit{spectral projectors} allows to reformulate 6. for cases
+		where such eigenpairs cannot be found.
+		See \cite{Helffer2013} for details.},
+		where $\mathcal{I}$ is an appropriate index set.
 		One may then compute the expectation value of a measurement
-		for a pure state $\Psi$ normalised to unity as
+		on a normalised%
+		\footnote{unit normalised, \ie $\braket{\Psi}{\Psi}_\hilbert = 1$}
+		state as
 		\begin{equation}
 			\langle \Op{F} \rangle
 				= \braket{\Psi}{\Op{F} \, \Psi}_\hilbert
@@ -115,11 +128,10 @@ treatment of the involved mathematical concepts further down this chapter.
 		where $\braket{\slot}{\slot}_\hilbert$ is the inner product
 		of the Hilbert space $\hilbert$.
 \end{enumerate}
-The statements we present above are in fact very much related
-to the postulates of \QM and probably similarly appear as
-an \textit{ad hoc} modification of classical mechanics.
-One may, however, deduce useful results of \QM from the correspondence
-we sketched.
+Now that we discussed the \textit{ad hoc} modification of classical mechanics
+in order to yield a theory based on the postulates of \QM,
+let us see how one is able to deduce useful results of \QM
+from the analogous expressions in classical mechanics.
 For example from \eqref{eqn:PoissonProperties} one can immediately
 deduce important commutator relations between the position and momentum operators:
 \begin{align}
@@ -163,54 +175,62 @@ and the operators evolve.
 In the Schrödinger picture it is the other way round, i.e. $\Psi$ may change over time
 and the operators are static.
 Both pictures are related by a unitary transformation
-in the Hilbert space $\hilbert$,
-see the Stone-von Neumann theorem for details.
+in the Hilbert space $\hilbert$
+governed by the Stone-von Neumann theorem.
 
 The equivalent expression to \eqref{eqn:HeisenbergEqnMotion}
-in the Schrödinger picture is the \newterm{time-dependent Schrödinger equation}
+in the Schrödinger picture is the \newterm{time-dependent Schrödinger equation}%
+~\cite{Shankar1994,Mueller2000}
 \begin{equation}
-	\Op{H} \Psi(\vec{x}) = \I \hbar \frac{\partial}{\partial t} \Psi(\vec{x}).
+	\Op{H} \Psi = \I \hbar \frac{\partial}{\partial t} \Psi.
 	\label{eqn:TDSE}
 \end{equation}
 Similar to \eqref{eqn:HeisenbergEqnMotion} the key operator governing the
-time-evolution of the system is $\Op{H}$, the \QM Hamiltonian,
-named exactly like the corresponding classical observable $H$.
-In fact many useful spectroscopic properties of a system described by $\Op{H}$
-may already be deduced by considering the eigendecomposition of this operator.
-In light of this one typically refers to the ansatz
+time-evolution of the system is $\Op{H}$.
+By analogy to its classical counterpart $\Op{H}$ is referred to as the
+\newterm{\QM Hamiltonian} or just Hamiltonian as well.
+In fact many properties of a system may already be deduced by considering the
+eigendecomposition of its Hamiltonian $\Op{H}$ alone.
+In light of this the ansatz
 \begin{equation}
-	\Op{H} \Psi_\mu(\vec{x}) = E_\mu \Psi_\mu(\vec{x})
+	\Op{H} \Psi_\mu = E_\mu \Psi_\mu
 	\label{eqn:TISE}
 \end{equation}
-for obtaining the eigenpairs
-$\{(E_\mu, \Psi_\mu) \}_{\mu \in \mathcal{I}} \subset \R \times \hilbert$
-by the name \newterm{time-independent Schrödinger equation} as well.
+for finding the Hamiltonian's eigenpairs
+\[ \{(E_\mu, \Psi_\mu)\}_{\mu \in \mathcal{I}} \subset \R \times \hilbert \]
+is given the name \newterm{time-independent Schrödinger equation} as well.
 
 \subsection{Atomic units}
 Employing the correspondence principle it is often very convenient
-to construct the \QM Hamiltonian of a system from the classical energy expression.
-Let us consider the hydrogen-like system,
-where a particle of positive charge $Z \cdot e$
-is clamped at the origin and is surrounded by a single electron.
-In Cartesian coordinates the position of the electron can be described by the Cartesian
-vector $\vec{r} \rtp{\equiv (x, y, z)}$.
-Such a system has the classical kinetic energy and potential energy
-\begin{align*}
-	T &= \frac{\vec{p} \cdot \vec{p}}{2 m_e} & V &= - \frac{Ze^2}{\norm{\vec{r}}} = - \frac{Ze^2}{r}.
-\end{align*}
-respectively. The appropriate \QM analogues are
+to construct the \QM Hamiltonian of a system starting
+from the classical energy expression.
+Let us consider a hydrogen-like system,
+where a particle of positive charge $Ze$
+is clamped at the origin and surrounded by a single electron.
+In Cartesian coordinates the position of the electron can be described
+by the vector $\vec{r} \equiv \rtp{(x_1, x_2, x_3)}$ and its momentum by $\vec{p}$.
+The classical kinetic energy and potential energy of such a system
+is given by
 \begin{align}
-	\Op{T} &= -\frac{\hbar^2}{2 m_e} \Delta & \Op{V} = - \frac{Ze^2}{r}
+	T &= \frac{\vec{p} \cdot \vec{p}}{2 m_e} &
+	&\text{and}&
+	V &= - \frac{Ze^2}{\norm{\vec{r}}_2} = - \frac{Ze^2}{r}. \\
+\intertext{respectively. The appropriate \QM analogues are}
+	\Op{T} &= -\frac{\hbar^2}{2 m_e} \Delta &
+	&\text{and}&
+	\Op{V} &= - \frac{Ze^2}{r}
 	\label{eqn:OpHydrogenConventional}
 \end{align}
-where the \newterm{Laplace operator}
+where the \newterm{Laplace operator} in $3$ dimensions
 \begin{align}
-	\Delta = \sum_{\alpha \in \{x,y,z\}} \frac{\partial^2}{\partial \alpha^2}
+	\Delta = \sum_{i=1}^3 \frac{\partial^2}{\partial x_i^2}
 	\label{eqn:LaplaceOperatorHydrogen}
 \end{align}
 was introduced. The full Hamiltonian therefore reads
-\[ \Op{H} = \Op{T} + \Op{V} = -\frac{\hbar^2}{2 m_e} \Delta - \frac{Ze^2}{r}. \]
-
+\begin{equation}
+	\Op{H} = \Op{T} + \Op{V} = -\frac{\hbar^2}{2 m_e} \Delta - \frac{Ze^2}{r}.
+	\label{eqn:OpHydrogenFullUnits}
+\end{equation}
 For considering more complicated systems,
 it is often convenient to employ so-called \newterm{atomic units}.
 These are generated by a unitary transformation of the Hilbert space,
