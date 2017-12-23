@@ -1,43 +1,53 @@
 \section{Elements of functional analysis}
 
-In section \vref{sec:IntroQM} we discussed that the state
-of a \QM system is governed by a vector in a complex-valued Hilbert space,
-whilst information about the system itself can be obtained by studying
-appropriate self-adjoint operators defined on such Hilbert spaces.
-Precisely this is the mathematical field of functional analysis,
-which we will briefly review in this section.
-We assume basic familiarity with the concept of a vector space as well
-as Lebesgue integrability for our treatment.
-A more basic material developing the concept of Lebesgue integrability
-and Hilbert spaces from standard Euclidean geometry can be found
-in a related work by the author~\cite{DiracNotation}.
+The mathematical field of functional analysis
+is concerned with the study of Banach and Hilbert spaces
+as well as the properties of mappings between such structures.
+Whilst we will neglect Banach spaces in our treatment,
+Hilbert spaces are certainly of great importance when discussing
+the mathematics of quantum mechanics
+as we saw in the previous section \ref{sec:IntroQM}.
+After some general reminders about Hilbert spaces
+we will take a closer look at the Lebesgue space $L^2(\R^d, \C)$
+and related Sobolev spaces and try to explain their particular
+importance for \QM.
+
+In this section we assume familiarity with the concept of a vector space
+as well as some intuitive understanding of the Lebesgue integral.
+For a more detailed discussion developing these last concepts
+by generalising standard Euclidean geometry,
+see a related work by the author~\cite{DiracNotation}.
 
 \subsection{Hilbert spaces}
 \label{sec:Hilbert}
 \nomenclature{$\F$}{Either the field of real numbers $\R$ or the field of complex numbers $\C$.}
 
-\todoil{Rephrase}
-The key structures,
-which a Hilbert space possesses on top of a usual vector space
-is the so-called completeness under the norm induced
-by the inner product of the Hilbert space.
-For our treatment the field $\F$ can be identified
-either with the field of all real numbers $\R$
-or the field of all complex numbers $\C$.
+Hilbert spaces are generalising some concepts of
+two- or three-dimensional Euclidean space to
+larger vector spaces of possibly infinite dimensions.
+Most notably taking limits or computing length and angles
+is possible in the same natural way as for Euclidean geometry,
+thus allowing to perform vector calculus or
+to numerically approximate in a sound way.
+For our treatment the field $\F$ can be typically identified
+with the field of all complex numbers $\C$ or the real numbers $\R$.
 
+The first ingredients to a Hilbert space are ways to measure
+angles and distances, \ie an inner product and a norm.
 \begin{defn}
 	An \newterm{inner product space} over a field $\F$
 	is a vector space $V$ (over the same field)
-	that is further equipped with an inner product, i.e. a map
+	that is further equipped with an \newterm{inner product}, i.e. a map
 	\[ \braket{\slot}{\slot}_V : V \times V \to \F \]
-	that satisfies (for all vectors $x,y,z \in V$ and all $\alpha \in \set{F}$)
+	that satisfies%
+	(for all vectors $x,y,z \in V$ and all $\alpha \in \set{F}$)
 	\begin{align}
 		\label{eqn:innProdConjSym}
 			&\braket{x}{y}_V^\ast = \braket{y}{x}_V &&
 			\text{\textit{(conjugate symmetry)}} \\
-		\label{eqn:innProdLinLeft}
+		\label{eqn:innProdLinRight}
 			&\braket{x}{\alpha y + z}_V = \alpha \braket{x}{y}_V + \braket{x}{y}_V &&
-			\text{\textit{(linearity in the first argument)}} \\
+			\text{\textit{(linearity in the last argument)}} \\
 		\label{eqn:innProdPosDef}
 			&\braket{x}{x}_V \ge 0 \quad \text{and}
 			\quad \braket{x}{x}_V = 0 ~\Rightarrow~ x = 0  &&
@@ -48,9 +58,20 @@ or the field of all complex numbers $\C$.
 	product if the underlying vector space is clear from context.
 \end{defn}
 
+\begin{rem}
+	Some literature uses a deviating definition for the inner product,
+	where not the second,
+	but the first argument in \eqref{eqn:innProdLinRight} is linear,
+	\ie where \eqref{eqn:innProdLinRight} would be replaced by
+	\[ \braket{\alpha y + z}{x}_V = \alpha \braket{y}{x}_V + \braket{z}{x}_V. \]
+	Our definition is in better agreement with the usual convention
+	of quantum physics and quantum chemistry
+	due to the resemblance of Dirac notation~\cite{DiracNotation}.
+\end{rem}
+
 \begin{defn}
 	Given a vector space $V$ over the field $\F$, a \newterm{norm} is a map
-	$\norm{\slot}_V : V \to \R$
+	$\norm{\slot} : V \to \R$
 	such that the following axioms hold for all vectors $x,y \in V$ and all $\alpha \in \set{F}$:
 	\begin{align}
 		\label{eqn:normScalability}
@@ -81,80 +102,180 @@ or the field of all complex numbers $\C$.
 	\end{proof}
 \end{prop}
 
+The second ingredient for a Hilbert space is a property
+called \newterm{completeness}. Formally it is defined as such:
 \begin{defn}
 	\label{def:Completeness}
-	A vector space $V$ is called \newterm{complete} if every Cauchy sequence
-	of vectors in  $V$ has a limit which is in $V$ as well.
+	A vector space $V$ is called \newterm{complete} if every
+	\newterm{Cauchy sequence} of vectors in $V$ has a limit $V$.
 \end{defn}
-Remember that a sequence $(x_n) \in V$ is called Cauchy if
+Let us first recall, that a sequence $(x_n) \in V$ is called Cauchy if
 \[ \forall \varepsilon > 0 \quad
 	\exists M \in \N \quad \text{such that} \quad
-	\norm{x_n - x_m}_V < \varepsilon \quad \forall n,m > M,
+	\norm{x_n - x_m}_V < \varepsilon \quad \forall n,m > M.
 \]
-which is equivalent to the sequence converging to a limit.
-An equivalent way of phrasing \abbr{def}{n} \vref{def:Completeness}
+One can show that every converging sequence is Cauchy.
+A roughly equivalent way of phrasing \abbr{def}{n} \vref{def:Completeness}
 is therefore,
-that a space $V$ is complete if every converging sequence
-converges inside $V$.
-Note that the completeness property of a space is
-tightly bound to the norm which is used.
-A space might well be complete with respect to one norm,
-but not with respect to another.
+that a space $V$ is complete iff every converging sequence
+of elements from $V$ has a limit which is from $V$ \emph{as well}.
 
 \begin{exmp}
-	To make this a little more clear let us consider a counterexample.
+	\label{exmp:QdenseR}
+	To make the concept of completeness more clear,
+	let us consider a counterexample.
+	For this let us leave the setting of vector spaces for a second
+	and more broadly think about sequences defined on sets of numbers%
+	\footnote{This is fine, since completeness is in fact a property on
+		so-called metric spaces, which are related to normed vector
+		spaces, but have much less structure.},
+	where the concept of completeness applies as well.
+
+	\noindent
 	It is well known that the sequence
 	\[ x_n = \sum_{k=0}^n \frac{1}{k!} \in \set{Q} \]
 	converges to Euler's number, \ie
 	\[ \lim_{n\to\infty} x_n = e \not\in \set{Q}. \]
-	In other words $\set{Q}$ (seen as a vector space over itself)
-	is not complete.
+	In other words $\set{Q}$ is not complete.
 
 	One may, however, build the \newterm{completion} of $\set{Q}$
-	with respect to a norm by just including all limiting points of
-	all sequences in $\set{Q}$. In fact this is one way
-	of defining the set of real numbers $\R$.
+	by just including all limiting points of all sequences in $\set{Q}$.
+	In fact this is one way of defining the set of real numbers $\R$.
 \end{exmp}
 
-\begin{defn}
-	A subspace $S$ of a vector space $V$ is called \newterm{dense in $V$}
-	if each vector $x \in V$ either is a member of $S$ or one may find
-	a Cauchy sequence in $S$ for which $x$ is the limit point.
-\end{defn}
-In other words $S$ is dense in $V$ if it amounts to approximate
-all vectors of $V$ up to an arbitrarily desired accuracy.
+\begin{rem}
+	A subtle point about completeness is that it depends
+	on the norm which is used to determine whether a sequence
+	is Cauchy or not.
+	In other words a vector space may be complete with respect to one norm,
+	but not with respect to another.
+	Similarly the completion of a space with respect to two different
+	norms may yield different spaces.
 
-\begin{exmp}
-	$\set{Q}$ is dense in $\R$. 
-	Essentially this is the reason why we may approximate any real number
-	up to arbitrary accuracy by an appropriate sum of countably many fractions.
-\end{exmp}
+	In practice the choice of the norm is only of importance for
+	infinite-dimensional vector spaces,
+	since for finite-dimensional real or complex vector spaces
+	all norms are equivalent\footnote{That is they induce the same topology.}
+	anyway.
+\end{rem}
 
-\begin{nte}
-	The concepts of complete spaces and dense subspaces
-	are applicable to more mathematical structures than just vector spaces.
-	In the broadest sense these properties can be applied to so-called
-	metric spaces, which are related to normed vector spaces,
-	but in fact have less structure.
-\end{nte}
-
-With the concept of completeness in mind,
-we have all we need to properly define a Hilbert space.
+\noindent
+Finally we can state
 \begin{defn}
 	A \newterm{Hilbert space} $\hilbert$ is an inner product space,
 	which is complete with respect to the induced norm.
 \end{defn}
 In other words a Hilbert space is a space,
 where the inner product naturally defines a way to measure distances
-and take limits and where we can be sure that these limits are in the space as well.
-If you think back to standard calculus in $\R^d$,
-this in some sense makes sure that we can perform any kinds of limiting processes
-like differentiation inside Hilbert spaces without ever having to worry
-about leaving them.
-For our goal of defining differential operators on them,
-this is exactly what we need.
+and take limits, that is perform calculus.
+Thinking ahead towards the integral and differential operators
+we will define on such Hilbert spaces,
+this is exactly what we will need.
 
+Before we look into some Hilbert spaces relevant for \QM,
+let us first clarify the concept of \newterm{denseness} and \newterm{separability}.
+\begin{defn}
+	A subspace $S$ of a vector space $V$ is called \newterm{dense in $V$}
+	if each vector $x \in V$ either is a member of $S$ or one may find
+	a Cauchy sequence in $S$ for which $x$ is the limit point.
+\end{defn}
+In other words $S$ is dense in $V$ if we can --- for each element of $V$
+--- construct a sequence of approximations inside the smaller space $S$,
+representing the desired element up to arbitrary accuracy.
+Denseness is therefore one of the fundamental properties required for approximation.
+
+\begin{exmp}
+	Returning to example \vref{exmp:QdenseR} we note,
+	that $\set{Q}$ is dense in $\R$.
+	This guarantees that we may approximate any real number
+	up to arbitrary accuracy by an appropriate sum of fractions,
+	which is one of the assumptions behind any floating point operation
+	performed on the computer.
+\end{exmp}
+
+\begin{defn}
+	A Hilbert space is \newterm{separable}%
+	\footnote{In the broader context of metric spaces,
+	a separable space has a countable, dense subset.}
+	iff it admits a countable orthonormal basis.
+\end{defn}
+
+\begin{rem}
+	\label{rem:HilbertCd}
+	If a Hilbert space is separable we can find a basis set
+	$\{ \chi_\mu \}_{0 \leq \mu \leq \Ibas}$
+	of at most countably infinite cardinality,
+	\ie where $\Ibas \subseteq \N$.
+	With this we can write for each $\Psi \in \hilbert$:
+	\begin{equation}
+		\Psi = \sum_{\mu \in \Ibas} c_\mu \chi_\mu.
+		\label{eqn:HilbertBasisExpansion}
+	\end{equation}
+	This in turn uniquely identifies each $\Psi$ with a sequence
+	$(c_\mu)_{\mu\in\N}$ of complex numbers.
+	By this means each complex, separable Hilbert space is
+	isomorphic to the space of complex-valued, square-summable sequences $l^2(\N, \C)$.
+	One can easily show that this isomorphism is even an isometry, \ie
+	\[ \norm{\Psi}_\hilbert = \norm{(c_\mu)}_{l^2}
+		= \sqrt{ \sum_{\mu=0}^\infty \abs{c_\mu}^2 }. \]
+	By transitivity all separable Hilbert spaces are isometrically isomorphic.
+
+	In our remaining discussion we will only encounter complex,
+	separable Hilbert spaces. This implies:
+	\begin{itemize}
+		\item If $\Psi \in \hilbert$ is a vector in a Hilbert space,
+			we can always identify it with a
+			(possibly infinite) column vector of complex coefficients.
+		\item Finite-dimensional Hilbert spaces are isomorphic to $\C^d$,
+			where $d$ is the dimensionality.
+			Their vectors are thus identified by a column of complex numbers
+			of finite size.
+	\end{itemize}
+\end{rem}
+
+\begin{rem}
+	\label{rem:HilbertApproximation}
+A consequence of remark \vref{rem:HilbertCd} is that we can
+numerically approximate all separable Hilbert spaces rather naturally.
+For example by restricting the sum in \eqref{eqn:HilbertBasisExpansion}
+to only a finite number of $d$ basis functions,
+we can make sure that the resulting $\Psi$ is located
+in only a $d$-dimensional subspace $\hilbert^{(d)} \subset \hilbert$.
+Moreover this subspace is dense, since in the limit of taking
+all basis functions, we get exactly $\hilbert$.
+In turn since $\hilbert^{(d)}$ is finite-dimensional,
+we can identify each approximation to $\Psi$ with a vector in $\C^d$,
+which can be represented numerically on the computer,
+regardless of the structure of $\hilbert$.
+\end{rem}
+
+\subsection{The Hilbert spaces of Quantum Mechanics}
 \nomenclature{$L^2(\R^d, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{prop:L2HilbertSpace}}
+
+\todo[caption={},inline]{
+	Make sure to bring across:
+	\begin{itemize}
+		\item In \QM we need $L^2$ because of statistics
+		\item All separable Hilbert spaces are equivalent
+		\item Separability is nice, because this allows for a countable set to be good enough.
+	\end{itemize}
+}
+
+Having discussed Hilbert spaces, let us return to the question,
+which Hilbert space is most applicable in \QM.
+
+In our introduction \vref{sec:IntroQM} we said that
+we employ functions $\Psi : \R^d \to \C$ from a
+complex separable Hilbert space $\hilbert$
+Now the so-called \newterm{Born interpretation} of \QM
+associates the meaning of a probability density
+with the norm $\norm{\Psi(x_1, \ldots x_N)}$
+of a state at each point in space $(x_1, \ldots x_N)$.
+From a more detailed analysis with respect to the implications
+for the statistical properties of $\Psi$
+this requires us to take a $\Psi \in L^2(\R^d, \C)$.
+
+
 \begin{prop}
 	\label{prop:L2HilbertSpace}
 	Given two functions $f, g : \R^d \to \C$,
@@ -181,20 +302,6 @@ this is exactly what we need.
 	\end{proof}
 \end{prop}
 
-Finally let us note some important properties of $L^2(\R^d, \C)$.
-
-\begin{defn}
-	A Hilbert space is \newterm{separable}%
-	\footnote{In the broader context of metric spaces,
-	a separable space has a countable, dense subset}
-	iff it admits a countable orthonormal basis.
-\end{defn}
-One can show that all separable Hilbert spaces are
-isometrically isomorphic towards another,
-since they are all isometrically isomorphic to the space of
-square-summable sequences $l^2$ in $\C$
-by the means of a suitable basis chosen in each space.
-
 \begin{prop}
 	$L^2(\R^d, \C)$ is separable.
 	\begin{proof}
@@ -202,34 +309,7 @@ by the means of a suitable basis chosen in each space.
 	\end{proof}
 \end{prop}
 
-In other words the space $L^2(\R^d, \C)$ is rather nice,
-because all functions inside it can be approximated
-by only a countable set of basis functions
-and it further admits for limits to be taken.
 
-\subsection{Hilbert spaces in Quantum Mechanics}
-\todo[caption={},inline]{
-	Make sure to bring across:
-	\begin{itemize}
-		\item In \QM we need $L^2$ because of statistics
-		\item All separable Hilbert spaces are equivalent
-		\item Separability is nice, because this allows for a countable set to be good enough.
-	\end{itemize}
-}
-
-Having discussed Hilbert spaces, let us return to the question,
-which Hilbert space is most applicable in \QM.
-
-In our introduction \vref{sec:IntroQM} we said that
-we employ functions $\Psi : \R^d \to \C$ from a
-complex separable Hilbert space $\hilbert$
-Now the so-called \newterm{Born interpretation} of \QM
-associates the meaning of a probability density
-with the norm $\norm{\Psi(x_1, \ldots x_N)}$
-of a state at each point in space $(x_1, \ldots x_N)$.
-From a more detailed analysis with respect to the implications
-for the statistical properties of $\Psi$
-this requires us to take a $\Psi \in L^2(\R^d, \C)$.
 
 In fact the choice of states from $L^2(\R^d, \C)$
 is only correct for \emph{non-relativistic, spin-free} \QM.
