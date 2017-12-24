@@ -252,87 +252,78 @@ regardless of the structure of $\hilbert$.
 \subsection{The Hilbert spaces of Quantum Mechanics}
 \nomenclature{$L^2(\R^d, \C)$}{The Hilbert space of square-integrable complex-valued functions, see \vref{prop:L2HilbertSpace}}
 
-\todo[caption={},inline]{
-	Make sure to bring across:
-	\begin{itemize}
-		\item In \QM we need $L^2$ because of statistics
-		\item All separable Hilbert spaces are equivalent
-		\item Separability is nice, because this allows for a countable set to be good enough.
-	\end{itemize}
-}
-
-Having discussed Hilbert spaces, let us return to the question,
-which Hilbert space is most applicable in \QM.
-
-In our introduction \vref{sec:IntroQM} we said that
-we employ functions $\Psi : \R^d \to \C$ from a
-complex separable Hilbert space $\hilbert$
-Now the so-called \newterm{Born interpretation} of \QM
-associates the meaning of a probability density
-with the norm $\norm{\Psi(x_1, \ldots x_N)}$
-of a state at each point in space $(x_1, \ldots x_N)$.
-From a more detailed analysis with respect to the implications
-for the statistical properties of $\Psi$
-this requires us to take a $\Psi \in L^2(\R^d, \C)$.
-
+Now that we have the required jargon at hand,
+let us discuss the question which Hilbert space to take for quantum mechanics.
+In section \ref{sec:IntroQM} we said that the state functions
+$\Psi : \R^d \to \C$ are taken from a complex, separable Hilbert space.
+In our treatment we adhere to the
+\newterm{Copenhagen interpretation} or \newterm{Born interpretation}
+of the quantum-mechanical state $\Psi$,
+which associates the meaning of a probability density
+with the magnitude $\abs{\Psi(x_1, x_2, \ldots x_d)}$
+of the state function at each point in space $(x_1, \ldots x_N)$.
+A more detailed analysis in light of this probabilistic meaning of $\Psi$
+suggests to take these functions from the Hilbert space of square-integrable functions
+$L^2(\R^d, \C)$, defined as such:
 
 \begin{prop}
 	\label{prop:L2HilbertSpace}
 	Given two functions $f, g : \R^d \to \C$,
-	let us define the inner product
+	we can define an inner product
 	\begin{equation}
 		\braket{f}{g}_{L^2} := \int_{\R^d} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
 		\label{eqn:defL2InnProd}
 	\end{equation}
 	and the corresponding induced norm
 	\begin{equation}
-		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2}.
+		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2},
 		\label{eqn:defL2Norm}
 	\end{equation}
-	In both cases the integral is to be understood in the Lebesgue sense
-	and we identify
+	where the integral --- in both cases --- is to be understood in the Lebesgue sense
+	and we identified
 	\[ \vec{x} \equiv (x_1, \ldots, x_d) \]
-	for ease of notation. The set
+	for ease of notation. The set%
+	\footnote{More precisely $L^2$ is constructed as a quotient group
+		over the equivalence relation of functions being identical
+		\textit{almost everywhere}. In this sense functions are considered
+		to be the same iff they differ at most on a set of Lebesgue measure zero.
+		See \cite{DiracNotation} for details.}
 	\[ L^2(\R^d, \C) := \big\{ f : \R^d \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
 	where the norm $\norm{\slot}_{L^2}$ stays finite
 	is the set of \newterm{square-integrable functions}.
-	It forms a is a Hilbert space over the field $\C$.
+	It forms a Hilbert space over the field $\C$.
 	\begin{proof}
 		See~\cite{Adams2003}
 	\end{proof}
 \end{prop}
 
+\noindent
+Luckily one can show~\todo{Find reference}
 \begin{prop}
 	$L^2(\R^d, \C)$ is separable.
-	\begin{proof}
-		\todoil{TODO Find reference}
-	\end{proof}
 \end{prop}
+\noindent
+such that $L^2(\R^d, \C)$ truely satisfies all the requirements for the Hilbert space of \QM as we introduced it in section \vref{sec:IntroQM}.
 
-
-
-In fact the choice of states from $L^2(\R^d, \C)$
+In section \ref{sec:IntroQM} we did not introduce the most general theory of \QM.
+More precisely taking states from $L^2(\R^d, \C)$
 is only correct for \emph{non-relativistic, spin-free} \QM.
 If more than one spin component are required,
 like $4$ in relativistic \QM or $2$ in spin-adapted \QM,
 we need to take states from the spaces $L^2(\R^d, \C^4)$ or $L^2(\R^d, \C^2)$,
 respectively.
-Since this thesis only deals with non-relativistic \QM
-we only care about $L^2(\R^d, \C^2)$ or $L^2(\R^d, \C)$.
-For simplicity we will only analyse the mathematical structures
-based on $L^2(\R^d, \C)$ in this and the next chapter
-and introduce spin \textit{ad-hoc} whenever needed
-keeping in mind that all results from this and the next chapter
-can be trivially generalised to a \QM based on $L^2(\R^d, \C^2)$ as well.
-
-From a computational point the choice of $L^2(\R^d, \C)$ is rather convenient,
-because this allows us to approximate a \QM state with only a countable
-set of parameters
-encoded in the countable dense subset of $L^2(\R^d, \C)$ we employ for the
-approximation.
-And by choosing more and more parameters and better suitable parameters
-the denseness ensures that we converge to a sensible limiting state
-in $L^2(\R^d, \C)$.
+In this work we will not treat relativistic \QM at all,
+such that only $L^2(\R^d, \C)$ and $L^2(\R^d, \C^2)$ are relevant for us.
+For simplicity we will assume $\hilbert = L^2(\R^d, \C)$
+in the mathematical analysis presented in this and the next chapter
+and only introduce spin \textit{ad-hoc} in the form of $L^2(\R^d, \C^2)$
+whenever this is needed in the remaining chapters.
+This is sound because of remark \vref{rem:HilbertCd},
+where we pointed out that all infinite-dimensional
+Hilbert spaces are isometrically isomorphic.
+This implies that all of the properties we have showed or will show based
+on the Hilbert space $L^2(\R^d, \C)$ can be generalised
+to $L^2(\R^d, \C^s)$ with $s \geq 1$ rather trivially.
 
 \subsection{Sobolev spaces}
 Many operators of quantum mechanics involve derivatives as well.
