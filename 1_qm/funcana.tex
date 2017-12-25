@@ -326,80 +326,109 @@ on the Hilbert space $L^2(\R^d, \C)$ can be generalised
 to $L^2(\R^d, \C^s)$ with $s \geq 1$ rather trivially.
 
 \subsection{Sobolev spaces}
-Many operators of quantum mechanics involve derivatives as well.
-Whilst Lebesgue spaces are natural when it comes to doing statistics,
-they are too weak to make sure
-that derivatives of these functions are in $L^2(\R^d, \C)$ as well.
-As many \QM operators (like the momentum operator) involve
-derivatives this space is often not suitable.
+Many operators of quantum mechanics including all the operators,
+which we will discuss in detail, involve taking derivatives of states.
+Whilst Lebesgue spaces are suitable for doing statistics,
+their mathematical structure does not make sure
+that derivatives of functions from $L^2(\R^d, \C)$ stay in $L^2(\R^d, \C)$.
+For example $1/r$ is square-integrable on $\R^3$,
+whilst its radial derivative $-1/r^2$ is not.
+One way to tackle this, is to take an appropriate subspace of $L^2(\R^d, \C)$,
+which allows taking a certain number of derivatives.
+As it turns out the appropriate treatment for the numerical solution
+of partial differential equations,
+does not require the usual or \newterm{strong derivatives},
+much rather weak derivatives are sufficient.
+These are defined as such:
 
 \begin{defn}
 	A function $f \in L^2(\R^d, \C)$ has a \newterm{weak partial derivative}
 	$g \in L^2(\R^d, \C)$ with respect to $x_i$ if
-	\[ \forall \varphi \in C^\infty_0(\R^d): \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
+	\[ \forall \varphi \in C^\infty_0(\R^d): \quad \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
 	where $C^\infty_0(\R^d, \C)$ is the space of all
 	infinitely differentiable complex-valued functions with compact support.
 	To denote the weak derivative
-	one may write $g = \frac{\partial}{\partial x_i} f$ like in the usual case.
+	one may write $g = \frac{\partial}{\partial x_i} f$ like in the strong case.
 	It can further be shown that if $f$ has a classical, strong derivative
 	then it also has a weak derivative, which coincides with the strong derivative.
 	For ease of notation we also write
-	\[ D^\alpha f = \frac{\partial^{\abs{\alpha}}}{ \prod_{i=1}^d \partial x_i^{\alpha_i} }. \]
+	\[ D^{\vec{\alpha}} f = \frac{\partial^{\norm{\vec{\alpha}}_1}}{ \prod_{i=1}^d \partial x_i^{\alpha_i} }, \]
+	where $\vec{\alpha} \in \N^d$ and as usual
+	\[ \norm{\vec{\alpha}}_1 = \sum_{i=1}^d \abs{\alpha_i} \]
 \end{defn}
+
+\noindent
+With the weak derivative at hand we can define the so-called Sobolev spaces,
+which allow to make certain guarantees about the number of (weak)
+derivatives, which can be taken.
+A full family of such spaces exist. We will only present two kinds here.
 
 \nomenclature{$H^1(\R^d, \C)$}{The Hilbert space of complex-valued functions with square-integrable first derivative}
 \nomenclature{$H^2(\R^d, \C)$}{The Hilbert space of complex-valued functions with square-integrable second derivative}
 \begin{defn}
 	The \newterm{Sobolev space} defined by
 	\begin{equation}
-		H^k(\R^d, \C) := \left\{ f \in L^2(\R^d, \C) \middle| D^\alpha f \in L^2(\R^d, \C) \text{ for $\abs{\alpha} \le k$} \right\}
+		H^k(\R^d, \C) := \left\{ f \in L^2(\R^d, \C) ~\middle|~ D^{\vec{\alpha}} f \in L^2(\R^d, \C) \text{ for $\norm{\vec{\alpha}}_1 \le k$} \right\}
 		\label{eqn:defSobolev}
 	\end{equation}
 	with inner product
 	\begin{equation}
-	\braket{f}{g}_{H^k} := \sum_{\abs{\alpha} \le k} \braket{D^\alpha f}{D^\alpha g}_{L^2}.
+		\braket{f}{g}_{H^k} := \sum_{\norm{\vec{\alpha}}_1 \le k} \braket{D^{\vec{\alpha}} f\,}{\,D^{\vec{\alpha}} g}_{L^2}
 		\label{eqn:defSobolevInnProd}
 	\end{equation}
 	and induced norm
 	\begin{equation}
-		\norm{f}_{H^k} = \sum_{\abs{\alpha} \le k} \norm{D^\alpha f}_{L^2}
+		\norm{f}_{H^k} = \sum_{\norm{\vec{\alpha}}_1 \le k} \norm{D^{\vec{\alpha}} f}_{L^2}
 		\label{eqn:defSobolevNorm}
 	\end{equation}
-	is a Hilbert space.
+	is a Hilbert space~\cite{Adams2003}.
 \end{defn}
 
 \begin{defn}
 	The completion of $C^\infty_0(\R^d, \C)$
 	with respect to the norm $\norm{\slot}_{H^k}$
 	is the Sobolev space $H^k_0(\R^d, \C)$.
-	It is a proper subspace of $H^k$ and also a Hilbert space.
+	It is a proper subspace of $H^k$ and a Hilbert space as well~\cite{Adams2003}.
 \end{defn}
-\todoil{Explanation what this means}
+Colloquially speaking if a function is a member of $H^k(\R^d, \C)$ or $H^k_0(\R^d, \C)$,
+we can assume that the $k$-th derivative of this function remains square-integrable.
+These spaces will become rather important in the next section \vref{sec:spectral},
+where we will need them to define self-adjoint operators upon them.
+As a summary the relationships between the spaces we discussed
+in this section have been summarised in \fig \vref{fig:sobolevRelations}.
+Note, that by definition
+\[ L^2(\R^d, \C) = H^0(\R^d, \C) = H^0_0(\R^d, \C). \]
 
 \begin{figure}
 	\centering
 	\includeimage{1_qm/sobolev}
-	\caption{Overview of the spaces discussed in this chapter.
+	\caption{Overview of the spaces discussed in this section.
 		Apart from $C^\infty_0(\R^d, \C)$ all mentioned spaces are Hilbert spaces.
 		In each case $A \subset B$ denotes that $A$ is a proper, dense
 		subspace of $B$.}
 	\label{fig:sobolevRelations}
 \end{figure}
-The various relationships between the spaces we discussed
-in this chapter have been summarised in \fig \vref{fig:sobolevRelations}.
-Note that by definition
-\[ L^2(\R^d, \C) = H^0(\R^d, \C) = H^0_0(\R^d, \C). \]
+
+To finish our discussion of Sobolev spaces let us determine
+in which Sobolev space the function
+\begin{equation}
+	\label{eqn:H1sFunctionalForm}
+	\Psi_{1s}(\vec{r}) = \exp\left(- \sqrt{x^2 + y^2 + z^2} \right) = \exp(-r)
+\end{equation}
+is located.
+This function and trivial generalisations thereof
+will be of relevance for our future treatment,
+since it arises naturally as an eigenfunction of the hydrogen-like
+Hamiltonian \eqref{eqn:OpHydrogen}~(see section \vref{sec:HydrogenAtom})
+and is furthermore an important building block of the Coulomb-Sturmians%
+~(see section \vref{sec:BasisCS}).
 
 \begin{exmp}
 	\label{exmp:H1sH1}
-	The function
-	\[ \Psi_{1s}(\vec{r}) = \exp\left(- \sqrt{x^2 + y^2 + z^2} \right) = \exp(-r), \]
-	which arises as an eigenfunction
-	of the hydrogen-like Hamiltonian \eqref{eqn:OpHydrogen}%
-	~(see section \vref{sec:HydrogenAtom})
-	belongs to $H^1(\R^3, \C)$
+	The function $\Psi_{1s}$ of \eqref{eqn:H1sFunctionalForm} belongs to $H^1(\R^3, \C)$.
 	\begin{proof}
-	Since the function is bounded, we clearly have $\Psi_{1s} \in L^2(\R^3, \C)$.
+	Since the function is bounded~\footnote{Does not go to infinity anywhere},
+	we clearly have $\Psi_{1s} \in L^2(\R^3, \C)$.
 	Furthermore for any $\alpha \in \{x, y, z\}$:
 	\begin{equation}
 		\norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
@@ -418,6 +447,8 @@ Note that by definition
 	\end{proof}
 \end{exmp}
 
+For the next step, showing $\Psi_{1s} \in H^2(\R^3, \C)$,
+we need two results relating $H^1(\R^3, \C)$ and $L^2(\R^3, \C)$.
 \begin{prop}[Hardy's inequality]
 	\label{prop:Hardy}
 	For all $u \in H^1(\R^3, \C)$, we have
@@ -430,7 +461,6 @@ Note that by definition
 		follows from the denseness of $C_0^\infty(\R^3, \C)$ in $H^1(\R^3, \C)$
 		and continuity of the integrands on both sides
 		with respect to the $H^1$ norm.
-		\todoil{I do not think I understand this}
 	\end{proof}
 \end{prop}
 
@@ -441,8 +471,10 @@ Note that by definition
 		One easily rewrites Hardy's inequality to
 		\[
 			\norm{u}_{H^1} \geq  \sum_{\alpha\in\{x,y,z\}} \int_{\R^3} \abs{\frac{\partial u}{\partial \alpha}} \D\vec{r}
-			\geq \int_{\R^3} \norm{\nabla u}_2^2 \D\vec{r}
-			\geq \frac{1}{4} \int_{\R^3} \frac{\abs{u}^2}{r^2} \D\vec{r}
+			\stackrel{\text{(triangle)}}{\geq}
+			\int_{\R^3} \norm{\nabla u}_2^2 \D\vec{r}
+			\stackrel{\text{(Hardy)}}{\geq}
+			\frac{1}{4} \int_{\R^3} \frac{\abs{u}^2}{r^2} \D\vec{r}
 			= \frac{1}{4} \norm{\frac{u}{r}}_{L^2}
 		\]
 		which proves the claim.
@@ -462,9 +494,9 @@ Note that by definition
 			+ \norm{\frac{\alpha\beta}{r^3}\exp(-r)}_{L^2}
 			+ \norm{\frac{\alpha\beta}{r^2}\exp(-r)}_{L^2}
 		\end{align*}
-		Now let us employ $\abs{\alpha\beta} \le r^2$
-		and the fact that a removable singularity
-		can be ignored in the Lebesgue integral to arrive at
+		Noting $\abs{\alpha\beta} \le r^2$
+		and ignoring the removable singularities in the Lebesgue integral,
+		we arrive at
 		\begin{align*}
 			\norm{\frac{\partial^2 \Psi_{1s}}{\partial \alpha \partial \beta}}_{L^2}
 			&\leq \norm{\frac{1}{r} \exp(-r)}_{L^2}
@@ -473,24 +505,22 @@ Note that by definition
 			&= 2\norm{\frac{1}{r} \exp(-r)}_{L^2} + \norm{\exp(-r)}_{L^2} \\
 			&< \infty,
 		\end{align*}
-		where in the last line we used that
-		$\exp(-r) \in·H^1(\R^3, \C)$ and corrollary \vref{cor:Hardy}.
-		This implies the claimed statement.
+		where in the last line we used
+		$\exp(-r) \in H^1(\R^3, \C)$ and corrollary \vref{cor:Hardy}.
 \end{proof}
 \end{exmp}
 
-\begin{exmp}
-	In an analogous manner to examples \vref{exmp:H1sH1} and \vref{exmp:H1sH2}
+\begin{rem}
+	Analogously to what we sketched in examples \vref{exmp:H1sH1} and \vref{exmp:H1sH2},
 	one could attempt to probe whether the one-dimensional function
 	$f(x) = \exp(-\abs{x})$ lives in $H^1(\R,\C)$ or $H^2(\R,\C)$.
 	Whilst the former can be easily verified,
 	one finds $f \not\in H^2(\R,\C)$.
-	\todoil{Show this}
-\end{exmp}
+\end{rem}
 
 This rather surprising result is a consequence of the second part of
 the Sobolev embedding theorem
-of which we only present a slightly specialised form  here.
+of which we only present a slightly specialised form here.
 \begin{thm}[Sobolev embedding]
 	Given $r, k, d \in \N$ with
 	\[ k > \frac{d}{2} > 0 \quad \text{and} \quad k -\frac{d}{2} > r \]
@@ -499,7 +529,7 @@ of which we only present a slightly specialised form  here.
 	between the Sobolev space $H^k(\R^d)$ and the space of the $r$ times
 	continuously differentiable functions, $C^r(\R^d)$.
 \end{thm}
-This embedding theorem allows to give an idea what is to be expected about
+This embedding theorem allows to get an idea what is to be expected about
 the smoothness of a function in $H^k$.
 Interestingly the smaller the dimensionality the more smooth such a function
 has to be.
