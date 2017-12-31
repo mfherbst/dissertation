@@ -57,7 +57,7 @@ is the notion of bounded and unbounded operators.
 	\[ \opnorm{\Op{A}} < \infty, \]
 	\ie if it has finite operator norm.
 	A bounded operator is also sometimes referred to as \newterm{continuous}%
-	~\footnote{In fact this is a consequence from the fact that a bounded linear operator
+	\footnote{In fact this is a consequence from the fact that a bounded linear operator
 	between normed vector spaces is always continuous.}.
 \end{defn}
 In our example of $\hilbert = L^2(\R^d, \C)$ an operator is hence bounded
@@ -222,110 +222,131 @@ we may define the terms symmetric and self-adjoint.
 	\end{itemize}
 \end{rem}
 
-% -------------------------------------
-
 \subsection{Spectra of self-adjoint operators}
-\todoil{Check that closed is not needed for Fiedrichs extension
-and if not drop it}
-
-Before diving into the definitions and theorems regarding
-the spectra of operators, we introduce the term \newterm{closed operator}.
-
-\begin{defn}
-	A linear operator $\Op{A}$ is closed if its graph
-	\[ \text{Gr}(\Op{A}) := \{ (u, \Op{A}u) \, | \, u \in D(\Op{A}) \} \]
-	is a closed subspace of $\hilbert \times \hilbert$.
-\end{defn}
-This definition is rather technical.
-We will only need the result that all self-adjoint operators are closed.
-
-\begin{prop}
-	The adjoint of a linear operator is closed.
-	\begin{proof}
-		See \cite[p. 17]{Helffer2013}
-	\end{proof}
-\end{prop}
-As a result all self-adjoint operators are closed.
-
-
+In this section we will clearify the notion of a spectrum
+for a self-adjoint operator in infinite dimensions
+and the connections to the probably more familiar concepts
+of eigenvalues and eigenvectors.
 
 \newcommand{\shiftop}{(\Op{A} - \lambda \id_{\hilbert})}
 \begin{defn}
-	Let $\Op{A}$ be a closed linear operator on $\Op{H}$.
-	We call
+	\label{defn:Spectrum}
+	Let $\Op{A}$ be a self-adjoint%
+	\footnote{Strictly speaking the operator only needs to be closed for this definition.
+	An operator is closed if its graph $\{ (u, \Op{A}u) \, | \, u \in D(\Op{A}) \}$
+	is a closed subspace of $\hilbert \times \hilbert$.
+	This is true for all self-adjoint operators.}
+	linear operator on $\Op{H}$.
 	\begin{itemize}
-		\item the open set
+		\item We call the open set
 			\[ \rho(\Op{A}) = \left\{ \lambda \in \C \ \middle| \
 				\shiftop \
 				\text{is bijective on $D(\Op{A})$} \right\} \]
 			the \newterm{resolvent set} of $\Op{A}$.
-		\item the closed set $\sigma{\Op{A}} = \C \backslash \rho(\Op{A})$
-			the \newterm{spectrum} of $\Op{A}$.
+		\item The closed set $\sigma(\Op{A}) = \C \, \backslash \, \rho(\Op{A})$
+			is then the \newterm{spectrum} of $\Op{A}$.
 	\end{itemize}
 \end{defn}
-In infinite dimensions invertibility (bijectivity) is not idential to injectivity,
-but in finite dimensions it can be made such.
 
+\noindent
+We can further show:~\cite[p. 102]{Helffer2013}
 \begin{prop}
-	If $\Op{A}$ is self-adjoint (and hence closed), then $\sigma(\Op{A}) \subset \R$.
-	\begin{proof}
-		See~\cite[p. 102]{Helffer2013}
-	\end{proof}
+	If $\Op{A}$ is self-adjoint, then $\sigma(\Op{A}) \subset \R$.
 \end{prop}
 
+Another way of phrasing definition \vref{defn:Spectrum} is that
+the spectrum is the set of all points where $\shiftop$ is not bijective.
+This implies that both points where $\shiftop$ is not injective
+as well as points where $\shiftop$ is not surjective are part of the spectrum.
+In infinite dimensions, where not every injective operator can be made
+surjective by a trivial operator extension,
+one can therefore find points in the spectrum, which are not eigenvalues
+in the classical sense.
+This is expressed in the next definition.
+
 \begin{defn}
-	If $\Op{A}$ is self-adjoint, we can decompose $\sigma(\Op{A}) = \sigma_P(\Op{A}) \, \dot{\cup} \, \sigma_C(\Op{A})$ where these sets are defined as
+	If $\Op{A}$ is self-adjoint, we can decompose
+	$\sigma(\Op{A}) = \sigma_P(\Op{A}) \, \dot{\cup} \, \sigma_C(\Op{A})$
+	with
 	\begin{itemize}
 		\item the \newterm{point spectrum}
-			\[ \sigma_P(\Op{A}) = \left\{ \lambda \in \R \, \middle| \, \shiftop\ \text{is non-injective} \right\}
-				= \{ \text{eigenvalues of $\Op{A}$} \}\]
-		\item the \newterm{continuous spectrum}
-			\[ \sigma_C(\Op{A}) = \overline{\left\{ \lambda \in \R \, \middle|\, \shiftop\ \text{injective, but not surjective} \right\}}\]
-			\ie the closure under the set
+			\[ \sigma_P(\Op{A}) = \left\{ \lambda \in \R \, \middle|
+				\, \shiftop\ \text{is non-injective} \right\}
+				= \{ \text{eigenvalues of $\Op{A}$} \}.\]
+		\item the \newterm{continuous spectrum}%
+			\footnote{$\overline{A}$ denotes the closure of the set $A$.}
+			\[ \sigma_C(\Op{A}) = \overline{\left\{ \lambda \in \R \, \middle|\, \shiftop\ \text{injective, but not surjective} \right\}}.\]
 	\end{itemize}
 \end{defn}
-The RAGE theorem allows for the interpretation of the
-point and the continuous spectrum in a physical way.
-The point spectrum corresponds to the eigenstates of bound states,
-whereas the (slide 25 eric october lectures)
+\todoil{Rephrase?}
+The so-called RAGE\footnote{After the initials of the discoverers 
+Ruelle, Amrein, Georgescu and Volker Enss}
+theorem
+\todo{Lookup references}
+allows for a physical interpretation of the point spectrum $\sigma_P(\Op{A})$
+and the continuous spectrum $\sigma_C(\Op{A})$.
+It states that the eigenfunctions associated with the eigenvalues in $\sigma_P(\Op{A})$
+correspond to the so-called
+\newterm{bound state}s of an operator,
+\ie those states which have --- at all times --- a non-vanishing function value
+only in a finite region of space.
+On the other hand $\sigma_P(\Op{A})$ can be associated with the
+\newterm{scattering state}s,
+which will eventually vanish from any arbitrarily large, bounded part of space.
 
-From a numerical point of view another way of splitting the spectrum is interesting
+The decomposition of the spectrum into point and continuous spectrum
+is not the only possibility.
+Especially from the point of view of numerical modelling
+the following, alternative approach is more helpful
+as we shall see later.
+
 \begin{defn}
-	For any closed operator, we can decompose $\sigma(\Op{A}) = \sigma_\text{disc}(\Op{A}) \dot{\cup} \sigma_\text{ess}(\Op{A})$
-	where
+	For any self-adjoint%
+	\footnote{Again only closed is strictly required.}
+	operator,
+	we can decompose \linebreak
+	$\sigma(\Op{A}) = \sigma_\text{disc}(\Op{A}) \, \dot{\cup} \, \sigma_\text{ess}(\Op{A})$
+	with
 	\begin{itemize}
-		\item the discrete spectrum%
+		\item the \newterm{discrete spectrum}%
 			\footnote{For a mathematically more precise description, see~\cite[p.103 and p.132]{Helffer2013}.}
-			\[ \sigma_\text{disc}(\Op{A}) \simeq \left\{ \lambda \in \R \, \middle| \, \text{$\lambda$ is an isolated eigenvalues of $\Op{A}$ with finite multiplicity} \right\} \]
-		\item the essential spectrum
-			\[\sigma_\text{ess}(\Op{A}) = \sigma(\Op{A}) \backslash \sigma_\text{disc}(\Op{A})\]
+			\[ \sigma_\text{disc}(\Op{A}) \simeq \left\{ \lambda \in \R \, \middle|
+			\, \text{$\lambda$ is an isolated eigenvalues of $\Op{A}$
+			with finite multiplicity} \right\}, \]
+		\item the \newterm{essential spectrum}
+			\[\sigma_\text{ess}(\Op{A}) 
+			= \sigma(\Op{A}) \, \backslash \, \sigma_\text{disc}(\Op{A}). \]
 	\end{itemize}
 \end{defn}
-Bye construction it is clear that the essential spectrum consists of
+
+\noindent
+By construction the essential spectrum consists of
 \begin{itemize}
-	\item The continuous spectrum
-	\item Eigenvalues of infinite multiplicities
-	\item Eigenvalues embedded in the continuous spectrum
+	\item the continuous spectrum,
+	\item eigenvalues of infinite multiplicity,
+	\item eigenvalues embedded inside the continuous spectrum.
 \end{itemize}
+The important take-away here is,
+that it is only possible to construct reliable numerical methods
+for obtaining approximate eigenvalues
+for the discrete spectrum of an operator.
 
-Note: Laplacian and Hydrogen operator are both not compact.
-But they are almost.
-Most notably for the Laplacian its inverse is compact
-and for the Schrödinger operators (which occur in HF)
-the point and the continuous spectra are well-separated,
-so approximating with the min-max principle is ok.
-
-
+Before we try to rationalise this observation,
+let us discuss the special case of compact, self-adjoint operators.
+Already if an operator is compact,
+its spectrum has a particularly simple form.
 \begin{prop}
-	If $\Op{A}$ is compact:
+	If $\Op{A}$ is a compact operator on the Hilbert space $\hilbert$:
 	\begin{itemize}
 		\item $0 \in \sigma(\Op{A})$
-		\item $\sigma(\Op{A}) \backslash \{0\} = \sigma_P(\Op{A}) \backslash \{0\}$
+		\item $\sigma(\Op{A}) \, \backslash \, \{0\}
+			= \sigma_P(\Op{A}) \, \backslash \, \{0\}$
 		\item Only one of these cases is true:
 			\begin{itemize}
-				\item $\sigma(\Op{A}) = \{0\}$
-				\item $\sigma(\Op{A}) \backslash \{0\}$ is finite.
-				\item $\sigma(\Op{A}) \backslash \{0\}$ can be described
+				\item[\textopenbullet] $\sigma(\Op{A}) = \{0\}$
+				\item[\textopenbullet] $\sigma(\Op{A}) \, \backslash \, \{0\}$ is finite.
+				\item[\textopenbullet]
+					$\sigma(\Op{A}) \, \backslash \, \{0\}$ can be described
 					as a sequence of points tending to $0$.
 			\end{itemize}
 	\end{itemize}
@@ -333,20 +354,36 @@ so approximating with the min-max principle is ok.
 		See~\cite[p. 56]{Helffer2013}.
 	\end{proof}
 \end{prop}
-
+In other words the continuous spectrum of a compact operator
+may at most contain the value $0$.
+If the operator is self-adjoint as well, we can state as follows.
 \begin{prop}
 	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
 	self-adjoint operator on $\hilbert$,
 	then $\hilbert$ admits for a Hilbertian basis,
 	\ie a basis set $\{ u_k \}_{k \in \mathcal{I}}$ with
-	\[ \braket{u_k}{u_l} = \delta_{kl} \quad \forall k,l \in \mathcal{I}. \]
-	and
-	\[ \spacespan \{ u_k \}_{k \in \mathcal{I}} = \hilbert. \]
+	\begin{align*}
+	\braket{u_k}{u_l} &= \delta_{kl} \quad \forall \, k,l \in \mathcal{I}
+	&&\text{and}&
+	\spacespan \left( \{ u_k \}_{k \in \mathcal{I}} \right) &= \hilbert.
+	\end{align*}
 	\begin{proof}
 		See~\cite[p. 60]{Helffer2013}.
 	\end{proof}
 \end{prop}
 
+\todoil{Rephrase}
+Compact operators show the properties we would hope for in quantum mechanics.
+We can always express an arbitrary state in terms of the Hilbert space
+in the eigenstates of an operator.
+Furtheremore they are numerically easy to deal with.
+Unfortunately most operators of \QM are not compact,
+since they are not even bounded.
+This includes the Laplacian and the Schrödinger
+operators as we shall see.
+
+On the other hand if the Hilbert space is finite-dimensional
+all operators are rather nice.
 \begin{prop}
 	\label{prop:FiniteDimCompact}
 	Any linear operator on a finite-dimensional Hilbert space $\hilbert$ is compact.
@@ -366,6 +403,20 @@ Proposition \ref{prop:FiniteDimCompact} has a lot of noteworthy consequences:
 \end{rem}
 
 
+
+
+
+
+Note: Laplacian and Hydrogen operator are both not compact.
+But they are almost.
+Most notably for the Laplacian its inverse is compact
+and for the Schrödinger operators (which occur in HF)
+the point and the continuous spectra are well-separated,
+so approximating with the min-max principle is ok.
+
+
+
+
 Most operators of \QM are not bounded and thus not compact.
 But at least all we will cover are semi-bounded.
 This first of all allows to find a self-adjoint extension as we will see in the examples
@@ -379,6 +430,10 @@ We will see in section \vref{sec:RitzGalerkin} in the next chapter,
 how this allows to construct sensible approximations
 for these discrete eigenvalues even though the operators are not compact
 (and neither are their resolvents in some cases).
+
+
+% Issues with the essential spectrum
+% 
 
 \subsection{The Laplace operator}
 \label{sec:SpectrumLaplace}
