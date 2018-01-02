@@ -90,10 +90,11 @@ which we will define in the following.
 There also exists a middle ground,
 namely so-called \newterm{semi-bounded operator}s, defined as such:
 \begin{defn}
-	An operator is semi-bounded from above/below if
-	\todoil{TODO}
-% TODO define semi-bounded operator and bounded below and above
-% Page 29 in Helffer2013
+	A operator $\Op{A}$ on $\hilbert$ with domain $D(\Op{A})$
+	is called semi-bounded from below if there exists a constant $C$
+	such that for all $u \in D(\Op{A})$:
+	\[ \braket{u}{\Op{A} u} = \braket{\Op{A} u}{u} \quad \text{and}
+	\quad \braket{u}{\Op{A} u} \geq -C \braket{u}{u}. \]
 \end{defn}
 
 Starting from definition \ref{defn:OpBounded}
@@ -105,21 +106,17 @@ is compactness, defined as:
 \begin{defn}
 	A operator $\Op{A} : D(\Op{A}) \to \hilbert$ on a Hilbert space $\hilbert$
 	is \newterm{compact}
-	if for any sequence $(x_n)$ that converges weakly in $\hilbert$,
+	if for any sequence $(x_n)$ that converges weakly in $D(\Op{A})$,
 	$\Op{A} x_n$ converges strongly in $\hilbert$.
 
 	Recall that a sequence $(x_n)$ is called \newterm{weakly convergent}
-	if for all $\phi \in C^\infty_0$ the sequence $(y_n)$ with
+	if for all $\phi \in \hilbert$ the sequence $(y_n)$ with
 	$y_n = \braket{x_n}{\phi}_\hilbert$
 	is \newterm{strongly convergent}, \ie Cauchy.
-	\todoil{Check that I use the correct test function space and
-		norms and inner products
-		$\hilbert$ versus $D(\Op{A})$}
-	% use norm of D(A) in weak convergence and norm of H in strong
 \end{defn}
 Compactness is of importance for us in the context of spectral theory,
 since compact operators have particularly nice spectral properties.
-As expected one may easily show, that~\todo{Find citatation}
+As expected one may easily show, that~\todo{Find citation or do proof.}
 \begin{prop}
 	A compact operator $\Op{A}$ on a Hilbert spaces $\hilbert$ is bounded as well.
 \end{prop}
@@ -145,6 +142,7 @@ and to the form $a$ as the \newterm{weak formulation}.
 Using the identification of the previous remark,
 we may define the terms symmetric and self-adjoint.
 \begin{defn}
+	\label{def:SymmetricOperator}
 	A operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric} if
 	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
 \end{defn}
@@ -387,7 +385,7 @@ operator:
 With propositions \ref{prop:CompactSpectrum} and \ref{prop:CompactBasis}
 at hand, compact operators start to look a lot like the familiar case
 of complex square matrices.
-In fact one can show that
+In fact one can show that~\cite[p. 43]{Helffer2013}
 \begin{prop}
 	\label{prop:FiniteDimCompact}
 	Any linear operator on a finite-dimensional Hilbert space is compact.
