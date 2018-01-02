@@ -226,7 +226,7 @@ we may define the terms symmetric and self-adjoint.
 In this section we will clearify the notion of a spectrum
 for a self-adjoint operator in infinite dimensions
 and the connections to the probably more familiar concepts
-of eigenvalues and eigenvectors.
+of eigenvalues and eigenvectors in finite dimensions.
 
 \newcommand{\shiftop}{(\Op{A} - \lambda \id_{\hilbert})}
 \begin{defn}
@@ -258,11 +258,20 @@ Another way of phrasing definition \vref{defn:Spectrum} is that
 the spectrum is the set of all points where $\shiftop$ is not bijective.
 This implies that both points where $\shiftop$ is not injective
 as well as points where $\shiftop$ is not surjective are part of the spectrum.
-In infinite dimensions, where not every injective operator can be made
-surjective by a trivial operator extension,
-one can therefore find points in the spectrum, which are not eigenvalues
-in the classical sense.
-This is expressed in the next definition.
+
+Recall that an eigenpair $(\lambda, v) \in \C \times \hilbert$ satisfies
+\[ \Op{A} v - \lambda v = 0 \quad \Leftrightarrow \quad v \in \ker \shiftop \quad \Rightarrow \quad \ker \shiftop \neq \{0\}, \]
+since $v \neq 0$.
+Since only non-injective operators can have a non-trivial kernel,
+this implies that $\shiftop$ is necessarily non-injective
+for $(\lambda, v)$ to be an eigenpair.
+Unlike in finite dimensions%
+\footnote{In finite dimensions one can always find a operator extension for any
+injective operator to be surjective as well.}
+it may well happen in infinite dimensions, that $\shiftop$ is injective,
+but not surjective.
+Therefore one may find points in the spectrum, which are not eigenvalues.
+This is expressed more formally in the next definition.
 
 \begin{defn}
 	If $\Op{A}$ is self-adjoint, we can decompose
@@ -278,21 +287,22 @@ This is expressed in the next definition.
 			\[ \sigma_C(\Op{A}) = \overline{\left\{ \lambda \in \R \, \middle|\, \shiftop\ \text{injective, but not surjective} \right\}}.\]
 	\end{itemize}
 \end{defn}
-\todoil{Rephrase?}
-The so-called RAGE\footnote{After the initials of the discoverers 
+This definition can be understood physically by the so-called
+RAGE\footnote{After the initials of the discoverers 
 Ruelle, Amrein, Georgescu and Volker Enss}
 theorem
-\todo{Lookup references}
-allows for a physical interpretation of the point spectrum $\sigma_P(\Op{A})$
-and the continuous spectrum $\sigma_C(\Op{A})$.
-It states that the eigenfunctions associated with the eigenvalues in $\sigma_P(\Op{A})$
-correspond to the so-called
-\newterm{bound state}s of an operator,
-\ie those states which have --- at all times --- a non-vanishing function value
+\todo{Lookup references}.
+It draws
+a connection between the point spectrum $\sigma_P(\Op{A})$
+and the so-called \newterm{bound state}s of an operator
+and between the continuous spectrum $\sigma_C(\Op{A})$
+and the so-called \newterm{scattering state}s.
+Bound states are characterised by the property,
+that they have --- at all times --- a non-vanishing function value
 only in a finite region of space.
-On the other hand $\sigma_P(\Op{A})$ can be associated with the
-\newterm{scattering state}s,
-which will eventually vanish from any arbitrarily large, bounded part of space.
+Scattering states on the other hand are \emph{not} eigenstates
+and they will vanish from any arbitrarily large, bounded part of space
+if enough time has passed.
 
 The decomposition of the spectrum into point and continuous spectrum
 is not the only possibility.
@@ -326,16 +336,16 @@ By construction the essential spectrum consists of
 	\item eigenvalues of infinite multiplicity,
 	\item eigenvalues embedded inside the continuous spectrum.
 \end{itemize}
-The important take-away here is,
-that it is only possible to construct reliable numerical methods
-for obtaining approximate eigenvalues
-for the discrete spectrum of an operator.
-
-Before we try to rationalise this observation,
-let us discuss the special case of compact, self-adjoint operators.
+\todoil{Figure?}
+It will become clear in a moment
+why only modelling the discrete spectrum can be done easily by
+approximative, numerical methods.
+For this we need to discuss the special case of
+compact, self-adjoint operators in a bit more details.
 Already if an operator is compact,
 its spectrum has a particularly simple form.
 \begin{prop}
+	\label{prop:CompactSpectrum}
 	If $\Op{A}$ is a compact operator on the Hilbert space $\hilbert$:
 	\begin{itemize}
 		\item $0 \in \sigma(\Op{A})$
@@ -355,9 +365,11 @@ its spectrum has a particularly simple form.
 	\end{proof}
 \end{prop}
 In other words the continuous spectrum of a compact operator
-may at most contain the value $0$.
-If the operator is self-adjoint as well, we can state as follows.
+may at most contain the value $0$ --- even in infinite dimensions.
+Furthermore there is a nice result for the eigenfunctions of a compact, self-adjoint
+operator:
 \begin{prop}
+	\label{prop:CompactBasis}
 	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
 	self-adjoint operator on $\hilbert$,
 	then $\hilbert$ admits for a Hilbertian basis,
@@ -372,47 +384,79 @@ If the operator is self-adjoint as well, we can state as follows.
 	\end{proof}
 \end{prop}
 
-\todoil{Rephrase}
-Compact operators show the properties we would hope for in quantum mechanics.
-We can always express an arbitrary state in terms of the Hilbert space
-in the eigenstates of an operator.
-Furtheremore they are numerically easy to deal with.
-Unfortunately most operators of \QM are not compact,
-since they are not even bounded.
-This includes the Laplacian and the Schrödinger
-operators as we shall see.
-
-On the other hand if the Hilbert space is finite-dimensional
-all operators are rather nice.
+With propositions \ref{prop:CompactSpectrum} and \ref{prop:CompactBasis}
+at hand, compact operators start to look a lot like the familiar case
+of complex square matrices.
+In fact one can show that
 \begin{prop}
 	\label{prop:FiniteDimCompact}
-	Any linear operator on a finite-dimensional Hilbert space $\hilbert$ is compact.
+	Any linear operator on a finite-dimensional Hilbert space is compact.
 	\todoil{Find reference}
 \end{prop}
 
 \begin{rem}
-Proposition \ref{prop:FiniteDimCompact} has a lot of noteworthy consequences:
+With proposition \ref{prop:FiniteDimCompact}
+we can reduce the setting of self-adjoint operators on a finite-dimensional
+Hilbert space to the following:
 \begin{itemize}
-	\item $\Op{A}$ may be viewed as a multiplication by a finite matrix.
-	\item Eigenfunctions of any self-adjoint operator are a basis for the
-		Hilbert space $\hilbert$.
-		Their eigenvalues are real.
-	\item All symmetric operators are self-adjoint.
-	\item The essential spectrum is empty: There are only discrete eigenvalues
+	\item In remark \vref{rem:HilbertCd} we said that the vectors
+		of a $d$-dimensional Hilbert space
+		can be represented as column vectors from $\C^d$.
+		In a similar sense $\Op{A}$ can be identified by a finite matrix from
+		$\C^{d \times d}$.
+	\item The eigenfunctions of $\Op{A}$ are a complete orthonormal
+		basis for the underlying Hilbert space.
+		$\Op{A}$ has only real eigenvalues.
+	\item Apart from zero $\Op{A}$ has only a point spectrum.
+		The essential spectrum and the continuous spectrum at most consist of $0$.
 \end{itemize}
 \end{rem}
 
+\begin{rem}
+As we will see in the next sections \vref{sec:SpectrumLaplace}
+and \vref{sec:HydrogenAtom} both the Laplace operator $\Delta$ as well as the
+Hamiltonian $\Op{H}$ corresponding to hydrogenic systems
+are not compact on the Hilbert space $L^2(\R^3, \C)$,
+since both of these operators are not even bounded.
+Furthermore both of these operators do possess a non-trivial essential spectrum.
 
+If a numerical approach for computing the spectra for these operators
+should be used,
+one naturally needs to restrict oneself to a finite-dimensional subspace
+for solving the problem.
+See section \vref{sec:RitzGalerkin} in the next chapter for details.
+Because of prop. \vref{prop:FiniteDimCompact} our \emph{approximations}
+to $\Delta$ and $\Op{H}$ will be compact.
+As we just discussed these will therefore
+at most have the value zero in their continuous spectrum.
 
+Ignoring this $0$ for a moment,
+we can state that
+both the point spectrum as well as the continuous spectrum
+of the infinite-dimensional operator will be mapped to the discrete
+spectrum of the approximation.
+For approximations to the discrete spectrum this is not a big problem.
+As we go to infinite accuracy in our approximation,
+we will recover more and more digits of the discrete eigenvalues
+provided that our approximation is sensible.
+For those eigenvalues which are part of the essential spectrum, however,
+things are not so simple, because they might be surrounded by
+discrete approximations to the continuous spectrum.
+In general distinguishing between true eigenvalues
+and so-called \newterm{spurious eigenvalues} inside the approximation
+to the essential spectrum is hard up to impossible.
+\end{rem}
 
+It is therefore very important to know
+the spectral properties of the exact operator
+in order to understand which part of the spectrum one may obtain.
+Let us discuss in the following a few examples,
+which are important for our following treatment.
 
-
-Note: Laplacian and Hydrogen operator are both not compact.
-But they are almost.
-Most notably for the Laplacian its inverse is compact
-and for the Schrödinger operators (which occur in HF)
-the point and the continuous spectra are well-separated,
-so approximating with the min-max principle is ok.
+\subsection{The Laplace operator}
+\label{sec:SpectrumLaplace}
+% This section should make clear
+% The importance of the Sobolev space $H_2$ for quantum mechanics
 
 
 
@@ -431,14 +475,6 @@ how this allows to construct sensible approximations
 for these discrete eigenvalues even though the operators are not compact
 (and neither are their resolvents in some cases).
 
-
-% Issues with the essential spectrum
-% 
-
-\subsection{The Laplace operator}
-\label{sec:SpectrumLaplace}
-% This section should make clear
-% The importance of the Sobolev space $H_2$ for quantum mechanics
 
 
 or alternatively in spherical polar coordinates
