@@ -1,0 +1,53 @@
+\section{Diagonalisation algorithms}
+\todoil{Improve and extend this section once Chapter 4 and 5 are done}
+
+This section tries to shine some light on a few numerical techniques
+to obtain the exact eigenspectrum or an approximation for the eigenspectrum
+of a matrix $\mat{A}$.
+
+In this thesis we will only discuss combinations of operators
+and discretisation methods which have the property
+that
+\[ a(\chi_\mu, \chi_\nu) \in \R \]
+such that we are overall only left with symmetric matrices
+$\mat{A} \in \R^{\Nbas \times \Nbas}$.
+In this section we will therefore restrict our discussion
+of diagonalisation algorithms to plainly real-symmetric matrices.
+We can thus assume that both the matrix element
+as well as the eigenvalues and eigenvectors are entirely real.
+
+\subsection{Power method}
+The most simple numerical method to obtain
+a single eigenvalue from a particular matrix $\mat{A}$
+is the Power method.
+The algorithmic scheme consists of the steps
+
+\todoil{Algorithm}
+
+where
+\[ \rho_R(\vec{u}) := \frac{\vec{u}^T \mat{A} \vec{u}}{\vec{u}^T \vec{u}} \]
+is known as the Reighleigh quotient,
+the discretised version of \eqref{eqn:CourantFischer}.
+
+Let us define
+\[ \lambda_\text{max} = \argmax_{\lambda \in \sigma(\mat{A})} \abs{\lambda}. \]
+Provided that $\lambda_\text{max}$ is unique,
+\ie no other eigenvalue of this magnitude exists,
+this algorithm converges to $\lambda_\text{max}$.
+To see this, let us write
+\begin{align}
+	a
+\end{align}
+
+
+
+\todoil{Do later if time}
+
+\subsection{Shift and invert}
+\todoil{Do later if time}
+
+\subsection{Arnoldi's method}
+\todoil{Do later if time}
+
+\subsection{Davidson's method}
+\todoil{Do later if time}
