@@ -286,10 +286,8 @@ This is expressed more formally in the next definition.
 	\end{itemize}
 \end{defn}
 This definition can be understood physically by the so-called
-RAGE\footnote{After the initials of the discoverers 
-Ruelle, Amrein, Georgescu and Volker Enss}
-theorem
-\todo{Lookup references}.
+RAGE\footnote{Named after Ruelle, Amrein, Georgescu and Enss, who all worked on it.}
+theorem~\cite{Last1996}.
 It draws
 a connection between the point spectrum $\sigma_P(\Op{A})$
 and the so-called \newterm{bound state}s of an operator
@@ -411,6 +409,7 @@ Hilbert space to the following:
 \end{rem}
 
 \begin{rem}
+	\label{rem:NumericalEssentialSpectrum}
 As we will see in the next sections \vref{sec:SpectrumLaplace}
 and \vref{sec:HydrogenAtom} both the Laplace operator $\Delta$ as well as the
 Hamiltonian $\Op{H}$ corresponding to hydrogenic systems
@@ -567,9 +566,10 @@ the Hydrogenic Schrödinger operator \eqref{eqn:OpHydrogen}
 As the Hilbert space for this operator we take the \QM space $L^2(\R^3, \C)$
 and an appropriate domain to make it self-adjoint is $H^2(\R^3, \C)$%
 ~\cite[p. 38]{Helffer2013}.
-One can show~\cite{Davies2007} that $\sigma_C(\Op{H}) = [0, \infty)$
+One can show~\cite{Davies2007,Teschl2014} that $\sigma_C(\Op{H}) = [0, \infty)$
 and all discrete eigenvalues from $\sigma_P(\Op{H})$ are less than zero.
-In other words the discrete spectrum of $\Op{H}$ can be conveniently
+Thus $\sigma_\text{disc} = \sigma_P$ and $\sigma_\text{ess} = \sigma_C$.
+The point spectrum of $\Op{H}$ can be conveniently
 determined by solving the Schrödinger equation \eqref{eqn:TISE}
 \begin{equation}
 	( \Op{H} - E_{\mu} ) \Psi_\mu = 0,
@@ -607,7 +607,7 @@ namely~\cite{Avery2006}
 \sum_{k=0}^\infty \frac{a^{\bar{k}}}{k! \, b^{\bar{k}}} \zeta^k =
 1 + \frac{a}{b} \zeta + \frac{a(a+1)}{2b(b+1)} \zeta^2 + \cdots \]
 with $a^{\bar{k}}$ being the rising factorial of $a$.
-The normalisaton constant is
+The normalisation constant is
 \[ N_{nl} = \frac{2 \left( \frac{Z}{n} \right)^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}} \]
 and the corresponding energy eigenvalues are
 \begin{equation}
@@ -615,62 +615,38 @@ and the corresponding energy eigenvalues are
 	\label{eqn:HydrogenEnergyLevels}
 \end{equation}
 
-% ----------------------------------------------------
-
-\todoil{Mention that radial part is complete in the radial sense due to Sturm-Liouville theory.}
-
 If one walks through the derivation properly,
-one notices that as a consequence of the Sturm-Liouville form of the involved equations,
-the principle quantum number $n$ is always larger than zero
-and that $l < n$ applies as well.
-
-Together with the restrictions on $l$ and $m$ itself this results in the
-following restrictions on the quantum numbers:
-\begin{align*}
+one notices that the quantum numbers $n$, $l$ and $m$ are integer and need to satisfy
+the following conditions:
+\begin{align}
+	\label{eqn:HydrogenIndexCondition}
 	n &> 0 & 0 \leq l &< n & -l \leq &m \leq l
-\end{align*}
-Taking a look at the confluent hypergeometric function we use, it is easy to see
-that the power of the polynomial in $r$ is between zero and
+\end{align}
+Furthermore since all involved equations are of Sturm-Liouville form,
+the set of all solutions
 \[
-	\deg \;_1F_1\left(l + 1 -m \middle| 2l+2 \middle| \frac{2Zr}{n} \right) = n - l -1 \]
-such that overall the polynomial part of the radial function
-has a power between $l$ and
-\[ \deg \frac{R_{nl}(r)}{\exp(2Zr/n)} = n - 1. \]
+	\{\Psi_{nlm} \}_{n,l,m \text{ satisfy \eqref{eqn:HydrogenIndexCondition}}}
+\]
+forms the orthonormal basis for a Hilbert space $\mathcal{H}_\text{H}$.
 
-We will now argue that the solutions $\Psi \in H^2(\R^3, \C)$.
-It is easy to see that the derivative of $\Psi$ is continuous and bound
-everywhere but the origin.
-See \cite{Kato1957} and references therein for details.
-Since the smoothness at the origin is better the larger
-the larger the exponents of the polynomial in $r$,
-let us consider the worst case, i.e. the $s$-functions with $l = 0$.
-Taking a look at the definition of $_1F_1(a,b,\zeta)$
-one notices that the smallest exponent, irrespective of the value of $n$ is $0$.
-Thus we will discuss the smoothness properties of
+We saw in examples \vref{exmp:H1sH2} and \vref{exmp:H1sH1}
+that $\exp(-r) \in H^2(\R^3, \C)$,
+which implies
 \[
 	\Psi_{1s}(r, \theta, \phi) = \Psi_{100}(r, \theta, \phi)
-	= \sqrt{\frac{Z^3}{\pi}} \exp(-Z r)
+	= \sqrt{\frac{Z^3}{\pi}} \exp(-Z r) \in H^2(\R^3, \C).
 \]
-at the origin,
-which in fact is the least smooth of all hydrogen solutions.
-
-Use the results from example \vref{exmp:H1sH2}
-to show that the solutions $\Psi \in H^2(\R^3, \C)$.
-
-% ----------------------------------------------
-
-% Or move this to take-away
-
-Most operators of \QM are not bounded and thus not compact.
-But at least all we will cover are semi-bounded.
-This first of all allows to find a self-adjoint extension as we will see in the examples
-in the next section.
-They additionally have the nice property that the first few eigenvalues are
-solely part of the discrete spectrum and the essential spectrum only starts at a
-later point, \ie that
-\[ \forall \lambda \in \sigma_{\text{disc}}(\Op{A}),
-    \mu \in \sigma_{\text{ess}}(\Op{A}) \quad \lambda < \mu \]
-We will see in section \vref{sec:RitzGalerkin} in the next chapter,
-how this allows to construct sensible approximations
-for these discrete eigenvalues even though the operators are not compact
-(and neither are their resolvents in some cases).
+From the functional form of $R_{nl}$ and $Y_l^m$ it is clear,
+that all eigenstates $\Psi_{nlm}$ are infinitely differentiable everywhere
+except $r = 0$.
+See \cite{Kato1957} and references therein for details.
+The polynomial in $r$ in front of the exponential factor of the radial part $R_{nl}$
+has exponents in $r$ in the range $[l, n-1]$
+such that the eigenstate with $l = n-1 = 0$, i.e. $\Psi_{1s}$ is the least smooth.
+This implies $\Psi_{nlm} \in H^2(\R^3, \C)$ and thus
+$\mathcal{H}_\text{H}$ is a (true) subspace
+\footnote{
+	This is a true subspace, \ie non-identical to $H^2(\R^3, \C)$,
+	since the scattering states are not part of it.
+}
+of $H^2(\R^3, \C)$.

@@ -1,1 +1,37 @@
 \section{Take-away}
+Many observations of the one-particle Hydrogenic Schrödinger operator $\Op{H}$
+of section \vref{sec:HydrogenAtom}
+generalise to the more complicated many-body atomic and molecular Hamiltonians
+we will introduce in chapter \vref{ch:qchem}.
+
+Most importantly all these Hamiltonians are unbounded operators,
+which become self-adjoint by making the domain
+a subspace of the Sobolev spaces $H^2(\R^{3\Nelec}, \C)$.
+Their essential spectrum is non-trival,
+but luckily one can show~\todo{cite HVZ and Zhislin 61} that
+\[ \forall \lambda \in \sigma_{\text{disc}}(\Op{H}),
+	\mu \in \sigma_{\text{ess}}(\Op{H}) \quad \lambda < \mu, \]
+\ie that the discrete spectrum always sits below the essential spectrum.
+
+In remark \vref{rem:NumericalEssentialSpectrum} we discussed
+that the essential spectrum cannot be approximated reliably
+by a finite-dimensional Hilbert space with only compact operators.
+Our best shot is therefore to follow a numerical approach,
+which aims at the description of the low end of the spectrum.
+This thus avoids $\sigma_{\text{ess}}(\Op{H})$
+and allows to obtain good approximations to at least a few
+eigenpairs corresponding to the discrete spectrum $\sigma_{\text{disc}}(\Op{H})$,
+\ie bound states.
+
+In practice this is hardly a restriction.
+Originating from the laws of thermodynamics
+a sensible quantum-mechanical description of a system
+typically only requires the lowest energy state,
+i.e. the \newterm{ground state}, and the next few \newterm{excited state}s
+following most closely in energy.
+Care only needs to be taken to choose a sensible approximation
+method and a large enough approximation space.
+Otherwise one cannot be sure whether the obtained eigenstates
+are approximations to true discrete states
+or spurious states originating from discretising scattering states
+of the continuum.
