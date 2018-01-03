@@ -1,118 +1,200 @@
-\section{Ritz-Galerkin projection}
-\label{sec:RitzGalerkin}
+\section{Projection methods for eigenproblems}
+\label{sec:Projection}
 
-
-
-
-
-
-Lets take $\Op{A}$.
-on a separable Hilbert space $\hilbert$ with domain $D(\Op{A})$.
-
-
-We already saw in \eqref{eqn:formA} that one is able
-to associate to such an operator an appropriate quadratic form
+Let $\Op{A}$ be a self-adjoint, bounded below operator on a separable Hilbert space
+$\hilbert$ with domain $D(\Op{A})$.
+We already saw in remark \vref{rem:OpRietz}
+that $\Op{A}$ uniquely defines a sesquilinear form
 \[ a(u, v) = \braket{u}{\Op{A} v}_\hilbert. \]
-Whilst $\Op{A}$ might only be self-adjoint the domain $D(\Op{A})$,
-one may define the \newterm{form domain} $Q(\Op{A})$ as the largest
-natural Hilbert space on which the quadratic form $a(u, v)$
-is defined and continuous by the means of functional calculus.
-We have
-\[ D(\Op{A}) \subseteq Q(\Op{A}) \subseteq \hilbert. \]
+for $(u, v) \in D(\Op{A}) \times D(\Op{A})$.
 
-Clearly an eigenpair $(\lambda_i, v_i) \in \sigma_P(\Op{A}) \times D(\Op{A})$
-satisfies the variational formulation of the eigenproblem
-\[ \forall u \in \hilbert: a(u, v_i) = \lambda_i \braket{u}{v_i}_\hilbert. \]
-This suggests the \newterm{Ritz-Galerkin projection},
-which attempts to find an approximate solution by considering
-the related variational problem:
-\begin{center}
-\begin{minipage}{0.9\textwidth}
-	Search $(\lambda_i^{(n)}, v_i^{(n)}) \in \R \times S_n$ such that
-\end{minipage} \\[-1.3em]
-\begin{align}
-	\label{eqn:varProblem1}
-	\forall u^{(n)} \in S_n: \quad a(u^{(n)}, v_i^{(n)})
-		&= \lambda_i^{(n)} \braket{u^{(n)}}{v_i^{(n)}}_\hilbert \\
-	\label{eqn:varProblem2}
-	\norm{v_i^{(n)}}_\hilbert &= 1
-\end{align}
-\end{center}
-in a sequence of finite-dimensional subspaces $(S_n)_{n\in\N}$
-of $Q(\Op{A})$ satisfying
+\subsection{The form domain}
+Even though $\Op{A}$ might only be self-adjoint on the domain $D(\Op{A})$,
+the form $a(\slot, \slot)$ can often be defined sensibly
+on a larger domain $Q(\Op{A})$, called the \newterm{form domain} of $\Op{A}$.
+Its construction will be sketched in this section.
+For more details see \cite[p. 77]{Teschl2014} or \cite[p. 276]{Reed1980}.
+
+\noindent
+Since $\Op{A}$ is semi-bounded from below, one can define a scalar product
+\[
+	\braket{u}{v}_{\Op{A}} \equiv \braket{u}{\Op{A} v + (C + 1) v}_{\hilbert}
+	= a(u, v) + (C+1) \braket{u}{v}_{\hilbert},
+\]
+for all $u,v \in D(\Op{A})$.
+Here $C$ is the constant of semi-boundedness of definition \vref{defn:SemiBounded}.
+Clearly the associated norm $\norm{\slot}_{\Op{A}}$ satisfies
 \begin{equation}
-	\forall v \in Q(\Op{A}) \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0.
-	\label{eqn:CondSubspaces}
+	\label{eqn:FormDomainNorm}
+\norm{u}_{\Op{A}}
+= \braket{u}{\Op{A} u} + (C+1) \norm{u}_{\hilbert}
+\stackrel{\text{\abbr{def}{n} \ref{defn:SemiBounded}}}{\geq} \norm{u}_{\hilbert}.
 \end{equation}
-For ease of future discussion let $\Op{A}^{(n)}$ denote the self-adjoint
-operator on $S_n$ defined by the variational problem, \ie
+We now take the completion of $D(\Op{A})$ under the norm $\norm{u}_{\Op{A}}$
+and call it $Q(\Op{A})$.
+\eqref{eqn:FormDomainNorm} assures that all sequences,
+which are Cauchy in $D(\Op{A})$ wrt. $\norm{\slot}_{\hilbert}$
+are Cauchy in $Q(\Op{A})$ wrt. $\norm{\slot}_{\Op{A}}$ as well.
+One can show further~\cite{Teschl2014} that such sequences
+have the same limit in $Q(\Op{A})$ irrespective of the norm used.
+
+\noindent
+This allows to uniquely
+extend $a(\slot, \slot)$ to $Q(\Op{A}) \times Q(\Op{A})$ by setting
+\[ a(u, v) := \braket{u}{v}_{\Op{A}} - (C+1) \braket{u}{v}_{\hilbert}. \]
+Naturally $Q(\Op{A})$ is the largest Hilbert space on which the form
+$a(\slot, \slot)$ is defined and continuous
+and we have
+\[ D(\Op{A}) \subseteq Q(\Op{A}) \subseteq \hilbert, \]
+where all these are dense.
+
+\subsection{The Ritz-Galerkin projection}
+\label{sec:RitzGalerkin}
+The defining property of any eigenpair
+$(\lambda_i, v_i) \in \sigma_P(\Op{A}) \times D(\Op{A})$
+of the operator $\Op{A}$ is of course the condition
+\begin{equation}
+	\Op{A} v_i = \lambda_i v_i.
+	\label{eqn:EigenproblemStrong}
+\end{equation}
+By a simple projection onto an arbitrary test function $u$,
+one can show that any such eigenpair satisfies
+\begin{equation}
+	\forall u \in \hilbert: \quad a(u, v_i) = \lambda_i \braket{u}{v_i}_\hilbert.
+	\label{eqn:EigenproblemWeak}
+\end{equation}
+as well, the so-called \newterm{weak formulation} of the eigenproblem.
+In contrast to this, \eqref{eqn:EigenproblemStrong} is sometimes
+referred to as the \newterm{strong formulation}.
+A consequence of the Lax-Milgram theorem \vref{thm:LaxMilgram}
+and the semi-boundedness of $\Op{A}$
+is that a solution in the weak sense implies a solution in the strong sense
+as well, making both formulations equivalent.
+
+This suggests the \newterm{Ritz-Galerkin projection},
+where we attempt to find an approximate solution
+for \eqref{eqn:EigenproblemStrong}
+by considering \eqref{eqn:EigenproblemWeak}
+in a sequence of subspaces of $Q(\Op{A})$.
+
+\begin{defn}[Ritz-Galerkin projection]
+	\label{defn:RitzGalerkin}
+	Let $\Op{A}$ be a self-adjoint, bounded below operator
+	with form domain $Q(\Op{A})$ and associated sesquilinear form $a(\slot,\slot)$.
+	Given a sequence $(S_n)_{n\in\N} \subset Q(\Op{A})$
+	of finite-dimensional subspaces satisfying
+	\begin{equation}
+		\forall v \in Q(\Op{A}) \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0,
+		\label{eqn:CondSubspaces}
+	\end{equation}
+	obtain a sequence of approximate eigenspectra $\sigma^{(n)}(\Op{A})$
+	by solving --- for each $n$ --- the variational problem
+	\begin{equation}
+		\label{eqn:varProblem}
+		\left\{
+		\begin{aligned}
+			\text{Search $(\lambda_i^{(n)}, v_i^{(n)}) \in \R \times S_n$ such that} & \\
+			\forall u^{(n)} \in S_n: \quad a(u^{(n)}, v_i^{(n)})
+			&= \lambda_i^{(n)} \braket{u^{(n)}}{v_i^{(n)}}_\hilbert \\
+			\norm{v_i^{(n)}}_\hilbert &= 1
+		\end{aligned}
+		\right\}.
+	\end{equation}
+\end{defn}
+For ease of our discussion let $\Op{A}^{(n)}$ denote the self-adjoint
+operator on a particular $S_n$, which is defined by the variational problem
+\eqref{eqn:varProblem}, \ie which satisfies
 \[ \forall (u^{(n)}, v^{(n)}) \in S_n \times S_n \quad \braket{\Op{A}^{(n)} u^{(n)}}{v^{(n)}}_\hilbert = a(u^{(n)}, v^{(n)}). \]
+Since $S_n$ is finite-dimensional, $\Op{A}^{(n)}$ is compact%
+\footnote{See proposition \vref{prop:FiniteDimCompact}.}
+and thus it will have a discrete spectrum $\sigma(\Op{A}^{(n)})$.
+By definition $\sigma^{(n)}(\Op{A}) = \sigma(\Op{A}^{(n)})$.
 
-Since $S_n$ is finite-dimensional and hence $\Op{A}^{(n)}$ compact,
-which allows us to find a discrete spectrum for $\Op{A}^{(n)}$.
-Our hope is now to construct such a sequence of subspaces,
+Our hope is now to construct such a sequence $(S_n)$ of subspaces,
 that $\sigma(\Op{A}^{(n)})$ converges to $\sigma(\Op{A})$.
-Unfortunately this is \emph{not} possible in general.
-See~\cite{Helffer2013} for details.
+Unfortunately this is \emph{not} possible in general,
+see for example \cite{Helffer2013} for details.
+What this ansatz gives us, however, is a method to obtain
+sensible approximations for the lower end of the spectrum,
+especially all discrete eigenvalues below the essential spectrum.
 
-We will discuss in this section some results,
-which hold for some special cases, which are applicable to us.
-
-
-
-
-
-In the following we assume the convention,
-that the eigenvalues in the discrete spectrum $\sigma_\text{disc}$
-are indexed such that
-\[ \lambda_1 \leq \lambda_2 \leq \lambda_3 \leq \cdots \]
-in case this set is countable.
+For this let us first recall that the eigenvalues
+in the discrete spectrum $\sigma_\text{disc}$
+of a self-adjoint operator are typically indexed%
+\footnote{Note, that by definition the discrete spectrum is \emph{always} countable.}
+in increasing order
+\[ \lambda_1 \leq \lambda_2 \leq \lambda_3 \leq \cdots. \]
+by the positive natural numbers.
+Now we proceed to the celebrated \newterm{min-max theorem}~\cite[p. 146]{Helffer2013}.
 
 \begin{thm}[Courant-Fischer min-max theorem]
 	\label{thm:CourantFischer}
 	Let $\Op{A}$ be a self-adjoint operator on $\hilbert$,
 	which is bounded below with form domain $Q(\Op{A})$
-	and associated quadratic form $a(\slot,\slot)$.
-	For each $0 < i \in \N$, we define
+	and associated sesquilinear form $a(\slot,\slot)$.
+	For each $0 < n \in \N$, we define
 	\begin{equation}
-		\lambda_i(\Op{A}) = \inf_{W \in \set{S}_i} \ \sup_{w \in W \backslash \{0\}}
-		\frac{a(w,w)}{\norm{w}_\hilbert^2}
+		\lambda_n(\Op{A}) := \inf_{W \in \set{S}_n} \ \sup_{u \in W \backslash \{0\}}
+		\frac{a(u,u)}{\norm{u}_\hilbert^2}
 		\label{eqn:CourantFischer}
 	\end{equation}
-	where $\set{S}_i$ is the set of all $i$-dimensional subspaces of $Q(\Op{A})$.
+	where $\set{S}_n$ is the set of all $n$-dimensional subspaces of $Q(\Op{A})$.
 	Then
 	\begin{itemize}
-		\item if $\Op{A}$ has at least $i$ eigenvalues lower
-			than $\min \sigma_\text{ess}(\Op{A})$ (counting multiplicities multiple times),
-			then $\lambda_i(\Op{A})$ is the $i$th eigenvalue of the discrete spectrum
+		\item if $\Op{A}$ has at least $n$ eigenvalues lower
+			than $\inf \sigma_\text{ess}(\Op{A})$ (counting multiplicities
+			the appropriate number of times),
+			then $\lambda_n(\Op{A})$ is the $n$-th eigenvalue of the discrete spectrum
 			of $\Op{A}$.
-		\item otherwise, $\lambda_i(\Op{A}) = \min \sigma_\text{ess}(\Op{A})$.
+		\item otherwise, $\lambda_n(\Op{A}) = \inf \sigma_\text{ess}(\Op{A})$.
 	\end{itemize}
-% see Helffer2013 p.144
 \end{thm}
 
-\begin{thm}
+\noindent
+Combining this with the Ritz-Galerkin projection of definition \ref{defn:RitzGalerkin}
+yields:
+
+\begin{cor}
+	\label{cor:Convergence}
 	Let $\Op{A}$ be a bounded below, self-adjoint operator on $\hilbert$
 	and let $\Op{A}^{(n)}$ be the approximation to $\Op{A}$
 	according to the variational Ritz-Galerkin ansatz
-	\eqref{eqn:varProblem1}--\eqref{eqn:varProblem2}
+	\eqref{eqn:varProblem}
 	in a sequence of subspaces $(S_n)$,
 	which satisfy condition \eqref{eqn:CondSubspaces}.
 	Then
-	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}) \]
+	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}), \]
 	where the convergence is always from above.
 	\begin{proof}
 		\todoil{Find reference}
 	\end{proof}
-\end{thm}
+\end{cor}
 
-This implies that we can approximate the first few eigenvalues
-of a semibounded operator,
-which sit below the essential spectrum via a variational approximation.
-For the hydrogenic operator of section \vref{sec:HydrogenAtom}
-this implies that we are fine
-as long as the subspaces we construct satisfy \eqref{eqn:CondSubspaces},
+
+% -------------------------------
+
+
+
+These results give us twofold.
+First they provide us with a route to numerically obtain
+the first few eigenvalues, which we are particular interested in.
+See the discussion in section \vref{sec:SpectralTakeAway}.
+Important is that the subspaces we construct satisfy \eqref{eqn:CondSubspaces},
 which is always the case for dense subspaces.
+
+Secondly they provide theoretical basis
+for our claim in remark \vref{rem:NumericalEssentialSpectrum}.
+We said that it was very difficult to obtain
+numerical approximations to the essential spectrum.
+In fact we now can state that all variational
+approaches based on Ritz-Galerkin projections
+will fail and only provide us with a sequence of eigenvalues
+tending to the infimum of the essential spectrum
+for all approximations above the infimum to the essential spectrum.
+\todoil{Maybe an example for this breakdown}
+
+
+% -------------------------------
 
 Since all $\Nbas$-dimensional complex-valued Hilbert spaces $S_n \subseteq \hilbert$
 are isomorphic to $\C^{\Nbas}$ by the means of choosing an appropriate
@@ -124,13 +206,7 @@ consisting of elements
 and thus a plain diagonalisation of $\mat{A}$ yields $\sigma(\mat{A})$,
 an approximation to the spectrum of $\Op{A}$.
 
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Note examples where it breaks down
-		\item Note some stuff, how to do this in practice
-		\item Make the connection to matrices and linear algebra
-	\end{itemize}
-
+\todoil{
 We can relax $H^2(\R^3)$ to $H^1(\R^3)$ if we use test functions
 from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
 }
