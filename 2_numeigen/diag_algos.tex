@@ -1,23 +1,19 @@
 \section{Diagonalisation algorithms}
 \label{sec:DiagAlgos}
-\todoil{Improve and extend this section once Chapter 4 and 5 are done}
 
-This section tries to shine some light on a few numerical techniques
-to obtain the exact eigenspectrum or an approximation for the eigenspectrum
-of a matrix $\mat{A}$.
-
+This section discusses a few algorithms in order to obtain
+numerical approximations to a part of the eigenpairs of a matrix $\mat{A}$.
 In this thesis we will only discuss combinations of operators
-and discretisation methods which have the property
-that
-\[ a(\chi_\mu, \chi_\nu) \in \R \]
-such that we are overall only left with symmetric matrices
-$\mat{A} \in \R^{\Nbas \times \Nbas}$,
-which have real eigenvectors, \ie $\vec{c} \in \R^{\Nbas}$.
-In this section we will therefore restrict our discussion
-of diagonalisation algorithms to plainly real-symmetric matrices.
-We can thus assume that both the matrix element
-as well as the eigenvalues and eigenvectors are entirely real.
+and discretisation methods, which have the property that
+\[ \forall \mu, \nu \in \Ibas: \quad a(\chi_\mu, \chi_\nu) \in \R. \]
+As a result all matrices in \eqref{eqn:DiscretisedEigenproblem}
+will be real and symmetric.
+This section is therefore only concerned with eigenproblems of the type
+\[ \mat{A} \vec{u}_i = \lambda_i \vec{u}_i \]
+where $\mat{A} \in \R^{\Nbas \times \Nbas}$,
+$\lambda_i \in \R$ and $\vec{u}_i \in \R^{\Nbas}$.
 
+\todoil{Improve and extend this section once Chapter 4 and 5 are done}
 \subsection{Power method}
 The most simple numerical method to obtain
 a single eigenvalue from a particular matrix $\mat{A}$
