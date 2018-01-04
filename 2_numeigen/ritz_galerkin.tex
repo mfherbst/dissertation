@@ -48,6 +48,15 @@ and we have
 \[ D(\Op{A}) \subseteq Q(\Op{A}) \subseteq \hilbert, \]
 where all these are dense.
 
+\begin{exmp}
+	For all cases we discussed in the previous chapter,
+	that is the Laplace operator $\Delta$ and the hydrogenic
+	Hamiltonian $-\frac12 \Delta - \frac{Z}{r}$,
+	the form domain is $H^1(\R^3)$.
+	This can be easily verified by constructing the expression
+	for the form $a(\slot, \slot)$ and applying partial integration.
+\end{exmp}
+
 \subsection{The Ritz-Galerkin projection}
 \label{sec:RitzGalerkin}
 The defining property of any eigenpair
@@ -113,19 +122,18 @@ By definition $\sigma^{(n)}(\Op{A}) = \sigma(\Op{A}^{(n)})$.
 Our hope is now to construct such a sequence $(S_n)$ of subspaces,
 that $\sigma(\Op{A}^{(n)})$ converges to $\sigma(\Op{A})$.
 Unfortunately this is \emph{not} possible in general,
-see for example \cite{Helffer2013} for details.
-What this ansatz gives us, however, is a method to obtain
+see \cite{Helffer2013} for details.
+What we can achieve, however, is a method to obtain
 sensible approximations for the lower end of the spectrum,
 especially all discrete eigenvalues below the essential spectrum.
 
-For this let us first recall that the eigenvalues
-in the discrete spectrum $\sigma_\text{disc}$
-of a self-adjoint operator are typically indexed%
+Let us first state the theoretical basis
+in the form of the celebrated \newterm{min-max theorem}~\cite[p. 146]{Helffer2013}.
+In our discussion here, we follow the usual convention,
+where the eigenvalues in the discrete spectrum are indexed
 \footnote{Note, that by definition the discrete spectrum is \emph{always} countable.}
-in increasing order
+in increasing order, \ie
 \[ \lambda_1 \leq \lambda_2 \leq \lambda_3 \leq \cdots. \]
-by the positive natural numbers.
-Now we proceed to the celebrated \newterm{min-max theorem}~\cite[p. 146]{Helffer2013}.
 
 \begin{thm}[Courant-Fischer min-max theorem]
 	\label{thm:CourantFischer}
@@ -152,7 +160,7 @@ Now we proceed to the celebrated \newterm{min-max theorem}~\cite[p. 146]{Helffer
 
 \noindent
 Combining this with the Ritz-Galerkin projection of definition \ref{defn:RitzGalerkin}
-yields:
+yields:\todo{Find reference}
 
 \begin{cor}
 	\label{cor:Convergence}
@@ -165,48 +173,167 @@ yields:
 	Then
 	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}), \]
 	where the convergence is always from above.
-	\begin{proof}
-		\todoil{Find reference}
-	\end{proof}
 \end{cor}
 
+As discussed in section \vref{sec:SpectralTakeAway}
+we can assume that our operators
+always possess a discrete spectrum, which is located below the essential spectrum.
+Furthermore those bound states, which are of interest to us,
+are always located at the lower end of the discrete spectrum.
+Using the aforementioned results we can
+therefore sketch an approximation method for our setting.
 
-% -------------------------------
+\begin{rem}[Approximation of the bottom of the discrete spectrum]
+	\label{rem:ApproxBottomDiscrete}
+	Let $\Op{A}$ be a self-adjoint, bounded below operator
+	and let us assume that we seek approximations
+	for a few discrete eigenvalues,
+	which are all located at the bottom of the spectrum $\sigma(\Op{A})$
+	and well below the essential spectrum.
 
+	Let $U \subset Q(\Op{A})$ be a dense subspace.
+	We can span a sequence of subspaces $(S_{\Nbas}) \subset Q(\Op{A})$
+	by selecting larger and larger sets $\{\chi_\mu\}_{\mu \in \Ibas}$
+	of $\Nbas = \abs{\Ibas}$ orthonormal basis functions $\chi_\mu \in U$
+	as the bases.
+	Since $U$ is a dense subspace of the separable Hilbert space
+	$\hilbert$, it is separable as well.
+	Therefore we know that
+	in the limit of $\Nbas \to \infty$,
+	$\spacespan \{\chi_\mu\}_{\mu \in \Ibas}$ will tend towards $U$.
+	Thus $\spacespan \{\chi_\mu\}_{\mu \in \Ibas}$ eventually allows
+	to construct Cauchy sequences, which approximate each $v \in Q(\Op{A})$
+	up to arbitrary accuracy.
+	In other words the sequence $(S_{\Nbas})$ with $\Nbas$ increasing
+	satisfies condition \eqref{eqn:CondSubspaces}.
 
+	Because of corollary \ref{cor:Convergence}
+	we can thus get arbitrarily accurate approximations
+	to our eigenvalues of interest
+	by solving the variational problem \eqref{eqn:varProblem}
+	in subspaces spanned by larger and larger
+	basis sets $\{\chi_\mu\}_{\mu \in \Ibas} \subset U$.
+	This results in more and more accurate approximations
+	of the corresponding bound eigenstates as well.
+\end{rem}
 
-These results give us twofold.
-First they provide us with a route to numerically obtain
-the first few eigenvalues, which we are particular interested in.
-See the discussion in section \vref{sec:SpectralTakeAway}.
-Important is that the subspaces we construct satisfy \eqref{eqn:CondSubspaces},
-which is always the case for dense subspaces.
+\begin{rem}[Discrete formulation of \eqref{eqn:varProblem}]
+	\label{rem:DiscreteFormulation}
+	We are again in the setting of remark \ref{rem:ApproxBottomDiscrete}.
 
-Secondly they provide theoretical basis
-for our claim in remark \vref{rem:NumericalEssentialSpectrum}.
-We said that it was very difficult to obtain
-numerical approximations to the essential spectrum.
-In fact we now can state that all variational
-approaches based on Ritz-Galerkin projections
-will fail and only provide us with a sequence of eigenvalues
-tending to the infimum of the essential spectrum
-for all approximations above the infimum to the essential spectrum.
-\todoil{Maybe an example for this breakdown}
+	\noindent
+	If $S_{\Nbas} = \spacespan \{\chi_\mu\}_{\mu \in \Ibas}$, we can expand
+	\[ v^{(n)}_i = \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \chi_\nu \qquad \text{with} \quad C^{(n)}_{\nu i} \equiv \braket{\chi_\nu}{v^{(n)}_i} \]
+	and thus reformulate \eqref{eqn:varProblem} to become
+	\begin{equation}
+		\label{eqn:DiscretisedEigenproblemHalfWay}
+		\left\{
+		\begin{aligned}
+			\text{Search $\lambda_i^{(n)}$ and $C^{(n)}_{\nu i}$ such that} \hspace{30pt} & \\
+			\forall \chi_\mu \in S_{\Nbas}:
+			\quad \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, a(\chi_\mu, \chi_\nu)
+			&= \lambda_i^{(n)} \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, \braket{\chi_\mu}{\chi_\nu}\\
+			1 &= 
+			\sum_{\nu\in\Ibas} \sum_{\mu\in\Ibas} \cc{\left(C^{(n)}_{\mu i}\right)} \braket{\chi_\mu}{\chi_\nu} C^{(n)}_{\nu i}
+		\end{aligned}
+		\right\}.
+	\end{equation}
+	Introducing the matrix $\mat{A}^{(n)} \in \C^{\Nbas \times \Nbas}$
+	and the vectors $\vec{c}^{(n)}_i \in \C^{\Nbas}$
+	with elements
+	\begin{align*}
+		A_{\mu\nu} &= a(\chi_\mu, \chi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\chi_\nu}{v^{(n)}_i} = C^{(n)}_{\mu i}
+	\end{align*}
+	we can write \eqref{eqn:DiscretisedEigenproblemHalfWay}
+	as the matrix eigenvalue problem
+	\begin{equation}
+		\left\{
+			\begin{aligned}
+				\text{Search $(\lambda_i^{(n)}, \vec{c}^{(n)}_i) \in \R \times \C^{\Nbas}$}& \text{ such that}\\
+				\mat{A} \vec{c}^{(n)}_i &= \lambda_i^{(n)} \vec{c}^{(n)}_i \\
+				\norm{\vec{c}^{(n)}_i}_{\C^{\Nbas}} &= 1
+		\label{eqn:DiscretisedEigenproblem}
+		\end{aligned}
+		\right\}.
+	\end{equation}
+	In this formulation the eigenpairs $(\lambda_i^{(n)}, \vec{c}^{(n)}_i)$
+	can be determined by standard diagonalisation schemes
+	like the ones we will discuss in section \vref{sec:DiagAlgos} below.
+\end{rem}
 
+\begin{rem}[Requirements regarding the basis function type]
+	\label{rem:ChoiceBasisFunction}
+In light of the numerical approach sketched in
+remarks \ref{rem:ApproxBottomDiscrete} and \ref{rem:DiscreteFormulation}
+let us summarise the requirements towards the basis functions $\chi_\mu$
+for solving the discretised problem \eqref{eqn:DiscretisedEigenproblem}.
+\begin{itemize}
+	\item The basis function type should admit
+		to construct a dense subspace of $Q(\Op{A})$
+		if an infinitely large basis set is chosen,
+		since this is needed in order to satisfy \eqref{eqn:CondSubspaces}.
+		Some basis function types even admit to span $Q(\Op{A})$ itself.
+		We shall call these \newterm{complete}.
+	\item It should be numerically feasible to solve \eqref{eqn:DiscretisedEigenproblem}.
+		In other words \emph{both} computing $\mat{A}$
+		and determining its eigenpairs
+		should be possible.
+	\item The convergence in corollary \ref{cor:Convergence}
+		should be fast and systematic.
+		In other words the basis type should
+		allow to construct a suitable basis set
+		in case certain requirements
+		regarding accuracy, computational demand,  description of properties, \ldots
+		should be met.
+		Any prior knowledge about the physical problem
+		or the properties of $\Op{A}$ can ideally be incorporated
+		in such a basis set choice.
+		% With this goes a priori and a posteriori error estimation hand in hand.
+\end{itemize}
+See chapter \vref{ch:NumSolveHF} for some basis function types,
+which are used in quantum chemistry,
+in the light of solving the Hartree-Fock problem.
+\end{rem}
 
-% -------------------------------
+Before we discuss some basic diagonalisation
+algorithms in the next section,
+let us conclude our discussion about the discretisation
+of eigenvalue problems
+with a word of warning about the essential spectrum.
 
-Since all $\Nbas$-dimensional complex-valued Hilbert spaces $S_n \subseteq \hilbert$
-are isomorphic to $\C^{\Nbas}$ by the means of choosing an appropriate
-basis set $\{\chi_\mu\}_{\mu \in \Ibas}$ to express the space $S_n$.
-We denote with $\chi_\mu$ the $\mu$-th basis function.
-In this convention we can identify $\Op{A}^{(n)}$ with the matrix $\mat{A}$
-consisting of elements
-\[ A_{\mu\nu} = a(\chi_\mu, \chi_\nu) \]
-and thus a plain diagonalisation of $\mat{A}$ yields $\sigma(\mat{A})$,
-an approximation to the spectrum of $\Op{A}$.
+\begin{rem}
+In remark \vref{rem:NumericalEssentialSpectrum}
+we claimed that it was very difficult
+to obtain numerical approximations to the essential spectrum.
+Because of the min-max theorem \vref{thm:CourantFischer},
+we now have some theoretical justification for this.
+Corollary \vref{cor:Convergence} namely
+gives us,
+that all eigenvalues from a Ritz-Galerkin approximation
+of $\Op{A}$ tend to $\lambda_i(\Op{A})$ 
+as we increase the subspace size.
+Unfortunately this value is equal to $\inf \sigma_\text{ess}(\Op{A})$,
+the infimum of the essential spectrum,
+as soon as we exhausted the discrete spectrum.
+In other words the methods we developed in this section
+will only help to find the bottom end of the essential spectrum,
+but no further information about it at all.
 
-\todoil{
-We can relax $H^2(\R^3)$ to $H^1(\R^3)$ if we use test functions
-from $H^1(\R^3)$ as well in Ritz-Galerkin scheme.
-}
+Another consequence of this behaviour is,
+that only a part of the eigenpairs obtained by
+diagonalising the matrix $\mat{A}^{(n)}$ of \vref{eqn:DiscretisedEigenproblem}
+can be trusted to carry any meaning regarding
+the spectrum of the exact physical operator $\Op{A}$.
+As soon as the eigenvalues $\lambda_i^{(n)}$
+of $\mat{A}^{(n)}$ become large enough,
+they merely an artificial discretisation of the essential spectrum,
+which will all tend to $\inf \sigma_\text{ess}(\Op{A})$
+as the basis set is increased.
+Since the convergence in corollary \vref{cor:Convergence} is always
+from above it is not always easy to judge,
+where the line between trustworthy and not trustworthy eigenpairs of $\mat{A}^{(n)}$
+should be drawn.
+In either case the bottom end of the spectrum of $\mat{A}$
+will carry physical significance if the basis
+set satisfies remark \vref{rem:ChoiceBasisFunction}.
+\end{rem}
