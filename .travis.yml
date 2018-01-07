@@ -49,4 +49,5 @@ deploy:
   file: ${TRAVIS_BUILD_DIR}/build/dissertation.pdf
   skip_cleanup: true
   on:
+    branch: master
     tags: true
