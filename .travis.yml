@@ -51,3 +51,4 @@ deploy:
   on:
     branch: master
     tags: true
+    repo: mfherbst/dissertation
