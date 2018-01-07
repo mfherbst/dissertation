@@ -34,7 +34,7 @@ script:
   - cd "${TRAVIS_BUILD_DIR}"
   #
   # Setup build and build overlay
-  - ${TRAVIS_BUILD_DIR}/.travis/checkout_overlay.sh
+  - ${TRAVIS_BUILD_DIR}/ci/checkout_overlay.sh
   - mkdir ${TRAVIS_BUILD_DIR}/build && cd ${TRAVIS_BUILD_DIR}/build
   - cmake ..
   - . ../dissertation-build-overlay/setup.sh
