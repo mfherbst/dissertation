@@ -48,6 +48,7 @@ deploy:
     secure: "rBlFy5om9pa8gsGR2hnvAta7l7V22QV2so3PaE/huFweHx9lvKhhRkaJ3wW/yffPQQ9hMCN8fs9zkb+c8EhQqT2Zf2FYo8/BNOQ3VxootKqR+rPaApU+YTIfyPiOCblGSK5adelW28ZgtJtlD2hFnvZRbbekqlgjUskup7ACn86vzD/VifgMAYC402Qjtoyy34viOhsygAxzK5AGupt70iZZyvCxKJTDMJHXhmA//ZcgNKkb7/lwwOCP0qJPu6mtUsOnt7ZGMIZqpvbxYBLGpa/0hK4e2ZNRMDriQN+SU/IbWIpkWWNV7HQw1YHRHtSDYKKWtrwT57sEm3ll7h8qa0D9pQxXGsE9WxLGTkn1uJL+4Jty+lbB6xE9SW4fxg2wtXZrxu16qyzE+eT5aRtH5iI6i+NVviJ7EqEEFVKwjZ1xSi3X7uwj/xDzupocXuunGkrdMAd5N9h2GA06qGkuvr7p8L7ecDRMkulKsX8oaxI3NVBizfGzz6rFnuX0vmDR18ZlZlWBJb5gmxOFSzBfNgKFP562Co26YDXyczt+fGXdJLRnmrFITObTo0ss0rdcKLqi7k597TkzJ1V1xcDblwn75wbN1bGe4/rTYpNn3NpGDQon+3W+3PnH+oVGZ8aP8xayDjBF6WJd/kMtshl0SfSHoZvAwheOu08lYsQQa6o="
   file: ${TRAVIS_BUILD_DIR}/build/dissertation.pdf
   skip_cleanup: true
+  overwrite: true
   on:
     branch: master
     tags: true
