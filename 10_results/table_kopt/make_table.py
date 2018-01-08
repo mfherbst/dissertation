@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 import yaml
 import os
 import gint
@@ -63,17 +64,19 @@ def prepare_rows(data):
             hfstr = "{:.4f}".format(hf)
         else:
             raise NotImplementedError()
-        hfstr = hfstr.split(".")
+        hfstr = ["$" + v + "$" for v in hfstr.split(".")]
 
         n_bas = str(dset["n_bas"])
         basis = r"$(" + str(dset["n_max"]) + ", " + str(dset["l_max"]) + \
                 ", " + str(dset["m_max"]) + r")$"
-        kopt = "{:.4f}".format(dset["k_opt"]).split(".")
+        kopt = "{:.4f}".format(dset["k_opt"])
+        kopt = ["$" + v + "$" for v in kopt.split(".")]
 
         if system in lit:
             error = (hf - lit[system]["value"]) / abs(lit[system]["value"])
             error = "{:.4e}".format(error)
-            error = error.split(".")
+            error = re.sub("e(-?[0-9]+)", r"\E{\1}", error)
+            error = ["$" + v + "$" for v in error.split(".")]
         else:
             error = "", ""
         system = r"\ce{" + system + "}"

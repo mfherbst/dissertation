@@ -32,7 +32,8 @@ def make_element_rows(elementdata, basis_sets):
                 row.append(r"\multicolumn{2}{c}{}")
             else:
                 value = "{:.5f}".format(values[0])
-                row.extend(value.split("."))
+                value = [ "$" + v + "$" for v in value.split(".")]
+                row.extend(value)
 
     rows[-1][-1] += r" \ML"
     return rows

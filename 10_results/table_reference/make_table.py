@@ -55,7 +55,7 @@ for i in range(1, 20):
         next_letter_idx += 1
 
     mark = r"\tmark[" + sources[src]["letter"] + "," + hfmark + "]"
-    rows.append([symbol, str(lit["value"]) + mark])
+    rows.append([symbol, "$" + str(lit["value"]) + "$" + mark])
 
 cap = r"\HF reference values"
 caption = r"Reference values used for comparison of the \CS-based results " + \
@@ -90,7 +90,8 @@ ret.append(r"    " + " & ".join(2 * headings) + r" \ML")
 off = (len(rows) + 1) // 2
 for i in range(off):
     def make_row(row):
-        return row[0] + " & " + " & ".join(row[1].split("."))
+        value_split = row[1].split(".")
+        return row[0] + " & " + value_split[0] + "$ & $" + value_split[1]
 
     app = make_row(rows[i]) + " & "
     if i + off < len(rows):
