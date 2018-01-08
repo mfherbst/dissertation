@@ -22,6 +22,14 @@ add_custom_packages(
 	mfhTex/mfh/MFHtheoremdefs.sty
 )
 
+# Obtain the current commit id
+execute_process(
+	COMMAND git rev-parse HEAD
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	OUTPUT_VARIABLE GIT_COMMIT
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
 # Tex files
 add_inputs(
 	abstract.tex
