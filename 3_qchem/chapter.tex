@@ -1,4 +1,5 @@
-\chapter{Numerical solution of the electronic Schrödinger equation}
+\chapter{Solving the many-body electronic Schrödinger equation}
+\chaptermark{Solving the many-body \abbr{elec}{c} Schrödinger \abbr{eq}{n}}
 \label{ch:qchem}
 \chapquote{%
 The word ``reality'' is also a word,
@@ -11,62 +12,176 @@ which he speaks, and then the difference between the views
 of Bohr and mine is more a difference of language than a
 difference of content.}{Vladimir Fock~(1898--1974)}
 
-This chapter reviews the basic concepts of quantum mechanics,
-which we require for our treatment.
+\noindent
+This chapter is concerned with the generalisation
+of the one-electron hydrogen-like Schrödinger Hamiltonian \eqref{eqn:OpHydrogen}
+\[
+	\Op{H}_H = -\frac12 \Delta - \frac{Z}{r},
+\]
+which we discussed in section \vref{sec:HydrogenAtom},
+towards the many-body problems of quantum chemistry.
+
+Even though the spectral properties are very similar to the hydrogen-like case,
+solving the associated time-independent
+Schrödinger equation \eqref{eqn:TISE} analytically for
+any but the most trivial problems is impossible.
+Most of this chapter will therefore be devoted to
+discussing approximations to the exact \TISE
+as well as numerical approaches for solving such approximations
+in practice.
+
+\section{Many-body Schrödinger equation}
+\defineabbr{BO}{BO\xspace}{Born-Oppenheimer approximation, see section \vref{sec:BO}}
+\nomenclature{$\Psi$}{State of a (many body) quantum system,
+	typically the \emph{exact} ground state solution to the many-electron,
+	electronic TISE, see section \vref{sec:BO}}
+\nomenclature{$\Nelec$}{Total number of electrons}
+\nomenclature{$\Op{H}_{\Nelec}$}{Electronic Hamiltonian
+	for a $\Nelec$-electron system, see section \vref{sec:BO}}
+\nomenclature{$\vec{x}$}{Vector in $\R^{3 \Nelec}$,
+which typically specifies the positions of all electrons of the system.}
+\nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of an electron in space}
+
+Let us consider a chemical system consisting of $M$ nuclei
+and $\Nelec$ electrons.
+The nuclei shall have charges $\{Z_A\}_{A = 1, 2, \ldots, M}$
+and mass-scaled\footnote{
+	If $\vec{\tilde{R}}_A$ is the Cartesian coordinate
+	of the $A$-th nucleus with mass $M_A$, then
+	the mass-scaled coordinates are given as
+	$\vec{R}_A = \sqrt{M_A} \, \vec{\tilde{R}}_A$.
+} coordinates $\{\vec{R}_A\}_{A = 1, 2, \ldots, M} \in \R^3$,
+whereas the electrons shall sit
+at positions $\{\vec{r}_i\}_{i = 1, 2, \ldots, \Nelec} \in \R^3$.
+Originating from the correspondence principle to classical mechanics
+(see section \vref{sec:IntroQM})
+we can construct the many-body Hamiltonian
+\begin{equation}
+	\Op{H}_\text{MB} = \Op{T}_e + \Op{T}_n + \Op{V}_{nn} + \Op{V}_{ne} + \Op{V}_{ee}
+	\label{eqn:ManyBodyHamiltonian}
+\end{equation}
+with the Coulombic interaction potentials
+\begin{align}
+	\label{eqn:ManyBodyHamiltonianPotential}
+	\Op{V}_{nn} &= \sum_{A=1}^M \sum_{B=A}^M
+		\frac{Z_A Z_B}{\norm{\vec{R}_A - \vec{R}_B}_2} &
+	\Op{V}_{ee} &= \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec}
+		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \\
+	\nonumber
+	\Op{V}_{ne} &= \sum_{A=1}^M \sum_{i=0}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2}
+\end{align}
+and the electronic and nuclear kinetic energy operators
+\begin{align}
+	\label{eqn:ManyBodyHamiltonianKinetic}
+	\Op{T}_e &= \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i} &
+	\Op{T}_n &= \sum_{A=1}^M \Delta_{\vec{R}_A},
+\end{align}
+where we used the shorthand
+\[ \Delta_{\vec{q}} = \sum_{\alpha=1}^3 \frac{\partial^2}{\partial q_\alpha^2} \]
+for the Laplace operator with respect to particle coordinates $\vec{q}$.
+Defining this operator on the Hilbert space $L^2(\R^L, \C)$
+with $L = 3M+3\Nelec$ and domain $D(\Op{H}_\text{MB}) = H^2(\R^L, \C)$
+makes this operator self-adjoint~\cite{Kato1951}.
+It is furthermore bounded below \cite{Kato1951}.
+
+For ease of writing we define the vectors $\vec{x} \in \R^{3\Nelec}$
+and $\vec{X} \in \R^{3M}$ with
+\begin{align}
+	\rtp{\vec{x}} &\equiv \left(\rtp{\vec{r}_1}, \rtp{\vec{r}_2}, \ldots, \rtp{\vec{r}_{\Nelec}}\right)
+	&
+	\rtp{\vec{X}} &\equiv \left(\rtp{\vec{R}_1}, \rtp{\vec{R}_2}, \ldots, \rtp{\vec{R}_{M}}\right).
+	\label{eqn:DefAllCoords}
+\end{align}
+They combine either all electronic or all nuclear coordinates, respectively.
+
+For finding the discrete eigenstates of $\Op{H}_\text{MB}$
+we need to solve the time-independent Schrödinger equation
+\begin{equation}
+	\Op{H}_\text{MB} \Psi_\text{MB}(\vec{X}, \vec{x})
+	= E_\text{MB} \Psi_\text{MB}(\vec{X}, \vec{x})
+	\label{eqn:TISEManyBody}
+\end{equation}
+where $E_\text{MB} \in \R$ and $\tilde{\Psi} \in H^2(\R^L, \C)$.
+Doing this both analytically as well as numerically as such is hardly feasible.
+This can be understood by the so-called curse of dimensionality.
+Even for comparatively small systems like water,
+this equation has a large dimensionality,
+which implies that the number of grid points grows very fast.
+
+\section{Born-Oppenheimer approximation}
+\label{sec:BO}
+
+Starting from the curse of dimensionality
+the Born-Oppenheimer approximation separates the time-independent
+Schrödinger equation~\eqref{eqn:TISEManyBody} into
+a coupled system of equations.
+One describing the motion of the electrons in the field of statically
+clamped nuclei
+and one describing the motion of the nuclei in the potential generated
+by the electrons.
+
+The physical reasoning behind this is that due to the rather large deviation
+between the mass of the electrons and the mass of the nuclei%
+\footnote{The ratio between the mass of a proton and the mass of an electron is
+	approximately 1836.}
+leads to electron and nuclear motion to happen on different timescales.
+To put this boldly, we regard the nuclei as clamped when treating
+the electronic motion.
+In other words $\Op{T}_n = 0$ and we yield the \newterm{electronic Schrödinger equation}
+for a particular nuclear arrangement $\vec{X}$,
+which is considered to be constant.
+For this reason one may write a product ansatz
+\[ \Psi_\text{MB}(\vec{X}, \vec{x}) = \Psi_\text{elec}(\vec{X}, \vec{x}) \Psi_\text{nuc}(\vec{X}) \]
+where the electronic part solves this equation
+
+thus the resulting nuclear equation
 
 
-\todoil{Explain coordinate system choices, convention for $\vec{r}$, $r$, $\uvec{r}$}
-
-\section{Hydrogenic atoms}
-\todoil{This should be done already in chapter 1}
-\label{sec:HAtom}
+From \eqref{eqn:ManyBodyHamiltonian}
+and \eqref{eqn:TISEManyBody}
+we obtain the 
 
 
 
-note aufbau principle
-discuss some properties of the solution
+problem and one for the nuclear p
 
-\todoil{Show that generally it makes sense that larger values of $n$ give rise to larger
-	energy due to the kinetic energy operator. Maybe just generally take $\mbra{\Psi} \Delta \mket{\Psi}$ or argue it.}
 
-In an analogous manor to section \vref{sec:HAtom}
-one can argue for molecules that larger principle quantum numbers
-$n$ give rise to an associated Lagrange polynomial of higher degree,
-thus more sign changes in the basis function.
-This in turn implies a larger curvature and thus a higher kinetic energy.
-The potential energy of a basis function, however,
-is not affected very much,
-since the radial extent is pretty much unchanged by $n$
-(exponential decay does not depend on $n$).
+Time scale separation
+Clamped-nuclei approximation
+Ignore nuclear derivatives
+Vnn constant
 
-\subsection{The Aufbau principle for the periodic table}
-\label{sec:PSEAufbau}
-Mention the Madelung rule
 
-\section{$N$-body Schrödinger equation}
+
+Side effect: Potential-energy surface
+
+
+The Born-Oppenheimer approximation now boldly assumes
+that the exact state can be represented as a product
+\[ \Psi_\text{MB}(\vec{X}, \vec{x}) = \Psi(\vec{x}) \Psi_\text{nuc}(\vec{X}) \]
+
+
+% https://www.tcm.phy.cam.ac.uk/%7Epdh1001/thesis/node13.html
+% https://en.wikipedia.org/wiki/Born%E2%80%93Huang_approximation
+% https://en.wikipedia.org/wiki/Born-Oppenheimer_Approximation
+
+More details \cite{Baer2006}
+\cite{Born1927}
+
+
+
+
+Useful:
+\[ r_{ij} \equiv \norm{\vec{r}_i - \vec{r}_j}_2 \]
+\[ r_{iA} \equiv \norm{\vec{r}_i - \vec{R}_A}_2 \]
+
+Drop $\text{elec}, \vec{X}$ index to call electronic wavefunction just $\Psi$.
+
+
 % Argue that we can do the mathematical background in real function
 % arithmetic only and still use the results for complex input due to linearity.
 
-$ \Psi \in H^2(\R^{3d}, \R)$
-\nomenclature{$\Psi$}{State of an $N$-body quantum system, typically the \emph{exact} ground state solution to the $N$-electron electronic TISE}
-\defineabbr{TISE}{TISE\xspace}{Time-independent Schrödinger equation,
-usually only the electronic part}
-\nomenclature{$\Phi$}{Slater determinant or $N$-particle basis functions}
-\nomenclature{$\varphi_i$}{One-particle function, typically solutions to the Hartree-Fock equation, i.e. a Hartree-Fock orbital}
-\nomenclature{$\Op{H}$}{$N$-electron Schrödinger Hamiltonian}
-\nomenclature{$\Op{V}$}{Combined potential energy operator (nuclear attraction and Coulombic electron-electron repulsion)}
-
-\nomenclature{$\Ibas$}{Index set of the one-particle basis functions.
-	Typically a set of multi-indices of quantum numbers.}
-\nomenclature{$\Nbas$}{Cardinality of $\Ibas$, i.e. the number of one-particle basis functions.}
-\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{0, \ldots \Norb\}$}
-\nomenclature{$\Norb$}{The number of computed SCF orbitals.
-Note, that $\Norb \le \Nbas$.}
-\nomenclature{$\Nelec, \NelecA, \NelecB$}{Number of electrons, number of $\alpha$ electrons, number of $\beta$ electrons. Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \le \NelecB$ by convention.}
-\nomenclature{$\chi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\chi_\mu\}_{\mu \in \Ibas}$}
-
-\nomenclature{$\vec{x}$}{Vector in $\R^{3 \Nelec}$, which typically specifies the positions of all electrons of the system.}
-\nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of a particle in space}
+$\Psi \in H^2(\R^{3d}, \R)$
 
 
 
@@ -75,41 +190,24 @@ Note, that $\Norb \le \Nbas$.}
 % name the terms
 
 
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Define it
-		\item TDSE and TISE
-		\item Properties
-		\item Show how difficult
-	\end{itemize}
-}
-
-\section{BO separation}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Eckard conditions
-		\item Rotational, vibrational, translational, electronic separate
-		\item PES and electronic schrödinger
-	\end{itemize}
-
-	% follow conical intersection talk of ivona
-}
-
-%\section{Second quantisation and Fock spaces}
-%\todo[inline,caption={}]{
-%	\begin{itemize}
-%		\item Structure of the spaces
-%		\item Properties
-%	\end{itemize}
-%}
-
-
-
-
-
 
 
 \section{Full-CI}
+\nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$/$\beta$ electrons.
+Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
+\nomenclature{$\Phi$}{Slater determinant or many-electron basis functions}
+\nomenclature{$\varphi_i$}{One-particle function,
+typically solutions to the Hartree-Fock equation, i.e. a Hartree-Fock orbital}
+\nomenclature{$\Ibas$}{Index set of the one-particle basis functions.
+	Typically a set of multi-indices of quantum numbers.}
+\nomenclature{$\Nbas$}{Cardinality of $\Ibas$, i.e. the number of one-particle basis functions.}
+\nomenclature{$\chi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\chi_\mu\}_{\mu \in \Ibas}$}
+\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{0, \ldots \Norb\}$}
+\nomenclature{$\Norb$}{The number of computed SCF orbitals.
+Note, that $\Norb \le \Nbas$.}
+
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Idea
