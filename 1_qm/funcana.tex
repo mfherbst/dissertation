@@ -1,21 +1,20 @@
 \section{Elements of functional analysis}
-\label{sec:Sobolev}
+\label{sec:FunAna}
 
 The mathematical field of functional analysis
 is concerned with the study of Banach and Hilbert spaces
 as well as the properties of mappings between such structures.
-Whilst we will neglect Banach spaces in our treatment,
-Hilbert spaces are certainly of great importance when discussing
-the mathematics of quantum mechanics
-as we saw in the previous section \ref{sec:IntroQM}.
-After some general reminders about Hilbert spaces
-we will take a closer look at the Lebesgue space $L^2(\R^d, \C)$
-and related Sobolev spaces and try to explain their particular
-importance for \QM.
+In this work we will neglect Banach spaces
+and focus on Hilbert spaces only
+due to their exceptional importance in the mathematical structure
+of quantum mechanics, see the previous section \ref{sec:IntroQM}.
+After some general reminders, we will take a closer look
+at the Lebesgue space $L^2(\R^d, \C)$
+as well as Sobolev spaces in the context of \QM.
 
 In this section we assume familiarity with the concept of a vector space
 as well as some intuitive understanding of the Lebesgue integral.
-For a more detailed discussion developing these last concepts
+For a more detailed discussion developing such concepts
 by generalising standard Euclidean geometry,
 see a related work by the author~\cite{DiracNotation}.
 
@@ -116,7 +115,7 @@ Let us first recall, that a sequence $(x_n) \in V$ is called Cauchy if
 	\norm{x_n - x_m}_V < \varepsilon \quad \forall n,m > M.
 \]
 One can show that every converging sequence is Cauchy.
-A roughly equivalent way of phrasing \abbr{def}{n} \vref{def:Completeness}
+A roughly equivalent way of phrasing definition \vref{def:Completeness}
 is therefore,
 that a space $V$ is complete iff every converging sequence
 of elements from $V$ has a limit which is from $V$ \emph{as well}.
@@ -304,7 +303,9 @@ Luckily one can show~\todo{Find reference}
 	$L^2(\R^d, \C)$ is separable.
 \end{prop}
 \noindent
-such that $L^2(\R^d, \C)$ truely satisfies all the requirements for the Hilbert space of \QM as we introduced it in section \vref{sec:IntroQM}.
+such that $L^2(\R^d, \C)$ truely satisfies all the requirements
+for being a suitable Hilbert space of \QM
+as introduced in section \vref{sec:IntroQM}.
 
 In section \ref{sec:IntroQM} we did not introduce the most general theory of \QM.
 More precisely taking states from $L^2(\R^d, \C)$
@@ -313,11 +314,11 @@ If more than one spin component are required,
 like $4$ in relativistic \QM or $2$ in spin-adapted \QM,
 we need to take states from the spaces $L^2(\R^d, \C^4)$ or $L^2(\R^d, \C^2)$,
 respectively.
-In this work we will not treat relativistic \QM at all,
+This work does not treat relativistic \QM at all,
 such that only $L^2(\R^d, \C)$ and $L^2(\R^d, \C^2)$ are relevant for us.
 For simplicity we will assume $\hilbert = L^2(\R^d, \C)$
 in the mathematical analysis presented in this and the next chapter
-and only introduce spin \textit{ad-hoc} in the form of $L^2(\R^d, \C^2)$
+and only introduce spin \textit{ad hoc} in the form of $L^2(\R^d, \C^2)$
 whenever this is needed in the remaining chapters.
 This is sound because of remark \vref{rem:HilbertCd},
 where we pointed out that all infinite-dimensional
@@ -327,6 +328,7 @@ on the Hilbert space $L^2(\R^d, \C)$ can be generalised
 to $L^2(\R^d, \C^s)$ with $s \geq 1$ rather trivially.
 
 \subsection{Sobolev spaces}
+\label{sec:Sobolev}
 Many operators of quantum mechanics including all the operators,
 which we will discuss in detail, involve taking derivatives of states.
 Whilst Lebesgue spaces are suitable for doing statistics,
@@ -538,7 +540,7 @@ has to be.
 \subsection{Representation theorems}
 \todoil{If there is time talk about the Ritz and the Lax-Milgram}
 
-\begin{thm}[Rietz's representation theorem]
+\begin{thm}[Riesz's representation theorem]
 	\label{thm:Riesz}
 	bla
 	\begin{proof}

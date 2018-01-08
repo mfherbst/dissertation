@@ -53,7 +53,7 @@ The first important classification we will discuss here
 is the notion of bounded and unbounded operators.
 \begin{defn}
 	\label{defn:OpBounded}
-	A operator $\Op{A}$ on $\hilbert$ is \newterm{bounded} iff
+	An operator $\Op{A}$ on $\hilbert$ is \newterm{bounded} iff
 	\[ \opnorm{\Op{A}} < \infty, \]
 	\ie if it has finite operator norm.
 	A bounded operator is also sometimes referred to as \newterm{continuous}%
@@ -63,13 +63,14 @@ is the notion of bounded and unbounded operators.
 In our example of $\hilbert = L^2(\R^d, \C)$ an operator is hence bounded
 if its action on a square-integrable function yields another function,
 which stays square-integrable.
-We already noted in the introductory paragraph of section \vref{sec:Sobolev},
-based on the radial derivative of $1/r$,
-that differential operators applied to square-integrable functions
-might yield derivatives, which are no longer square-integrable.
-In other words all operators containing differential operations
+In the introductory paragraph of section \vref{sec:Sobolev}
+we already noted that the radial derivative of
+the square-integrable function $1/r$, namely $-1/r^2$,
+is not square-integrable.
+It should therefore not come as a surprise that
+operators containing derivatives
 --- like the kinetic energy operator of \QM ---
-are not be bound in general.
+are not bounded in general.
 Instead they are typically unbounded operators,
 which we will define in the following.
 
@@ -81,7 +82,7 @@ which we will define in the following.
 \end{defn}
 
 \begin{defn}
-	A operator $\Op{A}$ on $\hilbert$ which does not possess
+	An operator $\Op{A}$ on $\hilbert$ which does not possess
 	a bounded extension is called an \newterm{unbounded operator} on $\hilbert$.
 \end{defn}
 \todoil{Think how this can be possible, e.g. that the operator by itself is not bounded,
@@ -91,7 +92,7 @@ There also exists a middle ground,
 namely so-called \newterm{semi-bounded operator}s, defined as such:
 \begin{defn}
 	\label{defn:SemiBounded}
-	A operator $\Op{A}$ on $\hilbert$ with domain $D(\Op{A})$
+	An operator $\Op{A}$ on $\hilbert$ with domain $D(\Op{A})$
 	is called semi-bounded from below if there exists a constant $C$
 	such that for all $u \in D(\Op{A})$:
 	\[ \braket{u}{\Op{A} u} = \braket{\Op{A} u}{u} \quad \text{and}
@@ -105,7 +106,7 @@ space $\hilbert$ maps Cauchy sequences to Cauchy sequences,
 In this sense a somewhat stronger version of boundedness
 is compactness, defined as:
 \begin{defn}
-	A operator $\Op{A} : D(\Op{A}) \to \hilbert$ on a Hilbert space $\hilbert$
+	An operator $\Op{A} : D(\Op{A}) \to \hilbert$ on a Hilbert space $\hilbert$
 	is \newterm{compact}
 	if for any sequence $(x_n)$ that converges weakly in $D(\Op{A})$,
 	$\Op{A} x_n$ converges strongly in $\hilbert$.
@@ -119,7 +120,7 @@ Compactness is of importance for us in the context of spectral theory,
 since compact operators have particularly nice spectral properties.
 As expected one may easily show, that~\todo{Find citation or do proof.}
 \begin{prop}
-	A compact operator $\Op{A}$ on a Hilbert spaces $\hilbert$ is bounded as well.
+	A compact operator $\Op{A}$ defined on a Hilbert space is bounded as well.
 \end{prop}
 
 \begin{rem}
@@ -142,7 +143,7 @@ Using the identification of the previous remark,
 we may define the terms symmetric and self-adjoint.
 \begin{defn}
 	\label{def:SymmetricOperator}
-	A operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric} if
+	An operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric} if
 	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
 \end{defn}
 
@@ -203,7 +204,7 @@ we may define the terms symmetric and self-adjoint.
 	We will discuss this 
 	is section \vref{sec:SpectrumLaplace} and \vref{sec:HydrogenAtom}
 	considering the spectrum of the Laplace \eqref{eqn:LaplaceOperatorHydrogen}
-	and the Hydrogenic operator \eqref{eqn:OpHydrogen}.
+	and the hydrogen-like operator \eqref{eqn:OpHydrogen}.
 \end{rem}
 
 \begin{rem}
@@ -226,6 +227,7 @@ and the connections to the probably more familiar concepts
 of eigenvalues and eigenvectors in finite dimensions.
 
 \newcommand{\shiftop}{(\Op{A} - \lambda \id_{\hilbert})}
+\nomenclature{$\id_{\hilbert}$}{Identity operator on the Hilbert space $\hilbert$}
 \begin{defn}
 	\label{defn:Spectrum}
 	Let $\Op{A}$ be a self-adjoint%
@@ -235,7 +237,8 @@ of eigenvalues and eigenvectors in finite dimensions.
 	This is true for all self-adjoint operators.}
 	linear operator on $\Op{H}$.
 	\begin{itemize}
-		\item We call the open set
+		\item We call the open set%
+			\footnote{$\id_{\hilbert}$ is the identity operator on the Hilbert space $\hilbert$.}
 			\[ \rho(\Op{A}) = \left\{ \lambda \in \C \ \middle| \
 				\shiftop \
 				\text{is bijective on $D(\Op{A})$} \right\} \]
@@ -246,7 +249,7 @@ of eigenvalues and eigenvectors in finite dimensions.
 \end{defn}
 
 \noindent
-We can further show:~\cite[p. 102]{Helffer2013}
+We can further show:~\cite[p.~102]{Helffer2013}
 \begin{prop}
 	If $\Op{A}$ is self-adjoint, then $\sigma(\Op{A}) \subset \R$.
 \end{prop}
@@ -263,7 +266,7 @@ Since only non-injective operators can have a non-trivial kernel,
 this implies that $\shiftop$ is necessarily non-injective
 for $(\lambda, v)$ to be an eigenpair.
 Unlike in finite dimensions%
-\footnote{In finite dimensions one can always find a operator extension for any
+\footnote{In finite dimensions one can always find an operator extension for any
 injective operator to be surjective as well.}
 it may well happen in infinite dimensions, that $\shiftop$ is injective,
 but not surjective.
@@ -314,9 +317,9 @@ as we shall see later.
 	with
 	\begin{itemize}
 		\item the \newterm{discrete spectrum}%
-			\footnote{For a mathematically more precise description, see~\cite[p.103 and p.132]{Helffer2013}.}
+			\footnote{For a mathematically more precise description, see~\cite[p.~103 and p.~132]{Helffer2013}.}
 			\[ \sigma_\text{disc}(\Op{A}) \simeq \left\{ \lambda \in \R \, \middle|
-			\, \text{$\lambda$ is an isolated eigenvalues of $\Op{A}$
+			\, \text{$\lambda$ is an isolated eigenvalue of $\Op{A}$
 			with finite multiplicity} \right\}, \]
 		\item the \newterm{essential spectrum}
 			\[\sigma_\text{ess}(\Op{A}) 
@@ -331,12 +334,12 @@ By construction the essential spectrum consists of
 	\item eigenvalues of infinite multiplicity,
 	\item eigenvalues embedded inside the continuous spectrum.
 \end{itemize}
-\todoil{Figure?}
+\todoil{Figure if time is left.}
 It will become clear in a moment
 why only modelling the discrete spectrum can be done easily by
 approximative, numerical methods.
 For this we need to discuss the special case of
-compact, self-adjoint operators in a bit more details.
+compact, self-adjoint operators in more detail.
 Already if an operator is compact,
 its spectrum has a particularly simple form.
 \begin{prop}
@@ -356,7 +359,7 @@ its spectrum has a particularly simple form.
 			\end{itemize}
 	\end{itemize}
 	\begin{proof}
-		See~\cite[p. 56]{Helffer2013}.
+		See~\cite[p.~56]{Helffer2013}.
 	\end{proof}
 \end{prop}
 In other words the continuous spectrum of a compact operator
@@ -368,21 +371,21 @@ operator:
 	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
 	self-adjoint operator on $\hilbert$,
 	then $\hilbert$ admits for a Hilbertian basis,
-	\ie a basis set $\{ u_k \}_{k \in \mathcal{I}}$ with
+	\ie~a basis set $\{ u_k \}_{k \in \mathcal{I}}$ with
 	\begin{align*}
 	\braket{u_k}{u_l} &= \delta_{kl} \quad \forall \, k,l \in \mathcal{I}
 	&&\text{and}&
 	\spacespan \left( \{ u_k \}_{k \in \mathcal{I}} \right) &= \hilbert.
 	\end{align*}
 	\begin{proof}
-		See~\cite[p. 60]{Helffer2013}.
+		See~\cite[p.~60]{Helffer2013}.
 	\end{proof}
 \end{prop}
 
 With propositions \ref{prop:CompactSpectrum} and \ref{prop:CompactBasis}
 at hand, compact operators start to look a lot like the familiar case
 of complex square matrices.
-In fact one can show that~\cite[p. 43]{Helffer2013}
+In fact one can show that~\cite[p.~43]{Helffer2013}
 \begin{prop}
 	\label{prop:FiniteDimCompact}
 	Any linear operator on a finite-dimensional Hilbert space is compact.
@@ -411,7 +414,7 @@ Hilbert space to the following:
 	\label{rem:NumericalEssentialSpectrum}
 As we will see in the next sections \vref{sec:SpectrumLaplace}
 and \vref{sec:HydrogenAtom} both the Laplace operator $\Delta$ as well as the
-Hamiltonian $\Op{H}$ corresponding to hydrogenic systems
+Hamiltonian $\Op{H}$ corresponding to hydrogen-like systems
 are not compact on the Hilbert space $L^2(\R^3, \C)$,
 since both of these operators are not even bounded.
 Furthermore both of these operators do possess a non-trivial essential spectrum.
@@ -490,7 +493,7 @@ the spherical polar coordinate system,
 Cartesian column vector $(x, y, z)^T$,
 we specify it as $(r, \theta, \varphi)$ with
 \begin{align*}
-	r &= \norm{\vec{r}} = \sqrt{x^2+y^2+z^2} & \theta &= \arccos\frac{z}{r} & \varphi &= \arcsin\frac{y}{x}.
+	r &= \norm{\vec{r}} = \sqrt{x^2+y^2+z^2} & \theta &= \arccos\frac{z}{r} & \varphi &= \arctan\frac{y}{x}.
 \end{align*}
 The condition for the unit sphere than reduces to $r\stackrel{!}{=}1$.
 
@@ -506,20 +509,21 @@ the deviating functional form
 	\label{eqn:LaplaceBeltramiS}
 \end{equation}
 in spherical polar coordinates.
-\eqref{eqn:LaplaceBeltramiS} is sometimes called the 
+\eqref{eqn:LaplaceBeltramiS} is sometimes called the
 \newterm{Laplace-Beltrami operator} as well.
 
 By taking the domain $D(\laplaceSphere) = H^2(\set{S}^2)$
-the operator $\laplaceSphere$ is self-adjoint~\cite[p. 120]{Helffer2013}.
+the operator $\laplaceSphere$ is self-adjoint~\cite[p.~120]{Helffer2013}.
 Furthermore one can show that the spectrum is (apart from $0$) fully discrete%
 \footnote{This follows since the inverse $\laplaceSphere^{-1}$ is compact%
-~\cite[p. 44]{Helffer2013}.}.
+~\cite[p.~44]{Helffer2013}.}.
 Therefore this can be explicitly calculated by solving
 the ansatz $\laplaceSphere \, Y = \lambda Y$
 for the eigenpairs $(\lambda, Y)$.
 This results in the \newterm{spherical harmonics}
 \begin{equation}
-	Y_l^m(\theta, \varphi) = \sqrt{\frac{2l + 1}{4 \pi} \frac{(l - m)!}{(l+m)!}} \, P_l^m(\cos \theta) \, e^{im\varphi}
+	Y_l^m(\theta, \varphi) = \sqrt{\frac{2l + 1}{4 \pi} \frac{(l - m)!}{(l+m)!}}%
+	\, P_l^m(\cos \theta) \, e^{im\varphi}
 	\label{eqn:SphericaHarmonics}
 \end{equation}
 where $P_l^m$ is the associated Legendre polynomial with orders $l$ and $m$.
@@ -534,8 +538,8 @@ Our spherical harmonics obviously satisfy
 \end{equation}
 For the next section let us briefly note,
 that the Laplace-Beltrami operator on the unit sphere
-and the Laplace operator in $3$, expressed in spherical polar coordinates
-are related by
+and the Laplace operator in $3$ dimensions,
+expressed in spherical polar coordinates, are related by
 \newcommand{\laplaceRadial}{\frac{\partial}{\partial r} \left( r^2 \frac{\partial}{\partial r} \right)}
 \begin{equation}
 r^2 \Delta = \laplaceRadial + \laplaceSphere.
@@ -552,19 +556,19 @@ An important consequence of the discreteness of the spectrum
 of the Laplace-Beltrami operator is that the spherical harmonics form
 a complete basis for $H^2(\set{S}^2)$.
 
-\subsection{The Schrödinger operator for a hydrogenic atom}
+\subsection{The Schrödinger operator for a hydrogen-like atom}
 \label{sec:HydrogenAtom}
 One might wonder if a pure Laplace operator as in section \vref{sec:SpectrumLaplace}
 only possesses an essential spectrum,
 how this develops if a potential is added,
 like the $Z / r$ in the case of
-the Hydrogenic Schrödinger operator \eqref{eqn:OpHydrogen}
+the hydrogen-like Schrödinger operator \eqref{eqn:OpHydrogen}
 \[
 	\Op{H} = -\frac12 \Delta - \frac{Z}{r}.
 \]
 As the Hilbert space for this operator we take the \QM space $L^2(\R^3, \C)$
 and an appropriate domain to make it self-adjoint is $H^2(\R^3, \C)$%
-~\cite[p. 38]{Helffer2013}.
+~\cite[p.~38]{Helffer2013}.
 One can show~\cite{Davies2007,Teschl2014} that $\sigma_C(\Op{H}) = [0, \infty)$
 and all discrete eigenvalues from $\sigma_P(\Op{H})$ are less than zero.
 Thus $\sigma_\text{disc} = \sigma_P$ and $\sigma_\text{ess} = \sigma_C$.
@@ -641,7 +645,7 @@ except $r = 0$.
 See \cite{Kato1957} and references therein for details.
 The polynomial in $r$ in front of the exponential factor of the radial part $R_{nl}$
 has exponents in $r$ in the range $[l, n-1]$
-such that the eigenstate with $l = n-1 = 0$, i.e. $\Psi_{1s}$ is the least smooth.
+such that the eigenstate with $l = n-1 = 0$, i.e.~$\Psi_{1s}$ is the least smooth.
 This implies $\Psi_{nlm} \in H^2(\R^3, \C)$ and thus
 $\mathcal{H}_\text{H}$ is a (true) subspace
 \footnote{
