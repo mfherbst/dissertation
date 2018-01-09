@@ -5,7 +5,7 @@ Let $\Op{A}$ be a self-adjoint, bounded below operator on a separable Hilbert sp
 $\hilbert$ with domain $D(\Op{A})$.
 We already saw in remark \vref{rem:OpRietz}
 that $\Op{A}$ uniquely defines a sesquilinear form
-\[ a(u, v) = \braket{u}{\Op{A} v}_\hilbert. \]
+\[ a(u, v) = \braket{u}{\Op{A} v}_\hilbert \]
 for $(u, v) \in D(\Op{A}) \times D(\Op{A})$.
 
 \subsection{The form domain}
@@ -42,11 +42,11 @@ have the same limit in $Q(\Op{A})$ irrespective of the norm used.
 This allows to uniquely
 extend $a(\slot, \slot)$ to $Q(\Op{A}) \times Q(\Op{A})$ by setting
 \[ a(u, v) := \braket{u}{v}_{\Op{A}} - (C+1) \braket{u}{v}_{\hilbert}. \]
-Naturally $Q(\Op{A})$ is the largest Hilbert space on which the form
-$a(\slot, \slot)$ is defined and continuous
-and we have
+Constructed as such $Q(\Op{A})$ is the largest Hilbert space on which the form
+$a(\slot, \slot)$ is defined and continuous.
+The form domain satisfies
 \[ D(\Op{A}) \subseteq Q(\Op{A}) \subseteq \hilbert, \]
-where all these are dense.
+where the subspaces are dense in the respective larger space.
 
 \begin{exmp}
 	For all cases we discussed in the previous chapter,
@@ -81,7 +81,7 @@ is that a solution in the weak sense implies a solution in the strong sense
 as well, making both formulations equivalent.
 
 This suggests the \newterm{Ritz-Galerkin projection},
-where we attempt to find an approximate solution
+where one attempts to find an approximate solution
 for \eqref{eqn:EigenproblemStrong}
 by considering \eqref{eqn:EigenproblemWeak}
 in a sequence of subspaces of $Q(\Op{A})$.
@@ -123,15 +123,16 @@ Our hope is now to construct such a sequence $(S_n)$ of subspaces,
 that $\sigma(\Op{A}^{(n)})$ converges to $\sigma(\Op{A})$.
 Unfortunately this is \emph{not} possible in general,
 see \cite{Helffer2013} for details.
-What we can achieve, however, is a method to obtain
+What can be achieved, however, is a method to obtain
 sensible approximations for the lower end of the spectrum,
 especially all discrete eigenvalues below the essential spectrum.
 
 Let us first state the theoretical basis
 in the form of the celebrated \newterm{min-max theorem}~\cite[p. 146]{Helffer2013}.
 In our discussion here, we follow the usual convention,
-where the eigenvalues in the discrete spectrum are indexed
-\footnote{Note, that by definition the discrete spectrum is \emph{always} countable.}
+where the eigenvalues in the discrete spectrum are indexed%
+\footnote{This can always be done,
+	since by definition the discrete spectrum is \emph{always} countable.}
 in increasing order, \ie
 \[ \lambda_1 \leq \lambda_2 \leq \lambda_3 \leq \cdots. \]
 
@@ -165,23 +166,25 @@ yields:\todo{Find reference}
 \begin{cor}
 	\label{cor:Convergence}
 	Let $\Op{A}$ be a bounded below, self-adjoint operator on $\hilbert$
-	and let $\Op{A}^{(n)}$ be the approximation to $\Op{A}$
-	according to the variational Ritz-Galerkin ansatz
-	\eqref{eqn:varProblem}
-	in a sequence of subspaces $(S_n)$,
+	and let $(S_n)$ be a sequence of subspaces of the form domain,
 	which satisfy condition \eqref{eqn:CondSubspaces}.
-	Then
+	If we denote with $\Op{A}^{(n)}$
+	the approximations to $\Op{A}$
+	according to the variational Ritz-Galerkin ansatz
+	\eqref{eqn:varProblem}, then
 	\[ \forall 0 < i \in \N \quad \lambda^{(n)}_i := \lambda_i(\Op{A}^{(n)}) \xrightarrow{n\to\infty} \lambda_i(\Op{A}), \]
 	where the convergence is always from above.
 \end{cor}
 
 As discussed in section \vref{sec:SpectralTakeAway}
-we can assume that our operators
-always possess a discrete spectrum, which is located below the essential spectrum.
-Furthermore those bound states, which are of interest to us,
-are always located at the lower end of the discrete spectrum.
-Using the aforementioned results we can
-therefore sketch an approximation method for our setting.
+those operators,
+which will be considered in this thesis,
+always possess a discrete spectrum located below the essential spectrum.
+Furthermore we will always be interested
+in those bound states located at the lower end of the discrete spectrum
+for physical reasons.
+With the aforementioned results we can
+sketch an approximation method for our setting.
 
 \begin{rem}[Approximation of the bottom of the discrete spectrum]
 	\label{rem:ApproxBottomDiscrete}
@@ -241,9 +244,10 @@ therefore sketch an approximation method for our setting.
 	Introducing the matrix $\mat{A}^{(n)} \in \C^{\Nbas \times \Nbas}$
 	and the vectors $\vec{c}^{(n)}_i \in \C^{\Nbas}$
 	with elements
-	\begin{align*}
+	\begin{align}
+		\eqref{eqn:DiscretisationExpression}
 		A_{\mu\nu} &= a(\chi_\mu, \chi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\chi_\nu}{v^{(n)}_i} = C^{(n)}_{\mu i}
-	\end{align*}
+	\end{align}
 	we can write \eqref{eqn:DiscretisedEigenproblemHalfWay}
 	as the matrix eigenvalue problem
 	\begin{equation}
@@ -302,16 +306,15 @@ of eigenvalue problems
 with a word of warning about the essential spectrum.
 
 \begin{rem}
-In remark \vref{rem:NumericalEssentialSpectrum}
-we claimed that it was very difficult
+Remark \vref{rem:NumericalEssentialSpectrum}
+stated that it was difficult
 to obtain numerical approximations to the essential spectrum.
-Because of the min-max theorem \vref{thm:CourantFischer},
-we now have some theoretical justification for this.
-Corollary \vref{cor:Convergence} namely
-gives us,
+The min-max theorem \vref{thm:CourantFischer}
+provides some theoretical justification for this.
+In corollary \vref{cor:Convergence} we saw,
 that all eigenvalues from a Ritz-Galerkin approximation
-of $\Op{A}$ tend to $\lambda_i(\Op{A})$ 
-as we increase the subspace size.
+of $\Op{A}$ tend to $\lambda_i(\Op{A})$
+as the subspace size is increased.
 Unfortunately this value is equal to $\inf \sigma_\text{ess}(\Op{A})$,
 the infimum of the essential spectrum,
 as soon as we exhausted the discrete spectrum.
@@ -319,21 +322,23 @@ In other words the methods we developed in this section
 will only help to find the bottom end of the essential spectrum,
 but no further information about it at all.
 
-Another consequence of this behaviour is,
+Another consequence of cor. \ref{cor:Convergence} is
 that only a part of the eigenpairs obtained by
 diagonalising the matrix $\mat{A}^{(n)}$ of \vref{eqn:DiscretisedEigenproblem}
 can be trusted to carry any meaning regarding
 the spectrum of the exact physical operator $\Op{A}$.
-As soon as the eigenvalues $\lambda_i^{(n)}$
-of $\mat{A}^{(n)}$ become large enough,
-they merely an artificial discretisation of the essential spectrum,
-which will all tend to $\inf \sigma_\text{ess}(\Op{A})$
+This is because the larger eigenvalues $\lambda_i^{(n)}$
+of $\mat{A}^{(n)}$ will only provide an \emph{artificial}
+discretisation of the essential spectrum:
+Their values will all tend to $\inf \sigma_\text{ess}(\Op{A})$
 as the basis set is increased.
-Since the convergence in corollary \vref{cor:Convergence} is always
-from above it is not always easy to judge,
-where the line between trustworthy and not trustworthy eigenpairs of $\mat{A}^{(n)}$
-should be drawn.
+Since the convergence to the bottom of the essential spectrum
+as well as the discrete eigenvalues is always from above,
+one sometimes has trouble judging whether
+an eigenpair of $\mat{A}^{(n)}$
+is a true discrete eigenpair of the operator or already
+part of the essential spectrum.
 In either case the bottom end of the spectrum of $\mat{A}$
-will carry physical significance if the basis
+will always carry physical meaning in our cases if the basis
 set satisfies remark \vref{rem:ChoiceBasisFunction}.
 \end{rem}
