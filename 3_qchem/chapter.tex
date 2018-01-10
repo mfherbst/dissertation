@@ -31,6 +31,7 @@ as well as numerical approaches for solving such approximations
 in practice.
 
 \section{Many-body Schrödinger equation}
+\label{sec:ManyBodyTISE}
 \defineabbr{BO}{BO\xspace}{Born-Oppenheimer approximation, see section \vref{sec:BO}}
 \nomenclature{$\Psi$}{State of a (many body) quantum system,
 	typically the \emph{exact} ground state solution to the many-electron,
@@ -42,25 +43,28 @@ in practice.
 which typically specifies the positions of all electrons of the system.}
 \nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of an electron in space}
 
-Let us consider a chemical system consisting of $M$ nuclei
-and $\Nelec$ electrons.
-The nuclei shall have charges $\{Z_A\}_{A = 1, 2, \ldots, M}$
-and mass-scaled\footnote{
+Let us consider a chemical system consisting of $M$ nuclei and $\Nelec$ electrons.
+We take the nuclei to be located at mass-scaled\footnote{
 	If $\vec{\tilde{R}}_A$ is the Cartesian coordinate
 	of the $A$-th nucleus with mass $M_A$, then
 	the mass-scaled coordinates are given as
 	$\vec{R}_A = \sqrt{M_A} \, \vec{\tilde{R}}_A$.
-} coordinates $\{\vec{R}_A\}_{A = 1, 2, \ldots, M} \in \R^3$,
-whereas the electrons shall sit
-at positions $\{\vec{r}_i\}_{i = 1, 2, \ldots, \Nelec} \in \R^3$.
-Originating from the correspondence principle to classical mechanics
-(see section \vref{sec:IntroQM})
+} coordinates
+$\{\vec{R}_A\}_{A = 1, 2, \ldots, M} \subset \R^3$
+with corresponding charges
+$\{Z_A\}_{A = 1, 2, \ldots, M}$.
+The electron positions are denoted by the (Cartesian) coordinates
+$\{\vec{r}_i\}_{i = 1, 2, \ldots, \Nelec} \subset \R^3$.
+Following the correspondence to classical mechanics (see section \vref{sec:IntroQM})
 we can construct the many-body Hamiltonian
+on the Hilbert space $L^2(\R^L, \C)$ with dimensionality $L = 3M+3\Nelec$ as
 \begin{equation}
-	\Op{H}_\text{MB} = \Op{T}_e + \Op{T}_n + \Op{V}_{nn} + \Op{V}_{ne} + \Op{V}_{ee}
+	\Op{H}^\text{MB} = \Op{T}_e + \Op{T}_n + \Op{V}_{nn} + \Op{V}_{ne} + \Op{V}_{ee}.
 	\label{eqn:ManyBodyHamiltonian}
 \end{equation}
-with the Coulombic interaction potentials
+In this expression we introduced the
+nuclear-nuclear, electronic-electronic and nuclear-electronic
+Coulombic interaction potentials
 \begin{align}
 	\label{eqn:ManyBodyHamiltonianPotential}
 	\Op{V}_{nn} &= \sum_{A=1}^M \sum_{B=A}^M
@@ -68,112 +72,282 @@ with the Coulombic interaction potentials
 	\Op{V}_{ee} &= \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec}
 		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \\
 	\nonumber
-	\Op{V}_{ne} &= \sum_{A=1}^M \sum_{i=0}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2}
+	\Op{V}_{ne} &= \sum_{A=1}^M \sum_{i=0}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2},
 \end{align}
-and the electronic and nuclear kinetic energy operators
+respectively.
+Furthermore we used the electronic and nuclear kinetic energy operators
 \begin{align}
 	\label{eqn:ManyBodyHamiltonianKinetic}
 	\Op{T}_e &= \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i} &
 	\Op{T}_n &= \sum_{A=1}^M \Delta_{\vec{R}_A},
 \end{align}
-where we used the shorthand
+with the shorthand
 \[ \Delta_{\vec{q}} = \sum_{\alpha=1}^3 \frac{\partial^2}{\partial q_\alpha^2} \]
 for the Laplace operator with respect to particle coordinates $\vec{q}$.
-Defining this operator on the Hilbert space $L^2(\R^L, \C)$
-with $L = 3M+3\Nelec$ and domain $D(\Op{H}_\text{MB}) = H^2(\R^L, \C)$
-makes this operator self-adjoint~\cite{Kato1951}.
-It is furthermore bounded below \cite{Kato1951}.
+If we take the domain $D(\Op{H}_\text{MB}) = H^2(\R^L, \C)$
+this operator can be made self-adjoint~\cite{Kato1951}.
+It is furthermore bounded below~\cite{Kato1951}
+with a couple of discrete states below the essential spectrum.
 
-For ease of writing we define the vectors $\vec{x} \in \R^{3\Nelec}$
-and $\vec{X} \in \R^{3M}$ with
+The operator $\Op{H}_\text{MB}$ is the fundamental object
+the field of \newterm{quantum chemistry} investigates.
+Its properties allow for a full
+(non-relativistic) quantum-mechanical description
+of a chemical system.
+This includes important properties like stable chemical structures
+or reactivity, with respect to other molecules as well as external potentials.
+As discussed in section \vref{sec:SpectralTakeAway}
+a consequence of the laws of thermodynamics is,
+that in many cases one already gets
+a reasonable idea about the chemical properties of matter
+if only the lowest-energy, discrete eigenstates of the relevant
+many-body Hamiltonian $\Op{H}_\text{MB}$ are determined.
+
+Let us use the vectors $\vec{x} \in \R^{3\Nelec}$ and $\vec{X} \in \R^{3M}$, defined as
 \begin{align}
 	\rtp{\vec{x}} &\equiv \left(\rtp{\vec{r}_1}, \rtp{\vec{r}_2}, \ldots, \rtp{\vec{r}_{\Nelec}}\right)
 	&
-	\rtp{\vec{X}} &\equiv \left(\rtp{\vec{R}_1}, \rtp{\vec{R}_2}, \ldots, \rtp{\vec{R}_{M}}\right).
+	\rtp{\vec{X}} &\equiv \left(\rtp{\vec{R}_1}, \rtp{\vec{R}_2}, \ldots, \rtp{\vec{R}_{M}}\right),
 	\label{eqn:DefAllCoords}
 \end{align}
-They combine either all electronic or all nuclear coordinates, respectively.
-
-For finding the discrete eigenstates of $\Op{H}_\text{MB}$
-we need to solve the time-independent Schrödinger equation
+to refer to all electronic or all nuclear coordinates, respectively.
+Taking $I$ to denote an appropriate multi-index of quantum numbers,
+our problem from the previous paragraph can be reformulated
+as finding those eigenstates $\Psi^\text{MB}_I \in H^2(\R^L, \C)$
+with lowest corresponding energies $E^\text{MB}_I \in \R$
+by the means of solving the time-independent Schrödinger equation
 \begin{equation}
-	\Op{H}_\text{MB} \Psi_\text{MB}(\vec{X}, \vec{x})
-	= E_\text{MB} \Psi_\text{MB}(\vec{X}, \vec{x})
+	\Op{H}^\text{MB} \Psi_I^\text{MB}(\vec{X}, \vec{x})
+	= E_I^\text{MB} \Psi_I^\text{MB}(\vec{X}, \vec{x}).
 	\label{eqn:TISEManyBody}
 \end{equation}
-where $E_\text{MB} \in \R$ and $\tilde{\Psi} \in H^2(\R^L, \C)$.
-Doing this both analytically as well as numerically as such is hardly feasible.
-This can be understood by the so-called curse of dimensionality.
-Even for comparatively small systems like water,
-this equation has a large dimensionality,
-which implies that the number of grid points grows very fast.
+olving this equation analytically is not possible in general.
+Already for the Helium atom, a 3-body problem, clever approximations are needed
+to get anywhere~\cite{Hylleras1929}.
+But even numerically \eqref{eqn:TISEManyBody} is in general impossible to solve
+without further approximations.
+
+Let us illustrate this claim by an example.
+In water, \ce{H2O}, we have $3$ nuclei and $10$ electrons.
+The dimensionality of the problem is thus $L = 3 \cdot 13 = 39$.
+In the numerical approach we introduces in section \vref{sec:Projection}
+the evaluation of the inner product
+\begin{equation}
+	\braket{\Psi}{\Phi} \equiv \int_{\R^{3M}} \int_{\R^{3\Nelec}}
+		\cc{\Psi}(\vec{x}, \vec{X}) \Phi(\vec{x}, \vec{X})
+	\D \vec{x} \D \vec{X}
+	\label{eqn:MBInnerProduct}
+\end{equation}
+between two functions $\Psi$ and $\Phi$ from the
+underlying Hilbert space $L^2(\R^L, \C)$ appears rather prominently.
+Most notably the computation of the sesquilinear form $a(\slot,\slot)$
+in order to build the discretisation matrix in \eqref{eqn:DiscretisedEigenproblem}
+boils down to computing such integrals.
+The numerical evaluation of \eqref{eqn:MBInnerProduct}
+implies a sampling of the $L$-dimensional space $\R^L$ in some way or another.
+Even for an extremely sophisticated discretisation method
+or a well-designed quadrature scheme we will probably need of the order of
+$10$ sampling points per dimension.
+For a 39-dimensional problem, like our water molecule,
+this makes on the order of $10^{39}$ sampling points overall.
+If we want a single integration to finish within the lifetime of a human being,
+say $100$ years,
+the evaluation of the
+integration kernel $\Psi(\vec{x}, \vec{X}) \Phi(\vec{x}, \vec{X})$
+may take no more than some $10^{-30}$ seconds,
+which is impossible due to the physical limitations inside a general purpose computer.
+
+Certainly one could probably find even more clever methods in some cases,
+but the example illustrates the so-called \newterm{curse of dimensionality} rather well.
+For a general quantum-chemical investigation of matter
+one needs to develop approximate methodologies.
 
 \section{Born-Oppenheimer approximation}
 \label{sec:BO}
+The masses of electrons and nuclei differ by orders of magnitude.
+The ratio between the mass of a proton and the electron massi
+is already around $1836$ and this ratio increases
+further across the table.
+Already for the elements oft he first period,
+this value is at least of the order of $10^4$.
+This justifies an approximative treatment,
+where we assume the motion of the electrons
+and the motion of the nuclei to happen at different timescales.
 
-Starting from the curse of dimensionality
-the Born-Oppenheimer approximation separates the time-independent
-Schrödinger equation~\eqref{eqn:TISEManyBody} into
-a coupled system of equations.
-One describing the motion of the electrons in the field of statically
-clamped nuclei
-and one describing the motion of the nuclei in the potential generated
-by the electrons.
+For this let us consider at first
+a simplified version of \eqref{eqn:ManyBodyHamiltonian},
+namely the \newterm{electronic Hamiltonian}
+\[
+	\Op{H}^\text{elec} \equiv \Op{H}^\text{MB} - \Op{T}_n
+	= \Op{T}_e + \Op{V}_{ne} + \Op{V}_{ee} + \Op{V}_{nn}.
+\]
+This operator is constructed form the full many-body Hamiltonian
+by neglecting the nuclear kinetic energy operator $\Op{T}_n$ completely.
+Introducing the short hand notation
+\begin{align*}
+r_{AB} &\equiv \norm{\vec{R}_A - \vec{R}_B}_2, &
+r_{iA} &\equiv \norm{\vec{r}_i - \vec{R}_A}_2, &
+r_{ij} &\equiv \norm{\vec{r}_i - \vec{r}_j}_2, &
+\end{align*}
+we can write it as
+\begin{equation}
+	\Op{H}^\text{elec}
+	= \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i}
+	+ \sum_{A=1}^M \sum_{i=0}^{\Nelec} \frac{Z_A}{r_{iA}}
+	+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
+	\  + \  %
+	\sum_{A=1}^{M} \sum_{B=A+1}^{M} \frac{1}{r_{AB}}.
+	\label{eqn:ElectronicFullHamiltonian}
+\end{equation}
+Even though $\Op{H}^\text{elec}$ still depends on the nuclear coordinates $\vec{X}$,
+one could interpret the elements of the vector
+$\vec{X}$ not as coordinates,
+but much rather as parameters for the potential operators $\Op{V}_{ne}$ and $\Op{V}_{nn}$.
+Physically this means that $\Op{H}^\text{elec}$ describes a chemical system
+where the nuclei are clamped at well-defined points in space.
+Sometimes we will write $\Op{H}^\text{elec}(\vec{X})$
+in order to make the parametrisation of $\Op{H}^\text{elec}$ with respect to $\vec{X}$
+visible.
 
-The physical reasoning behind this is that due to the rather large deviation
-between the mass of the electrons and the mass of the nuclei%
-\footnote{The ratio between the mass of a proton and the mass of an electron is
-	approximately 1836.}
-leads to electron and nuclear motion to happen on different timescales.
-To put this boldly, we regard the nuclei as clamped when treating
-the electronic motion.
-In other words $\Op{T}_n = 0$ and we yield the \newterm{electronic Schrödinger equation}
-for a particular nuclear arrangement $\vec{X}$,
-which is considered to be constant.
-For this reason one may write a product ansatz
-\[ \Psi_\text{MB}(\vec{X}, \vec{x}) = \Psi_\text{elec}(\vec{X}, \vec{x}) \Psi_\text{nuc}(\vec{X}) \]
-where the electronic part solves this equation
+\newcommand{\Iel}{I_\text{e}}
+\newcommand{\Inu}{I_\text{n}}
+Without going into details at the moment,
+let us assume that $\Op{H}^\text{elec}$ becomes self-adjoint
+inside a suitable domain.
+With appropriate multi-indices $\Iel$
+we can thus find its eigenpairs $(E_{\Iel}, \Psi^\text{elec}_{\Iel})$
+via the \newterm{electronic Schrödinger equation}
+\begin{equation}
+	\Op{H}^\text{elec}(\vec{X}) \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
+	= E^\text{elec}_{\Iel}(\vec{X})
+		\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x}).
+	\label{eqn:ElectronicSchrödinger}
+\end{equation}
+Originating from the dependence of $\Op{H}^\text{elec}(\vec{X})$
+towards the nuclear coordinates,
+we can think of the resulting \newterm{electronic energies}
+$E^\text{elec}_{\Iel}(\vec{X})$
+and \newterm{electronic wavefunction}s $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
+to be dependent on $\vec{X}$ as well.
+Sometimes one uses the term \newterm{electronic state} or just \newterm{stat}
+to refer to $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$.
 
-thus the resulting nuclear equation
+With the electronic states at hand we are able to formulate
+the framework of the \newterm{Born-Oppenheimer approximation},
+which consists of the following two assumptions:
+\begin{itemize}
+	\item Each eigenstate of \eqref{eqn:ManyBodyHamiltonian} may be written
+		by a factorisation
+	\begin{equation}
+		\Psi^\text{MB}_I(\vec{X}, \vec{x}) \equiv \Psi^\text{MB}_{\Iel\Inu}(\vec{X}, \vec{x})
+		\simeq \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
+		\Psi^\text{nuc}_{\Inu}(\vec{x}),
+		\label{eqn:BOFactorisation}
+	\end{equation}
+	where the multi-indices are related by $I \equiv (\Iel, \Inu)$.
+	$\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$ is a solution
+	to the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}
+	and the \newterm{nuclear wavefunction}
+	$\Psi^\text{nuc}_{\Inu}(\vec{x})$ is yet to be determined.
+	%
+	\item The factorisation \eqref{eqn:BOFactorisation} satisfies the property%
+	\footnote{%
+		More precisely what we assume is that the nuclear kinetic energy
+		operator $\Op{T}_n$ projected onto the basis formed by
+		all electronic states $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
+		is diagonal with all elements equal to $1$.
+		See \cite{Baer2006} or \cite{WikipediaBornOppenheimer} for details.
+	}
+	\begin{equation}
+		\Op{T}_n \Psi^\text{MB}_{I}(\vec{X}, \vec{x})
+		\simeq \Op{T}_n \left( \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
+		\Psi^\text{nuc}_{\Inu}(\vec{X}) \right)
+		\simeq \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
+		\left(\Op{T}_n \Psi^\text{nuc}_{\Inu}(\vec{X}) \right).
+		\label{eqn:BONuclearDerivative}
+	\end{equation}
+\end{itemize}
+By plugging ansatz \eqref{eqn:BOFactorisation} into \eqref{eqn:TISEManyBody}
+we can simplify
+\begin{align*}
+	0 &=
+	\left( \Op{H}^\text{MB} - E^\text{MB}_{I} \right)
+	\Psi^\text{MB}_{I}(\vec{X}, \vec{x}) \\
+	&\stackrel{\eqref{eqn:BOFactorisation}}{\simeq}
+	\left( \Op{H}^\text{elec} + \Op{T}_n - E^\text{MB}_I \right)
+	\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x}) \Psi^\text{nuc}_{\Inu}(\vec{X}) \\
+	&\stackrel{\eqref{eqn:BONuclearDerivative}}{\simeq}
+	\left( \Op{H}^\text{elec} \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x}) \Psi^\text{nuc}_{\Inu}(\vec{X}) \right)
+	+ \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x}) \left(\Op{T}_n \Psi^\text{nuc}_{\Inu}(\vec{X}) \right)
+	- E^\text{MB}_{I} \Psi^\text{MB}_I(\vec{X}, \vec{x})
+	\\
+	&\stackrel{\eqref{eqn:ElectronicSchrödinger}}{=}
+	\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
+	\left(E^\text{elec}_{\Iel}(\vec{X}) \Psi^\text{nuc}_{\Inu}(\vec{X})
+	+ \Op{T}_n \Psi^\text{nuc}_{\Inu}(\vec{X})
+	- E^\text{MB}_I \Psi^\text{nuc}_{\Inu}(\vec{X}) \right).
+\end{align*}
+This statement is thus satisfied provided that the nuclear wavefunction
+$\Psi^\text{nuc}_{\Inu}(\vec{X})$
+follows the \newterm{nuclear Schrödinger equation}
+\begin{equation}
+	\left( \Op{T}_n + E^\text{elec}_{\Iel}(\vec{X}) \right)
+	\Psi^\text{nuc}_{\Inu}(\vec{X})
+	= E^\text{MB}_I \Psi^\text{nuc}_{\Inu}(\vec{X}).
+	\label{eqn:NuclearSchrödinger}
+\end{equation}
+
+Overall the Born-Oppenheimer approximation
+allows to solve the many-body Schrödinger equation \eqref{eqn:TISEManyBody} in two steps.
+First we limit ourselves to the point of view of the electrons
+under the electric field induced by fixed, motionless nuclei.
+This leads to \eqref{eqn:ElectronicSchrödinger},
+which is solved for the
+electronic states $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
+along with corresponding electronic energies $E^\text{elec}_{\Iel}(\vec{X})$.
+In the second step we consider nuclear motion by solving
+\eqref{eqn:NuclearSchrödinger}.
+In this equation the electronic energies $E^\text{elec}_{\Iel}(\vec{X})$
+depending on the nuclear coordinates act as the electrostatic potential
+in which the nuclei move.
+For this reason $E^\text{elec}_{\Iel}(\vec{X})$ is sometimes
+called a \newterm{potential energy surface} as well.
+Note, that each electronic state characterised by quantum numbers $\Iel$
+gives rise to a different potential energy surface.
+
+Employing a more detailed treatment of the Born-Oppenheimer approximation,
+like in the original paper \cite{Born1927} or \citet{Baer2006},
+allows to gain more insight regarding the range of applicability
+of the Born-Oppenheimer approximation.
+Loosely speaking it is a valid approximation
+as long as the potential energy surfaces $E^\text{elec}_{\Iel}(\vec{X})$
+are well-separated from another.
+
+From a numerical point of view this approximation allows to reduce
+the dimensionality of the problem somewhat.
+To illustrate this let us return to the water molecule,
+which was already discussed at the end of section \vref{sec:ManyBodyTISE}.
+In the exact problem we need to solve one equation,
+namely the many-body Schrödinger equation \eqref{eqn:TISEManyBody}
+of dimensionality $L = 39$.
+Within the Born-Oppenheimer approximation
+this is replaced by solving two equations,
+the electronic one \eqref{eqn:ElectronicSchrödinger} of dimensionality $3 \Nelec = 30$
+and the nuclear TISE \eqref{eqn:NuclearSchrödinger} of dimensionality $3 M = 9$.
+In the rough estimate we presented in section \vref{sec:ManyBodyTISE}
+for the $L^2$ inner products,
+this would roughly provide a speed-up factor of $10^9$.
+
+\subsection{Electronic Schrödinger equation}
+\label{sec:ElectronicSchrödinger}
 
 
-From \eqref{eqn:ManyBodyHamiltonian}
-and \eqref{eqn:TISEManyBody}
-we obtain the 
-
-
-
-problem and one for the nuclear p
-
-
-Time scale separation
-Clamped-nuclei approximation
-Ignore nuclear derivatives
-Vnn constant
-
-
-
-Side effect: Potential-energy surface
-
-
-The Born-Oppenheimer approximation now boldly assumes
-that the exact state can be represented as a product
-\[ \Psi_\text{MB}(\vec{X}, \vec{x}) = \Psi(\vec{x}) \Psi_\text{nuc}(\vec{X}) \]
-
-
-% https://www.tcm.phy.cam.ac.uk/%7Epdh1001/thesis/node13.html
-% https://en.wikipedia.org/wiki/Born%E2%80%93Huang_approximation
-% https://en.wikipedia.org/wiki/Born-Oppenheimer_Approximation
-
-More details \cite{Baer2006}
-\cite{Born1927}
 
 
 
 
-Useful:
-\[ r_{ij} \equiv \norm{\vec{r}_i - \vec{r}_j}_2 \]
-\[ r_{iA} \equiv \norm{\vec{r}_i - \vec{R}_A}_2 \]
+
+
 
 Drop $\text{elec}, \vec{X}$ index to call electronic wavefunction just $\Psi$.
 
@@ -184,15 +358,9 @@ Drop $\text{elec}, \vec{X}$ index to call electronic wavefunction just $\Psi$.
 $\Psi \in H^2(\R^{3d}, \R)$
 
 
-
-% show the equation
-% rationalise it
-% name the terms
-
-
-
-
 \section{Full-CI}
+\label{sec:FCI}
+
 \nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$/$\beta$ electrons.
 Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
 \nomenclature{$\Phi$}{Slater determinant or many-electron basis functions}

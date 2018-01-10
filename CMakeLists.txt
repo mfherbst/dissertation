@@ -41,6 +41,7 @@ add_inputs(
 	commands.tex
 	contents.tex
 	dedication.tex
+	hyphenation.tex
 	index.tex
 	licence.tex
 	nomenclature.tex
