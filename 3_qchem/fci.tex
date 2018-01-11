@@ -14,21 +14,38 @@ typically $i$-th eigenfunction of the Fock operator, i.e.~a Hartree-Fock orbital
 \nomenclature{$\Norb$}{The number of computed SCF orbitals.
 Note, that $\Norb \le \Nbas$.}
 
-
-% Argue that we can do the mathematical background in real function
-% arithmetic only and still use the results for complex input due to linearity.
-
-$\Psi \in H^2(\R^{3d}, \R)$
-
-
-
-
+% Note that we need a more general setting here.
+% Discuss how spin is included
+% Slater determinants with spin
+% FCI ansatz
 
 \todo[inline,caption={}]{
 	\begin{itemize}
-		\item Idea
-		\item Ansatz
-	\end{itemize}
+		\item 
+	Define reference determinant
+	\[ \Phi_0 = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_i \wedge \cdots \wedge \psi_{\Nelec} \]
+	and introduce excitation formalism
+	\[ \Phi_i^a = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge \cdots \wedge \psi_{\Nelec} \]
+	\item
+	Define
+	\[ \Phi = \psi_1 \wedge \psi_2 \wedge \cdots \psi_{\Nelec} \]
+	and
+	\[ \tilde{\Phi} = \tilde{\psi}_1 \wedge \tilde{\psi}_2 \wedge \cdots \tilde{\psi}_{\Nelec} \]
+	Discuss elements
+	\[ \braket{\Phi}{\tilde{\Phi}}_{space} = \braket{\psi_1}{\tilde{\psi}_1}_{L^2(\R^3, \C)} \cdots \]
+	(Follows by construction of tensor product Hilbert space)
+	\item Discuss Slater-Condon rules and thus the terms of $a(\Phi, \tilde{\Phi})$
+	\item Take basis functions $\varphi_\mu \in H^1(\R^3, \C)$
+		to make sure the resulting determinants are in $Q(\Op{H})$.
+		This is fine since all is dense.
+\end{itemize}
 }
 
 
+% Slater-determinant is a way to construct many-particle basis set
+% from one-particle basis set
+
+% If all Slater determinants are included FCI results
+% Need to compute certain integrals
+% So-called Slater-Condon rules simplify problem
+% Won't go into details here

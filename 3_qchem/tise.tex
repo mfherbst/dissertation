@@ -197,7 +197,7 @@ we can think of the resulting \newterm{electronic energies}
 $E^\text{elec}_{\Iel}(\vec{X})$
 and \newterm{electronic wavefunction}s $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
 to be dependent on $\vec{X}$ as well.
-Sometimes one uses the term \newterm{electronic state} or just \newterm{stat}
+Sometimes one uses the term \newterm{electronic state}
 to refer to $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$.
 
 With the electronic states at hand we are able to formulate
@@ -308,3 +308,201 @@ this would roughly provide a speed-up factor of $10^9$.
 
 \subsection{Electronic Schrödinger equation}
 \label{sec:ElectronicSchrödinger}
+By solving the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}
+we get access to the electronic states $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
+as well as the potential energy surface $E^\text{elec}_{\Iel}(\vec{X})$.
+In many cases these quantities already provide
+enough insight into a chemical system in order to address many
+questions relevant to quantum chemistry.
+For this reason the nuclear Schrödinger equation \eqref{eqn:NuclearSchrödinger}
+will be neglected in this work from now on
+and we will focus only
+on approximation methods for solving \eqref{eqn:ElectronicSchrödinger} instead.
+
+For ease of notation we will usually drop the indices ``e'',
+superscripts ``elec'' from now on if we refer to electronic energies
+or the electronic part of the wavefunction.
+Similarly in the context of the electronic Schrödinger equation
+the nuclei are motionless, which makes $\vec{X}$ a fixed quantity.
+Thus we drop the nuclear coordinates ``$\vec{X}$''
+from the function arguments, too.
+In this convention we would for example
+write the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger} as
+\[ \Op{H} \Psi_I(\vec{x}) = E_I \Psi_I(\vec{x}). \]
+Another simplification we sometimes employ is to consider
+the simplified electronic Hamiltonian
+\begin{equation}
+	\Op{H}_{\Nelec} \equiv \Op{H}^\text{elec} - \Op{V}_{nn}
+	= \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i}
+	+ \sum_{A=1}^M \sum_{i=0}^{\Nelec} \frac{Z_A}{r_{iA}}
+	+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
+	\label{eqn:ElectronicHamiltonian}
+\end{equation}
+instead of $\Op{H}^\text{elec}$.
+This is possible, since the potential operator governing the Coulombic interaction
+amongst the nuclei
+\[
+	\Op{V}_{nn} = \sum_{A=1}^M \sum_{B=A+1}^M \frac1{r_{AB}}
+\]
+only depends on $\vec{X}$, which makes it a constant value for one particular chemical system.
+In many cases one can therefore work with $\Op{H}_{\Nelec}$
+in a numerical treatment and only add the nuclear potential energy term $\Op{V}_{nn}$
+afterwards.
+
+In analogy to the many-body Hamiltonian \eqref{eqn:ManyBodyHamiltonian}
+and the hydrogen-like Hamiltonian \eqref{eqn:OpHydrogen}
+we choose the underlying Hilbert space of $\Op{H}_{\Nelec}$
+to be $L^2(\R^3, \C)$.
+Due to Kato's theorem~\cite{Kato1951} $\Op{H}_{\Nelec}$
+becomes self-adjoint if we set its domain to $D(\Op{H}_{\Nelec} = H^2(\R^{3\Nelec}, \C)$.
+Not all functions in $H^2(\R^{3\Nelec}, \C)$ are physical, however.
+Since electrons are spin-$\sfrac12$ particles,
+the spin statistics theorem~\cite{Shankar1994} of quantum field theory
+requires their wavefunction to be antisymmetric
+with respect to particle exchange.
+More symbolically all eigenfunctions $\Psi_I$ of $\Op{H}_{\Nelec}$
+need to satisfy the condition
+\begin{equation}
+	\forall i,j \in \{1, 2, \ldots, \Nelec\}: \qquad
+	  \Psi_I(\ldots, \vec{r}_i, \ldots, \vec{r}_j, \ldots) =
+	- \Psi_I(\ldots, \vec{r}_j, \ldots, \vec{r}_i, \ldots).
+	\label{eqn:AsymElecWavefunction}
+\end{equation}
+It is easy to see that not all elements of $H^2(\R^{3\Nelec}, \C)$ satisfy this.
+
+The introduction of this extra condition on the eigenstates of $\Op{H}_{\Nelec}$
+probably seems rather \textit{ad hoc} and without any connection to the
+theory of \QM and its classical correspondence as discussed in section
+\vref{sec:QMCorrespondence}.
+This is no surprise.
+In non-relativistic \QM one has to follow this rather \textit{ad hoc} route,
+since spin and spin statistics does not arise naturally.
+This somewhat apparent as well by the approach,
+which is conventionally taken to fix the issue:
+Instead of modifying the Hamiltonian,
+we introduce a constraint towards the solution in the form of
+\eqref{eqn:AsymElecWavefunction}.
+
+\todoil{
+	I really would like to know more about the relationship
+	between Slater determinants and exterior products.
+	Go and ask someone about this.
+	The internet was not very helpful.
+}
+The condition \eqref{eqn:AsymElecWavefunction} can be satisfied mathematically
+by only searching for the eigenstates $\Psi_I$ inside a special function space,
+which by construction has a structure to enforce the required
+antisymmetry with respect to the electronic coordinates.
+Such a space is the $\Nelec$-th \newterm{exterior power} of $L^2(\R^3, \C)$ defined as
+\newcommand{\wedgestring}{\psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_{\Nelec}}
+
+\begin{equation}
+	\bigwedge^{\Nelec} L^2(\R^3, \C)
+	\equiv \spacespan \Big\{ \wedgestring
+	\, \Big| \, \psi_i \in L^2(\R^3, \C) \, \forall i = 1, \ldots \Nelec \Big\}.
+	\label{eqn:DefExteriorPower}
+\end{equation}
+The key component of this definition is the wedge product
+or \newterm{exterior product} $f \wedge g$.
+This operation is a generalisation from the cross product $\vec{a} \times \vec{b}$
+for vectors $\vec{a}, \vec{b} \in \R^3$
+towards other vector spaces,
+possibly of infinite dimensionality.
+The wedge product is totally antisymmetric and is closely related
+to the tensor product $f \otimes g$.
+For example if $f, g \in L^2(\R^3, \C)$, then $f \wedge g \in L^2(\R^6, \C)$.
+\todoil{Check the following statement with someone who knows}
+One can identify
+the application of a wedge product string like $\wedgestring$
+onto the electronic coordinates $\vec{x}$
+with the evaluation of a determinant, \ie
+\[
+	\Big(\wedgestring\Big) (\vec{x})
+	\equiv
+	\frac{1}{\sqrt{\Nelec}} \det
+	\left(
+	\begin{array}{*{6}{l}}
+		\psi_1(\vec{r}_1) & \psi_2(\vec{r}_1) & \cdots & \psi_{\Nelec}(\vec{r}_1) \\
+		\psi_1(\vec{r}_2) & \psi_2(\vec{r}_2) & \cdots & \psi_{\Nelec}(\vec{r}_2) \\
+		\vdots & \vdots & \ddots & \vdots \\
+		\psi_1(\vec{r}_{\Nelec}) & \psi_2(\vec{r}_{\Nelec}) & \cdots & \psi_{\Nelec}(\vec{r}_{\Nelec}) \\
+	\end{array}
+	\right).
+\]
+Because of this observation $\wedgestring$
+is typically called a \newterm{Slater determinant}
+in standard quantum-chemistry textbooks.
+The functions $\psi_i \in L^2(\R^3, \C)$
+are usually called \newterm{single-particle functions},
+since they only depend on a single electronic coordinate.
+Another way of phrasing \eqref{eqn:DefExteriorPower}
+is therefore that $\bigwedge^{\Nelec} L^2(\R^3, \C)$
+is the space spanned by all Slater determinants
+consisting of $\Nelec$ single-particle functions from $L^2(\R^3, \C)$.
+
+\noindent
+Notice, that%
+\footnote{%
+	This observation is the reason why the single-particle functions
+	need to be square-integrable, \ie from $L^2(\R^3, \C)$.
+}
+\[ \bigwedge^{\Nelec} L^2(\R^3, \C) \subset L^2(\R^{3\Nelec}, \C), \]
+which allows to define a set of normalised $\Nelec$-electron functions
+\begin{equation}
+	\mathcal{W}_{\Nelec} \equiv \left\{ \Psi \in \bigwedge^{\Nelec} L^2(\R^3, \C)
+	\, \middle| \,
+	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
+	\label{eqn:DefSetSlaterDeterminant}
+\end{equation}
+These all satisfy the constraint imposed by the spin statistics theorem.
+We will often use the symbol $\Psi$ to refer to Slater determinant from
+from $\mathcal{W}_{\Nelec}$,
+\ie an element in this set, which can be written as a wedge product string
+$\wedgestring$ of single particle functions $\psi_i$.
+
+Returning to our question which domain to use for $\Op{H}_{\Nelec}$,
+we typically would use the domain
+\[ D(\Op{H}_{\Nelec}) = H^2(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
+for $\Op{H}_{\Nelec}$ to be self-adjoint
+and comply to condition \eqref{eqn:AsymElecWavefunction} as well.
+For completeness let us not that the form domain in this case would be
+\[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
+
+%------
+
+
+
+With the HVZ theorem and Zhislin 61
+
+
+Result:
+\begin{itemize}
+	\item Essential spectrum below continuous
+	\item Ground state always exist
+	\item Numerical modelling possible
+\end{itemize}
+
+
+%
+Quick note that real is possible
+
+%-----
+
+
+In the general case of an arbitrary molecular system \emph{including} spin,
+the determination of the spectral properties of $\Op{H}_{\Nelec}$
+can be rather involved,
+since we are dealing with the complex Hilbert space $L^2(\R^{3\Nelec}, \C^2)$
+and a non-isotropic problem.
+For our discussion we will therefore restrict ourselves
+in this section to spin-free atomic systems.
+As sketched in \cite{Teschl2014} and \cite{Reed1978}
+the results we obtain here can be largely
+generalised to molecular systems, however.
+
+For an atomic system, we can consider the nucleus to be located at the origin
+of the coordinate system, which allows us to simplify
+the Hamiltonian to
+% Argue that we can do the mathematical background in real function
+% arithmetic only and still use the results for complex input due to linearity.
+%$\Psi \in H^2(\R^{3d}, \R)$
