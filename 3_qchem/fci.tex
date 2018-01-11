@@ -19,6 +19,22 @@ Note, that $\Norb \le \Nbas$.}
 % Slater determinants with spin
 % FCI ansatz
 
+
+\todo[inline,caption={}]{
+which allows to define a set of normalised $\Nelec$-electron functions
+\begin{equation}
+	\mathcal{W}_{\Nelec} \equiv \left\{ \Psi \in \bigwedge^{\Nelec} L^2(\R^3, \C)
+	\, \middle| \,
+	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
+	\label{eqn:DefSetSlaterDeterminant}
+\end{equation}
+These all satisfy the constraint imposed by the spin statistics theorem.
+We will often use the symbol $\Phi$ to refer to Slater determinant from
+from $\mathcal{W}_{\Nelec}$,
+\ie an element in this set, which can be written as a wedge product string
+$\wedgestring$ of single particle functions $\psi_i$.
+}
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item 
@@ -49,3 +65,14 @@ Note, that $\Norb \le \Nbas$.}
 % Need to compute certain integrals
 % So-called Slater-Condon rules simplify problem
 % Won't go into details here
+
+
+\todoil{
+	Quick note that real is possible: \\
+For an atomic system, we can consider the nucleus to be located at the origin
+of the coordinate system, which allows us to simplify
+the Hamiltonian to \\
+Argue that we can do the mathematical background in real function
+arithmetic only and still use the results for complex input due to linearity.
+$\Psi \in H^2(\R^{3d}, \R)$
+}

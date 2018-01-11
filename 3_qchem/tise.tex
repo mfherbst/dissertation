@@ -354,7 +354,7 @@ and the hydrogen-like Hamiltonian \eqref{eqn:OpHydrogen}
 we choose the underlying Hilbert space of $\Op{H}_{\Nelec}$
 to be $L^2(\R^3, \C)$.
 Due to Kato's theorem~\cite{Kato1951} $\Op{H}_{\Nelec}$
-becomes self-adjoint if we set its domain to $D(\Op{H}_{\Nelec} = H^2(\R^{3\Nelec}, \C)$.
+becomes self-adjoint if we set its domain to $D(\Op{H}_{\Nelec}) = H^2(\R^{3\Nelec}, \C)$.
 Not all functions in $H^2(\R^{3\Nelec}, \C)$ are physical, however.
 Since electrons are spin-$\sfrac12$ particles,
 the spin statistics theorem~\cite{Shankar1994} of quantum field theory
@@ -416,10 +416,10 @@ One can identify
 the application of a wedge product string like $\wedgestring$
 onto the electronic coordinates $\vec{x}$
 with the evaluation of a determinant, \ie
-\[
+\begin{align*}
 	\Big(\wedgestring\Big) (\vec{x})
-	\equiv
-	\frac{1}{\sqrt{\Nelec}} \det
+	&\equiv \Big(\wedgestring\Big) (\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_{\Nelec}) \\
+	\equiv \frac{1}{\sqrt{\Nelec}} &\det
 	\left(
 	\begin{array}{*{6}{l}}
 		\psi_1(\vec{r}_1) & \psi_2(\vec{r}_1) & \cdots & \psi_{\Nelec}(\vec{r}_1) \\
@@ -428,7 +428,7 @@ with the evaluation of a determinant, \ie
 		\psi_1(\vec{r}_{\Nelec}) & \psi_2(\vec{r}_{\Nelec}) & \cdots & \psi_{\Nelec}(\vec{r}_{\Nelec}) \\
 	\end{array}
 	\right).
-\]
+\end{align*}
 Because of this observation $\wedgestring$
 is typically called a \newterm{Slater determinant}
 in standard quantum-chemistry textbooks.
@@ -439,70 +439,198 @@ Another way of phrasing \eqref{eqn:DefExteriorPower}
 is therefore that $\bigwedge^{\Nelec} L^2(\R^3, \C)$
 is the space spanned by all Slater determinants
 consisting of $\Nelec$ single-particle functions from $L^2(\R^3, \C)$.
-
-\noindent
 Notice, that%
 \footnote{%
 	This observation is the reason why the single-particle functions
 	need to be square-integrable, \ie from $L^2(\R^3, \C)$.
 }
-\[ \bigwedge^{\Nelec} L^2(\R^3, \C) \subset L^2(\R^{3\Nelec}, \C), \]
-which allows to define a set of normalised $\Nelec$-electron functions
-\begin{equation}
-	\mathcal{W}_{\Nelec} \equiv \left\{ \Psi \in \bigwedge^{\Nelec} L^2(\R^3, \C)
-	\, \middle| \,
-	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
-	\label{eqn:DefSetSlaterDeterminant}
-\end{equation}
-These all satisfy the constraint imposed by the spin statistics theorem.
-We will often use the symbol $\Psi$ to refer to Slater determinant from
-from $\mathcal{W}_{\Nelec}$,
-\ie an element in this set, which can be written as a wedge product string
-$\wedgestring$ of single particle functions $\psi_i$.
+\[ \bigwedge^{\Nelec} L^2(\R^3, \C) \subset L^2(\R^{3\Nelec}, \C) \]
+is dense.
 
-Returning to our question which domain to use for $\Op{H}_{\Nelec}$,
-we typically would use the domain
-\[ D(\Op{H}_{\Nelec}) = H^2(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
-for $\Op{H}_{\Nelec}$ to be self-adjoint
-and comply to condition \eqref{eqn:AsymElecWavefunction} as well.
-For completeness let us not that the form domain in this case would be
+If we want to encode condition \eqref{eqn:AsymElecWavefunction}
+into our problem an easy solution is to combine this with Kato's theorem
+and employ the domain
+\begin{equation}
+	D(\Op{H}_{\Nelec}) = H^2(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C)
+	\label{eqn:ElectronicHamiltonianDomain}
+\end{equation}
+for the electronic Hamiltonian $\Op{H}_{\Nelec}$.
+This makes both the operator self-adjoint and the electronic wavefunction
+comply with the spin statistics theorem.
+The analogous form domain in this case would be
 \[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
 
-%------
+For establishing the spectral properties of $\Op{H}_{\Nelec}$,
+there is first the important HVZ theorem~\cite{Zhislin1959,Zhislin1960,Reed1978,Teschl2014}
+after Hunziker, van Winter and Zhislin.
+\begin{thm}[HVZ]
+	\label{thm:HVZ}
+	Let $\Op{H}_{\Nelec}$ be the self-adjoint operator of \eqref{eqn:ElectronicHamiltonian}
+	on the Hilbert space $L^2(\R^{3\Nelec}, \C)$
+	with the domain given in \eqref{eqn:ElectronicHamiltonianDomain}.
+	Then $\Op{H}_{\Nelec}$ is bounded from below and
+	\[ \sigma_\text{ess}\left(\Op{H}_{\Nelec}\right) = [\Sigma_{\Nelec}, +\infty) \]
+	with
+	\[ \Sigma_{\Nelec} = \left\{
+		\begin{array}{ll}
+			0 & \text{ if $\Nelec = 1$} \\
+			\inf \sigma\left(\Op{H}_{\Nelec-1}\right) < 0 & \text{ if $\Nelec \geq 2$}
+		\end{array}
+		\right. .
+	\]
+\end{thm}
+This theorem establishes a link between
+the lower bound of the essential spectrum
+of the electronic Hamiltonian of a $\Nelec$-electron system
+and the lower bound of the complete spectrum of
+a corresponding $\Nelec - 1$ electron system
+with the same nuclear arrangement.
 
+For characterising the discrete spectrum of $\Op{H}_{\Nelec}$
+we employ the important results by \citet{Zhislin1961} and \citet{Yafaev1976},
+summarised by the following proposition.
+\begin{prop}
+	\label{prop:ZhislinYafaev}
+	Let $\Op{H}_{\Nelec}$ be the $\Nelec$-electron electronic Hamiltonian
+	operator of \eqref{eqn:ElectronicHamiltonian}
+	with domain as stated in \eqref{eqn:ElectronicHamiltonianDomain}.
+	Let further $Z_\text{tot} := \sum_{A=1}^M Z_A$ denote the total nuclear charge.
+	\begin{itemize}
+		\item If $\Nelec \leq Z_\text{tot}$, \ie we consider a \emph{neutral}
+			or \emph{positively charged} system, then
+			$\Op{H}_{\Nelec}$
+			has an infinite number of discrete eigenvalues
+			below the essential spectrum.
+		\item If $\Nelec \geq 1 + Z_\text{tot}$ (\emph{negatively charged} system),
+			then $\Op{H}_{\Nelec}$ has \emph{at most} a finite number of discrete
+			states below the essential spectrum.
+	\end{itemize}
+	\begin{proof}
+		See~\cite{Zhislin1961,Yafaev1976}.
+	\end{proof}
+\end{prop}
+Before we discuss the physical interpretation of these results,
+let us first introduce some terminology.
+If we are either concerned with a neutral or positively charged
+$\Nelec$-electron system or a negatively charged system
+with at least a single discrete eigenvalue, we can define a \newterm{ground state energy}
+\begin{equation}
+	E^{\Nelec}_0 = \min \sigma\left(\Op{H}_{\Nelec}\right) = \Sigma_{\Nelec}
+	\label{eqn:GroundStateEnergy}
+\end{equation}
+We order the energies of the discrete spectrum ordered as usual
+\[ E^{\Nelec}_0 \leq E^{\Nelec}_1 \leq E^{\Nelec}_2 \leq \cdots \]
+and associate with these eigenvalues
+the corresponding (bound) eigenstates
+\[ \Psi_0, \Psi_1, \Psi_2, \ldots. \]
+All states $\Psi_i$ which have an energy eigenvalue $E^{\Nelec}_i = E^{\Nelec}_0$
+are commonly refered to as the \newterm{ground state}.
+If $E^{\Nelec}_0$ is not degenerate by construction
+$\Psi_0$ is the ground state.
+All other states $\Psi_i$ with $E^{\Nelec}_i \neq E^{\Nelec}_0$
+are called \newterm{excited states}.
 
+For negatively charged systems we similarly use the
+term ``ground state'' to refer to the state or states corresponding
+to the lowest eigenvalue of $\sigma_P\left(\Op{H}_{\Nelec}\right)$
+and ``excited states'' for the other eigenfunctions of $\Op{H}_{\Nelec}$.
+Note, however, that for negatively charged systems
+the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is possible.
 
-With the HVZ theorem and Zhislin 61
+\begin{rem}[Physical interpretation of the spectrum]
+	In this remark we will summarise the results,
+	which can be deduced from the HVZ theorem \vref{thm:HVZ}
+	and from proposition \vref{prop:ZhislinYafaev}.
 
+	\todoil{Figure ?}
+	Let us first consider a neutral or positively charged
+	system with $\Nelec$ electrons.
+	It has a ground states as well as an infinite number
+	of discrete and bound excited states
+	until the ground state energy $E^{\Nelec-1}_0$
+	of the corresponding $(\Nelec-1)$-electron
+	with the same nuclear arrangement is hit.
+	Note, that we can be sure that $E^{\Nelec-1}_0$
+	exists, because the $(\Nelec-1)$-electron system
+	is positively charged.
+	This behaviour is easy to understand phyiscally.
+	As soon as the energy $E^{\Nelec-1}_0$ is reached
+	our $\Nelec$-electron system can always
+	separate into a stable system with $\Nelec-1$
+	bound electrons and an unbound $\Nelec$-th electron
+	taking the excess energy into the continuum.
+	From this we can easily understand the energy difference
+	$E^{\Nelec-1}_0 - E^{\Nelec}_0$
+	as the ionisation energy.
+	Note, that embedded inside the emerging continuum
+	at energies beyond $E^{\Nelec-1}_0$
+	may still be bound states of the $(\Nelec-1)$-electron system.
+	In other words in general we have
+	\[ \sigma_C\left(\Op{H}_{\Nelec}\right)
+		\subsetneq \sigma_\text{ess}\left(\Op{H}_{\Nelec}\right). \]
 
-Result:
-\begin{itemize}
-	\item Essential spectrum below continuous
-	\item Ground state always exist
-	\item Numerical modelling possible
-\end{itemize}
+	If the $\Nelec$-system is of single negative charge
+	and possesses no bound states below the essential spectrum,
+	this implies
+	\[ \inf \sigma\left(\Op{H}_{\Nelec}\right)
+		= \inf \sigma\left(\Op{H}_{\Nelec-1}\right) = E^{\Nelec-1}_0 \]
+	since the $\Nelec-1$-electron system is neutral,
+	thus possesses a ground state.
+	In other words all bound states of this system
+	are embedded inside the continuum.
+	The system thus happily separates into a bound $(\Nelec-1)$-electron system
+	and an unbound electron at all energies:
+	This negative ion is not stable.
+	Conversely for stable negative ions
+	we would expect at least a single bound state to exist.
 
+	Unlike neutral or positively charged systems,
+	negatively charged systems in each case only possess a
+	finite number of bound states below
+	the essential spectrum.
 
-%
-Quick note that real is possible
+	To summarise this remark, let us note the following
+	interesting observations,
+	which are now backed by rigorous mathematical observations:
+	\begin{itemize}
+		\item The essential spectrum marks the energies
+			at which a chemical system is unstable,
+			because it can separate into (one or more) unbound electron
+			plus a stable system with a
+			reduced number of bound electrons.
+		\item Forming a positive ion always costs energy.
+		\item All systems with more than one electron
+			will produce unbound electrons,
+			\ie ionise, at large-enough energies (in vacuum).
+		\item Not all negative ions possess a stable ground state (in vacuum).
+		\item All positive ions possess a stable ground state (in vacuum).
+	\end{itemize}
+\end{rem}
 
-%-----
+\begin{rem}[Consequences for a numerical treatment]
+	\todoil{Rephrase}
+	From proposition \ref{prop:ZhislinYafaev}
+	we can immediately deduce,
+	that there are no problems with neutral or positively charged
+	systems under a variational numerical treatment as discussed
+	in section \vref{sec:Projection}.
+	Both the ground state as well as the first few
+	excited states are located below the
+	essential spectrum and thus accessible for the treatment
+	described in remark \vref{rem:ApproxBottomDiscrete}.
 
-
-In the general case of an arbitrary molecular system \emph{including} spin,
-the determination of the spectral properties of $\Op{H}_{\Nelec}$
-can be rather involved,
-since we are dealing with the complex Hilbert space $L^2(\R^{3\Nelec}, \C^2)$
-and a non-isotropic problem.
-For our discussion we will therefore restrict ourselves
-in this section to spin-free atomic systems.
-As sketched in \cite{Teschl2014} and \cite{Reed1978}
-the results we obtain here can be largely
-generalised to molecular systems, however.
-
-For an atomic system, we can consider the nucleus to be located at the origin
-of the coordinate system, which allows us to simplify
-the Hamiltonian to
-% Argue that we can do the mathematical background in real function
-% arithmetic only and still use the results for complex input due to linearity.
-%$\Psi \in H^2(\R^{3d}, \R)$
+	For negative ions we might get into trouble.
+	If the ion is stable,
+	then at least its ground state can be approximated
+	numerically via remark \ref{rem:ApproxBottomDiscrete}.
+	If it is not, we might not even be able to get
+	its ground state.
+	The problem is, as usual, that in the numerical treatment
+	we cannot easily distinguish between approximations
+	to bound states and approximations to continuous states
+	if they are located in the same energy range
+	as they are in the essential spectrum.
+	So our numerical treatment will always yield
+	an apparent ground state.
+	Whether it is physical or not.
+\end{rem}
