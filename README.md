@@ -1,9 +1,10 @@
 # Dissertation
 [![Build Status](https://travis-ci.com/mfherbst/dissertation.svg?token=mMrhPoF738uUamSScbrZ&branch=master)](https://travis-ci.com/mfherbst/dissertation)
 
-This repository contains the TeX and python source code to build
-my PhD thesis.
-The whole thing is heavily work in progress right now of course ;).
+This repository contains the TeX and python source code to build my PhD thesis.
+The whole thing is heavily work in progress right now of course ;).  
+
+[Download recent version](https://github.com/mfherbst/dissertation/releases/download/recent/dissertation.pdf)
 
 ## Building
 Should be as simple as
