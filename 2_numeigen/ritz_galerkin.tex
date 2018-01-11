@@ -196,15 +196,15 @@ sketch an approximation method for our setting.
 
 	Let $U \subset Q(\Op{A})$ be a dense subspace.
 	We can span a sequence of subspaces $(S_{\Nbas}) \subset Q(\Op{A})$
-	by selecting larger and larger sets $\{\chi_\mu\}_{\mu \in \Ibas}$
-	of $\Nbas = \abs{\Ibas}$ orthonormal basis functions $\chi_\mu \in U$
+	by selecting larger and larger sets $\{\varphi_\mu\}_{\mu \in \Ibas}$
+	of $\Nbas = \abs{\Ibas}$ orthonormal basis functions $\varphi_\mu \in U$
 	as the bases.
 	Since $U$ is a dense subspace of the separable Hilbert space
 	$\hilbert$, it is separable as well.
 	Therefore we know that
 	in the limit of $\Nbas \to \infty$,
-	$\spacespan \{\chi_\mu\}_{\mu \in \Ibas}$ will tend towards $U$.
-	Thus $\spacespan \{\chi_\mu\}_{\mu \in \Ibas}$ eventually allows
+	$\spacespan \{\varphi_\mu\}_{\mu \in \Ibas}$ will tend towards $U$.
+	Thus $\spacespan \{\varphi_\mu\}_{\mu \in \Ibas}$ eventually allows
 	to construct Cauchy sequences, which approximate each $v \in Q(\Op{A})$
 	up to arbitrary accuracy.
 	In other words the sequence $(S_{\Nbas})$ with $\Nbas$ increasing
@@ -215,7 +215,7 @@ sketch an approximation method for our setting.
 	to our eigenvalues of interest
 	by solving the variational problem \eqref{eqn:varProblem}
 	in subspaces spanned by larger and larger
-	basis sets $\{\chi_\mu\}_{\mu \in \Ibas} \subset U$.
+	basis sets $\{\varphi_\mu\}_{\mu \in \Ibas} \subset U$.
 	This results in more and more accurate approximations
 	of the corresponding bound eigenstates as well.
 \end{rem}
@@ -225,19 +225,19 @@ sketch an approximation method for our setting.
 	We are again in the setting of remark \ref{rem:ApproxBottomDiscrete}.
 
 	\noindent
-	If $S_{\Nbas} = \spacespan \{\chi_\mu\}_{\mu \in \Ibas}$, we can expand
-	\[ v^{(n)}_i = \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \chi_\nu \qquad \text{with} \quad C^{(n)}_{\nu i} \equiv \braket{\chi_\nu}{v^{(n)}_i} \]
+	If $S_{\Nbas} = \spacespan \{\varphi_\mu\}_{\mu \in \Ibas}$, we can expand
+	\[ v^{(n)}_i = \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \varphi_\nu \qquad \text{with} \quad C^{(n)}_{\nu i} \equiv \braket{\varphi_\nu}{v^{(n)}_i} \]
 	and thus reformulate \eqref{eqn:varProblem} to become
 	\begin{equation}
 		\label{eqn:DiscretisedEigenproblemHalfWay}
 		\left\{
 		\begin{aligned}
 			\text{Search $\lambda_i^{(n)}$ and $C^{(n)}_{\nu i}$ such that} \hspace{30pt} & \\
-			\forall \chi_\mu \in S_{\Nbas}:
-			\quad \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, a(\chi_\mu, \chi_\nu)
-			&= \lambda_i^{(n)} \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, \braket{\chi_\mu}{\chi_\nu}\\
+			\forall \varphi_\mu \in S_{\Nbas}:
+			\quad \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, a(\varphi_\mu, \varphi_\nu)
+			&= \lambda_i^{(n)} \sum_{\nu\in\Ibas} C^{(n)}_{\nu i} \, \braket{\varphi_\mu}{\varphi_\nu}\\
 			1 &= 
-			\sum_{\nu\in\Ibas} \sum_{\mu\in\Ibas} \cc{\left(C^{(n)}_{\mu i}\right)} \braket{\chi_\mu}{\chi_\nu} C^{(n)}_{\nu i}
+			\sum_{\nu\in\Ibas} \sum_{\mu\in\Ibas} \cc{\left(C^{(n)}_{\mu i}\right)} \braket{\varphi_\mu}{\varphi_\nu} C^{(n)}_{\nu i}
 		\end{aligned}
 		\right\}.
 	\end{equation}
@@ -245,8 +245,8 @@ sketch an approximation method for our setting.
 	and the vectors $\vec{c}^{(n)}_i \in \C^{\Nbas}$
 	with elements
 	\begin{align}
-		\eqref{eqn:DiscretisationExpression}
-		A_{\mu\nu} &= a(\chi_\mu, \chi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\chi_\nu}{v^{(n)}_i} = C^{(n)}_{\mu i}
+		\label{eqn:DiscretisationExpression}
+		A_{\mu\nu} &= a(\varphi_\mu, \varphi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\varphi_\nu}{v^{(n)}_i} = C^{(n)}_{\mu i}
 	\end{align}
 	we can write \eqref{eqn:DiscretisedEigenproblemHalfWay}
 	as the matrix eigenvalue problem
@@ -269,7 +269,7 @@ sketch an approximation method for our setting.
 	\label{rem:ChoiceBasisFunction}
 In light of the numerical approach sketched in
 remarks \ref{rem:ApproxBottomDiscrete} and \ref{rem:DiscreteFormulation}
-let us summarise the requirements towards the basis functions $\chi_\mu$
+let us summarise the requirements towards the basis functions $\varphi_\mu$
 for solving the discretised problem \eqref{eqn:DiscretisedEigenproblem}.
 \begin{itemize}
 	\item The basis function type should admit
