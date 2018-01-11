@@ -14,48 +14,107 @@ typically $i$-th eigenfunction of the Fock operator, i.e.~a Hartree-Fock orbital
 \nomenclature{$\Norb$}{The number of computed SCF orbitals.
 Note, that $\Norb \le \Nbas$.}
 
+In this section we want to develop a numerical treatment
+for solving the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}.
+
+Form domain
+\[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
+
+Dense subspace is
+\[ \tilde{Q}(\Op{H}_{\Nelec}) =  \bigwedge^{\Nelec} H^1(\R^3, \C) \]
+By definition
+\[
+	\tilde{Q}(\Op{H}_{\Nelec}) = \spacespan \left\{
+		\bigwedge_{i=1}^{\Nelec} \psi_i
+		\, \middle| \,
+		\psi_i \in H^1(\R^{3\Nelec}, \C) \, \forall i = 1, \ldots, \Nelec
+	\right\}
+\]
+By definition of the wedge product
+\begin{align*}
+	\psi_1 \wedge \psi_1 &= 0 & \psi_1 \wedge (\psi_1 + \psi_2) &= \psi_1 \wedge \psi_2 + \psi_1 \wedge \psi_2.
+\end{align*}
+In other words we can easily restrict ourselves to orthonormal
+functions from $H^1(\R^{3\Nelec}, \C)$
+and write equivalently
+\[
+	\tilde{Q}(\Op{H}_{\Nelec}) = \spacespan \left\{
+		\bigwedge_{i=1}^{\Nelec} \psi_i
+		\, \middle| \,
+		\psi_i \in H^1(\R^{3\Nelec}, \C),
+		\braket{\psi_i}{\psi_j} = \delta_{ij}
+		\, \forall i,j = 1, \ldots, \Nelec
+	\right\}.
+\]
+Note, that from the construction of $\tilde{Q}(\Op{H}_{\Nelec})$
+as an exterior power of $H^1(\R^3, \C)$
+it also follows that for two determinants
+\begin{align*}
+	\Phi &= \bigwedge_{i=1}^{\Nelec} \psi_i &
+	\tilde{\Phi} &= \bigwedge_{i=1}^{\Nelec} \tilde{\psi}_i
+\end{align*}
+we have
+\[
+	\braket{\Phi}{\tilde{\Phi}}_{\tilde{Q}(\Op{H}_{\Nelec})}
+	= \prod_{i=1}^{\Nelec} \braket{\psi_i}{\tilde{\psi}_i}_{H^1(\R^{3\Nelec}, \C)}
+\]
+
+Following the Ritz-Galerkin approach
+as sketched in remark \vref{rem:DiscreteFormulation}
+one of our tasks is to evaluate the sesquilinar form
+$a(\Phi_1, \Phi_2)$ for $\Phi_1, \Phi_2 \in \tilde{Q}(\Op{H}_{\Nelec})$ or a subspace of $\tilde{Q}(\Op{H}_{\Nelec})$.
+We now want to construct a general evaluation scheme
+for this form for the operator $\Op{H}_{\Nelec}$.
+For this let us consider the determinant
+\[
+	\Phi_0 \equiv \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_i \wedge \cdots \wedge \psi_{\Nelec}
+\]
+which we will also call \newterm{reference determinant}
+and for arbitrary $i,j \in \{1,\ldots,\Nelec\}$
+with $i \neq j$
+and arbitrary%
+\footnote{We choose the symbols $\psi_a$, $\psi_b$ and $\psi_c$ to refer to these functions in order to resemble the notation known from quantum chemistry. It should be noted however, that $a$ and $b$ are not necessarily integer numbers, since the dimensionality of $H^1(R^{3\Nelec}$ is not countable.}
+$\psi_a, \psi_b, \psi_c \in H^1(R^{3\Nelec}, \C)$
+with
+\begin{align*}
+	\forall \alpha,\beta \in \{a,b,c\}: \quad
+	\braket{\psi_\alpha}{\psi_\beta} &= 0
+	&
+	\forall \alpha \in \{a,b,c\}, i \in \{1,\ldots,\Nelec\}: \quad
+	\braket{\psi_\alpha}{\psi_i} &= 0
+\end{align*}
+the determinants
+\begin{align*}
+	\Phi_i^a &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge \cdots \wedge \psi_{\Nelec} \\
+	\Phi_{ij}^{ab} &= todo \\
+	\Phi_{ijk}^{abc} &= todo
+\end{align*}
+i.e. where one, two or three single particle functions are replaced
+compared to the reference determinant.
+
+According to the Slater-Condon rules
+\todoil{State that only up to two differences contribute}
+more precisely
+\todoil{Decompose $\Op{H}_{\Nelec}$ into terms and
+show for them separately (one-electron and two-electron terms)}
+\todoil{Present explicit expressions for the individual
+	terms. Perhaps already introduce the J and K operators
+and use the functional form and formalism of Cances}
+
+
+\todoil{Sketch treatment if one-particle basis is introduced}
+\todoil{Sketch treatment if $H^1(\R^3, \C)$ truncated to finite size.}
+\todoil{Explain where the name FCI comes from}
+
+Exact treatment as of section \vref{sec:ElectronicSchrödinger}
+
+
+
+
 % Note that we need a more general setting here.
 % Discuss how spin is included
 % Slater determinants with spin
 % FCI ansatz
-
-
-\todo[inline,caption={}]{
-which allows to define a set of normalised $\Nelec$-electron functions
-\begin{equation}
-	\mathcal{W}_{\Nelec} \equiv \left\{ \Psi \in \bigwedge^{\Nelec} L^2(\R^3, \C)
-	\, \middle| \,
-	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
-	\label{eqn:DefSetSlaterDeterminant}
-\end{equation}
-These all satisfy the constraint imposed by the spin statistics theorem.
-We will often use the symbol $\Phi$ to refer to Slater determinant from
-from $\mathcal{W}_{\Nelec}$,
-\ie an element in this set, which can be written as a wedge product string
-$\wedgestring$ of single particle functions $\psi_i$.
-}
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item 
-	Define reference determinant
-	\[ \Phi_0 = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_i \wedge \cdots \wedge \psi_{\Nelec} \]
-	and introduce excitation formalism
-	\[ \Phi_i^a = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge \cdots \wedge \psi_{\Nelec} \]
-	\item
-	Define
-	\[ \Phi = \psi_1 \wedge \psi_2 \wedge \cdots \psi_{\Nelec} \]
-	and
-	\[ \tilde{\Phi} = \tilde{\psi}_1 \wedge \tilde{\psi}_2 \wedge \cdots \tilde{\psi}_{\Nelec} \]
-	Discuss elements
-	\[ \braket{\Phi}{\tilde{\Phi}}_{space} = \braket{\psi_1}{\tilde{\psi}_1}_{L^2(\R^3, \C)} \cdots \]
-	(Follows by construction of tensor product Hilbert space)
-	\item Discuss Slater-Condon rules and thus the terms of $a(\Phi, \tilde{\Phi})$
-	\item Take basis functions $\varphi_\mu \in H^1(\R^3, \C)$
-		to make sure the resulting determinants are in $Q(\Op{H})$.
-		This is fine since all is dense.
-\end{itemize}
-}
 
 
 % Slater-determinant is a way to construct many-particle basis set
