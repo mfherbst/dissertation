@@ -402,22 +402,28 @@ Such a space is the $\Nelec$-th \newterm{exterior power} of $L^2(\R^3, \C)$ defi
 	\, \Big| \, \psi_i \in L^2(\R^3, \C) \, \forall i = 1, \ldots \Nelec \Big\}.
 	\label{eqn:DefExteriorPower}
 \end{equation}
-The key component of this definition is the wedge product
+The key component of this definition is the \newterm{wedge product}
 or \newterm{exterior product} $f \wedge g$.
-This operation is a generalisation from the cross product $\vec{a} \times \vec{b}$
-for vectors $\vec{a}, \vec{b} \in \R^3$
-towards other vector spaces,
-possibly of infinite dimensionality.
-The wedge product is totally antisymmetric and is closely related
-to the tensor product $f \otimes g$.
+This product is totally antisymmetric with respect to its operands
+and is closely related to the tensor product $f \otimes g$.
 For example if $f, g \in L^2(\R^3, \C)$, then $f \wedge g \in L^2(\R^6, \C)$.
-\todoil{Check the following statement with someone who knows}
-One can identify
-the application of a wedge product string like $\wedgestring$
+In some sense one can think of the wedge product
+as a generalisation of the  cross product $\vec{a} \times \vec{b}$
+for vectors $\vec{a}, \vec{b} \in \R^3$.
+This is somewhat apparent from its properties.
+Notice for example
+\begin{align}
+	\label{eqn:PropertiesExteriorProduct}
+	\psi_1 \wedge \psi_1 &= 0, &\psi_1 \wedge \psi_2 &= -\psi_2 \wedge \psi_1, &
+	\psi_1 \wedge (c_1 \psi_1 + c_2 \psi_2) &= c_2 \psi_1 \wedge \psi_2
+\end{align}
+for any $\psi_1, \psi_l \in L^2(\R^3, \C)$ and any $c_1, c_2 \in \C$.
+One may identify the application of a wedge product string like
+\[ \bigwedge_{i=1}^{\Nelec} \psi_i \equiv \wedgestring \]
 onto the electronic coordinates $\vec{x}$
 with the evaluation of a determinant, \ie
 \begin{align*}
-	\Big(\wedgestring\Big) (\vec{x})
+	\left( \bigwedge_{i=1}^{\Nelec} \psi_i \right) (\vec{x})
 	&\equiv \Big(\wedgestring\Big) (\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_{\Nelec}) \\
 	\equiv \frac{1}{\sqrt{\Nelec}} &\det
 	\left(
@@ -444,8 +450,8 @@ Notice, that%
 	This observation is the reason why the single-particle functions
 	need to be square-integrable, \ie from $L^2(\R^3, \C)$.
 }
-\[ \bigwedge^{\Nelec} L^2(\R^3, \C) \subset L^2(\R^{3\Nelec}, \C) \]
-is dense.
+\[ \bigwedge^{\Nelec} L^2(\R^3, \C) \subset L^2(\R^{3\Nelec}, \C), \]
+exterior power on the left hand side is even dense in the space on the right.
 
 If we want to encode condition \eqref{eqn:AsymElecWavefunction}
 into our problem an easy solution is to combine this with Kato's theorem

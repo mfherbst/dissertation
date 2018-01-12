@@ -1,16 +1,30 @@
 \section{Single-determinant ansatz}
-
+\nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$/$\beta$ electrons.
+Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
+\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{0, \ldots \Norb\}$}
+\nomenclature{$\Norb$}{The number of computed SCF orbitals.
+Note, that $\Norb \le \Nbas$.}
 
 \defineabbr{HF}{HF\xspace}{Hartree-Fock}
 \nomenclature{$\OpFock, \OpFockFull$}{$1$-electron Fock operator (dependent on its eigenfunctions $\{ \varphi_i \}_{i \in \Iorb}$)}
-\nomenclature{$\Op{K}$}{One-electron exchange operator}
-\nomenclature{$\Op{J}$}{Effective Coulomb operator}
-\defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
-\nomenclature{$(ij|kl)$}{Electron repulsion integrals in chemist's or Mullikan notation, see definition at TODO}
 \nomenclature{$\Op{\rho}$}{Density operator}
 \nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{0, \ldots, \NelecA\}$ and similar for $\IoccB$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
 	If the error is below this value, the process should be considered converged.}
+
+% Note that we need a more general setting here.
+% Discuss how spin is included
+% Slater determinants with spin
+\todoil{
+	Quick note that real is possible: \\
+For an atomic system, we can consider the nucleus to be located at the origin
+of the coordinate system, which allows us to simplify
+the Hamiltonian to \\
+Argue that we can do the mathematical background in real function
+arithmetic only and still use the results for complex input due to linearity.
+$\Psi \in H^2(\R^{3d}, \R)$
+}
+
 
 
 \todo[inline,caption={}]{
