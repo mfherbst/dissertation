@@ -1,0 +1,161 @@
+\chapter{Symmetry properties of the electron repulsion integrals}
+\label{apx:ERIProps}
+
+\newcommand{\iicol}{\textcolor{  dkred!92!white}{i}}
+\newcommand{\jjcol}{\textcolor{ dkblue!92!white}{j}}
+\newcommand{\kkcol}{\textcolor{dkgreen!92!white}{k}}
+\newcommand{\llcol}{\textcolor{ orange!92!white}{l}}
+
+As usual we define in physicist's indexing convention and in Mulliken convention
+\begin{align*}
+	\eriPh{\iicol\jjcol}{\kkcol\llcol} &= \int_\Omega \int_\Omega
+		\cc{\psi_{\iicol}}\left(\vec{r}_1\right)
+		\cc{\psi_{\jjcol}}\left(\vec{r}_1\right)
+		\frac{1}{r_{12}}
+		\psi_{\kkcol} \left(\vec{r}_2\right)
+		\psi_{\llcol} \left(\vec{r}_2\right)
+		\D \vec{r}_1
+		\D \vec{r}_2 \\
+	&= \eriMu{\iicol\kkcol}{\jjcol\llcol}
+\end{align*}
+and define the antisymmetrised repulsion integrals as
+\[ \eriAsym{\iicol\jjcol}{\kkcol\llcol}
+	= \eriPh{\iicol\jjcol}{\kkcol\llcol} - \eriPh{\jjcol\iicol}{\kkcol\llcol}
+	= \eriMu{\iicol\kkcol}{\jjcol\llcol} - \eriMu{\jjcol\kkcol}{\iicol\llcol} .
+\]
+They have 4-fold symmetry in Mulliken convention:
+\begin{align}
+	\label{propEriMuShellPair}
+	\eriMu{\iicol \jjcol}{\kkcol \llcol} &= \eriMu{\kkcol \llcol}{\iicol \jjcol} &&\text{Swap shell pairs} \\
+	\label{propEriMuBothShellPair}
+	&= \cc{\eriMu{\jjcol \iicol}{\llcol \kkcol}} &&\text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \cc{\eriMu{\llcol \kkcol}{\jjcol \iicol}} &&\text{Both the above}
+%
+\intertext{and of course 4-fold in physicist's convention as well}
+%
+	\label{propEriPhShellPair}
+	\eriPh{\iicol\kkcol}{\jjcol\llcol} &= 
+	\eriPh{\kkcol\iicol}{\llcol\jjcol} && \text{Swap shell pairs} \\
+	\label{propEriPhBothShellPair}
+	&= \cc{\eriPh{\jjcol \llcol}{\iicol \kkcol}} &&\text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \cc{\eriPh{\llcol \jjcol}{\kkcol \iicol}} &&\text{Both the above}
+%
+\intertext{The asymmetric integrals have 8-fold symmetry:}
+%
+	\label{propEriAsymShellPair}
+	\eriAsym{\iicol\kkcol}{\jjcol\llcol} &=
+	\eriAsym{\kkcol\iicol}{\llcol\jjcol}           &&\text{Swap shell pairs} \\
+	\label{propEriAsymBothShellPair}
+	&= \cc{\eriAsym{\jjcol \llcol}{\iicol \kkcol}} &&\text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \cc{\eriAsym{\llcol \jjcol}{\kkcol \iicol}} &&\text{Both the above} \\
+	\label{propEriAsymAsym}
+	&= -\eriAsym{\kkcol\iicol}{\jjcol\llcol}        &&\text{Antisymmetry} \\
+	\nonumber
+	&= -\eriAsym{\iicol\kkcol}{\llcol\jjcol}        &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymShellPair}} \\
+	\nonumber
+	&= -\cc{\eriAsym{\llcol \jjcol}{\iicol \kkcol}} &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymBothShellPair}} \\
+	\nonumber
+	&= -\cc{\eriAsym{\jjcol \llcol}{\kkcol \iicol}} &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymBothShellPair}}
+%
+\intertext{For \textbf{real orbitals} we get a full 8-fold symmetry in the ERI tensor:}
+%
+	\label{propEriMuRealShellPair}
+	\eriMu{\iicol \jjcol}{\kkcol \llcol}
+	&= \eriMu{\kkcol \llcol}{\iicol \jjcol}
+	&& \text{Swap shell pairs} \\
+	\label{propEriMuRealFirstShellPair}
+	&= \eriMu{\jjcol \iicol}{\kkcol \llcol}
+	&& \text{Swap inside \textit{first} shell pair} \\
+	\label{propEriMuRealSecondShellPair}
+	&= \eriMu{\iicol \jjcol}{\llcol \kkcol}
+	&& \text{Swap inside \textit{second} shell pair} \\
+	\label{propEriMuRealBothShellPair}
+	&= \eriMu{\jjcol \iicol}{\llcol \kkcol}
+	&& \text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \eriMu{\llcol \kkcol}{\iicol \jjcol}
+	&& \text{\eqref{propEriMuRealShellPair} and \eqref{propEriMuRealFirstShellPair}} \\
+	\nonumber
+	&= \eriMu{\kkcol \llcol}{\jjcol \iicol}
+	&& \text{\eqref{propEriMuRealShellPair} and \eqref{propEriMuRealSecondShellPair}} \\
+	\nonumber
+	&= \eriMu{\llcol \kkcol}{\jjcol \iicol}
+	&& \text{\eqref{propEriMuRealShellPair} and \eqref{propEriMuRealBothShellPair}}
+%
+\intertext{and (for \textbf{real orbitals}) in physicist's convention}
+%
+	\label{propEriPhRealShellPair}
+	\eriPh{\iicol \kkcol}{\jjcol \llcol}
+	&= \eriPh{\kkcol \iicol}{\llcol \jjcol}
+	&& \text{Swap shell pairs} \\
+	\label{propEriPhRealFirstShellPair}
+	&= \eriPh{\jjcol \kkcol}{\iicol \llcol}
+	&& \text{Swap inside \textit{first} shell pair} \\
+	\label{propEriPhRealSecondShellPair}
+	&= \eriPh{\iicol \llcol}{\jjcol \kkcol}
+	&& \text{Swap inside \textit{second} shell pair} \\
+	\label{propEriPhRealBothShellPair}
+	&= \eriPh{\jjcol \llcol}{\iicol \kkcol}
+	&& \text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \eriPh{\llcol \iicol}{\kkcol \jjcol}
+	&& \text{\eqref{propEriPhRealShellPair} and \eqref{propEriPhRealFirstShellPair}} \\
+	\nonumber
+	&= \eriPh{\kkcol \jjcol}{\llcol \iicol}
+	&& \text{\eqref{propEriPhRealShellPair} and \eqref{propEriPhRealSecondShellPair}} \\
+	\nonumber
+	&= \eriPh{\llcol \jjcol}{\kkcol \iicol}
+	&& \text{\eqref{propEriPhRealShellPair} and \eqref{propEriPhRealBothShellPair}}
+%
+\intertext{Finally for the antisymmetrised ERI tensor and \textbf{real orbitals} we get 16-fold symmetry:}
+%
+	\label{propEriAsymRealShellPair}
+	\eriPh{\iicol \kkcol}{\jjcol \llcol}
+	&= \eriAsym{\kkcol \iicol}{\llcol \jjcol}
+	&& \text{Swap shell pairs} \\
+	\label{propEriAsymRealFirstShellPair}
+	&= \eriAsym{\jjcol \kkcol}{\iicol \llcol}
+	&& \text{Swap inside \textit{first} shell pair} \\
+	\label{propEriAsymRealSecondShellPair}
+	&= \eriAsym{\iicol \llcol}{\jjcol \kkcol}
+	&& \text{Swap inside \textit{second} shell pair} \\
+	\label{propEriAsymRealBothShellPair}
+	&= \eriAsym{\jjcol \llcol}{\iicol \kkcol}
+	&& \text{Swap inside \textit{both} shell pairs} \\
+	\nonumber
+	&= \eriAsym{\llcol \iicol}{\kkcol \jjcol}
+	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealFirstShellPair}} \\
+	\nonumber
+	&= \eriAsym{\kkcol \jjcol}{\llcol \iicol}
+	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealSecondShellPair}} \\
+	\nonumber
+	&= \eriAsym{\llcol \jjcol}{\kkcol \iicol}
+	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealBothShellPair}} \\
+	%
+	\label{propEriAsymRealAsym}
+	&= -\eriAsym{\kkcol\iicol}{\jjcol\llcol}        &&\text{Antisymmetry} \\
+	\nonumber
+	&= - \eriAsym{\iicol \kkcol}{\llcol \jjcol}
+	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\kkcol \jjcol}{\iicol \llcol}
+	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealFirstShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\llcol \iicol}{\jjcol \kkcol}
+	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealSecondShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\llcol \jjcol}{\iicol \kkcol}
+	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealBothShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\iicol \llcol}{\kkcol \jjcol}
+	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealFirstShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\jjcol \kkcol}{\llcol \iicol}
+	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealSecondShellPair}} \\
+	\nonumber
+	&= - \eriAsym{\jjcol \llcol}{\kkcol \iicol}
+	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealBothShellPair}}
+\end{align}

@@ -1,5 +1,6 @@
 add_inputs(
         appendix.tex
+        eri_symmetries.tex
         cbs_uhf.tex
         rmso_Gaussian.tex
         cs_convergence.tex
