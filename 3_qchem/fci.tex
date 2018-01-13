@@ -1,5 +1,6 @@
 \section{Full configuration interaction}
 \label{sec:FCI}
+\defineabbr{FCI}{FCI\xspace}{Full configuration interaction}
 \nomenclature{$\Phi$}{Slater determinant $\bigwedge_{i=1}^{\Nelec} \psi_i$
 or many-electron basis functions}
 \nomenclature{$\psi_i$}{One-particle function,
@@ -281,7 +282,10 @@ is always true.
 	\item Diagonalise $\mat{A}_\text{FCI}$ to find a few energy eigenvalues
 		$E_i^{(n)} \in \R$ and corresponding \newterm{CI vectors}
 		$\vec{c}^{(n)}_i \in \C^{\Nfci}$.
-	\item Repeat with a larger basis $\set{B}_1^{(n+1)}$ until convergence.
+	\item Repeat with a larger basis $\set{B}_1^{(n+1)}$ until convergence
+		of eigenstates up to desired accuracy has been achieved.
+		In many cases one already selects a suitable basis set
+		$\set{B}_1^{(n)}$ and only performs the calculation top-to-bottom once.
 	\end{itemize}
 	Notice that the subspace sequence
 	$\spacespan \set{B}_{\Nelec}^{(n)} \subset \tilde{Q}(\Op{H}_{\Nelec})$
@@ -297,36 +301,38 @@ is always true.
 	and some negatively charged systems.
 	Recall remark \vref{rem:ElectronicTISENumerical} for details.
 \end{rem}
-The term configuration interaction becomes more clear taking
-a look at \eqref{eqn:FCIMatrixElements}.
-Essentially a single Slater determinant describes a possible arrangement
-or configuration of $\Nelec$ electrons inside the single-particle functions
-from the single-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$.
-The full CI matrix of \eqref{eqn:FCIMatrixElements} describes their
-physical interaction in the sense of the electronic Hamiltonian $\Op{H}_{\Nelec}$.
+Equation \eqref{eqn:FCIMatrixElements} helps to understand
+where the term full configuration interaction for the sketched
+method comes from.
+In some sense a basis function in the single-particle
+basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
+describes the behaviour of a single electron.
+In turn a Slater determinant can be interpreted physically
+as one sensible configuration of $\Nelec$ electrons
+amongst the available single-particle functions.
+The full CI matrix \eqref{eqn:FCIMatrixElements}
+now couples these configurations
+via the electronic Hamiltonian $\Op{H}_{\Nelec}$,
+which describes the interaction of the electrons in the chemical
+system with another.
 By diagonalising the matrix $\mat{A}_\text{FCI}$ we thus determine
 the electronic eigenstates taking the full range of interactions between
-all single-particle configurations into account,
-hence the name full CI.
-In contrast to this are the class of truncated schemes,
-which do not consider all determinants for building the
-approximated many-electron basis $\set{B}^{(n)}_{\Nelec}$.
-We will discuss these in section \vref{sec:Correlation}.
+all configurations into account, explaining the name full CI.
 
-\todoil{Rephrase from here til end of the section}
-It becomes especially apparent why one wants
-to use a truncated scheme if one considers the size of the
-full CI matrix.
-Even for a relatively small problem like water with $\Nelec = 10$
-the full CI matrix is comparatively large.
-For this reason in many cases one does not systematically
-converge the full CI solution, but just performs the calculation once.
-As we will see in the next remark the full CI matrix is not dense,
-but has a banded structure, whereas the width of the band is rather
-large, too.
-
-We will conclude this chapter about full CI
-with a discussion of the structure of the full CI matrix.
+Even though \FCI allows to compute the solution of the electronic
+Schrödinger equation up to arbitrary accuracy,
+it is not employed a lot in practice.
+The main reason for this is its enormous computational cost.
+Already for a small molecules like water with only
+$\Nelec = 10$ electrons and a rather small def2-sv(p)\todo{cite} basis set
+$\set{B}_1^{(n)}$ with $\Nbas = 18$ basis functions this makes $\Nfci = 43758$
+and thus around $\Nfci^2 = 2\E{9}$ entries in $\mat{A}_\text{FCI}$
+in an extremely naive implementation.
+Of course this can be improved by exploiting some symmetries
+or the rather sparse structure of $\mat{A}_\text{FCI}$,
+which we will discuss in the next remark.
+Nevertheless the computational cost scales exponentially
+and allows only treatment of extremely small systems.
 
 \defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
 \newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
@@ -336,8 +342,8 @@ with a discussion of the structure of the full CI matrix.
 	Electron repulsion integrals in chemist's or Mullikan notation,
 	see definition in remark \vref{rem:ERI}.
 }
-\begin{rem}[Structure and evaluation of the FCI matrix]
-	Recall the structure of the electronic Hamiltonian as
+\begin{rem}[Structure and evaluation of the \FCI matrix]
+	Recall the expression
 	\[
 		\Op{H}_{\Nelec}
 		= \Op{T}_e + \Op{V}_{en} + \Op{V}_{ee}
@@ -345,30 +351,34 @@ with a discussion of the structure of the full CI matrix.
 		  \left( -\frac12 \Delta_{\vec{r}_i} + \sum_{A=1}^M \frac{Z_A}{r_{iA}} \right)
 		+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
 	\]
-	and let us define the \newterm{core Hamiltonian}
-	\begin{equation}
-		\Op{H}_\text{core}
-		= \Op{T} + \Op{V}_0
-		= -\frac12 \Delta + \sum_{A=1}^M \frac{Z_A}{\norm{\vec{r} - \vec{r}_A}_2}
-		\label{eqn:HCore}
-	\end{equation}
-	consisting of kinetic energy and nuclear attraction.
-
-	The operators $\Op{T}_e$, $\Op{V}_{ne}$ and the
-	electronic-electronic Coulombic interaction potential
-	$\Op{V}_{ee}$
-	differ in a very fundamental property,
-	namely the number of electronic coordinates
-	they make reference to.
-	To distinguish this one calls operators like $\Op{T}_e$
-	and $\Op{V}_{ne}$ \newterm{one-electron operator}
-	and $\Op{V}_{ee}$ is an example of a \newterm{two-electron operator}.
+	for the electronic Hamiltonian.
+	The goal of this remark will be to write the many electron
+	integrals $\braket{\Phi_1}{\Op{H}_{\Nelec}\, \Phi_2}$ between
+	two Slater determinants $\Phi_1, \Phi_2 \in \set{B}_{\Nelec}$
+	in terms of integrals over the one-electron functions $\psi_i$
+	these determinants are composed of.
 
 	\todoil{Derivation of Slater-Condon rules in appendix?}
-	The Slater-Condon rules~\cite{Szabo1996} now state for a single particle operator
-	like the core Hamiltonian
-	we have for all $a,b,c$ and $i,j,k$ under the usual conditions
-	\eqref{eqn:CondOccIndex} and \eqref{eqn:CondVirtIndex}
+	For this we will make use of the so-called Slater-Condon rules~\cite{Szabo1996}.
+	For applying these rules
+	we need to differentiate between so-called \newterm{one-electron operator}s
+	and \newterm{two-electron operator}s.
+	One-particle operators like $\Op{T}_e$ and $\Op{V}_{en}$
+	can be written as a sum of operators like $\Delta_{\vec{r}_i}$ or $r_{iA}^{-1}$,
+	which act only on the coordinate $\vec{r}_i$ of a single electron at once.
+	Two-particle operators like $\Op{V}_{ee}$, however,
+	are built as a sum of terms $r_{ij}^{-1}$ making reference
+	to the coordinates of two electrons.
+
+	For our discussion here, let us take $\Phi_0$ to be an arbitrary
+	reference determinant constructed from the single-particle basis $\set{B}_1$.
+	We construct excited determinants
+	$\Phi_i^a$, $\Phi_{ij}^{ab}$, \ldots
+	under the index conventions
+	\eqref{eqn:CondOccIndex} and \eqref{eqn:CondVirtIndex}.
+
+	For the one-electron operator $\Op{T}_e + \Op{V}_{en}$
+	the Slater-Condon rules yield
 	\begin{align*}
 		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_0}_{\Nelec}
 		&= \sum_{i\in\Iocc} \braket{\psi_i}{\Op{H}_{\text{core}} \, \psi_i}_1 \\
@@ -379,7 +389,25 @@ with a discussion of the structure of the full CI matrix.
 		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_{ij}^{ab}}_{\Nelec}
 		&= 0.
 	\end{align*}
-	For the two-electron operators like $\Op{V}_{ee}$, however,
+	In this result we made use of the \newterm{core Hamiltonian} operator
+	\begin{equation}
+		\Op{H}_\text{core}
+		= \Op{T} + \Op{V}_0
+		= -\frac12 \Delta + \sum_{A=1}^M \frac{Z_A}{\norm{\vec{r} - \vec{r}_A}_2},
+		\label{eqn:HCore}
+	\end{equation}
+	which is just the sum of the kinetic operator $\Op{T}$
+	and the nuclear attraction operator $\Op{V}_0$
+	contribution from a single electron.
+	More generally we can state
+	that the matrix element $\braket{\Phi_1}{\Op{A}_1 \Phi_2}_{\Nelec}$
+	of a one-particle operator $\Op{A}_1$
+	is only non-zero for determinants $\Phi_1$, $\Phi_2$,
+	which differ in at most one single-particle function.
+
+	On the other hand for
+	two-electron operators like $\Op{V}_{ee}$
+	the Slater-Condon rules yield
 	\begin{align*}
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_0}_{\Nelec}
 		&= \frac12 \sum_{i\in\Iocc}
@@ -397,26 +425,49 @@ with a discussion of the structure of the full CI matrix.
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ijk}^{abc}}_{\Nelec} &= 0.
 	\end{align*}
-	where we used the \newterm{electron repulsion integrals}~ERI
-	in Mulliken convention
+	where the \newterm{electron repulsion integrals}~(ERIs)
+	in Mulliken's indexing convention are given by the expression
 	\begin{equation}
 		\eriMu{\psi_i \psi_j}{\psi_k \psi_l}
 			= \int_{\R^3} \int_{\R^3}
 				\frac{\cc{\psi_i}(\vec{r}_1) \psi_j(\vec{r}_1)
 					\,\cc{\psi_k}(\vec{r}_2) \psi_l(\vec{r}_2)}
 				{\norm{\vec{r}_1 - \vec{r}_2}_2}
-				\D \vec{r}_1 \D \vec{r}_2
+				\D \vec{r}_1 \D \vec{r}_2.
 		\label{eqn:ERI}
 	\end{equation}
+	Again as a general result,
+	determinants which differ in more than two one-particle functions
+	vanish according to the Slater-Condon rules.
 
-	Higher excitations are zero as well which implies
-	that $\mat{A}_\text{FCI}$ is rather sparse.
-
-	\todoil{Figure of FCI matrix structure?}
+	For the full CI matrix $\mat{A}_\text{FCI}$
+	the Slater-Condon rules imply that it has a rather sparse structure
+	despite its size~(see fig. \vref{fig:StructureFCIMatrix}).
+	For this reason the diagonalisation
+	step of remark \vref{rem:FCI} is typically performed
+	using one of the iterative methods sketched
+	in section \vref{sec:DiagAlgos}.
 \end{rem}
+\begin{figure}
+	\centering
+	\missingfigure{FCI matrix structure}
+	\caption{FCI matrix structure}
+	\label{fig:StructureFCIMatrix}
+\end{figure}
+
+The electron repulsion integral tensor introduced in \eqref{eqn:ERI}
+is a very important integral quantity in computational chemistry,
+which will used at many occasions throughout the thesis.
+A couple of deviating indexing conventions
+and definitions exist, the following remark gives an overview.
 
 \begin{rem}[Formulation of the repulsion integrals]
 	\label{rem:ERI}
+	\todo[inline,caption={}]{
+	State integral definition again
+	and associate it with the Mullikan and phys convention
+	}
+
 	Multiple conventions exist for the repulsion integrals.
 	In \eqref{eqn:ERI} we introduced the shell pair notation
 	or Chemists' notation.
