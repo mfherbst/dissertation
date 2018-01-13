@@ -1,4 +1,4 @@
-\section{Full-CI}
+\section{Full configuration interaction}
 \label{sec:FCI}
 \nomenclature{$\Phi$}{Slater determinant $\bigwedge_{i=1}^{\Nelec} \psi_i$
 or many-electron basis functions}
@@ -9,102 +9,141 @@ typically $i$-th eigenfunction of the Fock operator, i.e.~a Hartree-Fock orbital
 \nomenclature{$\Nbas$}{Cardinality of $\Ibas$, i.e.~the number of one-particle basis functions.}
 \nomenclature{$\varphi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\varphi_\mu\}_{\mu \in \Ibas}$}
 
-\nomenclature{$\Op{K}$}{One-electron exchange operator}
-\nomenclature{$\Op{J}$}{Effective Coulomb operator}
-\defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
-\nomenclature{$(ij|kl)$}{Electron repulsion integrals in chemist's or Mullikan notation, see definition at \textcolor{red}{TODO}}
+\nomenclature{$\Iocc$}{Index set of occupied SCF orbitals.}
+\nomenclature{$\Ivirt$}{Index set of virtual, i.e. unoccupied, SCF orbitals.}
 
 In this section we want to develop a numerical treatment
 for solving the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}
 under the Ritz-Galerkin projection ansatz of section \vref{sec:RitzGalerkin}.
-In the previous section we developed the form domain of the electronic
-Schrödinger operator $\Op{H}_{\Nelec}$ to be
+In the previous section we analysed the mathematical implications
+of the spin statistics theorem for electrons as fermionic systems,
+which lead us to choose the form domain
 \[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
-For simplifying our treatment in this section,
-we will develop methods to sample only the dense subspace
-\[ \tilde{Q}(\Op{H}_{\Nelec}) = \bigwedge^{\Nelec} H^1(\R^3, \C) \subset Q(\Op{H}_{\Nelec}). \]
-Because of remark \vref{rem:ApproxBottomDiscrete}
-this implies no loss of numerical accuracy.
-By definition
-\[
+for the electronic Schrödinger operator $\Op{H}_{\Nelec}$.
+
+
+For simplifying our treatment
+we will not try to discretise this domain in the Ritz-Galerkin ansatz
+of definition \ref{defn:RitzGalerkin},
+much rather we will develop methods to sample only the subspace
+\[ \tilde{Q}(\Op{H}_{\Nelec}) = \bigwedge^{\Nelec} H^1(\R^3, \C) \subset Q(\Op{H}_{\Nelec}) \]
+due to its simpler structure.
+Since this subspace is dense this implies no potential loss of numerical accuracy.
+By definition of the exterior power
+\begin{equation}
 	\tilde{Q}(\Op{H}_{\Nelec}) = \spacespan \left\{
 		\bigwedge_{i=1}^{\Nelec} \psi_i
 		\, \middle| \,
 		\psi_i \in H^1(\R^3, \C) \, \forall i = 1, \ldots, \Nelec
 	\right\}.
-\]
-Since $H^1(\R^{3\Nelec}, \C)$ is separable, we can find a countable Hilbertian
-basis set
-\[ \set{B}_1 \equiv \{\psi_i\}_{i \in \N} \quad \text{with }
-	\braket{\psi_i}{\psi_j}_{H^1(\R^{3\Nelec}, \C)} = \delta_{ij}
-	\text{ and } \spacespan \set{B}_1 = H^1(\R^{3\Nelec}, \C),
-\]
-which we will sometimes call the \newterm{one-particle basis}.
-
+	\label{eqn:FormDomainAllFunctions}
+\end{equation}
+Since $H^1(\R^{3\Nelec}, \C)$ is separable, we can find a countable basis set
+\begin{equation}
+	\set{B}_1 \equiv \{\psi_i\}_{i \in \N} \qquad \text{with }
+	\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+	\quad \text{and} \quad \spacespan \set{B}_1 = H^1(\R^{3\Nelec}, \C),
+	\label{eqn:OneParticleBasis}
+\end{equation}
+where we used the abbreviated notation
+$\braket{\slot}{\slot}_1 = \braket{\slot}{\slot}_{L^2(\R^3, \C)}$.
+$\set{B}_1$ is sometimes called the \newterm{one-particle basis}.
 Taking the properties of the wedge product \eqref{eqn:PropertiesExteriorProduct}
-into account this allows us to deduce that $\tilde{Q}(\Op{H}_{\Nelec})$ can be equivalently
-constructed by taking the span over all Slater determinants built by selecting
-$\Nelec$ functions from $\set{B}_1$
+into account allows to deduce the equivalent construction
 \begin{equation}
 	\label{eqn:FormDomainSlaterDeterminants}
 	\tilde{Q}(\Op{H}_{\Nelec}) = \spacespan
 	\left\{ \bigwedge_{i=1}^{\Nelec} \psi_i
 	, \middle| \, \psi_i \in \set{B}_1 \, \forall i=1,\ldots,\Nelec
-	\right\}.
+	\right\},
 \end{equation}
-Let
-\begin{align*}
-	\Psi &= \bigwedge_{i=1}^{\Nelec} \psi_i &&\text{and}& \Xi &= \bigwedge_{i=1}^{\Nelec} \xi_i
-\end{align*}
-denote two arbitrary Slater determinants with
-$\psi_i, \xi_i \in H^1(\R^{3\Nelec}, \C)$ for all $i \in 1,\ldots,\Nelec$.
-We can define a rather natural inner product
-on $\tilde{Q}(\Op{H}_{\Nelec})$ by requiring%
-\begin{align}
-	\braket{\Psi}{\Xi}_{\tilde{Q}(\Op{H}_{\Nelec})} = \det \mat{G}
-	\qquad
-	\text{with } G_{ij} = \braket{\psi_i}{\xi_j}_{H^1(\R^3, \C)} \forall i,j \in 1,\ldots,\Nelec
-	\label{eqn:InnerProductFormDomain}
-\end{align}
-for all such Slater determinants.
-The inner product value for other elements from $\tilde{Q}(\Op{H}_{\Nelec})$
-is then constructed by the axioms shown in definition \vref{def:InnerProduct}.
-\todoil{A more formal proof would be nice, especially for the completeness under this inner product.}
+which builds $\tilde{Q}(\Op{H}_{\Nelec})$ as the span
+over all Slater determinants built by selecting
+$\Nelec$ functions from $\set{B}_1$.
+Since nothing stops us from selecting the same basis function
+twice from $\set{B}_1$ in this construction,
+many of the constructed determinants $\bigwedge_{i=1}^{\Nelec} \psi_i$
+are zero.
+In other words these determinants amount to span $\tilde{Q}(\Op{H}_{\Nelec})$,
+but they are not a basis for this space.
+In the following we want to fix this and construct an orthonormal basis
+of suitable Slater determinants.
+This requires an appropriate inner product.
+\begin{defn}
+	Let $\tilde{Q}(\Op{H}_{\Nelec})$ be defined as in \eqref{eqn:FormDomainAllFunctions}.
+	We define an inner product on $\tilde{Q}(\Op{H}_{\Nelec})$ by
+	requiring for any two arbitrary Slater determinants
+	\begin{align*}
+		\Psi &= \bigwedge_{i=1}^{\Nelec} \psi_i
+		&&\text{and}& \Xi &= \bigwedge_{i=1}^{\Nelec} \xi_i
+	\end{align*}
+	with $\psi_i, \xi_i \in H^1(\R^3, \C)$ for all $i \in 1,\ldots,\Nelec$:
+	\begin{align}
+		\braket{\Psi}{\Xi}_{\Nelec} \equiv \det \mat{G}
+		\qquad
+		\text{where } G_{ij} = \braket{\psi_i}{\xi_j}_{L^2(\R^3, \C)} \forall i,j \in 1,\ldots,\Nelec.
+		\label{eqn:InnerProductFormDomain}
+	\end{align}
+	The inner product for other elements from $\tilde{Q}(\Op{H}_{\Nelec})$
+	is then constructed in accordance
+	with the axioms shown in definition \vref{def:InnerProduct}.
+	\todoil{A more formal proof would be nice,
+		especially for the completeness under this inner product.
+		Or showing equivalence with respect to the inner product
+		on $H^1(\R^{3\Nelec}, \C$ for the elements of $\tilde{Q}(\Op{H}_{\Nelec})$
+		would be nice.}
+\end{defn}
 
-\begin{rem}[Reference and excited determinants]
+\noindent
+With this inner product at hand we can construct an orthonormal basis for
+$\tilde{Q}(\Op{H}_{\Nelec})$.
+
+\begin{rem}[Orthonormal basis for $\tilde{Q}(\Op{H}_{\Nelec})$]
 	\label{rem:Determinants}
-	In this remark we will rationalise why $\tilde{Q}(\Op{H}_{\Nelec})$ is separable
-	and at the same time introduce a lot of terminology often used
-	in the community of quantum chemistry.
-
-	Let $\set{B}_1)^{\Nelec}$ be an arbitrary one-particle basis for $H^1(\R^3, \C)$
-	and let $0 \neq \Phi_0 \in \tilde{Q}(\Op{H}_{\Nelec})$ be an arbitrary Slater determinant
-	constructed from $\Nelec$ elements $\{\varphi\}_{i \in \Nelec} \subset \set{B}_1$
+	Let $\tilde{Q}(\Op{H}_{\Nelec})$ be defined as in \eqref{eqn:FormDomainAllFunctions}
+	and let $\set{B}_1$ be an arbitrary one-particle basis for $H^1(\R^3, \C)$.
+	We take one arbitrary, non-trivial Slater determinant
+	$0 \neq \Phi_0 \in \tilde{Q}(\Op{H}_{\Nelec})$,
 	such that
 	\[
-		\Phi_0 = \varphi_1 \wedge \varphi_2 \wedge \cdots \varphi_i \cdots \wedge \varphi{\Nelec}.
+		\Phi_0 = \varphi_1 \wedge \varphi_2 \wedge \cdots \varphi_i \cdots \wedge \varphi_{\Nelec}.
 	\]
-	Note that we can find this determinant due to \eqref{eqn:FormDomainSlaterDeterminants}.
-	We shall refer to $\Phi_0$ as the \newterm{reference determinant}
+	This determinant can always be found due to the alternative
+	construction for $\tilde{Q}(\Op{H}_{\Nelec})$ sketched
+	in \eqref{eqn:FormDomainSlaterDeterminants}.
+	Let us call $\Phi_0$ the \newterm{reference determinant}
 	in the following.
-	Let us now index the functions $\{\psi_i\}_{i \in \N} = \set{B}$ in such a way
-	that the first $\Nelec$ coincide with $\{\varphi\}_{i \in \Nelec}$
-	or in other words such that
+
+	The functions of the (countable) basis set $\{\psi_i\}_{i \in \N} = \set{B}$
+	can be indexed in such a way
+	that the first $\Nelec$ functions coincide with $\{\varphi\}_{i \in \Nelec}$.
+	In other words
 	\[
-		\Phi_0 = \psi_1 \wedge \psi_2 \wedge \cdots \psi_i \cdots \wedge \psi_{\Nelec}.
+		\Phi_0 = \psi_1 \wedge \psi_2 \wedge \cdots \psi_i \cdots \wedge \psi_{\Nelec}
 	\]
-	We further define the index sets
+	as well.
+	We further define the index sets%
+	\footnote{%
+		The subscript ``occ'' stands for \textit{occupied}
+		and ``virt'' for \textit{virtual}.
+		These terms will become clear when we discuss the Hartree-Fock ansatz
+		in the next section.
+	}
 	\begin{align*}
-		\mathcal{I}_\text{occ} &= \{1, \ldots, \Nelec\} \\
-		\mathcal{I}_\text{virt} &= \{ i \in \N | i > \Nelec \}.
+		\Iocc &= \{1, \ldots, \Nelec\}
+		&&\text{and} &
+		\Ivirt &= \{ i \in \N \, | \, i > \Nelec \}.
 	\end{align*}
-	With reference to $\Psi_0$ we can define
-	for each $i \in \mathcal{I}_\text{occ}$ and each $a \in \mathcal{I}_\text{virt}$
+	With reference to $\Phi_0$ we can construct
+	for each $i \in \Iocc$ and each $a \in \Ivirt$
 	a so-called singly \newterm{excited determinant}
 	\[
 		\Phi_i^a = \psi_1 \wedge \psi_2 \wedge \cdots \psi_a \cdots \wedge \psi_{\Nelec}
 	\]
-	by replacing the $i$-th function of $\set{B}$ by the $a$-th function of $\set{B}$.
+	by replacing the $i$-th function of the Slater determinant
+	wedge string
+	by the $a$-th function of $\set{B}$
+	without changing the order.
 	Analogously one may define doubly or higher excited determinants
 	\begin{align*}
 		\Phi_{ij}^{ab} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \cdots \psi_b
@@ -112,88 +151,288 @@ is then constructed by the axioms shown in definition \vref{def:InnerProduct}.
 		\Phi_{ijk}^{abc} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \cdots \psi_b
 			\cdots \psi_c \wedge \cdots \wedge \psi_{\Nelec}
 	\end{align*}
-	where $i,j,k \in \mathcal{I}_\text{occ}$ and $a,b,c \in \mathcal{I}_\text{virt}$.
-	In order to prevent an excited determinant to vanish~(two one-particle functions identical)
-	or be insensible~(replaced the same one-particle function twice),
-	we enforce further that $i < j < k < \cdots$ and $a < b < c < \cdots$.
-
-	With the inner product defined in \eqref{eqn:InnerProductFormDomain} we notice
-	for all $r,s \in \N$
-	\[
-		\braket{\Phi_0}{\Phi_r^s}_{\tilde{Q}(\Op{H}_{\Nelec})}
-			= \braket{\psi_r}{\psi_s}_{\Op{H}_{\Nelec}} = \delta_{ia},
-	\]
-	since by construction all functions in $\set{B}_1$ are orthonormal to each other.
-	In other words the set
+	where%
+	\footnote{%
+		This is the typical indexing convention in quantum chemistry.
+		Indices $i,j,k,l,m, \ldots$ stand for occupied indices
+		and $a,b,c,d,e, \ldots$ for virtual indices.
+	} $i,j,k \in \Iocc$ and $a,b,c \in \Ivirt$
+	In this case one has to additionally
+	require that $i < j < k < \cdots$ and $a < b < c < \cdots$,
+	because otherwise no new determinants are generated (if $i=j$ or $i=k$ or \ldots)
+	or a zero determinant is generated (if $a=b$ or similar).
+	Constructed in this way all determinants in the set
 	\[
 		\set{B}_{\Nelec} \equiv
 		\left\{
 			\Phi_0, \Phi_i^a, \Phi_{ij}^{ab}, \Phi_{ijk}^{abc}, \cdots \right\}
 	\]
-	with the conditions on $i,j,k$ and $a,b,c$ sketched in this remark
-	is an orthonormal basis for $\tilde{Q}(\Op{H}_{\Nelec})$.
-	This makes $\tilde{Q}(\Op{H}_{\Nelec})$ separable.
+	are unique.
+	Still it is not hard to see
+	that $\spacespan \set{B}_{\Nelec} = \tilde{Q}(\Op{H}_{\Nelec})$,
+	since we only took away those determinants adding redundant information
+	in the construction \eqref{eqn:FormDomainSlaterDeterminants}.
+
+	With the inner product defined in \eqref{eqn:InnerProductFormDomain} we notice
+	for all $r,s \in \N$
+	\[
+		\braket{\Phi_0}{\Phi_r^s}_{\Nelec}
+			= \braket{\psi_r}{\psi_s}_1 = \delta_{rs},
+	\]
+	since by \eqref{eqn:OneParticleBasis}
+	all functions in $\set{B}_1$ are orthonormal to each other.
+	In other words $\set{B}_{\Nelec}$ is an orthonormal
+	basis for $\tilde{Q}(\Op{H}_{\Nelec})$.
+	\todo[inline, caption={}]{
+		This following statement might not be true,
+		since $\braket{\slot}{\slot}_{\Nelec}$
+		might not be equivalent to the Hilbertian inner product!
+		\begin{center}
+		Since it is countable, $\tilde{Q}(\Op{H}_{\Nelec})$ is separable.
+		\end{center}
+	}
 \end{rem}
 The set $\set{B}_{\Nelec}$ is sometimes called the \newterm{$\Nelec$-particle basis}
-corresponding to $\set{B}_1$ or just the \newterm{many-particle basis}.
-Notice that any choice of $\Phi_0$ or $\set{B}_1$ works for its construction.
+or \newterm{many-particle basis}
+corresponding to $\set{B}_1$ and the reference determinant $\Phi_0$.
+Notice that any choice of $\Phi_0$ or $\set{B}_1$ would work for its construction
+and albeit the precise entries in $\set{B}_{\Nelec}$ might differ from case to case
+the end result $\spacespan \set{B}_{\Nelec} = \tilde{Q}(\Op{H}_{\Nelec})$
+is always true.
 
 \begin{rem}
-	A consequence of the previous remark is that any
-	function $\Psi \in \tilde{Q}(\Op{H}_{\Nelec})$
-	can be expanded in normalised Slater determinants
-	from the many-particle basis
+	Given a many-particle basis $\set{B}_{\Nelec}$ consisting
+	of normalised Slater determinants,
+	any function $\Psi \in \tilde{Q}(\Op{H}_{\Nelec})$
+	can be expanded as such
 	\begin{align}
 		\label{eqn:ExpansionSlaterDeterminant}
-		\Psi &= \sum_\mu c_\mu \Phi_\mu &\text{with } \Phi_\mu \in \set{B}_{\Nelec}\, \forall \mu.
+		\Psi &= \sum_\mu c_\mu \Phi_\mu
+		&\text{where } \forall \mu \in \N: \quad
+		\Phi_\mu \in \set{B}_{\Nelec}, c_\mu \in \C.
 	\end{align}
-	If one is in the context of a particular reference determinants $\Phi_0$
-	and a particular one-particle basis $\set{B}_1$ this can be written
-	equivalently as
+	If one is interested in emphasising the particular
+	one-particle basis $\set{B}_1$ and the particular reference determinants $\Phi_0$
+	this can be written equivalently as
 	\begin{equation}
 		\label{eqn:CIExpansion}
-		\Psi = \Phi_0 + c_i^a \Phi_i^a + c_{ij}^{ab} \Phi_{ij}^{ab} + c_{ijk}^{abc} \Phi_{ijk}^{abc}
-		 + \cdots
+		\Psi
+		= c_0 \Phi_0 + \sum_{ia} c_i^a \Phi_i^a
+		+ \sum_{\substack{i<j \\a<b}} c_{ij}^{ab} \Phi_{ij}^{ab}
+		+ \sum_{\substack{i<j<k \\ a<b<c}} c_{ijk}^{abc} \Phi_{ijk}^{abc}
+		 + \cdots,
 	\end{equation}
+	where $i,j,k, \ldots \in \Iocc$ and $a,b,c, \ldots \in \Ivirt$.
+
 	This expansion is commonly referred to as the \newterm{CI expansion},
-	where CI stands for configuration interaction.
-	This term will become more clear when we discuss electron
-	correlation in section \vref{eqn:CIExpansion}.
+	where CI stands for configuration interaction,
+	a term which will become more clear
+	after the next remark.
 \end{rem}
 
-One main task when following the Ritz-Galerkin approach
-as sketched in remark \vref{rem:DiscreteFormulation}
-s to evaluate the sesquilinar form
-$a(\Phi_1, \Phi_2)$ for $\Phi_1, \Phi_2 \in \set{B}_{\Nelec}$
-for the $\Nelec$-electron basis we use.
-What this boils down to is to discuss the  application of the sesquilinar form
-onto pairs of Slater determinants,
-either the reference or the excited determinants.
-For this let us first discuss the terms in turn.
+\defineabbr{FCI}{FCI\xspace}{Full configuration interaction,
+	see section \vref{sec:FCI}}
+\newcommand{\Nfci}{N_\text{FCI}}
+\begin{rem}[Full CI]
+	\label{rem:FCI}
+	The discrete formulation of the Ritz-Galerkin scheme
+	of remark \vref{rem:DiscreteFormulation}
+	can now be applied rather easily to the electronic Schrödinger equation.
+	This leads to a procedure called \newterm{full CI}
+	or full configuration interaction~(\FCI).
 
-\begin{rem}[Slater-Condon rules]
+	\begin{itemize}
+	\item Take a finite-sized one-electron basis set
+	\[ \set{B}_1^{(n)} \equiv \{\varphi_\mu\}_{\mu \in \Ibas} \]
+	of orthonormal functions $\varphi_\mu \in U$,
+	where $U \subset H^1(\R^3, \C)$ is dense.
+	%
+	\item Define a reference determinant
+	\[ \Phi_0 = \varphi_1 \wedge \varphi_2 \wedge \ldots \wedge \varphi_{\Nelec} \]
+	where $\{\varphi_i\}_{i=1,\ldots,\Nelec} \subset \{\varphi_\mu\}_{\mu \in \Ibas}$
+	arbitrarily and construct the finite $\Nelec$-electron basis
+	\[ \set{B}_{\Nelec}^{(n)} \equiv \{ \Phi_0, \Phi_i^a, \Phi_{ij}^{ab}, \ldots \} \]
+	according to the procedure described in remark \vref{rem:Determinants}.
+	As usual we take
+	\begin{align}
+		\label{eqn:CondOccIndex}
+		i, j, k, l, \ldots &\in \Iocc &&\text{with}& i&<j<k<l<\cdots \\
+		\label{eqn:CondVirtIndex}
+		a, b, c, d, \ldots &\in \Ivirt &&\text{with}& a&<b<c<d<\cdots
+	\end{align}
+	where in the finite case
+	\begin{align*}
+		\Iocc &= \{1, \ldots, \Nelec\} &&\text{and}& \Ivirt &= \{ \Nelec + 1, \ldots, \Nbas \}.
+	\end{align*}
+	%
+	\item Construct the full CI matrix $\mat{A}_\text{FCI} \in \C^{\Nfci \times \Nfci}$
+		consisting of elements
+		\begin{equation}
+			a(\Phi_1, \Phi_2)
+			= \mbra{\Phi_1}
+			\Op{T}_e + \Op{V}_{ne} + \Op{V}_{ee}
+			\mket{\Phi_2}_{\Nelec}
+			\label{eqn:FCIMatrixElements}
+		\end{equation}
+		for all combinations $\Phi_1, \Phi_2 \in \set{B}_{\Nelec}^{(n)}$.
+		There are
+		\[ \Nfci = \binom{\Nbas}{\Nelec} \leq \Nbas^{\Nelec} \]
+		such Slater determinants.
+	\item Diagonalise $\mat{A}_\text{FCI}$ to find a few energy eigenvalues
+		$E_i^{(n)} \in \R$ and corresponding \newterm{CI vectors}
+		$\vec{c}^{(n)}_i \in \C^{\Nfci}$.
+	\item Repeat with a larger basis $\set{B}_1^{(n+1)}$ until convergence.
+	\end{itemize}
+	Notice that the subspace sequence
+	$\spacespan \set{B}_{\Nelec}^{(n)} \subset \tilde{Q}(\Op{H}_{\Nelec})$
+	satisfies the required condition \eqref{eqn:CondSubspaces}
+	since $U$ is dense in $H^1(\R^3, \C)$,
+	which makes $\spacespan \set{B}_{\Nelec}^{(n)}$
+	dense in $\tilde{Q}(\Op{H}_{\Nelec})$
+	and thus transitively dense in $Q(\Op{H}_{\Nelec})$.
+	If $\Op{H}_{\Nelec}$ thus has a discrete ground and some discrete
+	excited states below the essential spectrum,
+	we can approximate it by this procedure up to arbitrary accuracy.
+	This is satisfied for all neutral or positively charged systems
+	and some negatively charged systems.
+	Recall remark \vref{rem:ElectronicTISENumerical} for details.
+\end{rem}
+The term configuration interaction becomes more clear taking
+a look at \eqref{eqn:FCIMatrixElements}.
+Essentially a single Slater determinant describes a possible arrangement
+or configuration of $\Nelec$ electrons inside the single-particle functions
+from the single-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$.
+The full CI matrix of \eqref{eqn:FCIMatrixElements} describes their
+physical interaction in the sense of the electronic Hamiltonian $\Op{H}_{\Nelec}$.
+By diagonalising the matrix $\mat{A}_\text{FCI}$ we thus determine
+the electronic eigenstates taking the full range of interactions between
+all single-particle configurations into account,
+hence the name full CI.
+In contrast to this are the class of truncated schemes,
+which do not consider all determinants for building the
+approximated many-electron basis $\set{B}^{(n)}_{\Nelec}$.
+We will discuss these in section \vref{sec:Correlation}.
 
-% Introduce induvidual terms
-% Introduce Slater-Condon rules
+\todoil{Rephrase from here til end of the section}
+It becomes especially apparent why one wants
+to use a truncated scheme if one considers the size of the
+full CI matrix.
+Even for a relatively small problem like water with $\Nelec = 10$
+the full CI matrix is comparatively large.
+For this reason in many cases one does not systematically
+converge the full CI solution, but just performs the calculation once.
+As we will see in the next remark the full CI matrix is not dense,
+but has a banded structure, whereas the width of the band is rather
+large, too.
 
-According to the Slater-Condon rules
-\todoil{State that only up to two differences contribute}
-more precisely
-\todoil{Decompose $\Op{H}_{\Nelec}$ into terms and
-show for them separately (one-electron and two-electron terms)}
-\todoil{Present explicit expressions for the individual
-	terms. Perhaps already introduce the J and K operators
-and use the functional form and formalism of Cances}
+We will conclude this chapter about full CI
+with a discussion of the structure of the full CI matrix.
 
-\todoil{Do not go into details, do not proof them, refer to Szabo}
+\defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
+\newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
+\newcommand{\eriPh}[2]{\left\langle #1 \middle| #2 \right\rangle}
+\newcommand{\eriMu}[2]{\left( #1 \middle| #2 \right)}
+\nomenclature{$(ij|kl)$}{%
+	Electron repulsion integrals in chemist's or Mullikan notation,
+	see definition in remark \vref{rem:ERI}.
+}
+\begin{rem}[Structure and evaluation of the FCI matrix]
+	Recall the structure of the electronic Hamiltonian as
+	\[
+		\Op{H}_{\Nelec}
+		= \Op{T}_e + \Op{V}_{en} + \Op{V}_{ee}
+		= \sum_{i=1}^{\Nelec}
+		  \left( -\frac12 \Delta_{\vec{r}_i} + \sum_{A=1}^M \frac{Z_A}{r_{iA}} \right)
+		+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
+	\]
+	and let us define the \newterm{core Hamiltonian}
+	\begin{equation}
+		\Op{H}_\text{core}
+		= \Op{T} + \Op{V}_0
+		= -\frac12 \Delta + \sum_{A=1}^M \frac{Z_A}{\norm{\vec{r} - \vec{r}_A}_2}
+		\label{eqn:HCore}
+	\end{equation}
+	consisting of kinetic energy and nuclear attraction.
+
+	The operators $\Op{T}_e$, $\Op{V}_{ne}$ and the
+	electronic-electronic Coulombic interaction potential
+	$\Op{V}_{ee}$
+	differ in a very fundamental property,
+	namely the number of electronic coordinates
+	they make reference to.
+	To distinguish this one calls operators like $\Op{T}_e$
+	and $\Op{V}_{ne}$ \newterm{one-electron operator}
+	and $\Op{V}_{ee}$ is an example of a \newterm{two-electron operator}.
+
+	\todoil{Derivation of Slater-Condon rules in appendix?}
+	The Slater-Condon rules~\cite{Szabo1996} now state for a single particle operator
+	like the core Hamiltonian
+	we have for all $a,b,c$ and $i,j,k$ under the usual conditions
+	\eqref{eqn:CondOccIndex} and \eqref{eqn:CondVirtIndex}
+	\begin{align*}
+		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_0}_{\Nelec}
+		&= \sum_{i\in\Iocc} \braket{\psi_i}{\Op{H}_{\text{core}} \, \psi_i}_1 \\
+		%
+		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_{i}^{a}}_{\Nelec}
+		&= \braket{\psi_i}{\Op{H}_\text{core} \, \psi_a}_1 \\
+		%
+		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_{ij}^{ab}}_{\Nelec}
+		&= 0.
+	\end{align*}
+	For the two-electron operators like $\Op{V}_{ee}$, however,
+	\begin{align*}
+		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_0}_{\Nelec}
+		&= \frac12 \sum_{i\in\Iocc}
+			  \eriMu{\psi_i\psi_i}{\psi_j\psi_j}
+			- \eriMu{\psi_i\psi_j}{\psi_i\psi_j} \\
+		%
+		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_i^a}_{\Nelec}
+		&= \sum_{j\in\Iocc}
+			  \eriMu{\psi_i\psi_a}{\psi_j\psi_j}
+			- \eriMu{\psi_j\psi_a}{\psi_i\psi_j} \\
+		%
+		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ij}^{ab}}_{\Nelec}
+		&= \eriMu{\psi_i\psi_j}{\psi_a\psi_b}
+		 - \eriMu{\psi_a\psi_j}{\psi_i\psi_b} \\
+		%
+		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ijk}^{abc}}_{\Nelec} &= 0.
+	\end{align*}
+	where we used the \newterm{electron repulsion integrals}~ERI
+	in Mulliken convention
+	\begin{equation}
+		\eriMu{\psi_i \psi_j}{\psi_k \psi_l}
+			= \int_{\R^3} \int_{\R^3}
+				\frac{\cc{\psi_i}(\vec{r}_1) \psi_j(\vec{r}_1)
+					\,\cc{\psi_k}(\vec{r}_2) \psi_l(\vec{r}_2)}
+				{\norm{\vec{r}_1 - \vec{r}_2}_2}
+				\D \vec{r}_1 \D \vec{r}_2
+		\label{eqn:ERI}
+	\end{equation}
+
+	Higher excitations are zero as well which implies
+	that $\mat{A}_\text{FCI}$ is rather sparse.
+
+	\todoil{Figure of FCI matrix structure?}
 \end{rem}
 
-% -------------------------
-
-\begin{rem}[Full-CI]
-\todoil{Sketch treatment if basis set for one-particle basis is introduced}
-\todoil{Sketch treatment if $H^1(\R^3, \C)$ truncated to finite size.}
-\todoil{Explain where the name FCI comes from}
-Exact treatment as of section \vref{sec:ElectronicSchrödinger}
-\todoil{Go into computational cost and algorithmic considerations}
+\begin{rem}[Formulation of the repulsion integrals]
+	\label{rem:ERI}
+	Multiple conventions exist for the repulsion integrals.
+	In \eqref{eqn:ERI} we introduced the shell pair notation
+	or Chemists' notation.
+	Alternatively there is the physicists' convention
+	\[
+		\eriPh{\psi_i \psi_j}{\psi_k \psi_l}
+		\equiv \eriMu{\psi_i\psi_k}{\psi_j\psi_l}
+	\]
+	With this we can define an antisymmetrised electron repulsion
+	integral
+	\[ \eriAsym{\psi_i \psi_j}{\psi_k \psi_l}
+		\equiv \eriPh{\psi_i \psi_j}{\psi_k \psi_l}
+		- \eriPh{\psi_j \psi_i}{\psi_k \psi_l}
+		= \eriMu{\psi_i\psi_k}{\psi_j\psi_l} - \eriMu{\psi_j\psi_k}{\psi_i\psi_l}
+	\]
+	if the one-particle basis and its indexing is clear from context
+	one often just writes
+	\[ \eriMu{ij}{kl}, \eriPh{ij}{kl}, \eriAsym{ij}{kl} \]
 \end{rem}

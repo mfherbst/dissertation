@@ -1,16 +1,35 @@
 \section{Single-determinant ansatz}
 \nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$/$\beta$ electrons.
 Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
-\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{0, \ldots \Norb\}$}
+\nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{1, \ldots \Norb\}$}
 \nomenclature{$\Norb$}{The number of computed SCF orbitals.
 Note, that $\Norb \le \Nbas$.}
 
 \defineabbr{HF}{HF\xspace}{Hartree-Fock}
 \nomenclature{$\OpFock, \OpFockFull$}{$1$-electron Fock operator (dependent on its eigenfunctions $\{ \varphi_i \}_{i \in \Iorb}$)}
 \nomenclature{$\Op{\rho}$}{Density operator}
-\nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{0, \ldots, \NelecA\}$ and similar for $\IoccB$.}
+\nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{1, \ldots, \NelecA\}$ and similar for $\IoccB$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
 	If the error is below this value, the process should be considered converged.}
+
+\nomenclature{$\Op{K}$}{One-electron exchange operator}
+\nomenclature{$\Op{J}$}{Effective Coulomb operator}
+
+\todoil{
+	Spin: Replace $H^1(\R^3, \C)$ by $H^1(\R^3, \C^2)$.
+	Everything works the same.
+	Especially if one thinks of $\alpha$-spin orbitals
+	as those which only produce non-zero in the first component
+	of the $\C^2$ vector and $\beta$-spin as only producing
+	values on the second one.
+	Then we also have $\Nelec$ orbitals to occupy
+	$\Nelec$ electrons, but their spatial part may be the same or different.
+}
+
+
+\todoil{Present explicit expressions for the individual
+	terms. Perhaps already introduce the J and K operators
+and use the functional form and formalism of Cances}
 
 % Note that we need a more general setting here.
 % Discuss how spin is included
