@@ -343,6 +343,7 @@ and allows only treatment of extremely small systems.
 	see definition in remark \vref{rem:ERI}.
 }
 \begin{rem}[Structure and evaluation of the \FCI matrix]
+	\label{eqn:EvalFCIMatrix}
 	Recall the expression
 	\[
 		\Op{H}_{\Nelec}
@@ -379,7 +380,8 @@ and allows only treatment of extremely small systems.
 
 	For the one-electron operator $\Op{T}_e + \Op{V}_{en}$
 	the Slater-Condon rules yield
-	\begin{align*}
+	\begin{equation}
+		\begin{aligned}
 		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_0}_{\Nelec}
 		&= \sum_{i\in\Iocc} \braket{\psi_i}{\Op{H}_{\text{core}} \, \psi_i}_1 \\
 		%
@@ -388,7 +390,9 @@ and allows only treatment of extremely small systems.
 		%
 		\braket{\Phi_0}{\left(\Op{T}_e + \Op{V}_{en}\right) \,\Phi_{ij}^{ab}}_{\Nelec}
 		&= 0.
-	\end{align*}
+		\label{eqn:SlaterCondonHcore}
+		\end{aligned}
+	\end{equation}
 	In this result we made use of the \newterm{core Hamiltonian} operator
 	\begin{equation}
 		\Op{H}_\text{core}
@@ -408,9 +412,10 @@ and allows only treatment of extremely small systems.
 	On the other hand for
 	two-electron operators like $\Op{V}_{ee}$
 	the Slater-Condon rules yield
-	\begin{align*}
+	\begin{equation}
+	\begin{aligned}
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_0}_{\Nelec}
-		&= \frac12 \sum_{i\in\Iocc}
+		&= \frac12 \sum_{i\in\Iocc} \sum_{j\in\Iocc}
 			  \eriMu{\psi_i\psi_i}{\psi_j\psi_j}
 			- \eriMu{\psi_i\psi_j}{\psi_i\psi_j} \\
 		%
@@ -424,7 +429,9 @@ and allows only treatment of extremely small systems.
 		 - \eriMu{\psi_a\psi_j}{\psi_i\psi_b} \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ijk}^{abc}}_{\Nelec} &= 0.
-	\end{align*}
+	\end{aligned}
+		\label{eqn:SlaterCondonCoulomb}
+	\end{equation}
 	where the \newterm{electron repulsion integrals}~(ERIs)
 	in Mulliken's indexing convention are given by the expression
 	\begin{equation}
@@ -456,37 +463,63 @@ and allows only treatment of extremely small systems.
 \end{figure}
 
 The electron repulsion integral tensor introduced in \eqref{eqn:ERI}
-is a very important integral quantity in computational chemistry,
-which will used at many occasions throughout the thesis.
-A couple of deviating indexing conventions
-and definitions exist, the following remark gives an overview.
+is a very important quantity in computational chemistry.
+We will require it at various occasions throughout the thesis.
+In the standard literature a number of deviating conventions are used
+for denoting this tensor. The following remark provides a summary.
 
 \begin{rem}[Formulation of the repulsion integrals]
 	\label{rem:ERI}
-	\todo[inline,caption={}]{
-	State integral definition again
-	and associate it with the Mullikan and phys convention
-	}
+	In equation \eqref{eqn:ERI} we already met
+	the electron repulsion integal $\eriMu{\psi_i \psi_j}{\psi_k \psi_l}$
+	in Mulliken notation.
+	Alternative names for this indexing convention are
+	shell pair notation or chemists' notation.
+	If the one-particle basis and its indexing convention is clear
+	from context one sometimes writes this integral
+	abbreviated as $\eriMu{ij}{kl}$ as well.
 
-	Multiple conventions exist for the repulsion integrals.
-	In \eqref{eqn:ERI} we introduced the shell pair notation
-	or Chemists' notation.
-	Alternatively there is the physicists' convention
+	\noindent
+	An alternative convention is physicists' notation
 	\[
+		\eriPh{i j}{k l} \equiv
 		\eriPh{\psi_i \psi_j}{\psi_k \psi_l}
-		\equiv \eriMu{\psi_i\psi_k}{\psi_j\psi_l}
+		= \int_{\R^3} \int_{\R^3}
+				\frac{\cc{\psi_i}(\vec{r}_1) \cc{\psi_j}(\vec{r}_2)
+				\, \psi_k(\vec{r}_1) \psi_l(\vec{r}_2)}
+				{\norm{\vec{r}_1 - \vec{r}_2}_2}
+				\D \vec{r}_1 \D \vec{r}_2.
 	\]
-	With this we can define an antisymmetrised electron repulsion
-	integral
-	\[ \eriAsym{\psi_i \psi_j}{\psi_k \psi_l}
+	Both conventions are related by
+	\begin{equation}
+		\eriPh{i j}{k l} = \eriMu{i k}{j l}.
+		\label{eqn:EriMulPhys}
+	\end{equation}
+	It is a rather common feature that the ERI integrals appear in pairs
+	like in \eqref{eqn:SlaterCondonCoulomb},
+	where the indices are only slightly permuted.
+	For this reason one typically defines an
+	\newterm{antisymmetrised electron repulsion tensor}
+	with elements
+	\[ \eriAsym{ij}{kl} \equiv
+		\eriAsym{\psi_i \psi_j}{\psi_k \psi_l}
 		\equiv \eriPh{\psi_i \psi_j}{\psi_k \psi_l}
 		- \eriPh{\psi_j \psi_i}{\psi_k \psi_l}
 		= \eriMu{\psi_i\psi_k}{\psi_j\psi_l} - \eriMu{\psi_j\psi_k}{\psi_i\psi_l}
 	\]
-	if the one-particle basis and its indexing is clear from context
-	one often just writes
-	\[ \eriMu{ij}{kl}, \eriPh{ij}{kl}, \eriAsym{ij}{kl} \]
+	as well. With this quantity the element $a(\Phi, \Phi)$,
+	where the quadratic form is applied to an arbitrary normalised
+	determinant $\Phi = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_{\Nelec}$
+	can be written as
+	\begin{equation}
+		a(\Phi, \Phi) = \braket{\Phi}{\Op{H}_{\Nelec} \, \Phi}
+		= \sum_{i\in\Iocc} \braket{\psi_i}{\Op{H}_\text{core}\, \psi_i}_1
+			+ \frac12 \sum_{i\in\Iocc} \sum_{j\in\Iocc} \eriAsym{ij}{ij}.
+		\label{eqn:EnergySlaterDeterminant}
+	\end{equation}
 
-	For a list of all index symmetries between electron
-	repulsion integrals see appendix \vref{apx:ERIProps}.
+	Originating from the integral expression \eqref{eqn:ERI}
+	both the ERI tensor as well as the antisymmetrised ERI tensor
+	show a lot of symmetry with respect to index permutations.
+	An overview of these symmetry properties provides appendix \vref{apx:ERIProps}.
 \end{rem}

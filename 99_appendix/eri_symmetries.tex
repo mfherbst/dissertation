@@ -1,4 +1,5 @@
 \chapter{Symmetry properties of the electron repulsion integrals}
+\chaptermark{Symmetry properties of the ERIs}
 \label{apx:ERIProps}
 
 \newcommand{\iicol}{\textcolor{  dkred!92!white}{i}}
@@ -6,7 +7,8 @@
 \newcommand{\kkcol}{\textcolor{dkgreen!92!white}{k}}
 \newcommand{\llcol}{\textcolor{ orange!92!white}{l}}
 
-As usual we define in physicist's indexing convention and in Mulliken convention
+In accordance with \eqref{eqn:ERI} of remark \label{eqn:EvalFCIMatrix}
+we define the ERIs in physicist's indexing convention and in Mulliken convention
 \begin{align*}
 	\eriPh{\iicol\jjcol}{\kkcol\llcol} &= \int_\Omega \int_\Omega
 		\cc{\psi_{\iicol}}\left(\vec{r}_1\right)
@@ -18,12 +20,13 @@ As usual we define in physicist's indexing convention and in Mulliken convention
 		\D \vec{r}_2 \\
 	&= \eriMu{\iicol\kkcol}{\jjcol\llcol}
 \end{align*}
-and define the antisymmetrised repulsion integrals as
+and the antisymmetrised repulsion integrals
 \[ \eriAsym{\iicol\jjcol}{\kkcol\llcol}
 	= \eriPh{\iicol\jjcol}{\kkcol\llcol} - \eriPh{\jjcol\iicol}{\kkcol\llcol}
 	= \eriMu{\iicol\kkcol}{\jjcol\llcol} - \eriMu{\jjcol\kkcol}{\iicol\llcol} .
 \]
-They have 4-fold symmetry in Mulliken convention:
+where $\psi_{\iicol}, \psi_{\jjcol}, \psi_{\kkcol}, \psi_{\llcol} \in H^1(\R^3, \C)$.
+There is 4-fold symmetry in Mulliken convention
 \begin{align}
 	\label{propEriMuShellPair}
 	\eriMu{\iicol \jjcol}{\kkcol \llcol} &= \eriMu{\kkcol \llcol}{\iicol \jjcol} &&\text{Swap shell pairs} \\
@@ -32,7 +35,7 @@ They have 4-fold symmetry in Mulliken convention:
 	\nonumber
 	&= \cc{\eriMu{\llcol \kkcol}{\jjcol \iicol}} &&\text{Both the above}
 %
-\intertext{and of course 4-fold in physicist's convention as well}
+\intertext{and 4-fold symmetry in physicist's convention as well}
 %
 	\label{propEriPhShellPair}
 	\eriPh{\iicol\kkcol}{\jjcol\llcol} &= 
@@ -40,9 +43,9 @@ They have 4-fold symmetry in Mulliken convention:
 	\label{propEriPhBothShellPair}
 	&= \cc{\eriPh{\jjcol \llcol}{\iicol \kkcol}} &&\text{Swap inside \textit{both} shell pairs} \\
 	\nonumber
-	&= \cc{\eriPh{\llcol \jjcol}{\kkcol \iicol}} &&\text{Both the above}
+	&= \cc{\eriPh{\llcol \jjcol}{\kkcol \iicol}} &&\text{Both the above}.
 %
-\intertext{The asymmetric integrals have 8-fold symmetry:}
+\intertext{The asymmetric integrals, however, have 8-fold symmetry}
 %
 	\label{propEriAsymShellPair}
 	\eriAsym{\iicol\kkcol}{\jjcol\llcol} &=
@@ -58,9 +61,10 @@ They have 4-fold symmetry in Mulliken convention:
 	\nonumber
 	&= -\cc{\eriAsym{\llcol \jjcol}{\iicol \kkcol}} &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymBothShellPair}} \\
 	\nonumber
-	&= -\cc{\eriAsym{\jjcol \llcol}{\kkcol \iicol}} &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymBothShellPair}}
+	&= -\cc{\eriAsym{\jjcol \llcol}{\kkcol \iicol}} &&\text{\eqref{propEriAsymAsym} and \eqref{propEriAsymBothShellPair}}.
 %
-\intertext{For \textbf{real orbitals} we get a full 8-fold symmetry in the ERI tensor:}
+\intertext{For \textbf{real-valued} functions, \ie $\psi_{\iicol}, \psi_{\jjcol}, \psi_{\kkcol}, \psi_{\llcol} \in H^1(\R^3, \R)$,
+the ERI tensor shows an 8-fold symmetry as well:}
 %
 	\label{propEriMuRealShellPair}
 	\eriMu{\iicol \jjcol}{\kkcol \llcol}
@@ -85,7 +89,7 @@ They have 4-fold symmetry in Mulliken convention:
 	&= \eriMu{\llcol \kkcol}{\jjcol \iicol}
 	&& \text{\eqref{propEriMuRealShellPair} and \eqref{propEriMuRealBothShellPair}}
 %
-\intertext{and (for \textbf{real orbitals}) in physicist's convention}
+\intertext{Similarly for \textbf{real functions} and physicist's convention:}
 %
 	\label{propEriPhRealShellPair}
 	\eriPh{\iicol \kkcol}{\jjcol \llcol}
@@ -110,7 +114,7 @@ They have 4-fold symmetry in Mulliken convention:
 	&= \eriPh{\llcol \jjcol}{\kkcol \iicol}
 	&& \text{\eqref{propEriPhRealShellPair} and \eqref{propEriPhRealBothShellPair}}
 %
-\intertext{Finally for the antisymmetrised ERI tensor and \textbf{real orbitals} we get 16-fold symmetry:}
+\intertext{For the antisymmetrised ERI tensor and \textbf{real functions} we get 16-fold symmetry:}
 %
 	\label{propEriAsymRealShellPair}
 	\eriPh{\iicol \kkcol}{\jjcol \llcol}
