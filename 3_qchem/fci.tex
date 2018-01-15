@@ -48,7 +48,6 @@ Since $H^1(\R^{3\Nelec}, \C)$ is separable, we can find a countable basis set
 \end{equation}
 where we used the abbreviated notation
 $\braket{\slot}{\slot}_1 = \braket{\slot}{\slot}_{L^2(\R^3, \C)}$.
-$\set{B}_1$ is sometimes called the \newterm{one-particle basis}.
 Taking the properties of the wedge product \eqref{eqn:PropertiesExteriorProduct}
 into account allows to deduce the equivalent construction
 \begin{equation}
@@ -102,22 +101,23 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 \begin{rem}[Orthonormal basis for $\tilde{Q}(\Op{H}_{\Nelec})$]
 	\label{rem:Determinants}
 	Let $\tilde{Q}(\Op{H}_{\Nelec})$ be defined as in \eqref{eqn:FormDomainAllFunctions}
-	and let $\set{B}_1$ be an arbitrary one-particle basis for $H^1(\R^3, \C)$.
+	and let $\set{B}_1$ be an arbitrary basis for $H^1(\R^3, \C)$.
 	We take one arbitrary, non-trivial Slater determinant
 	$0 \neq \Phi_0 \in \tilde{Q}(\Op{H}_{\Nelec})$,
 	such that
 	\[
-		\Phi_0 = \varphi_1 \wedge \varphi_2 \wedge \cdots \varphi_i \cdots \wedge \varphi_{\Nelec}.
+		\Phi_0 = \tilde{\psi}_1 \wedge \tilde{\psi}_2 \wedge \cdots \tilde{\psi}_i \cdots \wedge \tilde{\psi}_{\Nelec}
 	\]
+	for appropriate $\tilde{\psi}_i \in \set{B}_1$.
 	This determinant can always be found due to the alternative
 	construction for $\tilde{Q}(\Op{H}_{\Nelec})$ sketched
 	in \eqref{eqn:FormDomainSlaterDeterminants}.
 	Let us call $\Phi_0$ the \newterm{reference determinant}
 	in the following.
 
-	The functions of the (countable) basis set $\{\psi_i\}_{i \in \N} = \set{B}$
+	The functions of the (countable) basis set $\set{B}_1 = \{\psi_i\}_{i \in \N}$
 	can be indexed in such a way
-	that the first $\Nelec$ functions coincide with $\{\varphi\}_{i \in \Nelec}$.
+	that the first $\Nelec$ functions coincide with $(\tilde{\psi}_1, \tilde{\psi}_2, \ldots, \tilde{\psi}_{\Nelec})$.
 	In other words
 	\[
 		\Phi_0 = \psi_1 \wedge \psi_2 \wedge \cdots \psi_i \cdots \wedge \psi_{\Nelec}
@@ -143,7 +143,7 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 	\]
 	by replacing the $i$-th function of the Slater determinant
 	wedge string
-	by the $a$-th function of $\set{B}$
+	by the $a$-th function of $\set{B}_1$
 	without changing the order.
 	Analogously one may define doubly or higher excited determinants
 	\begin{align*}
@@ -196,10 +196,10 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 The set $\set{B}_{\Nelec}$ is sometimes called the \newterm{$\Nelec$-particle basis}
 or \newterm{many-particle basis}
 corresponding to $\set{B}_1$ and the reference determinant $\Phi_0$.
-Notice that any choice of $\Phi_0$ or $\set{B}_1$ would work for its construction
-and albeit the precise entries in $\set{B}_{\Nelec}$ might differ from case to case
+Albeit the precise entries in $\set{B}_{\Nelec}$ might differ from case to case
 the end result $\spacespan \set{B}_{\Nelec} = \tilde{Q}(\Op{H}_{\Nelec})$
-is always true.
+is always true
+regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 
 \begin{rem}
 	Given a many-particle basis $\set{B}_{\Nelec}$ consisting
@@ -213,7 +213,8 @@ is always true.
 		\Phi_\mu \in \set{B}_{\Nelec}, c_\mu \in \C.
 	\end{align}
 	If one is interested in emphasising the particular
-	one-particle basis $\set{B}_1$ and the particular reference determinants $\Phi_0$
+	basis of one-particle functions
+	$\set{B}_1$ and the particular reference determinants $\Phi_0$
 	this can be written equivalently as
 	\begin{equation}
 		\label{eqn:CIExpansion}
@@ -243,16 +244,21 @@ is always true.
 	or full configuration interaction~(\FCI).
 
 	\begin{itemize}
-	\item Take a finite-sized one-electron basis set
-	\[ \set{B}_1^{(n)} \equiv \{\varphi_\mu\}_{\mu \in \Ibas} \]
-	of orthonormal functions $\varphi_\mu \in U$,
+	\item Take a finite-sized basis set of orthonormal one-particle functions
+	\[ \set{B}_1^{(n)} \equiv \{\psi_i\}_{i \in \Ibas} \subset U, \]
 	where $U \subset H^1(\R^3, \C)$ is dense.
 	%
-	\item Define a reference determinant
-	\[ \Phi_0 = \varphi_1 \wedge \varphi_2 \wedge \ldots \wedge \varphi_{\Nelec} \]
-	where $\{\varphi_i\}_{i=1,\ldots,\Nelec} \subset \{\varphi_\mu\}_{\mu \in \Ibas}$
-	arbitrarily and construct the finite $\Nelec$-electron basis
-	\[ \set{B}_{\Nelec}^{(n)} \equiv \{ \Phi_0, \Phi_i^a, \Phi_{ij}^{ab}, \ldots \} \]
+	\item Choose --- at random or using prior knowledge ---
+		an arbitrary reference determinant
+	\[ \Phi_0 = \psi_1 \wedge \psi_2 \wedge \ldots \wedge \psi_{\Nelec} \]
+	where
+	\[ (\psi_1, \psi_2, \ldots, \psi_{\Nelec}) \in \left(\set{B}_1^{(n)}\right)^{\Nelec} \]
+	and construct the finite $\Nelec$-electron basis
+	\begin{equation}
+		\set{B}_{\Nelec}^{(n)} \equiv \{ \Phi_0, \Phi_i^a, \Phi_{ij}^{ab}, \ldots \}
+		\label{eqn:NelectronBasisFinite}
+	\end{equation}
+	using substitutions of the functions from $\set{B}_1^{(n)}$
 	according to the procedure described in remark \vref{rem:Determinants}.
 	As usual we take
 	\begin{align}
@@ -342,7 +348,7 @@ and allows only treatment of extremely small systems.
 	Electron repulsion integrals in chemist's or Mullikan notation,
 	see definition in remark \vref{rem:ERI}.
 }
-\begin{rem}[Structure and evaluation of the \FCI matrix]
+\begin{rem}[Structure of the \FCI matrix]
 	\label{eqn:EvalFCIMatrix}
 	Recall the expression
 	\[
@@ -403,8 +409,9 @@ and allows only treatment of extremely small systems.
 	which is just the sum of the kinetic operator $\Op{T}$
 	and the nuclear attraction operator $\Op{V}_0$
 	contribution from a single electron.
-	More generally we can state
-	that the matrix element $\braket{\Phi_1}{\Op{A}_1 \Phi_2}_{\Nelec}$
+	Since the choice of the reference determinant $\Phi_0$
+	was arbitrary, we can state more generally that the element
+	$\braket{\Phi_1}{\Op{A}_1 \Phi_2}_{\Nelec}$
 	of a one-particle operator $\Op{A}_1$
 	is only non-zero for determinants $\Phi_1$, $\Phi_2$,
 	which differ in at most one single-particle function.
@@ -443,22 +450,33 @@ and allows only treatment of extremely small systems.
 				\D \vec{r}_1 \D \vec{r}_2.
 		\label{eqn:ERI}
 	\end{equation}
-	Again as a general result,
-	determinants which differ in more than two one-particle functions
-	vanish according to the Slater-Condon rules.
+	Again this result generalises in the sense
+	that for a two particle operator $\Op{A}_2$
+	and any determinants $\Phi_1$ and $\Phi_2$
+	the elmement $\braket{\Phi_1}{\Op{A}_2 \Phi_2}_{\Nelec}$
+	is only non-zero if the determinants
+	differ in at most two single-particle functions.
 
-	For the full CI matrix $\mat{A}_\text{FCI}$
-	the Slater-Condon rules imply that it has a rather sparse structure
-	despite its size~(see fig. \vref{fig:StructureFCIMatrix}).
-	For this reason the diagonalisation
-	step of remark \vref{rem:FCI} is typically performed
-	using one of the iterative methods sketched
-	in section \vref{sec:DiagAlgos}.
+	Both these observations combined allow to deduce
+	that the full CI matrix $\mat{A}_\text{FCI}$ must be rather sparse.
+	Originating from the two-electron Coulomb term $\Op{V}_{ee}$
+	all entries $a(\Phi_1, \Phi_2)$ where the determinants
+	differ by more than two functions vanish.
+	If we pick an arbitrary reference determinant $\Op{Phi}_0$
+	and order the $\Nelec$-electron basis as in equation \eqref{eqn:NelectronBasisFinite}
+	a banded structure as in fig. \vref{fig:StructureFCIMatrix} results.
+	Of course the dimensionality is still rather large,
+	but a combination of the iterative methods sketched
+	in section \vref{sec:DiagAlgos}
+	and a \contract-based ansatz like the one sketched in section \vref{sec:ContractionAlgos}
+	allow to obtain a few eigenvalues of $\mat{A}_\text{FCI}$
+	exploiting the sparsity structure.
 \end{rem}
 \begin{figure}
 	\centering
-	\missingfigure{FCI matrix structure}
-	\caption{FCI matrix structure}
+	\includeimage{3_qchem/fci_matrix}
+	\caption{FCI matrix structure. The blocks are not depicted to scale}
+	\todoil{Work on this figure further}
 	\label{fig:StructureFCIMatrix}
 \end{figure}
 
@@ -512,7 +530,7 @@ for denoting this tensor. The following remark provides a summary.
 	determinant $\Phi = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_{\Nelec}$
 	can be written as
 	\begin{equation}
-		a(\Phi, \Phi) = \braket{\Phi}{\Op{H}_{\Nelec} \, \Phi}
+		a(\Phi, \Phi) = \braket{\Phi}{\Op{H}_{\Nelec} \, \Phi}_{\Nelec}
 		= \sum_{i\in\Iocc} \braket{\psi_i}{\Op{H}_\text{core}\, \psi_i}_1
 			+ \frac12 \sum_{i\in\Iocc} \sum_{j\in\Iocc} \eriAsym{ij}{ij}.
 		\label{eqn:EnergySlaterDeterminant}

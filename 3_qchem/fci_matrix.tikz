@@ -1,0 +1,41 @@
+[
+	block/.style={align=center,draw=black,inner sep=2mm,fill=black!30!white,
+	minimum width=0.7,minimum height=0.7},
+	zeroblock/.style={block,fill=white},
+]
+\newcommand{\blkdist}{0.73}
+
+\foreach \x in {0,1,2}
+  \node[block] at ($(\blkdist*\x, -\blkdist*0)$) {};
+\foreach \x in {3,4,5,6}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*0)$) {};
+
+\foreach \x in {0,1,2,3}
+  \node[block] at ($(\blkdist*\x, -\blkdist*1)$) {};
+\foreach \x in {4,5,6}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*1)$) {};
+
+\foreach \x in {0,1,2,3,4}
+  \node[block] at ($(\blkdist*\x, -\blkdist*2)$) {};
+\foreach \x in {5,6}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*2)$) {};
+
+\foreach \x in {1,2,3,4,5}
+  \node[block] at ($(\blkdist*\x, -\blkdist*3)$) {};
+\foreach \x in {0,6}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*3)$) {};
+
+\foreach \x in {2,3,4,5,6}
+  \node[block] at ($(\blkdist*\x, -\blkdist*4)$) {};
+\foreach \x in {0,1}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*4)$) {};
+
+\foreach \x in {3,4,5,6}
+  \node[block] at ($(\blkdist*\x, -\blkdist*5)$) {};
+\foreach \x in {0,1,2}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*5)$) {};
+
+\foreach \x in {4,5,6}
+  \node[block] at ($(\blkdist*\x, -\blkdist*6)$) {};
+\foreach \x in {0,1,2,3}
+  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*6)$) {};
