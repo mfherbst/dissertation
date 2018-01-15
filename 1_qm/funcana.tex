@@ -308,25 +308,30 @@ such that $L^2(\R^d, \C)$ truely satisfies all the requirements
 for being a suitable Hilbert space of \QM
 as introduced in section \vref{sec:IntroQM}.
 
-In section \ref{sec:IntroQM} we did not introduce the most general theory of \QM.
-More precisely taking states from $L^2(\R^d, \C)$
-is only correct for \emph{non-relativistic, spin-free} \QM.
-If more than one spin component are required,
-like $4$ in relativistic \QM or $2$ in spin-adapted \QM,
-we need to take states from the spaces $L^2(\R^d, \C^4)$ or $L^2(\R^d, \C^2)$,
-respectively.
+Notice, however, that we did not  introduce the most general theory of \QM
+in this section, but only  \emph{non-relativistic, spin-free} \QM.
+In a fully relativistic \QM treatment
+each state is not a function returning
+a single complex value, but much rather a function returning a \newterm{spinor},
+which for relativistic \QM has $4$ spin components per particle.
+In other words for an $N$-particle system
+the corresponding space would be $L^2(\R^{3N}, \C^{4N})$.
 This work does not treat relativistic \QM at all,
-such that only $L^2(\R^d, \C)$ and $L^2(\R^d, \C^2)$ are relevant for us.
-For simplicity we will assume $\hilbert = L^2(\R^d, \C)$
-in the mathematical analysis presented in this and the next chapter
-and only introduce spin \textit{ad hoc} in the form of $L^2(\R^d, \C^2)$
-whenever this is needed in the remaining chapters.
-This is sound because of remark \vref{rem:HilbertCd},
+much rather only deal with \textit{non-relativistic, spin-adapted} \QM,
+which only has $2$ spin components per particle,
+thus states from $L^2(\R^{3N}, \C^{2N})$.
+
+For simplifying the mathematical treatment we will nevertheless
+assume $\hilbert = L^2(\R^d, \C)$ for most of our analysis
+in the next few chapters and only introduce spin \textit{ad hoc} in the form
+of the space $L^2(\R^{3N}, \C^{2N})$ once this is needed.
+We can do this without any loss of generality
+because of remark \vref{rem:HilbertCd},
 where we pointed out that all infinite-dimensional
 Hilbert spaces are isometrically isomorphic.
 This implies that all of the properties we have showed or will show based
 on the Hilbert space $L^2(\R^d, \C)$ can be generalised
-to $L^2(\R^d, \C^s)$ with $s \geq 1$ rather trivially.
+to $L^2(\R^d, \C^s)$ with $s \geq 1$ with ease.
 
 \subsection{Sobolev spaces}
 \label{sec:Sobolev}
