@@ -17,8 +17,123 @@ Note, that $\Norb \le \Nbas$.}
 \nomenclature{$\Op{K}$}{One-electron exchange operator}
 \nomenclature{$\Op{J}$}{Effective Coulomb operator}
 
+In the previous section we noted that even an approximate
+solution to the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}
+via the full CI ansatz
+is hardly feasible.
+Even if comparatively small one-electron basis sets
+$\{ \varphi_\mu \}_{\mu\in\Ibas} \subset H^1(\R^3,\C)$
+are used,
+the dimensionality
+of the matrix $\mat{A}_\text{FCI}$ becomes simply too large.
+In this section we discuss the opposite end of the scale and
+only consider one-dimensional subspaces of the form domain
+\[ Q(\Op{H}_{\Nelec}) = \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C) \cap L^2(\R^3, \C) \]
+of the electronic Hamiltonian.
+Formally by the Courant-Fischer theorem \eqref{thm:CourantFischer}
+the ground state electronic energy can be obtained by
+a variational minimisation over all subspaces of dimension $1$,
+or more formally
+\begin{align}
+	\label{eqn:GroundStateVariational}
+	E_0 &= \inf_{\Psi \in \mathcal{W}_{\Nelec}} \braket{\Psi}{\Op{H}_{\Nelec} \Psi}_{\Nelec} \\
+\intertext{where}
+	\label{eqn:NormalisedFormDomain}
+	\mathcal{W}_{\Nelec} &= \left\{ \Psi \in Q(\Op{H}_{\Nelec})
+	\, \middle| \,
+	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
+\end{align}
+denotes the subspace of all normalised functions from $Q(\Op{H}_{\Nelec})$.
+If we restrict the search to run only over the subspace
+\begin{equation}
+	\mathcal{R}^1_{\Nelec} = \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i
+	\, \middle| \,
+	\left( \psi_1, \psi_2, \ldots, \psi_{\Nelec} \right) \in H^1(\R^3, \C),
+	\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+	\right\}
+	\label{eqn:RankOneSubspace}
+\end{equation}
+of all normalised Slater determinants we do not get the exact
+energy much rather we obtain an upper bound
+\begin{equation}
+	E_0 \leq E_0^\text{HF} = \inf_{\Phi \in \mathcal{R}^1_{\Nelec}}
+	\braket{\Phi}{\Op{H}_{\Nelec} \Phi}_{\Nelec}
+	\label{eqn:HFDeterminant}
+\end{equation}
+according to corollary \vref{cor:Convergence}.
+The implied procedure
+to obtain an approximation to the electronic ground state
+by minimising the sesquilinear form of $\Op{H}_{\Nelec}$
+over the space spanned by all normalised Slater determinants
+is the celebrated \newterm{Hartree-Fock}~(\HF) approximation.
+The resulting minimal energy $E_0^\text{HF}$
+is the \HF ground state energy
+and the corresponding minimising determinant
+$\Phi_0$ the \HF ground state.
+
+Notice that $\Phi_0$ is --- by construction ---
+the best possible single Slater determinant to
+approximate the electronic ground state.
+Mathematically speaking the set of Slater determinants
+$\mathcal{R}^1_{\Nelec}$
+is exactly the set of all elements from $\mathcal{W}_{\Nelec}$,
+which are of tensor rank 1.
+For this reason one sometimes refers to the Hartree-Fock
+ground state $\Phi_0$
+as a \textbf{rank-1 approximation} to the exact
+electronic ground state.
+
+\begin{rem}[Molecular orbital formulation of \HF]
+	Using equations \eqref{eqn:EnergySlaterDeterminant}
+	and \eqref{eqn:RankOneSubspace}
+	the \HF problem \eqref{eqn:HFDeterminant}
+	can be re-formulated in terms of the molecular orbital
+	basis $\{\psi_i\}_{i\in\Iorb}$
+\end{rem}
+
+The following theorem summarises some mathematical
+results regarding \HF.
+\begin{thm}
+	\todoil{Seek literature for Cances stuff}
+\end{thm}
+\todoil{Show these results in the discrete case (see MWM example sheet) in appendix.}
+
+% define occupied and virtual
+
+% mention term SCF
+% spin generalisation?
+
+\begin{rem}[Spin]
+	bla
+\end{rem}
+
+% TODO Mention some theoretical result regarding well-posedness,
+%      solutions and so on
+
+\begin{rem}[discretisation]
+	\todo[inline,caption={}]{
+		\begin{itemize}
+			\item 
+	$\varphi$ \newterm{one-particle basis} for HF
+	\item
+	$\psi$ HF orbitals or (SCF) orbital basis,
+	typically in FCI one uses the HF orbital basis as the one-particle basis functions for FCI
+		\end{itemize}
+}
+\end{rem}
+
+
+% ----------------------------------ü
+
+
+
 \todoil{
-	Spin: Replace $H^1(\R^3, \C)$ by $H^1(\R^3, \C^2)$.
+In our discussion so far we neglected the spin component
+of the wavefunction
+$L^2(\R^{3\Nelec}, \C)$ to $L^2(\R^{3\Nelec}, \C^{2\Nelec})$
+
+two-component spinor representation
+
 	Everything works the same.
 	Especially if one thinks of $\alpha$-spin orbitals
 	as those which only produce non-zero in the first component
@@ -47,15 +162,6 @@ $\Psi \in H^2(\R^{3d}, \R)$
 }
 
 
-
-\todo[inline,caption={}]{
-\begin{equation}
-	\mathcal{W}_{\Nelec} \equiv \left\{ \Psi \in H^1(R^{3\Nelec}, \C) \bigwedge^{\Nelec} L^2(\R^3, \C)
-	\, \middle| \,
-	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
-	\label{eqn:DefSetSlaterDeterminant}
-\end{equation}
-}
 
 
 % Density matrix
