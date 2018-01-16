@@ -29,11 +29,11 @@ of the matrix $\mat{A}_\text{FCI}$ becomes simply too large.
 In this section we discuss the opposite end of the scale and
 only consider one-dimensional subspaces of the form domain
 \[ Q(\Op{H}_{\Nelec}) = \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C) \cap L^2(\R^3, \C) \]
-of the electronic Hamiltonian.
+for solving the electronic problem.
 Formally by the Courant-Fischer theorem \eqref{thm:CourantFischer}
-the ground state electronic energy can be obtained by
-a variational minimisation over all subspaces of dimension $1$,
-or more formally
+the ground state electronic energy $E_0$ can be obtained by
+a variational minimisation over all subspaces of dimension $1$.
+In other words
 \begin{align}
 	\label{eqn:GroundStateVariational}
 	E_0 &= \inf_{\Psi \in \mathcal{W}_{\Nelec}} \braket{\Psi}{\Op{H}_{\Nelec} \Psi}_{\Nelec} \\
@@ -44,34 +44,36 @@ or more formally
 	\norm{\Psi}_{L^2(\R^{3 \Nelec}, \C)} = 1 \right\}.
 \end{align}
 denotes the subspace of all normalised functions from $Q(\Op{H}_{\Nelec})$.
-If we restrict the search to run only over the subspace
+If we restrict the search to only run over the space
 \begin{equation}
 	\mathcal{R}^1_{\Nelec} = \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i
 	\, \middle| \,
-	\left( \psi_1, \psi_2, \ldots, \psi_{\Nelec} \right) \in H^1(\R^3, \C),
+	\psi_i \in H^1(\R^3, \C),
 	\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+	\quad \forall \, 1\leq i,j\leq \Nelec
 	\right\}
 	\label{eqn:RankOneSubspace}
 \end{equation}
-of all normalised Slater determinants we do not get the exact
-energy much rather we obtain an upper bound
+of all normalised Slater determinants,
+which is a proper subspace of $\mathcal{W}_{\Nelec}$,
+we no longer yield the exact energy.
+According to corollary \vref{cor:Convergence} we merely obtain an upper bound
 \begin{equation}
 	E_0 \leq E_0^\text{HF} = \inf_{\Phi \in \mathcal{R}^1_{\Nelec}}
-	\braket{\Phi}{\Op{H}_{\Nelec} \Phi}_{\Nelec}
+	\braket{\Phi}{\Op{H}_{\Nelec} \Phi}_{\Nelec}.
 	\label{eqn:HFDeterminant}
 \end{equation}
-according to corollary \vref{cor:Convergence}.
-The implied procedure
-to obtain an approximation to the electronic ground state
-by minimising the sesquilinear form of $\Op{H}_{\Nelec}$
-over the space spanned by all normalised Slater determinants
-is the celebrated \newterm{Hartree-Fock}~(\HF) approximation.
+The implied procedure,
+where an approximation to the electronic ground state
+is computed by minimising the sesquilinear form of $\Op{H}_{\Nelec}$
+over the space spanned by all normalised Slater determinants,
+is the celebrated \newterm{Hartree-Fock}~(\HF) approximation~\cite{Fock1930}.
 The resulting minimal energy $E_0^\text{HF}$
 is the \HF ground state energy
 and the corresponding minimising determinant
 $\Phi_0$ the \HF ground state.
 
-Notice that $\Phi_0$ is --- by construction ---
+Notice, that $\Phi_0$ is --- by construction ---
 the best possible single Slater determinant to
 approximate the electronic ground state.
 Mathematically speaking the set of Slater determinants
@@ -84,49 +86,62 @@ as a \textbf{rank-1 approximation} to the exact
 electronic ground state.
 
 \begin{rem}[Molecular orbital formulation of \HF]
-	Using equations \eqref{eqn:EnergySlaterDeterminant}
-	and \eqref{eqn:RankOneSubspace}
-	the \HF problem \eqref{eqn:HFDeterminant}
-	can be re-formulated in terms of the molecular orbital
-	basis $\{\psi_i\}_{i\in\Iorb}$
+	Let
+	\[  \Theta \equiv \left(\psi_1, \psi_2, \ldots, \psi_{\Nelec}\right)
+		\in \left(H^1(\R^3, \C)\right)^{\Nelec} \]
+	denote an arbitrary tuple of single-particle functions.
+	It uniquely defines a Slater determinant
+	$\Phi_\Theta = \bigwedge_{i=1}^{\Nelec} \psi_i.$
+	Inserting this ansatz into the energy expression
+	\eqref{eqn:EnergySlaterDeterminant} for a single determinant
+	yields the \newterm{Hartree-Fock energy functional}
+	\begin{equation}
+		\begin{aligned}
+		\mathcal{E}^\text{HF}(\Theta)
+		&= \frac12 \sum_{i=1}^{\Nelec} \int_{\R^3} \norm{\nabla \psi_i}_2^2 \D\vec{r}
+		+ \int_{\R^3} \sum_{A=1}^M
+			\frac{\rho_\Theta(Z_A \, \vec{r})}{\norm{\vec{r} - \vec{R}_A}_2} \D\vec{r} \\
+		&\hspace{20pt}
+		+ \frac12 \int_{\R^3}\int_{\R^3}
+			\frac{\rho_\Theta(\vec{r}_1) \rho_\Theta(\vec{r}_2)}
+				{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2
+		- \frac12 \int_{\R^3}\int_{\R^3}
+			\frac{\abs{\gamma_\Theta(\vec{r}_1, \vec{r}_2)}^2}
+				{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2
+		\end{aligned}
+		\label{eqn:HFEnergyFunctional}
+	\end{equation}
+	where
+	\begin{align}
+		\rho_\Theta(\vec{r}) &= \sum_{i=1}^{\Nelec} \abs{\psi_i(\vec{r})}^2
+		&\text{and} &&
+		\gamma_\Theta(\vec{r}_1,\vec{r}_2)
+			&= \sum_{i=1}^{\Nelec} \cc{\psi}_i(\vec{r}_1) \psi_i(\vec{r}_2)
+	\end{align}
+	are the \newterm{electron density}
+	and the \newterm{one-particle reduced density matrix}, respectively.
+	The HF ansatz \eqref{eqn:RankOneSubspace}
+	thus becomes
+	\begin{equation}
+		E_0 \leq E_0^\text{HF}
+		= \inf \left\{
+			\mathcal{E}^\text{HF}(\Theta)
+			\, \middle| \,
+			\Theta \in \left(H^1(\R^3, \C)\right)^{\Nelec}, \,
+			\forall i,j \,
+			\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+		\right\}
+		\label{label:HFMO}
+	\end{equation}
+	with the minimiser $\Theta_0$ defining the HF ground state
+	$\Phi_0 \equiv \Phi_{\Theta_0}$.
 \end{rem}
 
-The following theorem summarises some mathematical
-results regarding \HF.
-\begin{thm}
-	\todoil{Seek literature for Cances stuff}
-\end{thm}
-\todoil{Show these results in the discrete case (see MWM example sheet) in appendix.}
 
-% define occupied and virtual
-
-% mention term SCF
-% spin generalisation?
+% ---------------------------
 
 \begin{rem}[Spin]
-	bla
-\end{rem}
-
-% TODO Mention some theoretical result regarding well-posedness,
-%      solutions and so on
-
-\begin{rem}[discretisation]
-	\todo[inline,caption={}]{
-		\begin{itemize}
-			\item 
-	$\varphi$ \newterm{one-particle basis} for HF
-	\item
-	$\psi$ HF orbitals or (SCF) orbital basis,
-	typically in FCI one uses the HF orbital basis as the one-particle basis functions for FCI
-		\end{itemize}
-}
-\end{rem}
-
-
-% ----------------------------------ü
-
-
-
+	Spin as spinor!
 \todoil{
 In our discussion so far we neglected the spin component
 of the wavefunction
@@ -142,15 +157,48 @@ two-component spinor representation
 	Then we also have $\Nelec$ orbitals to occupy
 	$\Nelec$ electrons, but their spatial part may be the same or different.
 }
+\end{rem}
+
+
+Mathematical results
+
+\begin{rem}[Invariance under orbital rotations]
+	One can easily show
+
+
+\end{rem}
+
+The following theorem summarises some mathematical
+results regarding \HF equations~\cite{Lieb1977,Lions1987,Lions1989}.
+All results shown hold for the general case with spin as well.
+\begin{thm}
+	\todoil{Write it up.}
+\end{thm}
+\todoil{Show these results as well as the invariance remark
+in the discrete case (see MWM example sheet)}
+
+% define occupied and virtual
+
+% mention term SCF
+% spin generalisation?
+
+\begin{rem}[discretisation]
+	\todo[inline,caption={}]{
+		\begin{itemize}
+			\item 
+	$\varphi$ \newterm{one-particle basis} for HF
+	\item
+	$\psi$ HF orbitals or (SCF) orbital basis,
+	typically in FCI one uses the HF orbital basis as the one-particle basis functions for FCI
+		\end{itemize}
+}
+\end{rem}
 
 
 \todoil{Present explicit expressions for the individual
 	terms. Perhaps already introduce the J and K operators
 and use the functional form and formalism of Cances}
 
-% Note that we need a more general setting here.
-% Discuss how spin is included
-% Slater determinants with spin
 \todoil{
 	Quick note that real is possible: \\
 For an atomic system, we can consider the nucleus to be located at the origin
@@ -162,10 +210,6 @@ $\Psi \in H^2(\R^{3d}, \R)$
 }
 
 
-
-
-% Density matrix
-% Density operator
 % Coefficient matrix
 
 \newterm{Hartree-Fock}
@@ -196,4 +240,5 @@ The discretised Hartree-Fock equations in weak form read
 % Proove the Fock operator (for fixed orbitals) is linear in the function
 % it acts upon
 
+% Explain the term Hartree-Fock and SCF (idea from Hartree, but spin adaption from Fock and Slater)
 
