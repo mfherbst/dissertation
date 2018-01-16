@@ -392,7 +392,7 @@ we introduce a constraint towards the solution in the form of
 The condition \eqref{eqn:AsymElecWavefunction} can be satisfied mathematically
 by only searching for the eigenstates $\Psi_I$ inside a special function space,
 which by construction has a structure to enforce the required
-antisymmetry with respect to the electronic coordinates.
+antisymmetry with respect to the electronic coordinates~\cite{Fock1930}.
 Such a space is the $\Nelec$-th \newterm{exterior power} of $L^2(\R^3, \C)$ defined as
 \newcommand{\wedgestring}{\psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_{\Nelec}}
 
@@ -436,8 +436,9 @@ with the evaluation of a determinant, \ie
 	\right).
 \end{align*}
 Because of this observation $\wedgestring$
-is typically called a \newterm{Slater determinant}
-in standard quantum-chemistry textbooks.
+is typically called a \newterm{Slater determinant}%
+\footnote{After John~C.~Slater, who introduced it.~\cite{Slater1929,Slater1930a}.}
+in standard quantum-chemistry textbooks~\cite{Szabo1996,Helgaker2013}.
 The functions $\psi_i \in L^2(\R^3, \C)$
 are usually called \newterm{single-particle functions},
 since they only depend on a single electronic coordinate.
