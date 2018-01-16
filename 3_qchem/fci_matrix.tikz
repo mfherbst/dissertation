@@ -1,41 +1,172 @@
 [
-	block/.style={align=center,draw=black,inner sep=2mm,fill=black!30!white,
-	minimum width=0.7,minimum height=0.7},
-	zeroblock/.style={block,fill=white},
+	node distance = 0.3mm,
+	block/.style={draw=black,fill=black!30!white},
+	zblock/.style={block,fill=white},
+	tlal/.style={font=\smaller,node distance=0.3mm,xshift=-1mm},
+	slal/.style={font=\smaller,node distance=0.3mm},
+	zrblur/.style={minimum width=0.25cm,
+		path picture={
+			\draw [color=black,thick]
+				(path picture bounding box.north east) --
+				(path picture bounding box.north west) --
+				(path picture bounding box.south west) --
+				(path picture bounding box.south east);
+		}
+	},
+	rblur/.style={zrblur,
+		path picture={
+			\shadedraw [draw=white,left color=black!30!white,right color=black!10!white]
+				(path picture bounding box.north west)
+				rectangle
+				(path picture bounding box.south east);
+			\draw [color=black,thick]
+				(path picture bounding box.north east) --
+				(path picture bounding box.north west) --
+				(path picture bounding box.south west) --
+				(path picture bounding box.south east);
+		}
+	},
+	zbblur/.style={minimum height=0.25cm,
+		path picture={
+			\draw [color=black,thick]
+				(path picture bounding box.south east) --
+				(path picture bounding box.north east) --
+				(path picture bounding box.north west) --
+				(path picture bounding box.south west);
+		}
+	},
+	bblur/.style={zbblur,
+		path picture={
+			\shadedraw [draw=white,top color=black!30!white,bottom color=black!10!white]
+				(path picture bounding box.north west)
+				rectangle
+				(path picture bounding box.south east);
+			\draw [color=black,thick]
+				(path picture bounding box.south east) --
+				(path picture bounding box.north east) --
+				(path picture bounding box.north west) --
+				(path picture bounding box.south west);
+		}
+	},
 ]
-\newcommand{\blkdist}{0.73}
 
-\foreach \x in {0,1,2}
-  \node[block] at ($(\blkdist*\x, -\blkdist*0)$) {};
-\foreach \x in {3,4,5,6}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*0)$) {};
+\newcommand{\bSize}[1]{%
+	\ifcase#1
+		0.4cm % #1==0
+	\or
+		0.49cm % #1==1
+	\or
+		0.6cm % #1==2
+	\or
+		0.73cm % #1==3
+	\or
+		0.89cm % #1==4
+	\or
+		1.09cm % #1==5
+	\else
+		1.33cm
+	\fi
+}
+\newcommand{\drawblock}[3]{%
+	% #1: style
+	% #2: idx1
+	% #3: idx2
+	\expandafter\node[#1,minimum height=\bSize{#2},minimum width=\bSize{#3}] (#2#3) {}
+}
 
-\foreach \x in {0,1,2,3}
-  \node[block] at ($(\blkdist*\x, -\blkdist*1)$) {};
-\foreach \x in {4,5,6}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*1)$) {};
+\drawblock{ block,           }{0}{0};
+\drawblock{ block,below=of 00}{1}{0};
+\drawblock{ block,below=of 10}{2}{0};
+\drawblock{zblock,below=of 20}{3}{0};
+\drawblock{zblock,below=of 30}{4}{0};
+\drawblock{zblock,below=of 40}{5}{0};
+\drawblock{zblock,below=of 50}{6}{0};
+\node[zbblur, below=of 60, minimum width=\bSize{0}] (bb0) {};
 
-\foreach \x in {0,1,2,3,4}
-  \node[block] at ($(\blkdist*\x, -\blkdist*2)$) {};
-\foreach \x in {5,6}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*2)$) {};
+\drawblock{ block,right=of 00}{0}{1};
+\drawblock{ block,below=of 01}{1}{1};
+\drawblock{ block,below=of 11}{2}{1};
+\drawblock{ block,below=of 21}{3}{1};
+\drawblock{zblock,below=of 31}{4}{1};
+\drawblock{zblock,below=of 41}{5}{1};
+\drawblock{zblock,below=of 51}{6}{1};
+\node[zbblur, below=of 61, minimum width=\bSize{1}] (bb1) {};
 
-\foreach \x in {1,2,3,4,5}
-  \node[block] at ($(\blkdist*\x, -\blkdist*3)$) {};
-\foreach \x in {0,6}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*3)$) {};
+\drawblock{ block,right=of 01}{0}{2};
+\drawblock{ block,below=of 02}{1}{2};
+\drawblock{ block,below=of 12}{2}{2};
+\drawblock{ block,below=of 22}{3}{2};
+\drawblock{ block,below=of 32}{4}{2};
+\drawblock{zblock,below=of 42}{5}{2};
+\drawblock{zblock,below=of 52}{6}{2};
+\node[zbblur, below=of 62, minimum width=\bSize{2}] (bb2) {};
 
-\foreach \x in {2,3,4,5,6}
-  \node[block] at ($(\blkdist*\x, -\blkdist*4)$) {};
-\foreach \x in {0,1}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*4)$) {};
+\drawblock{zblock,right=of 02}{0}{3};
+\drawblock{ block,below=of 03}{1}{3};
+\drawblock{ block,below=of 13}{2}{3};
+\drawblock{ block,below=of 23}{3}{3};
+\drawblock{ block,below=of 33}{4}{3};
+\drawblock{ block,below=of 43}{5}{3};
+\drawblock{zblock,below=of 53}{6}{3};
+\node[zbblur, below=of 63, minimum width=\bSize{3}] (bb3) {};
 
-\foreach \x in {3,4,5,6}
-  \node[block] at ($(\blkdist*\x, -\blkdist*5)$) {};
-\foreach \x in {0,1,2}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*5)$) {};
+\drawblock{zblock,right=of 03}{0}{4};
+\drawblock{zblock,below=of 04}{1}{4};
+\drawblock{ block,below=of 14}{2}{4};
+\drawblock{ block,below=of 24}{3}{4};
+\drawblock{ block,below=of 34}{4}{4};
+\drawblock{ block,below=of 44}{5}{4};
+\drawblock{ block,below=of 54}{6}{4};
+\node[zbblur, below=of 64, minimum width=\bSize{4}] (bb4) {};
 
-\foreach \x in {4,5,6}
-  \node[block] at ($(\blkdist*\x, -\blkdist*6)$) {};
-\foreach \x in {0,1,2,3}
-  \node[zeroblock] at ($(\blkdist*\x, -\blkdist*6)$) {};
+\drawblock{zblock,right=of 04}{0}{5};
+\drawblock{zblock,below=of 05}{1}{5};
+\drawblock{zblock,below=of 15}{2}{5};
+\drawblock{ block,below=of 25}{3}{5};
+\drawblock{ block,below=of 35}{4}{5};
+\drawblock{ block,below=of 45}{5}{5};
+\drawblock{ block,below=of 55}{6}{5};
+\node[ bblur, below=of 65, minimum width=\bSize{5}] (bb5) {};
+
+\drawblock{zblock,right=of 05}{0}{6};
+\drawblock{zblock,below=of 06}{1}{6};
+\drawblock{zblock,below=of 16}{2}{6};
+\drawblock{zblock,below=of 26}{3}{6};
+\drawblock{ block,below=of 36}{4}{6};
+\drawblock{ block,below=of 46}{5}{6};
+\drawblock{ block,below=of 56}{6}{6};
+\node[ bblur, below=of 66, minimum width=\bSize{6}] (bb6) {};
+
+\node[zrblur, right=of 06,  minimum height=\bSize{0}] (br0) {};
+\node[zrblur, below=of br0, minimum height=\bSize{1}] (br1) {};
+\node[zrblur, below=of br1, minimum height=\bSize{2}] (br2) {};
+\node[zrblur, below=of br2, minimum height=\bSize{3}] (br3) {};
+\node[zrblur, below=of br3, minimum height=\bSize{4}] (br4) {};
+\node[ rblur, below=of br4, minimum height=\bSize{5}] (br5) {};
+\node[ rblur, below=of br5, minimum height=\bSize{6}] (br6) {};
+\node[minimum height=0.25cm,minimum width=0.25cm,path picture={
+	\shadedraw [draw=white,left color=black!30!white,right color=black!10!white,
+			shading angle=45]
+		(path picture bounding box.north west)
+		rectangle
+		(path picture bounding box.south east);
+	\draw [color=black,thick]
+		(path picture bounding box.north east) --
+		(path picture bounding box.north west) --
+		(path picture bounding box.south west);
+}, below=of br6] {};
+
+
+\node[tlal,above=of 00,yshift=1mm,xshift=1mm] (t0) {$\Phi_0$};
+\node[tlal,right=of t0] (t1) {$\Phi_i^a$};
+\node[tlal,right=of t1] (t2) {$\Phi_{ij}^{ab}$};
+\node[tlal,right=of t2] (t3) {$\Phi_{ijk}^{abc}$};
+\node[tlal,right=of t3] (t4) {$\Phi_{ijkl}^{abcd}$};
+\node[tlal,right=of t4,xshift=3mm] (t3) {$\cdots$};
+
+\node[slal,left=of 00,xshift=-2mm]  (s0) {$\Phi_0$};
+\node[slal,below=of s0] (s1) {$\Phi_i^a$};
+\node[slal,below=of s1] (s2) {$\Phi_{ij}^{ab}$};
+\node[slal,below=of s2,yshift=-1mm] (s3) {$\Phi_{ijk}^{abc}$};
+\node[slal,below=of s3,yshift=-1mm] (s4) {$\Phi_{ijkl}^{abcd}$};
+\node[slal,below=of s4,yshift=-1.5mm] (s5) {$\vdots$};

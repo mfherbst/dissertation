@@ -403,7 +403,7 @@ and allows only treatment of extremely small systems.
 	\begin{equation}
 		\Op{H}_\text{core}
 		= \Op{T} + \Op{V}_0
-		= -\frac12 \Delta + \sum_{A=1}^M \frac{Z_A}{\norm{\vec{r} - \vec{r}_A}_2},
+		= -\frac12 \Delta + \sum_{A=1}^M \frac{Z_A}{\norm{\vec{r} - \vec{R}_A}_2},
 		\label{eqn:HCore}
 	\end{equation}
 	which is just the sum of the kinetic operator $\Op{T}$
@@ -475,8 +475,18 @@ and allows only treatment of extremely small systems.
 \begin{figure}
 	\centering
 	\includeimage{3_qchem/fci_matrix}
-	\caption{FCI matrix structure. The blocks are not depicted to scale}
-	\todoil{Work on this figure further}
+	\caption{
+		Schematic sketch of upper left part of the FCI matrix $\mat{A}_\text{FCI}$.
+		The identified blocks denote the
+		interaction of equivalent classes of excited determinants
+		under the electronic Hamiltonian $\Op{H}_{\Nelec}$.
+		The size of the blocks increases left to right and top to bottom
+		and is not depicted to scale.
+		Blocks with white background are identically zero
+		and blocks with grey background may contain non-zero elements.
+		Notice, that the grey blocks may show further
+		sparsity, which is not fully depicted here.
+	}
 	\label{fig:StructureFCIMatrix}
 \end{figure}
 
@@ -490,9 +500,9 @@ for denoting this tensor. The following remark provides a summary.
 	\label{rem:ERI}
 	In equation \eqref{eqn:ERI} we already met
 	the electron repulsion integal $\eriMu{\psi_i \psi_j}{\psi_k \psi_l}$
-	in Mulliken notation.
+	in \textbf{Mulliken notation}.
 	Alternative names for this indexing convention are
-	shell pair notation or chemists' notation.
+	\textbf{shell pair notation} or \textbf{chemists' notation}.
 	If the one-particle basis and its indexing convention is clear
 	from context one sometimes writes this integral
 	abbreviated as $\eriMu{ij}{kl}$ as well.
