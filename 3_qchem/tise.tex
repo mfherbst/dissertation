@@ -89,7 +89,7 @@ by the means of solving the time-independent Schrödinger equation
 	= E_I^\text{MB} \Psi_I^\text{MB}(\vec{X}, \vec{x}).
 	\label{eqn:TISEManyBody}
 \end{equation}
-olving this equation analytically is not possible in general.
+Solving this equation analytically is not possible in general.
 Already for the Helium atom, a 3-body problem, clever approximations are needed
 to get anywhere~\cite{Hylleras1929}.
 But even numerically \eqref{eqn:TISEManyBody} is in general impossible to solve
@@ -321,7 +321,7 @@ on approximation methods for solving \eqref{eqn:ElectronicSchrödinger} instead.
 
 For ease of notation we will usually drop the indices ``e'',
 superscripts ``elec'' from now on if we refer to electronic energies
-or the electronic part of the wavefunction.
+or the electronic part of the wave function.
 Similarly in the context of the electronic Schrödinger equation
 the nuclei are motionless, which makes $\vec{X}$ a fixed quantity.
 Thus we drop the nuclear coordinates ``$\vec{X}$''
@@ -352,14 +352,17 @@ afterwards.
 In analogy to the many-body Hamiltonian \eqref{eqn:ManyBodyHamiltonian}
 and the hydrogen-like Hamiltonian \eqref{eqn:OpHydrogen}
 we choose the underlying Hilbert space of $\Op{H}_{\Nelec}$
-to be $L^2(\R^3, \C)$.
+to be $L^2(\R^{3\Nelec}, \C)$.
 Due to Kato's theorem~\cite{Kato1951} $\Op{H}_{\Nelec}$
 becomes self-adjoint if we set its domain to $D(\Op{H}_{\Nelec}) = H^2(\R^{3\Nelec}, \C)$.
-Not all functions in $H^2(\R^{3\Nelec}, \C)$ are physical, however.
-Since electrons are spin-$\sfrac12$ particles,
-the spin statistics theorem~\cite{Shankar1994} of quantum field theory
-requires their wavefunction to be antisymmetric
-with respect to particle exchange.
+Not all functions in $H^2(\R^{3\Nelec}, \C)$ are physical, however~\cite{Mueller2000,Shankar1994}.
+This is due to the fact that electrons do not only show spatial degrees of freedom,
+but furthermore an intrinsic angular momentum degree of freedom
+called \newterm{spin}.
+More precisely electrons are so-called spin-$\sfrac12$ particles.
+By the spin statistics theorem~\cite{Shankar1994} of quantum field theory
+this requires the electronic wave function
+to be antisymmetric with respect to particle exchange.
 More symbolically all eigenfunctions $\Psi_I$ of $\Op{H}_{\Nelec}$
 need to satisfy the condition
 \begin{equation}
@@ -370,18 +373,36 @@ need to satisfy the condition
 \end{equation}
 It is easy to see that not all elements of $H^2(\R^{3\Nelec}, \C)$ satisfy this.
 
-The introduction of this extra condition on the eigenstates of $\Op{H}_{\Nelec}$
-probably seems rather \textit{ad hoc} and without any connection to the
-theory of \QM and its classical correspondence as discussed in section
-\vref{sec:QMCorrespondence}.
-This is no surprise.
-In non-relativistic \QM one has to follow this rather \textit{ad hoc} route,
-since spin and spin statistics does not arise naturally.
-This somewhat apparent as well by the approach,
-which is conventionally taken to fix the issue:
-Instead of modifying the Hamiltonian,
-we introduce a constraint towards the solution in the form of
-\eqref{eqn:AsymElecWavefunction}.
+Given that the classical correspondence
+of \vref{sec:QMCorrespondence} did not yield any kind of spin degree of freedom
+for non-relativistic \QM,
+one might wonder at this point
+why we need to bother with spin and the resulting
+antisymmetry of the wave function at all in our physical model.
+As it turns out many fundamental experimental results
+and observations made at the beginning of the $20^\text{th}$ century
+can only be explained if proper spin statistics is taken into account.
+This includes the Stern-Gerlach experiment~\cite{Gerlach1922b,Gerlach1922,Gerlach1922a},
+the spectral properties of atoms~\cite{Pauli1925}
+and Fermi-Dirac statistics~\cite{Dirac1926},
+just to name a few.
+Even though spin can only be rigorously derived
+using more sophisticated theories like
+relativistic \QM or quantum field theory~\cite{Shankar1994},
+one still needs to include it \textit{ad hoc} in non-relativistic \QM as well
+such that above observations can be explained~\cite{Pauli1925,Shankar1994,Straumann2004}.
+
+Notice that a proper inclusion of spin in non-relativistic \QM
+requires two modifications.
+First we need each wave function to include an extra spin degree of freedom%
+~\cite{Pauli1925}.
+Secondly we need to make sure that \eqref{eqn:AsymElecWavefunction}
+is always satisfied~\cite{Dirac1926}.
+We will defer the first modification to remark \vref{rem:Spin}
+in order to yield a simpler mathematical treatment for now.
+Unfortunately we cannot ignore \eqref{eqn:AsymElecWavefunction}
+due to its tremendous impact on the mathematical structure of the emerging problems%
+~\cite{Dirac1926,Fock1930}.
 
 \todoil{
 	I really would like to know more about the relationship
@@ -389,10 +410,14 @@ we introduce a constraint towards the solution in the form of
 	Go and ask someone about this.
 	The internet was not very helpful.
 }
-The condition \eqref{eqn:AsymElecWavefunction} can be satisfied mathematically
-by only searching for the eigenstates $\Psi_I$ inside a special function space,
-which by construction has a structure to enforce the required
-antisymmetry with respect to the electronic coordinates~\cite{Fock1930}.
+There are a couple of approaches which could be followed
+to adhere to \eqref{eqn:AsymElecWavefunction}.
+Typically one abstains from modifying the Hamiltonian $\Op{H}_{\Nelec}$
+and instead restricts the search space for the eigenstates $\Psi_I$
+to an appropriate subspace of $L^2(\R^{3\Nelec}, \C)$,
+which is constructed in a way
+to enforce the required
+antisymmetry with respect to the electronic coordinates~\cite{Dirac1926,Fock1930}.
 Such a space is the $\Nelec$-th \newterm{exterior power} of $L^2(\R^3, \C)$ defined as
 \newcommand{\wedgestring}{\psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_{\Nelec}}
 
