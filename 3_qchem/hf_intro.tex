@@ -426,64 +426,195 @@ This problem satisfies all the spectral requirements for applying the Ritz-Galer
 of remark \vref{rem:DiscreteFormulation},
 such that a Ritz-Galerkin ansatz can be applied.
 
-\newcommand{\Ehf}{\mathcal{E}^\text{HF}}
+\defineabbr{UHF}{UHF\xspace}{unrestricted Hartree-Fock}
+\defineabbr{GUHF}{GUHF\xspace}{generalised unrestricted Hartree-Fock}
+\defineabbr{RHF}{RHF\xspace}{restricted Hartree-Fock}
+\defineabbr{ROHF}{ROHF\xspace}{restricted open-shell Hartree-Fock}
 \begin{rem}[Discretised \HF equations]
+	\label{rem:HFDiscrete}
 	Assume a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
-	with $L^2(\R^3,\C)$-orthonormal
-	basis functions $\varphi_\mu$ taken from a dense subspace of $H^1(\R^3,\C)$.
-	The set
-	\begin{equation}
-		\mathcal{S} = \left\{
-		\mm{
-			\sum_{\mu\in\Ibas} C^\alpha_{\mu i} \varphi_\mu \\
-			\sum_{\mu\in\Ibas} C^\beta_{\mu i} \varphi_\mu
-		} \, \middle|\, C^\alpha_{\mu i}, C^\beta_{\mu i} \in \C \right\}
-		\label{eqn:HFDiscretisationAnsatz}
-	\end{equation}
+	consting of $\Nbas = \abs{\Ibas}$
+	basis functions taken from a dense subspace of $H^1(\R^3,\C)$.
+	The space
+	\[
+		\mathcal{S}_1 = \spacespan \left\{
+			\mm{\varphi_\mu \\ 0 }, \mm{0\\\varphi_\mu}
+		\, \middle| \, \mu \in \Ibas \right\}
+	\]
 	spanned by spin-adapted linear combinations from
 	$\{\varphi_\mu\}_{\mu\in\Ibas}$
 	is a subspace of $H^1(\R^3,\C^2)$.
 	Consequently
-	\[ \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i \,\middle|\, \psi_i \in \mathcal{S},
+	\[ \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i \,\middle|\, \psi_i \in \mathcal{S}_1,
 	\braket{\psi_i}{\psi_j}_1 = \delta_{ij} \right\} \subset \mathcal{R}^1_{\Nelec}, \]
 	which implies
 	\[
-		E_0 \leq E_0^{HF} \leq \tilde{E}_0^\text{HF} = \inf \left\{
+		E_0 \leq E_0^\text{HF} \leq \tilde{E}_0^\text{HF} = \inf \left\{
 		\mathcal{E}^\text{HF}(\Theta)
 		\, \middle| \,
-		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in \mathcal{S}^{\Nelec},
+		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in (\mathcal{S}_1)^{\Nelec},
 			\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
 		\right\}.
 	\]
-	Inserting \eqref{eqn:HFDiscretisationAnsatz} into the \HF energy functional
-	\eqref{eqn:HFEnergyFunctional}
-	we obtain the energy functional for the discrete case
+	Let us denote with
+	\[ \bm{\varphi} = \mm{\varphi_1 & \varphi_2 & \cdots & \varphi_{\Nbas}} \]
+	the row vector of all basis functions written one after another.
+	Then each element $\psi_i$ of the tuple
 	\begin{equation}
-		\Ehf(\mat{C})
-		\label{eqn:HFEnergyFunctionalDiscrete}
+		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in (\mathcal{S}_1)^{\Nelec}
+		\label{eqn:HFTuple}
+	\end{equation}
+	can be expanded as
+	\begin{equation}
+		\psi_i = \mm{\psi_i^\alpha\\\psi_i^\beta}
+		= \sum_{\mu\in\Ibas} \varphi_\mu \, \mm{
+			\tilde{C}^\alpha_{\mu i} \\
+			\tilde{C}^\beta_{\mu i}
+		}
+		= \underbrace{\mm{\bm{\varphi} & 0 \\ 0 & \bm{\varphi}}}_{
+			\substack{\text{$2$ rows,} \\ \text{$2\Nbas$ columns}}}
+			\mm{%
+				\tilde{C}^\alpha_{1i} \\ \vdots \\ \tilde{C}^\alpha_{\Nbas i} \\[5pt]
+				\tilde{C}^\beta_{1i} \\ \vdots \\ \tilde{C}^\beta_{\Nbas i}
+			}.
+		\label{eqn:HFDiscretisationAnsatzPhi}
+	\end{equation}
+	This allows to write
+	\begin{align}
+		\Theta &= \mm{\bm{\varphi} & 0 \\ 0 & \bm{\varphi}} \mat{C}
+		&&\text{where}&
+		\mat{C} &= \mm{\tilde{\mat{C}}^\alpha \\ \tilde{\mat{C}}^\beta}
+			\in \C^{2 \Nbas \times \Nelec}.
+		\label{eqn:HFDiscretisationAnsatz}
+	\end{align}
+	$\mat{C}$ is the \newterm{coefficient matrix}, which is built by pastingi
+	the row matrices at the right hand side of \eqref{eqn:HFDiscretisationAnsatz}
+	one after another.
+
+	It is not hard to imagine
+	that one could insert \eqn{eqn:HFDiscretisationAnsatz}
+	into the expression for the \HF energy functional $\Ehf$
+	in order to obtain an expression of the \HF energy
+	in terms of $\mat{C}$.
+	This expression could be minimised
+	with respect to the coefficients $\mat{C}$
+	in order to obtain an approximate
+	\HF ground state energy and a corresponding approximate \HF ground state.
+	As it turns out~\cite{McWeeny1985}
+	this so-called \newterm{generalised unrestricted Hartree-Fock}~(\GUHF)
+	suffers exactly from the issues raised at the end of remark \vref{rem:Spin},
+	namely that the resulting \HF ground state
+	is neither an eigenfunction of $\Op{S}^2$ nor $\Op{S}_z$.
+	So it is hardy ever performed in practice.
+
+	Instead one typically selects an eigenvalue $M_S$
+	of $\Op{S}_z$ before performing the \HF procedure
+	using chemical intution and determines two parameters
+	$\NelecA$ and $\NelecB$,
+	the number of spin-up and the number of spin-down electrons,
+	such that
+	\begin{align*}
+		\NelecA + \NelecB &= \Nelec & M_S = \frac12 \left( \NelecA - \NelecB\right).
+	\end{align*}
+	One can show~\cite{Szabo1996,Helgaker2013},
+	that any Slater determinant $\Phi_\Theta$
+	made from a tuple like \eqref{eqn:HFTuple}
+	is exaclty an eigenfunction of $\Op{S}_z$ with eigenvalue $M_S$
+	if it consists of $\NelecA$ single-particle functions with zero $\beta$
+	component and $\NelecB$ single-particle functions with zero $\alpha$ component.
+	Invoking remark \vref{rem:HFInvariance}
+	we can always reorder the single-particle functions
+	such that the $\NelecA$ functions with zero $\beta$ components are first.
+	Thus this leads to the conditions
+	\begin{align*}
+		\psi_i^\beta  &= 0 \ \forall i \in \{1,\ldots,\NelecA\}
+		&&\text{and}&
+		\psi_i^\alpha  &= 0 \ \forall i \in \{\NelecA+1,\ldots,\Nelec\}.
+	\end{align*}
+	Applying these conditions
+	to the generalised unrestricted Hartree-Fock ansatz \eqref{eqn:HFDiscretisationAnsatz}
+	leads to the \newterm{unrestricted Hartree-Fock}~(\UHF) method%
+	\footnote{
+		This naming is unfortunate, since the \UHF certainly does imply a restriction
+		of the search space due to spin symmetry,
+		but happend for historic reasons
+	}~\cite{Pople1954}.
+	In \UHF the coefficient matrix $\mat{C}$ of \eqref{eqn:HFDiscretisationAnsatz}
+	becomes block-diagonal
+	\begin{equation}
+		\label{eqn:HFCoeffMatrix}
+		\mat{C}^\text{occ} = \mm{\mat{C}^\alpha & 0 \\ 0 & \mat{C}^\beta}
+			\in \C^{\Nelec \times 2\Nbas},
+	\end{equation}
+	where $\mat{C}^\alpha \in \C^{\Nbas \times \NelecA}$
+	and $\mat{C}^\beta \in \C^{\Nbas \times \NelecB}$
+	are the spin-up and spin-down coefficient matrices, respectively.
+	Inserting \eqref{eqn:HFDiscretisationAnsatz} and \eqref{eqn:HFCoeffMatrix}
+	into \eqref{eqn:HFEnergyFunctional}
+	we obtain the \HF energy functional in terms of
+	of the coefficient matrix $\mat{C}$.
+	\begin{equation}
+		\Ehf(\mat{C}\cc{\mat{C}})
+			= \tr \left( \tp{\mat{C}} \left(\mat{T} + \mat{V}_0 \right) \mat{C} \right)
+			+ \tr \left( \tp{\mat{C}} \left(\matJfull + \matKfull \right) \mat{C} \right)
+		\label{eqn:HFEnergyFunctionalCoeff}
+	\end{equation}
+	which can also be expressed as
+	\begin{equation}
+		\Ehf(\mat{D})
+			= \tr \left( \mat{D} \left(\mat{T} + \mat{V}_0 \right) \mat{D} \right)
+			+ \tr \left( \left(\matJfull + \matKfull \right) \mat{D} \right)
+		\label{eqn:HFEnergyFunctionalCoeff}
 	\end{equation}
 
+	% explain other matrices
+	% structure: which are block-diagonal
+
+	which can be written in terms of the density matrix as well
+
+
+	The corresponding fock matrix?
 
 
 
 
+	Density matrices
+	\begin{align*}
+		\mat{D}^\alpha &= \left(\mat{C}^\alpha\right)^\dagger &
+		\mat{D}^\beta  &= \left(\mat{C}^\alpha\right)^\dagger &
+		%
+		\mat{D} &= \mat{C}^\dagger \mat{C} & \mat{D}^\dagger \left(\mat{C}^\alpha\right)^\dagger + 
+	\end{align*}<++>
+	
+
+	
+
+	% F block diagonal
+	% D block diagonal
+
+	discretised fock $\matF$
+	including dependency on $\mat{C}$: $\matFfull$
+
+	% Integrals to be computed by basis library
+
+	% Maybe not use this wording in the non-discretised case,
+	% but do use \mat{F}\left[ \mat{C} \right] in the discretised
+
+	% terms to mention:
+	$\Iorb, \Norb, \IoccA, \IoccB, \epsilonconv$
+
+	% Iorb -> numerically one often computes more orbitals than what is needed
+	% to obtain the \psi, hence \IoccA and \IoccB
 
 
 	\begin{itemize}
-			\item 
-	$\varphi$ \newterm{one-particle basis} for HF
 	\item
 	$\psi$ HF orbitals or (SCF) orbital basis,
 	typically in FCI one uses the HF orbital basis as the one-particle basis functions for FCI
 		\end{itemize}
 \end{rem}
 
-% --------------------------------
-
-
-
-
-
+\begin{rem}[Properties of the discretised HF ansatz]
 % define occupied and virtual
 With the elliptic regularity at hand we can even expect convergence of such a discretised
 scheme to be fast
@@ -502,6 +633,21 @@ equivalent problem of diagonalisation
 to find MOs from AOs
 allows to define concept of occupied and virtual orbitals
 No unfilled shell means Homo lumo gap
+\end{rem}
+
+
+\begin{rem}[Sketch of the SCF procedure]
+	\label{rem:SCF}
+	tada
+	% emphasize how spin is treated
+\end{rem}
+
+\subsection{Types of Hartree-Fock}
+% UHF ground state (derived here) no eigenfunction of S^2
+This is unrestricted HF
+there are also restricted versions
+-> brief only mention differences. The peculiar details
+should follow in the next chapter
 
 \todoil{
 	Quick note that real is possible: \\
