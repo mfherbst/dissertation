@@ -8,8 +8,7 @@ Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
 Note, that $\Norb \le \Nbas$.}
 
 \defineabbr{HF}{HF\xspace}{Hartree-Fock}
-\nomenclature{$\OpFock, \OpFockFull$}{$1$-electron Fock operator (dependent on its eigenfunctions $\{ \varphi_i \}_{i \in \Iorb}$)}
-\nomenclature{$\Op{\rho}$}{Density operator}
+%\nomenclature{$\Op{\rho}$}{Density operator}
 \nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{1, \ldots, \NelecA\}$ and similar for $\IoccB$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
 	If the error is below this value, the process should be considered converged.}
@@ -72,6 +71,20 @@ The resulting minimal energy $E_0^\text{HF}$
 is the \HF ground state energy
 and the corresponding minimising determinant
 $\Phi_0$ the \HF ground state.
+
+The \HF approach is named both
+after Douglas Hartree and Vladimir Fock.
+Historically \citet{Hartree1928} first proposed
+an ansatz for the electronic problem
+based on symmetric products of one-electron functions,
+which is algorithmically very similar to the procedure followed
+nowadays~(see remark~\vref{rem:SCF}).
+\citet{Slater1939a}
+and \citet{Fock1930} then both noted
+the issue arising from the use of symmetric
+products in the context of spin~(see section \vref{sec:ElectronicSchrödinger})
+and subsequently Fock reformulated the procedure
+using Slater determinants.
 
 Notice, that $\Phi_0$ is --- by construction ---
 the best possible single Slater determinant to
@@ -155,8 +168,8 @@ and generalise our formalism slightly.
 	The missing property is the explicit inclusion of the spin degree of freedom.
 	For a single spin-$\sfrac12$ particle the spin degree of freedom
 	by itself spans the two-dimensional Hilbert space $\C^2$,
-	which can be probed by the spin operator
-	\[ \Op{\vec{S}} \equiv \left( \Op{S}_x, \Op{S}_y, \Op{S}_z \right)
+	which can be probed by the one-particle spin operator
+	\[ \op{\vec{s}} \equiv \left( \op{s}_x, \op{s}_y, \op{s}_z \right)
 		= \frac12 \left( \sigma_x, \sigma_y, \sigma_z \right). \]
 	In this expression we used the \newterm{Pauli matrices} defined as
 	\begin{align}
@@ -165,7 +178,7 @@ and generalise our formalism slightly.
 		\sigma_y &= \mm{0&-\I\\\I&0} &
 		\sigma_z &= \mm{1&0\\0&-1}.
 	\end{align}
-	The operator $\Op{S}_z$ has two eigenvectors
+	The operator $\op{s}_z$ has two eigenstates
 	\begin{align*}
 		\uparrow &\equiv \mm{1\\0} & \downarrow &\equiv \mm{0\\1}
 	\end{align*}
@@ -209,8 +222,11 @@ and generalise our formalism slightly.
 	implies
 	\[ \bigwedge_{i=1}^{\Nelec} L^2(\R^3, \C^2) \subset L^2(\R^{3\Nelec}, \C^{2\Nelec}) \]
 	and
-	\[ \bigwedge_{i=1}^{\Nelec} \psi_i \in \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C^2)
-		\subset H^1(\R^{3\Nelec}, \C^{2\Nelec}). \]
+	\begin{equation}
+		\bigwedge_{i=1}^{\Nelec} \psi_i \in \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C^2)
+		\subset H^1(\R^{3\Nelec}, \C^{2\Nelec}).
+		\label{eqn:SpinAnsatzSpace}
+	\end{equation}
 	In this sense most of the derivations from this chapter can be brought forward
 	to the spin-adapted case as well.
 	For example the expression of the \HF energy functional
@@ -233,6 +249,57 @@ and generalise our formalism slightly.
 		= \sum_{i=1}^{\Nelec} \cc{\left(\psi_i^\alpha\right)}\!\!(\vec{r}_1)\  \psi_i^\alpha(\vec{r}_2)
 			+ \cc{\left(\psi_i^\beta\right)}\!\!(\vec{r}_1)\  \psi_i^\beta(\vec{r}_2).
 	\end{align}
+
+	The extra spin component introduces another complication
+	into the \HF procedure.
+	Analogously to the one-particle spin operator $\op{\vec{s}}$
+	and component operators $\op{s}_x, \op{s}_y, \op{s}_z$
+	for a single particle,
+	one can define the total spin operator $\Op{\vec{S}}$
+	as well as $\Op{S}_x, \Op{S}_y, \Op{S}_z$,
+	which yield the equivalent quantities for an $\Nelec$-electron system.
+	Originating from $\Op{\vec{S}}$ one may define
+	\[ \Op{S}^2 = \Op{\vec{S}} \cdot \Op{\vec{S}} = \left(\Op{S}^2_x, \Op{S}^2_y, \Op{S}^2_z\right). \]
+	One can show~\cite{Shankar1994} that
+	\[ \comm{\Op{S}^2}{\Op{S}_z} = 0, \]
+	\ie that the total spin squared operator commutes with $\op{s}_z$.
+	Furthermore since the Hamiltonian $\Op{H}_{\Nelec}$ makes no explicit reference
+	to any particular spin component,
+	we necessarily have
+	\begin{equation}
+		\comm{\Op{S}_z}{\Op{H}_{\Nelec}} = \comm{\Op{S}^2}{\Op{H}_{\Nelec}} = 0.
+		\label{eqn:CommutationSpinHamlitonian}
+	\end{equation}
+	This implies\footnote{%
+		Since $\Op{A}\Op{B} f = \Op{B}\Op{A} f \Leftrightarrow \comm{A}{B} = 0$.%
+	}
+	that one is able to find simultaneous eigenfunctions of $\Op{H}_{\Nelec}$,
+	$\Op{S}_z$ and $\Op{S}^2$.
+	For many applications of electronic structure theory,
+	\eg the interpretation of certain spectroscopic results
+	or for understanding the aforementioned Stern-Gerlach experiment,
+	the determination of simultaneous eigenstates of these three operators at once
+	is crucial.
+	Due to \eqref{eqn:CommutationSpinHamlitonian}
+	this must be possible for the exact ground state of $\Op{H}_{\Nelec}$ as well.
+	There is, however, no guarantee that the \HF ansatz
+	\eqref{eqn:HFMO} gives rise to a ground state $\Phi_{\Theta^0}$,
+	which is an eigenfunction of $\Op{S}_z$ or $\Op{S}^2$~\cite{Fukutome1981,McWeeny1985}.
+	In fact it is rather easy to construct Slater determinants,
+	which are neither an eigenstate of $\Op{S}_z$ nor of $\Op{S}^2$.
+	\todoil{Give an example}
+
+	There are two common approaches to deal with this issue~\cite{McWeeny1985}.
+	One is to minimise according to \eqref{eqn:HFMO}
+	and then use appropriate projections in order to yield the required
+	eigenstates with respect to $\Op{S}_z$ and $\Op{S}^2$.
+	We will not consider this approach in this work any further.
+	The other ansatz is to impose conditions
+	on the ansatz space \eqref{eqn:SpinAnsatzSpace},
+	such that the resulting \HF ground states
+	are eigenfunctions of $\Op{S}_z$ and $\Op{S}^2$.
+	This is what we will discuss when we move to a discretised
+	treatment of the \HF ansatz in \vref{rem:HFDiscrete}.
 \end{rem}
 
 Even though the Hartree-Fock ansatz was already proposed
@@ -283,7 +350,7 @@ The are summarised in the following.
 			\end{equation}
 			consisting of the kinetic energy operator $\Op{T}$ and
 			the nuclear attraction operator $\Op{V}_0$ as defined in \eqref{eqn:HCore}
-			as well as the classical \newterm{Coulomb operator}
+			as well as the effective \newterm{Coulomb operator}
 			\begin{align}
 				\label{eqn:OperatorCoulomb}
 					\Op{J}_{\Theta^0} &= \int_{\R^3} \frac{\rho_{\Theta^0}(\vec{r}_2)}
@@ -446,6 +513,10 @@ arithmetic only and still use the results for complex input due to linearity.
 $\Psi \in H^2(\R^{3d}, \R)$
 }
 
+% --------------------------------
+
+
+
 
 \newterm{Hartree-Fock}
 \todo[inline,caption={}]{
@@ -456,18 +527,7 @@ $\Psi \in H^2(\R^{3d}, \R)$
 	\end{itemize}
 }
 
-The discretised Hartree-Fock equations in weak form read
-\begin{equation}
-	\forall i, j \in \Iorb :  \mbra{\varphi_i} \OpFockFull \mket{\varphi_j} = \lambda_j \braket{\varphi_i}{\varphi_j}
-	\label{eqn:HF}
-\end{equation}
 
-\begin{equation}
-	C^\alpha_{\mu i}, C^\beta_{\mu i}
-	\label{eqn:SCFalphaBetaCoeffs}
-\end{equation}
 
+%TODO
 % Explain the term Hartree-Fock and SCF (idea from Hartree, but spin adaption from Fock and Slater)
-
-
-% UHF ground state (derived here) no eigenfunction of S^2
