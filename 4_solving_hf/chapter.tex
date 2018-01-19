@@ -9,8 +9,40 @@ building our road behind us as we proceed.
 \newcommand{\kexp}{\ensuremath k_\text{exp}}
 
 
-\section{Overview of standard SCF algorithms}
+\section{Overview of the \SCF procedure}
+% Basis function type
+%
+% Guess methods
+% algorithm
+% convergence check (Pulay error \eqref{eqn:PulayError})
+It gives an excellent measure for the convergence of such an \SCF procedure.
+Typically one consideres an \SCF to be converged if
+\[ \norm{ \mat{e}^{(n)} }_\text{frob} \leq  \epsilonconv \]
+
+
+A few \SCF properties~\cite{Cances2000}
+
+\section{Standard \SCF algorithms}
 \label{sec:SCFAlgorithms}
+
+Do not solve
+\begin{equation}
+	\matFnfull
+	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\label{eqn:HFiterated}
+\end{equation}
+but solve 
+\begin{equation}
+	\tilde{\mat{F}}^{(n)}
+	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\label{eqn:HFiterated}
+\end{equation}
+where $\tilde{\mat{F}}^{(n)}$ is somehow build.
+
+
+% general remarks -> follow cances, bris book
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Talk about the common structures
@@ -22,6 +54,11 @@ building our road behind us as we proceed.
 		\item tODA
 	\end{itemize}
 }
+
+\section{General remark about basis functions}
+Why can we not use everything?
+Issue with evaluating the integrals
+
 
 \section{Employing Slater-type orbitals}
 \defineabbr{STO}{STO\xspace}{Slater-type orbtital}

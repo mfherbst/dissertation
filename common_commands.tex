@@ -37,6 +37,8 @@
 
 % Number of SCF orbitals
 \newcommand{\Norb}{\ensuremath N_\text{orb}}
+\newcommand{\NorbA}{\ensuremath N_\text{orb}^\alpha}
+\newcommand{\NorbB}{\ensuremath N_\text{orb}^\beta}
 \newcommand{\Iorb}{\ensuremath \mathcal{I}_\text{orb}}
 
 
@@ -46,7 +48,9 @@
 \newcommand{\NelecB}{\Nelec^\beta}
 
 % Indices of the occupied orbitals
-\newcommand{\Ivirt}{\mathcal{I}_\text{virt}}
+\newcommand{\Ivirt}{\ensuremath \mathcal{I}_\text{virt}}
+\newcommand{\IvirtA}{\ensuremath \mathcal{I}_\text{virt}^\alpha}
+\newcommand{\IvirtB}{\ensuremath \mathcal{I}_\text{virt}^\beta}
 \newcommand{\Iocc}{\ensuremath \mathcal{I}_\text{occ}}
 \newcommand{\IoccA}{\ensuremath \mathcal{I}_\text{occ}^\alpha}
 \newcommand{\IoccB}{\ensuremath \mathcal{I}_\text{occ}^\beta}
@@ -57,9 +61,13 @@
 \newcommand{\matF}{\mat{F}}
 \newcommand{\matJ}{\mat{J}}
 \newcommand{\matK}{\mat{K}}
-\newcommand{\matFfull}{\mat{F}\left[\mat{C}^\text{occ}\right]}
-\newcommand{\matJfull}{\mat{J}\left[\mat{C}^\text{occ}\right]}
-\newcommand{\matKfull}{\mat{K}\left[\mat{C}^\text{occ}\right]}
+\newcommand{\matFfull}{\mat{F}\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matFnfull}{\mat{F}\left[\mat{C}^{(n)}\tp{\left(\mat{C}^{(n)}\right)}\right]}
+\newcommand{\matJfull}{\mat{J}\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matKfull}{\mat{K}\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matFfullD}{\mat{F}\left[\mat{D}\right]}
+\newcommand{\matJfullD}{\mat{J}\left[\mat{D}\right]}
+\newcommand{\matKfullD}{\mat{K}\left[\mat{D}\right]}
 
 % Convergence of processes
 \newcommand{\epsilonconv}{\varepsilon_\text{conv}}
