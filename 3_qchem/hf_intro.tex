@@ -746,14 +746,15 @@ which is the square root of the sum of all elements squared.}
 	In fact one can show~\cite{Szabo1996},
 	that the value obtained for the total spin squared
 	for the discretised \HF ground state $\Phi_0$ is
-	\[
+	\begin{equation}
+		\label{eqn:UHFS2}
 		S^2 = \braket{\Phi_0}{\Op{S}^2 \Phi_0}
 		=
 		S^2_\text{exact} + \NelecB -
 		\norm{
 		\tp{\left(\mat{C}^\alpha\right)} \mat{S}^\alpha \mat{C}^\beta
 		}_\text{frob}^2
-	\]
+	\end{equation}
 	where
 	\[ S^2_\text{exact}
 		= \left(\frac{\NelecA - \NelecB}{2}\right)
@@ -951,19 +952,113 @@ until \eqref{eqn:HFDiscreteEquations} is satisfied,
 In section \vref{sec:SCFAlgorithms} we will discuss algorithms
 for all these approaches.
 
-\subsection{Restricted Hartree-Fock and real-valued Hartree-Fock}
-% UHF ground state (derived here) no eigenfunction of S^2
-This is unrestricted HF
-there are also restricted versions
--> brief only mention differences. The peculiar details
-should follow in the next chapter
+\subsection{Restricted Hartree-Fock}
+We already stated in equation \eqref{eqn:UHFS2}
+that the unrestricted \HF ansatz does not always
+yield an \HF ground state $\Psi_0$,
+which is an eigenfunction of $\Op{S}^2$.
+Following our discussion in remark \vref{rem:Spin}
+we could fix this either by projection onto the space of eigenstates
+of $\Op{S}^2$ or by imposing extra conditions on the \HF ansatz.
 
-\todoil{
-	Quick note that real is possible: \\
-For an atomic system, we can consider the nucleus to be located at the origin
-of the coordinate system, which allows us to simplify
-the Hamiltonian to \\
-Argue that we can do the mathematical background in real function
-arithmetic only and still use the results for complex input due to linearity.
-$\Psi \in H^2(\R^{3d}, \R)$
-}
+In the case of closed-shell chemical systems the latter is in fact rather simple.
+For closed-shell atoms $\NelecA = \NelecB$,
+which implies that \eqref{eqn:UHFS2}
+gives the correct value $S^2_\text{exact}$ if we enforce $\mat{C}^\alpha = \mat{C}^\beta$.
+The condition $\mat{C}^\alpha = \mat{C}^\beta$ not only yields
+an eigenfunction of  $\Op{S}^2$,
+but furthermore implies that $\mat{F}^\alpha = \mat{F}^\beta$ as well.
+In other words in this
+\newterm{restricted Hartree-Fock}~(\RHF)~\cite{Roothaan1951}
+ansatz one only needs to solve one block of the Fock matrix
+in \eqref{eqn:HFDiscreteEquations} and may use the result for both
+spin-up and spin-down functions.
+
+\todoil{Maybe expand this paragraph}
+Enforcing the correct $S^2$ value \eqref{eqn:UHFS2}
+for open-shell electronic systems,
+where (by convention) $\NelecA \geq \NelecB$,
+is considerably more involved.
+The first approach was published by \citeauthor{Roothaan1960}
+~\cite{Roothaan1960,Alder1963}
+and replaces the block-diagonal Fock matrix in \eqref{eqn:HFDiscreteEquations}
+by a specifically crafted block-wise linear combination
+of $\mat{F}^\alpha$ and $\mat{F}^\beta$,
+which ensures that the resulting SCF minimum is an eigenfunction of $S^2$.
+We do not consider this approach further in this thesis.
+Instead we treat all open-shell systems with the \UHF procedure.
+Firstly because \UHF is a much simpler algorithm to implement
+and secondly because it is more widespread.
+Nevertheless some issues,
+which were found in our convergence analysis of a
+Coulomb-Sturmian based Hartree-Fock ansatz~(see chapter \vref{ch:CSQChem})
+could be appointed to using \UHF.
+We will discuss this further in section \vref{sec:IssuesUHF}.
+
+\subsection{Real-valued Hartree-Fock}
+In our discussion of Hartree-Fock up to this point
+the resulting numerical problems take place in complex arithmetic,
+since both the coefficient matrix $\mat{C}$
+as well as the Fock matrix $\mat{F}$ are complex-valued.
+Doing this is possible, but is typically avoided by reducing
+the \HF problem to an problem of equivalent structure,
+but situated in real Hilbert spaces%
+\footnote{Notice, that the approach we will sketch in the following
+is not restricted to \HF, but can be applied to many problems of
+quantum physics in order to yield equivalent real-valued problems.}.
+The main motivation for this is that numeric operations
+amongst complex numbers are slower since effectively
+more floating point operations need to be performed
+in order to treat both the real as well as the imaginary part
+as required.
+
+
+\noindent
+Let $(\varepsilon_i, \psi_i) \in \R \times H^2(\R^3, \C^2)$ be an eigenvalue
+of the \HF problem, \ie
+\begin{equation}
+	 0 = \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i
+	\label{eqn:FockRealStep0}
+\end{equation}
+Choosing appropriate functions $\psi_i^R, \psi_i^I \in H^2(\R^3, \R^2)$
+we can write $\psi_i = \psi_i^R + \I \psi_i^I$ such that
+\begin{equation}
+0 = \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^R
+	+ \I \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^I
+	\label{eqn:FockRealStep1}
+\end{equation}
+by linearity of the Fock operator.
+For \eqref{eqn:FockRealStep1} to be satisfied,
+we need need the real and the complex part of the right hand side
+to be equal to the zero function.
+
+Since all terms of the Fock operator only contain real factors
+or real differential operators,
+it is clear that the Fock operator maps real-valued functions
+to real-valued functions.
+In other words
+\[ \chi \in H^2(\R^3, \R^2) \quad \Rightarrow \quad \left(\Op{F} \chi\right) \in L^2(\R^3, \R^2). \]
+This implies that \eqref{eqn:FockRealStep1} is true iff simultaneously
+\begin{align}
+	0 &= \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^R \\
+	0 &= \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^I.
+\end{align}
+If $\psi_i$ is not already real-valued and thus $\psi_i^I = 0$,
+its real part $\psi_i^R$ and its imaginary part $\psi_i^I$ both must be
+solutions to the \HF equations as well.
+Furthermore $\psi_i^R$ and $\psi_i^I$ are associated to the same
+eigenvalue $\varepsilon_i$ as $\psi$.
+
+This implies that one can obtain the solution for the complex-valued problem
+\eqref{eqn:FockRealStep0} by only looking for eigenpairs
+$(\varepsilon_i, \psi_i) \in \R \times H^2(\R^3, \R^2)$.
+This completely avoids the need for complex arithmetic
+as $\mat{C}_F$, $\mat{D}$, $\mat{F}$ and all other matrices
+we defined previously in this section will only consist of real elements.
+Apart from this simplification no extra care needs to be taken,
+since the real eigenfunctions corresponding to an eigenvalue $\varepsilon_i$
+restore the full complex eigenspace one would obtain
+from solving the full-fletched complex-valued problem
+by linear combinations with complex coefficients.
+The eigenstates we obtain from an entirely real-valued ansatz
+are thus still the physical eigenstates we are after.
