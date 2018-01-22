@@ -1,4 +1,5 @@
-\chapter{Numerical solution of the HF equations}
+\chapter{Numerical approaches for solving the \HF equations}
+\chaptermark{Numerical approaches for solving \HF}
 \label{ch:NumSolveHF}
 \chapquote{%
 I believe there is no philosophical high-road in science,
@@ -8,237 +9,48 @@ building our road behind us as we proceed.
 }{Max Born~(1882--1970)}
 \newcommand{\kexp}{\ensuremath k_\text{exp}}
 
-Discussion done in formalism of \UHF,
-since \RHF works the same, but less blocks.
+This chapter is devoted to an in-depth discussion of
+numerical approaches for solving the \HF problem
+both when it comes to the basis function type used for the discretisation
+and the algorithms for solving the discretised problem.
+We will discuss how different basis function types
+lead to numerical problems of vastly different structure
+and how therefore not every algorithmic ansatz works
+for every type of basis function.
 
-\section{Overview of the \SCF procedure}
-% Basis function type
-%
-% Guess methods
-% algorithm
-% convergence check (Pulay error \eqref{eqn:PulayError})
-It gives an excellent measure for the convergence of such an \SCF procedure.
-Typically one consideres an \SCF to be converged if
-\[ \norm{ \mat{e}^{(n)} }_\text{frob} \leq  \epsilonconv \]
+In section \ref{sec:DiscreteHF} we noted that there are
+roughly three ways to view the discretised \HF problem.
+One way would be to think of it as a minimisation of the energy
+with respect to the orbital coefficients,
+another as a minimisation with respect to the density matrix
+and yet a third as a non-linear eigenproblem,
+which needs to solved self-consistently.
+Our discussion here will generally take the third viewpoint
+and only switch to the others when this aids our argument.
+Furthermore we will implicitly assume a real-valued
+\UHF ansatz in this chapter.
+The adaption of the presented results to
+\RHF or \ROHF is usually straightforward%
+\footnote{
+To go from \UHF to \RHF one just needs to consider both blocks of the relevant
+Fock, coefficient, and density matrices to be equivalent.
+Going from \UHF to \ROHF only amounts to replacing the \UHF Fock matrix
+by the appropriately constructed \ROHF Fock matrix before performing
+the diagonalisation for getting the new coefficients.
+}.
 
-
-A few \SCF properties~\cite{Cances2000}
-
-\section{Standard \SCF algorithms}
-\label{sec:SCFAlgorithms}
-
-Do not solve
-\begin{equation}
-	\matFnfull
-	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
-	\label{eqn:HFiterated}
-\end{equation}
-but solve 
-\begin{equation}
-	\tilde{\mat{F}}^{(n)}
-	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
-	\label{eqn:HFiterated}
-\end{equation}
-where $\tilde{\mat{F}}^{(n)}$ is somehow build.
-
-
-% general remarks -> follow cances, bris book
-
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Talk about the common structures
-		\item Introduce a few schematically
-		\item Hint at the underlying linear algebra (eigensolvers, linear solvers)
-		\item Coefficient vs. density matrix based
-		\item DIIS
-		\item ODA
-		\item tODA
-	\end{itemize}
-}
-
-\section{General remark about basis functions}
-Why can we not use everything?
-Issue with evaluating the integrals
-
-
-\section{Employing Slater-type orbitals}
-\defineabbr{STO}{STO\xspace}{Slater-type orbtital}
-
-\section{Employing a contracted Gaussian basis}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Brief rationale
-		\item Problems
-		\item E.g. Local energy => what happens if $\psi = 0$
-	\end{itemize}
-}
-% Convention:
-%    Use \chi_\mu for primitives
-
-\section{Employing a Finite Element basis}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Show what needs to be done
-		\item Show problems $\Rightarrow$ Lazy matrices
-		\item Hint at the underlying linear algebra (eigensolvers, linear solvers)
-		\item Multigrid methods
-		\item Refinement
-		\item How does it connect to the SCF methods
-	\end{itemize}
-}
-
-\subsection{Introduction to Finite Elements}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Basic ideas and properties
-	\end{itemize}
-}
-
-% Use as an example to explain the ideas of finite elements
-An important equation from classical electrodynamics which
-involves the Laplace operator is Poisson's equation
-\begin{equation}
-	\Delta V_H(\vec{r}) = \rho(\vec{r})
-	\label{eqn:Poisson}
-\end{equation}
-relating the potential to the charge density $\rho$ which generates it.
-
-% TODO 
-%  Note that norm wrt fock operator F is equivalent to H1 norm due to Laplace part
-%  Lipschitz continuity
-%  well-posedness
-
-% TODO Talk about convergence rates?
-
-
-
-\begin{figure}
-	\centering
-	\includeimage{4_solving_hf/fock_fe}
-	\caption{Structure of the Finite-Element Fock matrix in beryllium
-		with an error of about $0.1$}
-	\label{fig:StructureFiniteElementFock}
-\end{figure}
-
-% Reduce margin size to fit the matrix plots and switch to landscape
-\begin{landscape}
-\begin{figure}
-	\centering
-	\includeimage{4_solving_hf/fock_gaussian}
-	\caption{Structure of the Fock matrix for a cGTO-based SCF
-		for the beryllium atom
-		using a pc-2 basis set.
-		The three figures show the SCF with a Pulay error
-		Frobenius norm of $0.18$, $0.0063$ and $4.1 \cdot 10^{-7}$
-		from left to right.}
-		% 12 out of 15 rows are diagonal-dominant in each case.
-		% Matrix is symmetric
-	\label{fig:StructureGaussianFock}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includeimage{4_solving_hf/fock_sturmian}
-	\caption{Structure of the Fock matrix for a Coulomb-Strumian based SCF
-		for the beryllium atom starting from using a $(5,1,1)$
-		Coulomb-Strumian basis in $mln$ order
-		and a Sturmian exponent of $\kexp = 1.99$.
-		The three figures show left to right the Fock matrix
-		at an SCF step with a Pulay error Frobenius norm of
-		$0.13$, $0.0079$, $6.7 \cdot 10^{-8}$.}
-		% 14 out of 17 are diagonal-dominant in each case.
-		% Matrix is symmetric
-	\label{fig:StructureSturmianFock}
-\end{figure}
-\end{landscape}
-
-\section{Employing a Coulomb-Sturmian basis}
-\label{sec:BasisCS}
-
-% A few historic words and references
-\cite{Rotenberg1970}
-\cite{Gruzdev1990}
-\cite{Avery2006} % Blue book
-\cite{Avery2011} % Purple book
-\cite{Morales2016}
-\cite{Avery2017} % Fast evaluation of STOs
-
-
-\defineabbr{CS}{CS\xspace}{Coulomb-Strumian or Coulomb-Strumian basis}
-
-\begin{equation}
-	bla
-	\label{eqn:CSEquation}
-\end{equation}
-
-% Sturmians form a complete basis for H^2(R^3) and for H^1(R^1) (only the radial part)
-
-% complete but not over-complete
-
-In previous work we have investigated the use of so-called generalised Sturmians as basis functions
-in electronic structure theory.
-%
-\newcommand{\rpack}{\vec{r}_1, \ldots, \vec{r}_N}
-Generalised Sturmians $\Phi_\nu(\rpack)$ are the solutions to $N$-body Schrödinger-like equation
-\begin{equation}
-	\left( -\frac12 \sum_{j=1}^N \Delta_j + \beta_\nu V_0(\rpack) - E \right) \Phi_\nu(\rpack) = 0
-	\label{eqn:GenSturm}
-\end{equation}
-where $V_0(\rpack)$ is
-a zero-th order potential.
-
-In case of atoms a good choice is the nuclear attraction:
-The electrostatic electron-nucleus interaction
-\[
-	V_0(\rpack) = - \sum_{j=1}^N \frac{Z}{r_j}.
-\]
-\todo[inline]{Is many nuclei also possible here?}
-Note that the electron-nucleus interaction is scaled by the factor $\beta_\nu$ in \eqref{eqn:GenSturm}
-such that the solutions $\Phi_\nu(\rpack)$ all become isoenergetic.
-This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
-as well as properly represent the nuclear cusp at the core.
-As such the functional form of generalised Sturmians is very much related to STOs.
-Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
-to make computing them less demanding.
-This requires, however, that the mathematical properties of the Sturmians
-can be fully exploited during the computation,
-which in turn requires the Fock matrix to be arranged in a specific way.
-Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
-but much rather only use these matrices in the form of matrix-vector products,
-since this overall saves an order of magnitude in the computational scaling.
-
-
-Coulomb-Sturmian basis function is composed of
-\[ \varphi_\mu(\vec{r}) = \]
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item What are Coulomb-Sturmians and where do they come from
-		\item Show what needs to be done
-		\item Show problems $\Rightarrow$ Lazy matrices
-	\end{itemize}
-}
-
-% TODO Things to show:
-%    - The larger n, the larger the energy under the action of the fock operator
-%    - HF Kinetic energy scales with k: Lower if k lower
-%    - HF Nuclear attraction energy scales with k: Higher if k lower
-%    - HF electron-electron interaction scales with k: Lower if k lower
-% Refer to these results in the chapter about Sturmian calculations
-
-\subsection{Mixed bases}
-Suggest an ansatz basis $\{\varphi_i + \chi_i\}_{i\in\Ibas}$
-where $\chi_i$ is a fixed, predetermined Sturmian solution
-and $\varphi_i$ are corrections to be found from FE.
-Derive the HF energy functional expression for such an ansatz
-where $\chi_i$ are fixed and only $\varphi_i$ are the parameters.
-(Maybe do this in outlook?)
-
-\subsection{UHF and its issues}
-
+\input{4_solving_hf/scf_overview.tex}
+\input{4_solving_hf/guess.tex}
+\input{4_solving_hf/basis_functions.tex}
+\input{4_solving_hf/scf_algos.tex}
 
 \section{Basis-independence of SCF algorithms}
+% Show schematic with Fock update - coefficient update
+%     in red and blue as in paper
+% Refer to appropriate equations from more detailed considerations in SCF
+% algorithms chapter.
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Make sure it comes across that SCF has very similar structure for each basis type

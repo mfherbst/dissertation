@@ -395,7 +395,7 @@ The are summarised in the following.
 			the canonical \newterm{Hartree-Fock equations} hold
 			\begin{align}
 				\label{eqn:HFequations}
-				\Op{F}_{\Theta^0} \psi_i^0 = \varepsilon_i \psi_i^0
+				\Op{F}_{\Theta^0} \psi_i^0 &= \varepsilon_i \psi_i^0
 				&&\text{and}&
 				\braket{\psi_i^0}{\psi_j^0} &= \delta_{ij}
 			\end{align}
@@ -425,6 +425,7 @@ in the following section
 together with the discretised versions of the \HF ansatz.
 
 \subsection{Discretised Hartree-Fock}
+\label{sec:DiscreteHF}
 \defineabbr{UHF}{UHF\xspace}{unrestricted Hartree-Fock}
 \defineabbr{GUHF}{GUHF\xspace}{generalised unrestricted Hartree-Fock}
 \defineabbr{RHF}{RHF\xspace}{restricted Hartree-Fock}
@@ -663,6 +664,12 @@ representations of \HF.
 			\right\}.
 		\label{eqn:HFStiefel}
 	\end{equation}
+	One can show~\cite{Cances2000} that the minimiser $\mat{C}_0$ is unique
+	up to unitary rotations, \ie up to multiplications with unitary matrices
+	$\mat{U}^\alpha \in \C^{\NelecA\times\NelecA}$,
+	$\mat{U}^\beta \in \C^{\NelecB\times\NelecB}$ with
+	\[ \mm{\mat{C}^\alpha & 0 \\ 0 & \mat{C}^\beta}
+		\to \mm{\mat{C}^\alpha\mat{U}^\alpha & 0 \\ 0 & \mat{C}^\beta\mat{U}^\beta} \]
 
 	\noindent
 	In many cases an alternative formulation of \eqref{eqn:HFOptCoeff} in terms
@@ -706,16 +713,20 @@ representations of \HF.
 	The respective expressions for $\matJfullD$ and $\matKfullD$
 	can be obtained from \eqref{eqn:Jbas} and \eqref{eqn:Kbas}
 	by replacing
-	\begin{align*}
+	\begin{align}
+		\label{eqn:DensityReplacement}
 		\mat{C}\tp{\mat{C}} &\to \mat{D}
 		&&\text{and}&
 	\sum_{i=1}^{N_\text{elec}^\sigma}
 	C^\sigma_{\lambda i}
 	\cc{\left(C^\sigma_{\kappa i}\right)} &\to D^\sigma_{\lambda \kappa}.
-	\end{align*}
+	\end{align}
 	Notice, that the first trace term of $\Ehf_D(\mat{D})$
 	is linear in the density matrix, whereas the second trace term
 	is quadratic in the density matrix.
+	Again the minimiser $\mat{D}_0$ of \eqref{eqn:HFOptDens}
+	is unique~\cite{Cances2000} if the Aufbau principle ordering of orbital
+	energies is chosen when building $\mat{D}$ from $\mat{C}$.
 \end{rem}
 
 \nomenclature{$\norm{\slot}_\text{frob}$}{Frobenius norm of a matrix,
@@ -762,7 +773,7 @@ which is the square root of the sum of all elements squared.}
 	\]
 
 	The mathematical structure of the minimisation problems
-	\eqref{eqn:HFStiefel} and \eqref{eqn:HFGrassmann} are comparatively complex.
+	\eqref{eqn:HFOptCoeff} and \eqref{eqn:HFOptDens} are comparatively complex.
 	The structure of the parameters in the form of the coefficient matrix
 	$\mat{C}$ and the density matrix $\mat{D}$
 	does not follow a standard Euclidean geometry.
@@ -793,9 +804,11 @@ yields the discretised \HF equations for $i=1,\ldots,\Nelec$
 \end{equation}
 where the \newterm{Fock matrix} $\matFfull$ is the discretised version of $\Op{F}$
 and we further require $\tp{\vec{c}}_i \vec{c}_j = \delta_{ij}$.
-This equation can be solved for up $\Norb \leq \Nbas$ eigenpairs
+This generalised eigenvalue problem can be solved for up $\Norb \leq \Nbas$ eigenpairs
 $(\varepsilon_i, \vec{c}_i)$
-using one of the algorithms described in section \vref{sec:DiagAlgos}.
+using one of the algorithms described in section \vref{sec:DiagAlgos}
+with the modifications for generalised eigenvalue problems discussed in
+section \ref{sec:GeneralisedEigenvalueProblem}.
 Let us assume the usual ordering
 \[ \varepsilon_1 \leq \varepsilon_2 \leq \cdots \leq \varepsilon_{\Nelec}. \]
 By the Aufbau principle of theorem \ref{thm:MathematicalHF}
@@ -822,7 +835,7 @@ Notice that this matrix is Hermitian and block diagonal
 such that the eigenproblem \eqref{eqn:HFDiscreteEquations}
 can always be solved by solving in both blocks $\sigma \in \{\alpha, \beta\}$
 \[
-	\mat{F}^\sigma\left[\mat{C}\tp{\mat{C}}\right] \vec{c}_i^\sigma
+	\mat{F}^\sigma\!\!\left[\mat{C}\tp{\mat{C}}\right] \vec{c}_i^\sigma
 	= \varepsilon_i \mat{S}^\alpha \vec{c}_i^\sigma
 \]
 separately,
@@ -861,23 +874,23 @@ whose meaning should be self-explanatory.
 \end{rem}
 
 \begin{rem}[Properties of the discretised HF ansatz]
+	\label{rem:PropertiesDiscretised}
 By theorem \vref{thm:MathematicalHF}
-the minimiser $\mat{C} \in \mathcal{C}$ of \vref{eqn:HFStiefel}
+the minimiser $\mat{C} \in \mathcal{C}$ of \eqref{eqn:HFStiefel}
 satisfies exactly the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
 such that
 \[
-	\mat{F}\left[\mat{C}\tp{\mat{C}}\right] \mat{C} = \mat{S} \mat{C} \mat{E}
+	\matFfull \mat{C} = \mat{S} \mat{C} \mat{E}
 \]
 where
 \[
-	\mat{E} = \text{diag}(\varepsilon_1^{(n)}, \varepsilon_2^{(n)}, \ldots,
+	\mat{E}^{(n)} = \text{diag}(\varepsilon_1^{(n)}, \varepsilon_2^{(n)}, \ldots,
 		\varepsilon_{\Nelec}^{(n)}).
 \]
 This condition can be equivalently expressed as~\cite{Pulay1982}
 \begin{equation}
-	\mat{F}\left[\mat{C}\tp{\mat{C}}\right]
-	\mat{C}\tp{\mat{C}}
-	\mat{S} - \mat{S} \mat{C}\tp{\mat{C}} \mat{F}\left[\mat{C}\tp{\mat{C}}\right]
+	\matFfull \mat{C}\tp{\mat{C}} \,
+	\mat{S} - \mat{S} \, \mat{C}\tp{\mat{C}} \matFfull
 	= \mat{0}
 	\label{eqn:HFconvergenceCondition}
 \end{equation}
@@ -890,26 +903,24 @@ We can solve for its eigenpairs, \ie find a matrix $\mat{C}_F^{(n+1)}$
 of eigenvectors and corresponding eigenvalues
 \[
 	\mat{E}^{(n+1)}
-	= \text{diag}(\varepsilon_1^{(n+1)},
+	= \text{diag}\left(\varepsilon_1^{(n+1)},
 	\varepsilon_2^{(n+1)}, \ldots,
-	\varepsilon_{\Norb}^{(n+1)}).
+	\varepsilon_{\Norb}^{(n+1)}\right).
 \]
 such that
 \begin{equation}
-	\matFnfull
-	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\matFnfull \mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
 	\label{eqn:HFiterated}
 \end{equation}
-In general, however, the expression
+Doing so we can in general not expect the expression
 \begin{equation}
 	\mat{e}^{(n)}
-	= \matFnfull \tp{\left(\mat{C}^{(n)}\right)} \mat{C}^{(n)} \mat{S}
-	- \mat{S} \tp{\left(\mat{C}^{(n)}\right)} \mat{C}^{(n)} \matFnfull
+	= \matFnfull \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \, \mat{S}
+	- \mat{S} \, \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \matFnfull
 	\label{eqn:PulayError}
 \end{equation}
-is not zero.
-In many cases $\mat{C}^{(n+1)}$
-is, however,
+to be zero.
+In many cases, however, $\mat{C}^{(n+1)}$ is
 much closer to the minimum $\mat{C}$ than $\mat{C}^{(n)}$ was,
 which suggests an iterative approach to find the minimum $\mat{C}$
 starting from a guess $\mat{C}^{(0)}$.
@@ -937,18 +948,19 @@ should be able to model the \HF equations with good convergence
 provided that appropriate care is taken with respect to the positions of the nuclei.
 \end{rem}
 
-In this section we now discussed roughly three ways to solve the \HF
-equations in a discrete setting of a finite basis set $\{\varphi_i\}_{i\in\Ibas}$.
-Firstly as a minimisation on a Stiefel manifold \eqref{eqn:HFStiefel},
+In this section we now discussed roughly three ways to view the \HF
+problem in a discrete setting of a finite basis set $\{\varphi_i\}_{i\in\Ibas}$.
+Firstly as a minimisation on a Stiefel manifold \eqref{eqn:HFOptCoeff},
 where the energy is optimised with respect to the occupied orbital coefficients
 $\mat{C}$.
-The second option is to minimise on a Grassmann manifold \eqref{eqn:HFGrassmann}
+The second option is to minimise on a Grassmann manifold \eqref{eqn:HFOptDens}
 and optimise the energy with respect to the density matrix $\mat{D}$.
-The last option is to follow a self-consistent field approach
-and in this manor construct a sequence $\mat{C}^{(n)}$
+The last option is to solve the non-linear \HF equations
+\eqref{eqn:HFDiscreteEquations}
+in a self-consistent field approach,
+which would construct a sequence $\mat{C}^{(n)}$
 of orbital coefficients or of density matrices $\mat{D}^{(n)}$
-until \eqref{eqn:HFDiscreteEquations} is satisfied,
-\ie until self-consistency has been reached.
+until \eqref{eqn:HFDiscreteEquations} is satisfied within a certain error.
 In section \vref{sec:SCFAlgorithms} we will discuss algorithms
 for all these approaches.
 

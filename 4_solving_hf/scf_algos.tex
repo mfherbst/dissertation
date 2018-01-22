@@ -1,0 +1,40 @@
+\section{Standard \SCF algorithms}
+\label{sec:SCFAlgorithms}
+% TODO Maybe talk about basis functions first, because then it is more
+% clear why we focus so much on coefficient-based stuff
+
+Do not solve
+\begin{equation}
+	\matFnfull
+	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\label{eqn:HFiterated}
+\end{equation}
+but solve 
+\begin{equation}
+	\tilde{\mat{F}}^{(n)}
+	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\label{eqn:HFiterated}
+\end{equation}
+where $\tilde{\mat{F}}^{(n)}$ is somehow build.
+
+
+% general remarks -> follow cances, bris book
+
+\subsection{Roothaan repeated diagonalisation}
+
+\subsection{Level-shifting}
+
+\subsection{Optimal damping algorithm}
+\label{sec:ODA}
+$\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
+wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
+Can define~\cite{Lions1988,Cances2000}
+\[
+	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
+\left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
+
+\subsection{Truncated optimal damping algorithm}
+
+\subsection{Direct inversion of the iterative subspace}
+
+\subsection{Geometric direct minimisation}

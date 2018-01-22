@@ -1,4 +1,10 @@
-add_inputs(chapter.tex)
+add_inputs(
+	chapter.tex
+	scf_overview.tex
+	guess.tex
+	scf_algos.tex
+	basis_functions.tex
+)
 
 #
 # Python pdf images

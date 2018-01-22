@@ -1,0 +1,111 @@
+\section{Overview of the \SCF procedure}
+In remark \ref{rem:PropertiesDiscretised}
+of the previous chapter
+we suggested a simple procedure for iteratively solving the \HF equations.
+The idea was to start from an initial guess $\mat{C}^{(0)}$
+from the Stiefel manifold $\mathcal{C}$ as defined in \eqref{eqn:HFStiefel}
+and repetitively construct occupied coefficient
+matrices $\mat{C}^{(1)}, \mat{C}^{(2)}, \ldots, \mat{C}^{(n)} \in \mathcal{C}$
+by solving the discretised \HF equations \eqref{eqn:HFiterated}
+and considering the Aufbau principle.
+Since the minimiser of the discretised \HF equations \eqref{eqn:HFOptCoeff}
+is unique, there is no need to diagonalise exactly $\matFnfull$ in each iteration.
+Instead we could diagonalise an arbitrary matrix $\matFnt$
+for obtaining the new coefficients $\mat{C}^{(n+1)}$.
+It is only important that the final coefficients $\mat{C}^{(n)}$ are situated
+in the Stiefel manifold $\mathcal{C}$
+and that the Pulay error \eqref{eqn:PulayError}
+vanishes at the end of our iterative self-consistent procedure.
+This leads to the following general approach.
+
+\begin{rem}[\SCF procedure]
+	\label{rem:SCFcoeff}
+	Pick a \newterm{convergence threshold} $\epsilonconv \in \R$,
+	a \textbf{basis set} $\{\varphi_\mu\}_{\mu\in\Ibas} \subset H^1(\R^3, \R^2)$
+	and an \newterm{initial guess} $\mat{C}^{(0)} \in \mathcal{C}$
+	of occupied coefficients.
+	From this build an initial Fock matrix
+	$\tilde{\mat{F}}^{(0)} = \mat{F}\!\!\left[\mat{C}^{(0)} \tp{\left(\mat{C}^{(0)}\right)}\right].$
+
+	\noindent
+	For $n=1,2,3,\ldots$
+	\begin{itemize}
+		\item Diagonalise
+			\[ \tilde{\mat{F}}^{(n-1)} \mat{C}_F^{(n)} = \mat{S} \mat{C}_F^{(n)} \mat{E}^{(n)} \]
+			under the condition
+			\[ \tp{\left(\mat{C}_F^{(n)}\right)} \mat{S}  \mat{C}_F^{(n)} = \mat{I}_{\Norb} \]
+			where
+			\[
+				\mat{E}^{(n)}
+				= \text{diag}\left(\varepsilon_1^{(n)},
+				\varepsilon_2^{(n)}, \ldots,
+				\varepsilon_{\Norb}^{(n)}\right)
+			\]
+			is the diagonal matrix of orbital eigenvalues.
+		\item Construct the occupied matrix $\mat{C}^{(n)}$
+			from the full matrix $\mat{C}_F^{(n)}$ by the Aufbau principle.
+		\item Build the Fock matrix $\matFnfull$.
+		\item Compute $\mat{e}^{(n)}$ according to \eqref{eqn:PulayError}
+			\[
+			\mat{e}^{(n)}
+			= \matFnfull \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \, \mat{S}
+			- \mat{S} \, \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \matFnfull
+			\]
+			If $\norm{ \mat{e}^{(n)} }_\text{frob} \leq  \epsilonconv$
+			the procedure is converged%
+			\footnote{In finite dimensions all norms are equivalent,
+				so the choice of the Frobenius norm is arbitrary here}
+			with final coefficients $\mat{C}_0 \equiv \mat{C}^{(n)}$.
+		\item Build a Fock matrix $\tilde{\mat{F}}^{(n)}$ somehow
+			using $\mat{C}^{(n)}$ and all insight into the problem gathered so far.
+	\end{itemize}
+	The final \HF energy is given by $\mathcal{E}_C(\mat{C}_0)$
+	according to \eqref{eqn:HFEnergyFunctionalCoeff} and the final
+	\SCF orbitals $\Theta^0$ by \eqref{eqn:HFDiscretisationAnsatz}.
+\end{rem}
+This scheme still leaves a couple of important questions unanswered,
+which we will address in the following sections, namely:
+\begin{itemize}
+	\item What is a suitable method for choosing the initial guess $\mat{C}^{(0)}$?
+	\item What type of basis function is suitable?
+	\item What algorithms are sensible for building the next
+		Fock matrix guess $\tilde{\mat{F}}^{(n)}$?
+\end{itemize}
+
+The scheme we presented in remark \ref{rem:SCFcoeff}
+considers the \HF problem to be parametrised
+in terms of the occupied coefficients $\mat{C}^{(n)}$
+and solves it by producing a sequence of coefficients
+$\mat{C}^{(1)}, \mat{C}^{(2)}, \ldots, \mat{C}^{(n)} \in \mathcal{C}$
+until convergence.
+By the arguments discussed in section \ref{sec:DiscreteHF}
+one can alternatively parametrise the \HF problem in terms of
+density matrices $\mat{D}^{(n)}$.
+In this light some \SCF algorithms are better understood
+if one thinks about them as schemes producing
+a sequence of density matrices
+$\mat{D}^{(0)}, \mat{D}^{(1)}, \ldots, \mat{D}^{(n)} \in \mathcal{P}$
+instead.
+See the optimal damping algorithm in section \vref{sec:ODA} for an example.
+To distinguish both approaches,
+the first kinds of algorithms iterating $\mat{C}^{(n)}$
+will be called \newterm{coefficient-based \SCF} schemes
+whilst the second kind of algorithms iterating $\mat{D}^{(n)}$
+we will call \newterm{density-based \SCF} algorithms.
+
+\noindent
+The identification
+\[ \mat{D}^{(n)} = \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)}, \]
+which we already presented in \eqref{eqn:DensityReplacement} in section \ref{sec:DiscreteHF},
+allows to build the density matrix from the coefficients by a matrix-matrix product
+and in the reverse direction we can find matching coefficients for each density
+matrix by a factorisation,
+\eg a diagonalisation or a singular-value decomposition%
+\footnote{Thanks to Eric Cancès for pointing me to the factorisation ansatz
+for the reverse direction.}.
+This allows --- at least theoretically --- to convert
+every density-based algorithms
+into a coefficient-based scheme like remark \ref{rem:SCFcoeff}
+and vice versa.
+In practice the factorisation from density matrices to coefficients
+could become rather costly and might not be always applicable.
