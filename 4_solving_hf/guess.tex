@@ -1,65 +1,184 @@
 \section{Guess methods}
 A good guess for an iterative procedure like the \SCF
 is characterised by two things.
-Firstly it should be already reasonably close to the expected solution,
-because otherwise a totally random random guess will do.
+Firstly it should of course already be close to the expected solution.
+Otherwise one might as well from a totally random random guess instead.
 Secondly it should be cheap to obtain,
 at least considerably cheaper than the \SCF itself.
-Otherwise again a totally random guess is fine.
-Notice, that random guesses might seem rather ridiculous from a practical point of view,
+Otherwise again a totally random guess does just as well.
+
+Notice that in general random guesses have not much application
+from a practical point of view,
 but for investigating the stability of an \SCF procedure
-or for investigating the stationary points of the manifolds $\mathcal{C}$
-and $\mathcal{D}$ away from the actual minimum,
-they are very helpful.
+they are really helpful.
+For example one could check whether a combination of guess method
+and \SCF algorithm yields the true minimum or just a stationary
+point of the \HF problem \eqref{eqn:HFOptCoeff}
+by trying a few random guesses and checking the resulting energies.
+
+The next sections present a non-exhaustive list of
+commonly used guess methods for starting \SCF procedures.
+
+\subsection{Core Hamiltonian guess}
+Only the Coulomb and exchange matrix terms of the Fock matrix
+expression \eqref{eqn:FockMatrix}
+\[ \matFfull = \mat{T} + \mat{V}_0 + \matJfull + \matKfull \]
+depend on the coefficients $\mat{C}$.
+Furthermore the entries of the kinetic matrix $\mat{T}$
+and the nuclear attraction matrix $\mat{V}_0$
+are typically larger than the entries of the Coulomb and exchange matrices.
+A reasonable approximation,
+which avoids the \SCF procedure as a whole
+is therefore to find an initial guess $\mat{C}^{(0)}$
+by diagonalising the core Hamiltonian $\mat{T} + \mat{V}_0$
+and keeping the $\Nelec$ lowest eigenvalue solutions.
+
+Since electrons in this model do not repel each other
+the resulting approximate orbitals are typically too contracted
+and thus not extremely physical.
+In my experiments with Coulomb-Sturmian-type
+basis functions~(see section \ref{sec:BasisCS})
+for example I found core Hamiltonian guesses to often
+converge to stationary points in the \SCF process,
+which are \emph{not} minima of the \HF problem.
+
+Such issues become worse with large basis sets or larger molecules.
+An ad-hoc way to fix this is to scale the nuclear attraction
+matrix by a factor $0 < \alpha \leq 1$
+in order to mimic the shielding of the nuclear charge somewhat.
+Nevertheless this guess method is typically only used
+if other options are not available.
+It can, however, always be done.
+
+\subsection{Superposition of atomic densities}
+The idea of the superposition of atomic densities~(SAD)~\cite{Lenthe2006}
+is that molecules are to a very large extend just a collection of atoms,
+such that the molecular electron density
+can be obtained approximately
+just by adding the densities of all constituting atoms together.
+If atom-centered basis functions are used this process is almost trivial.
+Let us illustrate the procedure by
+a chemical system made up of $M$ atoms labelled $1, 2, \ldots, M$.
+We first perform atomic \ROHF
+calculations on each atom
+using the same basis set we want to employ for the molecular calculation,
+but only the basis functions of the atom in question.
+This yields converged atomic \SCF density matrices
+$\mat{D}_1, \mat{D}_2, \ldots \mat{D}_M$.
+In the SAD guess method as described in \cite{Lenthe2006}
+the trial density matrix $\tilde{\mat{D}}$
+is the sum of all density matrix $\mat{D}_1^\alpha$, $\mat{D}_1^\beta$,
+$\mat{D}_2^\alpha$ after they have been projected from the atomic
+basis onto the basis used for the molecular calculation.
+If we compose the basis of the molecular system
+in the usual manner, \ie
+by pasting together
+all basis functions a basis set defines for each atom,
+in the order atom by atom,
+$\tilde{\mat{D}}$ would be block-diagonal
+\[
+	\tilde{\mat{D}} = \mm{
+		\mat{D}_1^\alpha + \mat{D}_1^\beta & 0         & \cdots & 0 \\
+		0         & \mat{D}_2^\alpha + \mat{D}_2^\beta & \cdots & 0 \\
+		\vdots    & \vdots    & \ddots & \vdots \\
+		0         & 0         & \cdots & \mat{D}_M^\alpha + \mat{D}_M^\beta
+	}.
+\]
+Replicating $\tilde{\mat{D}}$ twice on the $\alpha$ and the $\beta$
+block we can construct the trial density matrix
+\[
+	\mat{D}^\text{t} =
+	\mm{\tilde{\mat{D}} & 0 \\ 0 & \tilde{\mat{D}}}
+\]
+and with it a trial Fock matrix
+$\mat{F}^\text{t} = \mat{F}\!\left[\mat{D}^\text{t}\right]$.
+A diagonalisation
+\[
+	\mat{F}^\text{t} \mat{C}^{(0)} = \mat{E}^\text{t} \mat{C}^{(0)}
+\]
+finally yields the initial coefficients $\mat{C}^{(0)}$
+along with some trial energies along the diagonal matrix $\mat{E}^\text{t}$.
+
+\noindent
+A few remarks about the SAD guess method:
+\begin{itemize}
+	\item 
+	This whole procedure costs roughly as much as a single \SCF step
+	plus the time needed for the atomic calculation,
+	which is typically negligible.
+	\item Furthermore many quantum-chemistry programs
+		store precomputed atomic densities $\mat{D}_1, \mat{D}_2, \ldots$
+		for their supported basis functions
+		and all relevant elements of the periodic table,
+		such that the cost of the SAD guess procedure
+		is typically even lower in practice.
+	\item The quality of the guess is in general rather good~\cite{Lenthe2006}.
+	\item
+	Since $\mat{D}^\text{t} \not\in \mathcal{P}$,
+	the orbital energies $\mat{E}^\text{t}$
+	obtained from the diagonalisation
+	of $\mat{F}^\text{t}$ are not variational with respect to the
+	overall \HF problem.
+	At least one further \SCF step is therefore required.
+	\item For molecular \UHF and \ROHF calculations,
+		one might want to perturb the $\alpha$ and $\beta$
+		parts of $\mat{D}^\text{t}$ slightly in order to enforce
+		breaking the spin symmetry in the $\alpha$ and $\beta$ blocks.
+\end{itemize}
+
+\subsection{Guesses by projection}
+\label{sec:GuessProject}
+Idea would be to project from a prior calculation (smaller basis, different basis type)
+\todoil{TODO. See orca manual}
 
 
+\subsection{Extended Hückel guess}
+The extended Hückel~(EH) procedure for obtaining estimates
+of molecular orbitals was developed in the 1960s
+by Hoffmann~\cite{Hoffmann1963}
+based on the extended Hückel Hamiltonian matrix defined
+in the earlier work by Wolfsberg and Helmholtz~\cite{Wolfsberg1952}.
+Sometimes this procedure is called
+\textbf{Generalised Wolfsberg-Helmholtz procedure}
+for this reason as well.
 
-Secondly it should be already reasonably close to the expected solution,
-because otherwise a totally random 
+The idea is here to start from a minimal set of orbitals
+$\{\phi_i\}_{i=1,\ldots,N_\text{trial}}$,
+originally exponential-type orbitals,
+and build the model Hamiltonian
+\[
+	H_{ij}^\text{EH}
+		= \frac12 K S^\text{EH}_{ij} \left( H_{ii}^\text{EH} + H_{jj}^\text{EH} \right),
+\]
+from the EH overlap matrix $\mat{S}^\text{EH}$ with elements
+\[ S^\text{EH}_{ij} = \int_{\R^3} \phi_i(\vec{r}) \phi_j(\vec{r}) \D\vec{r}, \]
+an empirical parameter $K$ typically set to $1.75$
+and the diagonal elements $H_{ii}^\text{EH}$,
+which should be a rough estimate for the trial orbital energies $\phi_i$.
+Usually one takes experimental atomic ionisation energies~\cite{Yamehmop}
+or energies from a cheap \SCF procedure~\cite{ORCA} for this purpose.
+The obtained matrix $H_{ij}^\text{EH}$ is diagonalised with respect
+to the EH overlap matrix $\mat{S}^\text{HF}$
+yielding trial coefficients $\mat{C}^\text{HF}$.
+Following the procedures of the previous section \ref{sec:GuessProject}
+one may project these onto the basis set of the problem of interest
+and use them as an initial guess $\mat{C}^{(0)}$ for the \SCF procedure.
 
-and secondly
-it should already be very close to the solution.
-Otherwise one might as well start with a completely random
-guess and perform the full iterative procedure starting from there.
-Even though a random guess might seem ridiculous on first thought,
-such 
+Despite its age the EH method is still subject to active research.
+For example \citet{Lee2015} have constructed a scheme combining
+the extended Hückel method and Slater's rules~\cite{Slater1930}
+by which decent guesses for Finite-Element based density-functional theory
+calculations may be obtained.
 
-
-
-A good guess for an \SCF procedure is both cheap to obtain
-
-
-Good guess is cheap to obtain and still captures most of the physics of the system.
-Inside the basin of attraction for SCF minimum
-for the chosen SCF algorithm
-
-one could always start random.
-
-\paragraph{Core Hamiltonian guess}
-The expensive parts of the Fock matrix are the computation
-of the ERI tensor as well the resulting J and K matrices as contraction.
-In terms of absolute energy the Coulomb and Exchange energy,
-however, contribute very little.
-Plus their terms lead to the self-consistency problem.
-A good first approximation on the other hand is to consider
-totally non-interacting electrons, ie to only consider the core hamiltonian
-$\mat{T} + \mat{V}_0$.
-
-Typically far too contracted electrons.
-Non-bonding electrons!
-Leads to issues with certain basis types.
-For example with Coulomb-Strumians it often yields a non-physical
-stationary state on the SCF manifold.
-
-\paragraph{Extended Hückel guess}
-Basic description of bonding 
-
-
-\paragraph{Superposition of atomic densities}
-Typically a very good guess
-Works on fitted parameters
-Especially simple for atom-centered basis functions
-(essenitally you place the guess with the basis functions onto the grid)
-
-
-\paragraph{Projection from previous result}
+Typically the EH method works reasonably well
+for small basis sets and small molecular systems.
+This drawback is overcome if an approach related to the
+superposition of atomic densities is used for obtaining the diagonal
+elements of $\mat{H}^\text{EH}$.
+The quantum-chemistry ORCA~\cite{ORCA} for example
+uses both the atomic orbitals as well as the orbital energies
+from pre-calculated atomic STO-3g~\cite{Hehre1969} calculations
+to drive the EH guess:
+The trial basis set $\{\phi_i\}_{i=1,\ldots,N_\text{trial}}$
+in their approach is just the combination of all atomic STO-3g orbitals
+and the diagonal elements $H_{ii}^\text{EH}$ the corresponding STO-3g orbital energies.
