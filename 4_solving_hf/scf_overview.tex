@@ -15,19 +15,19 @@ is unique, there is no need to diagonalise exactly $\matFnfull$ in each iteratio
 Instead we could well diagonalise an arbitrary matrix $\matFnt$
 for obtaining the new coefficients $\mat{C}^{(n)}$.
 It is important, however, to ensure that the final coefficients,
-say $\mat{C}^{(n+1)}$,
-satisfy the necessary conditions for being a minimiser of $\mathcal{E}_C$.
-At least they should do so within a provided error bound.
-In other words one needs to make sure that
-$\mat{C}^{(\infty)} \in \mathcal{C}$ and
-that the Pulay error with the unmodified matrix $\matFnfull$
-\eqref{eqn:PulayError} is below a threshold.
+say $\mat{C}_0$,
+satisfy the necessary conditions for being a minimiser of $\mathcal{E}_C$,
+namely that $\mat{C}_0 \in \mathcal{C}$ and that the Pulay error \eqref{eqn:PulayError} vanishes.
+At least its norm should stay within a finite value.
+Notice, that for the computation of the Pulay error
+in each case the unmodified matrix $\matFnfull$ needs to be employed
+in order for the resulting value to be meaningful.
 As discussed in remark \vref{rem:PropertiesDiscretised}
 even if both these conditions are satisfied,
 this is no guarantee, however,
 that $\mat{C}^{(n)}$ is a minimiser for \eqref{eqn:HFOptCoeff},
 since both are only \emph{necessary} but no sufficient conditions.
-Ignoring this fact for a moment this leads to the following general approach.
+Ignoring this fact for a moment, this leads to the following general approach.
 
 \begin{rem}[\SCF procedure]
 	\label{rem:SCFcoeff}
@@ -62,10 +62,11 @@ Ignoring this fact for a moment this leads to the following general approach.
 			= \matFnfull \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \, \mat{S}
 			- \mat{S} \, \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \matFnfull
 			\]
+			Check the necessary condition:
 			If $\norm{ \mat{e}^{(n)} }_\text{frob} \leq  \epsilonconv$
 			the procedure is converged%
 			\footnote{In finite dimensions all norms are equivalent,
-				so the choice of the Frobenius norm is arbitrary here}
+				so the choice of the Frobenius norm is arbitrary here.}
 			with final coefficients $\mat{C}_0 \equiv \mat{C}^{(n)}$.
 		\item Build a Fock matrix $\tilde{\mat{F}}^{(n)}$ somehow
 			using $\mat{C}^{(n)}$ and all insight into the problem gathered so far.
