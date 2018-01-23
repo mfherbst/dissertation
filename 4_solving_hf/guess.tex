@@ -1,3 +1,65 @@
 \section{Guess methods}
-% Intertwined with Basis choice
+A good guess for an iterative procedure like the \SCF
+is characterised by two things.
+Firstly it should be already reasonably close to the expected solution,
+because otherwise a totally random random guess will do.
+Secondly it should be cheap to obtain,
+at least considerably cheaper than the \SCF itself.
+Otherwise again a totally random guess is fine.
+Notice, that random guesses might seem rather ridiculous from a practical point of view,
+but for investigating the stability of an \SCF procedure
+or for investigating the stationary points of the manifolds $\mathcal{C}$
+and $\mathcal{D}$ away from the actual minimum,
+they are very helpful.
 
+
+
+Secondly it should be already reasonably close to the expected solution,
+because otherwise a totally random 
+
+and secondly
+it should already be very close to the solution.
+Otherwise one might as well start with a completely random
+guess and perform the full iterative procedure starting from there.
+Even though a random guess might seem ridiculous on first thought,
+such 
+
+
+
+A good guess for an \SCF procedure is both cheap to obtain
+
+
+Good guess is cheap to obtain and still captures most of the physics of the system.
+Inside the basin of attraction for SCF minimum
+for the chosen SCF algorithm
+
+one could always start random.
+
+\paragraph{Core Hamiltonian guess}
+The expensive parts of the Fock matrix are the computation
+of the ERI tensor as well the resulting J and K matrices as contraction.
+In terms of absolute energy the Coulomb and Exchange energy,
+however, contribute very little.
+Plus their terms lead to the self-consistency problem.
+A good first approximation on the other hand is to consider
+totally non-interacting electrons, ie to only consider the core hamiltonian
+$\mat{T} + \mat{V}_0$.
+
+Typically far too contracted electrons.
+Non-bonding electrons!
+Leads to issues with certain basis types.
+For example with Coulomb-Strumians it often yields a non-physical
+stationary state on the SCF manifold.
+
+\paragraph{Extended Hückel guess}
+Basic description of bonding 
+
+
+\paragraph{Superposition of atomic densities}
+Typically a very good guess
+Works on fitted parameters
+Especially simple for atom-centered basis functions
+(essenitally you place the guess with the basis functions onto the grid)
+
+
+\paragraph{Projection from previous result}

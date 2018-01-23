@@ -104,7 +104,7 @@ electronic ground state.
 	\[  \Theta \equiv \left(\psi_1, \psi_2, \ldots, \psi_{\Nelec}\right)
 		\in \left(H^1(\R^3, \C)\right)^{\Nelec} \]
 	denote an arbitrary tuple of single-particle functions.
-	It uniquely defines a Slater determinant
+	It uniquely identifies a Slater determinant
 	$\Phi_\Theta = \bigwedge_{i=1}^{\Nelec} \psi_i.$
 	Inserting this ansatz into the energy expression
 	\eqref{eqn:EnergySlaterDeterminant} for a single determinant
@@ -367,12 +367,13 @@ These are summarised in the following.
 				\label{eqn:OperatorExchange}
 			\end{align}
 
-			To find the minimiser of $\mathcal{E}^\text{HF}$ one needs
-			to solve the Euler-Lagrange equations corresponding to the minimisation
+			To find a stationary point of $\mathcal{E}^\text{HF}$ with respect to $\Theta$
+			one needs to solve the Euler-Lagrange equations corresponding to the minimisation
 			problem \eqref{eqn:HFMO}.
-			They state, that $\Theta^0$ as defined in \eqref{eqn:HFTheoremMinimiser}
-			is a minimiser to $\mathcal{E}^\text{HF}$ if and only if
-			there exists a Hermitian matrix $\mat{\lambda} \in \C^{\Nelec\times\Nelec}$
+			By their means one finds that $\Theta^0$
+			as defined in \eqref{eqn:HFTheoremMinimiser}
+			can only be a stationary point of $\mathcal{E}^\text{HF}$ if
+			there exists a Hermitian matrix $\mat{\lambda} \in \C^{\Nelec\times\Nelec}$,
 			such that for all $i,j \in \{1,\ldots,\Nelec\}$
 			\begin{align}
 				\label{eqn:EulerLagrangeHF}
@@ -381,6 +382,7 @@ These are summarised in the following.
 				\braket{\psi_i^0}{\psi_j^0} &= \delta_{ij}
 			\end{align}
 			hold.
+			This is a necessary condition for $\Theta^0$ to be a minimiser.
 
 			Once we found the ground state, the application of the Fock operator
 			will thus only rotate us around the space spanned by the minimising
@@ -430,8 +432,9 @@ the guarantee that \HF gives a sensible ground state for negatively charged syst
 In fact one can even show that no solution to the \HF problem \eqref{eqn:HFMO}
 exists for negative ions with $\Nelec \geq 2Z_\text{tot} + M$~\cite{Cances2000}.
 This holds for example for \ce{H^{2-}}.
-Notice that up to today in the infinite-dimensional setting
-there is furthermore no uniqueness proof for the solution \eqref{eqn:HFTheoremMinimiser},
+To the best of my knowledge there is furthermore no
+uniqueness proof for the solution \eqref{eqn:HFTheoremMinimiser}
+in the infinite-dimensional setting up to today,
 not even for the resulting ground state density~\cite{Cances2000}.
 
 \subsection{Discretised Hartree-Fock}
@@ -879,7 +882,7 @@ we know that that we expect $\NelecA$ eigenvectors
 with only $\alpha$ components and $\NelecB$ eigenvectors with only $\beta$ components.
 Let us take $\Norb$ to be even and such that $\NelecA, \NelecB > \Norb/2$.
 Since both $\mat{F}$ and $\mat{S}$ are block-diagonal
-we can solve \eqref{eqn:HFDiscreteEquations} blockwise,
+we can solve \eqref{eqn:HFDiscreteEquations} block-wise,
 \ie we solve
 \[
 	\mat{F}^\sigma\!\!\left[\mat{C}\tp{\mat{C}}\right] \vec{c}_i^\sigma
@@ -943,9 +946,13 @@ This condition can be equivalently expressed as~\cite{Pulay1982}
 	= \mat{0}
 	\label{eqn:HFconvergenceCondition}
 \end{equation}
-and is only satisfied at the minimal point.
+and is always satisfied if $\mat{C}_0$ is a minimiser.
+The reverse statement is not true, however,
+since all stationary point of the energy functional
+$\mathcal{E}_C$ optimised on the manifold $\mathcal{C}$
+satisfy \label{eqn:HFconvergenceCondition}.
 
-Nothing stops us, however, to pick any other $\mat{C}^{(n)} \in \mathcal{C}$
+Nevertheless nothing stops us to pick any other $\mat{C}^{(n)} \in \mathcal{C}$
 and build the Fock matrix $\matFnfull$
 according to \eqref{eqn:FockMatrix}.
 We can solve for its eigenpairs, \ie find a matrix $\mat{C}_F^{(n+1)}$
@@ -970,16 +977,18 @@ In such a case, we can in general not expect the expression
 \end{equation}
 to be zero.
 Typically, however, $\mat{C}^{(n+1)}$ is
-much closer to the minimum $\mat{C}_0$ than $\mat{C}^{(n)}$ was,
-which suggests an iterative approach to find the minimum $\mat{C}$
+much closer to the minimum $\mat{C}_0$ than $\mat{C}^{(n)}$
+was --- see section \vref{sec:RoothaanRepeatedDiag} for details.
+This suggests an iterative approach to find the minimum $\mat{C}$
 starting from a guess $\mat{C}^{(0)}$.
-This approach is called \newterm{self-consistent field}~(\SCF) procedure
+Such an approach is called \newterm{self-consistent field}~(\SCF) procedure
 and we will discuss it in more detail in the next chapter.
 In the context of such an iterative approach
 to solve \eqref{eqn:HFDiscreteEquations}
 expression \eqref{eqn:PulayError} is called the \newterm{Pulay error}
 after Peter Pulay~\cite{Pulay1982}.
 
+\todoil{Instead of number 5. 7. and so on use letters (a)}
 There are two more aspects of theorem \ref{thm:MathematicalHF} worth pointing out.
 From the unfilled shell property (7.) $\varepsilon_{\Nelec} < \varepsilon_{\Nelec+1}$,
 we can deduce that there is always a gap between the
@@ -1008,8 +1017,10 @@ in a self-consistent field approach,
 which would construct a sequence $\mat{C}^{(n)}$
 of orbital coefficients or of density matrices $\mat{D}^{(n)}$
 until \eqref{eqn:HFDiscreteEquations} is satisfied within a certain error.
-In section \vref{sec:SCFAlgorithms} we will discuss algorithms
-for all these approaches.
+No guarantee is made that this converges to the minimum,
+but in many cases it does.
+For all these approaches we will discuss practical
+algorithms in \vref{sec:SCFAlgorithms}.
 
 \subsection{Restricted Hartree-Fock}
 By the means of equation \eqref{eqn:UHFS2}

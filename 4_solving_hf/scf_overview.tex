@@ -5,18 +5,29 @@ we suggested a simple procedure for iteratively solving the \HF equations.
 The idea was to start from an initial guess $\mat{C}^{(0)}$
 from the Stiefel manifold $\mathcal{C}$ as defined in \eqref{eqn:HFStiefel}
 and repetitively construct occupied coefficient
-matrices $\mat{C}^{(1)}, \mat{C}^{(2)}, \ldots, \mat{C}^{(n)} \in \mathcal{C}$
+matrices $\mat{C}^{(1)}, \mat{C}^{(2)}, \ldots, \mat{C}^{(n-1)} \in \mathcal{C}$
 by solving the discretised \HF equations \eqref{eqn:HFiterated}
 and considering the Aufbau principle.
-Since the minimiser of the discretised \HF equations \eqref{eqn:HFOptCoeff}
+Since the minimiser%
+\footnote{in the discrete setting}
+of the discretised \HF problem \eqref{eqn:HFOptCoeff}
 is unique, there is no need to diagonalise exactly $\matFnfull$ in each iteration.
-Instead we could diagonalise an arbitrary matrix $\matFnt$
-for obtaining the new coefficients $\mat{C}^{(n+1)}$.
-It is only important that the final coefficients $\mat{C}^{(n)}$ are situated
-in the Stiefel manifold $\mathcal{C}$
-and that the Pulay error \eqref{eqn:PulayError}
-vanishes at the end of our iterative self-consistent procedure.
-This leads to the following general approach.
+Instead we could well diagonalise an arbitrary matrix $\matFnt$
+for obtaining the new coefficients $\mat{C}^{(n)}$.
+It is important, however, to ensure that the final coefficients,
+say $\mat{C}^{(n+1)}$,
+satisfy the necessary conditions for being a minimiser of $\mathcal{E}_C$.
+At least they should do so within a provided error bound.
+In other words one needs to make sure that
+$\mat{C}^{(\infty)} \in \mathcal{C}$ and
+that the Pulay error with the unmodified matrix $\matFnfull$
+\eqref{eqn:PulayError} is below a threshold.
+As discussed in remark \vref{rem:PropertiesDiscretised}
+even if both these conditions are satisfied,
+this is no guarantee, however,
+that $\mat{C}^{(n)}$ is a minimiser for \eqref{eqn:HFOptCoeff},
+since both are only \emph{necessary} but no sufficient conditions.
+Ignoring this fact for a moment this leads to the following general approach.
 
 \begin{rem}[\SCF procedure]
 	\label{rem:SCFcoeff}
@@ -71,8 +82,7 @@ which we will address in the following sections, namely:
 	\item What algorithms are sensible for building the next
 		Fock matrix guess $\tilde{\mat{F}}^{(n)}$?
 \end{itemize}
-
-The scheme we presented in remark \ref{rem:SCFcoeff}
+Furthermore remark \ref{rem:SCFcoeff}
 considers the \HF problem to be parametrised
 in terms of the occupied coefficients $\mat{C}^{(n)}$
 and solves it by producing a sequence of coefficients
@@ -101,8 +111,7 @@ allows to build the density matrix from the coefficients by a matrix-matrix prod
 and in the reverse direction we can find matching coefficients for each density
 matrix by a factorisation,
 \eg a diagonalisation or a singular-value decomposition%
-\footnote{Thanks to Eric Cancès for pointing me to the factorisation ansatz
-for the reverse direction.}.
+\footnote{Thanks to Eric Cancès for pointing this out to me.}.
 This allows --- at least theoretically --- to convert
 every density-based algorithms
 into a coefficient-based scheme like remark \ref{rem:SCFcoeff}

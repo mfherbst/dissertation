@@ -3,26 +3,19 @@
 % TODO Maybe talk about basis functions first, because then it is more
 % clear why we focus so much on coefficient-based stuff
 
-Do not solve
-\begin{equation}
-	\matFnfull
-	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
-	\label{eqn:HFiterated}
-\end{equation}
-but solve 
-\begin{equation}
-	\tilde{\mat{F}}^{(n)}
-	\mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
-	\label{eqn:HFiterated}
-\end{equation}
-where $\tilde{\mat{F}}^{(n)}$ is somehow build.
 
+Notice, that many \SCF algorithms only consider the necessary condition \eqref{eqn:PulayError},
+but do not check the sufficient conditions as well.
 
 % general remarks -> follow cances, bris book
 
-\subsection{Roothaan repeated diagonalisation}
+This is just a representative selection of algorithms,
+which is by no means complete or exhaustive.
 
-\subsection{Level-shifting}
+\subsection{Roothaan repeated diagonalisation}
+\label{sec:RoothaanRepeatedDiag}
+
+\subsection{Level-shifting modification}
 
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
@@ -38,3 +31,7 @@ Can define~\cite{Lions1988,Cances2000}
 \subsection{Direct inversion of the iterative subspace}
 
 \subsection{Geometric direct minimisation}
+
+\subsection{Second-order \SCF algorithms}
+
+\subsection{Combinations of algorithms}
