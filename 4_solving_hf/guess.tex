@@ -155,8 +155,11 @@ from the EH overlap matrix $\mat{S}^\text{EH}$ with elements
 an empirical parameter $K$ typically set to $1.75$
 and the diagonal elements $H_{ii}^\text{EH}$,
 which should be a rough estimate for the trial orbital energies $\phi_i$.
-Usually one takes experimental atomic ionisation energies~\cite{Yamehmop}
-or energies from a cheap \SCF procedure~\cite{ORCA} for this purpose.
+For this a range of methodologies are employed in practice,
+including the diagonal elements of the core Hamiltonian matrix
+of the trial basis,
+experimental atomic ionisation energies~\cite{Yamehmop}
+or even the results from a cheap \SCF procedure~\cite{ORCA}.
 The obtained matrix $H_{ij}^\text{EH}$ is diagonalised with respect
 to the EH overlap matrix $\mat{S}^\text{HF}$
 yielding trial coefficients $\mat{C}^\text{HF}$.
