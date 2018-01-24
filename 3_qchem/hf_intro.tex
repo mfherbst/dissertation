@@ -816,7 +816,8 @@ for the Fock operator $\Op{F}$ at the minimal point.
 It guarantees further that $\Op{F}$
 shows the spectral requirements for applying the Ritz-Galerkin ansatz
 of remark \vref{rem:DiscreteFormulation},
-namely a discrete spectrum below the essential spectrum.
+namely that it is self-adjoint and shows
+a discrete spectrum below the essential spectrum.
 Choosing the same basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
 as in remark \ref{rem:HFDiscreteVariational}
 and projecting problem \eqref{eqn:HFequations} onto this basis
@@ -1085,10 +1086,6 @@ could be appointed to \UHF.
 We will discuss this further in section \vref{sec:IssuesUHF}.
 
 \subsection{Real-valued Hartree-Fock}
-\todoil{
-	Think about it: This could be a straight consequence
-	from the fact that $\Op{F}$ is self-adjoint
-}
 Our discussion of Hartree-Fock up to this point
 leads to numerical problems taking place in complex arithmetic,
 since both the coefficient matrix $\mat{C}$
@@ -1097,10 +1094,7 @@ Whilst doing this is possible,
 it is typically nevertheless
 avoided by reducing
 the \HF problem to a problem of equivalent structure,
-but situated in real Hilbert spaces%
-\footnote{Notice, that the approach we will sketch in the following
-is not restricted to \HF, but can be applied to many problems of
-quantum physics in order to yield equivalent real-valued problems.}.
+but situated in real Hilbert spaces.
 The major motivation for this is that computations
 amongst complex numbers are slower since effectively
 more floating point operations need to be performed
@@ -1156,3 +1150,26 @@ one would obtain from solving the original complex-valued problem
 This makes sure that we neither miss anything nor get
 spurious results by using a real-valued ansatz,
 thus still get exactly the physical eigenstates we are after.
+
+The overall approach sketched here
+is more general than just the Hartree-Fock problem
+and can be applied to many other spectral problems of quantum physics
+in order to yield equivalent real-valued versions for a numerical treatment.
+One should stress, however,
+that the operator under consideration really needs to satisfy
+the condition that it maps vectors from a real vector space
+to to vectors from a real vector space
+on top of being Hermitian.
+Let us illustrate this by the example of the single-particle spin operator
+\[ \op{s}_y = \mm{0 & -\I \\ \I & 0}. \]
+It is easy to see that on the Hilbert space $\C^2$,
+$\op{s}_y$ is a Hermitian matrix, hence a self-adjoint operator.
+Its eigenvalues are $-1$ and $1$ with corresponding normalised eigenvectors
+\[ \frac{1}{\sqrt{2}} \mm{-1 \\ \I} \quad \text{and} \quad
+  \frac{1}{\sqrt{2}} \mm{-1 \\ -\I}.
+\]
+Even though this operator is Hermitian,
+trying to find the aforementioned eigenpairs by solving the sepectral problem
+\[ \op{s}_y \vec{v} = \lambda \vec{v} \]
+in real arithmetic only, \ie with $\vec{v} \in \R^2$,
+will not yield a single eigenpair.
