@@ -1068,21 +1068,26 @@ He then replaces the
 block-diagonal Fock matrix from \eqref{eqn:HFDiscreteEquations}
 by a specially crafted Fock matrix
 consisting of nine blocks,
-each block modelling the interaction between two of the aforementioned
-orbital subspaces.
-Each of the block is a linear combination
+each block modelling the interaction between pairs of two
+of the aforementioned orbital subspaces.
+A block is build as a linear combination
 of certain parts of $\mat{F}^\alpha$ and $\mat{F}^\beta$,
 made in such a way to ensure,
 that the resulting SCF minimum is an eigenfunction of $S^2$
 with exactly the desired eigenvalue.
-We do not consider this approach further in this thesis.
+In other words the way this linear combinations are done
+depends on the spin state to be computed.
+Multiple ways to perform the linear combinations is possible~\cite{Glaesemann2010}
+and depending on which method is chosen, results can deviate.
+This restricted open-shell Hartree-Fock~(\ROHF) approach
+will not be considered much further in this thesis.
 Instead we will treat all open-shell systems with the \UHF procedure,
-since \UHF is simpler to implement, computationally cheaper
-and overall more widespread.
+since \UHF is simpler to implement, computationally cheaper and overall more widespread.
 Nevertheless some issues,
 which appeared in our convergence analysis of our
 Coulomb-Sturmian based Hartree-Fock ansatz~(see chapter \vref{ch:CSQChem})
-could be appointed to \UHF.
+turned out to originate from our \UHF treatment
+and could be potentially avoided in an \ROHF formalism.
 We will discuss this further in section \vref{sec:IssuesUHF}.
 
 \subsection{Real-valued Hartree-Fock}
