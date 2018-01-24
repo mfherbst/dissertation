@@ -6,60 +6,34 @@
 \defineabbr{ACO}{ACO\xspace}{atom-centered orbitals}
 
 \section{Basis function types}
-This section will introduce and contrast various classes of functions,
-which can be used to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
-for formulating and solving the discretised \HF problem
-as it was introduced in section \vref{sec:DiscreteHF}.
-For this we will first introduce a set of desirable properties
-for a basis,
-not only in the context of \HF but in quantum-chemistry as a whole.
-Next we will proceed to discuss four types of basis functions in depth.
-The historic Slater-type orbitals~({\STO}s),
+This section tries to address the question,
+which classes of functions can be used
+in order to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
+for solving the \HF problem in an \SCF procedure.
+For this we will first introduce some desirable properties for a basis set,
+both motivated from the desire to represent the physics of the electronic Schrödinger
+equation as good as possible
+as well as requirements from the numerical side.
+In the light of this,
+we will discuss four types of basis functions in depth,
+namely the historic Slater-type orbitals~({\STO}s),
 the most commonly employed contracted Gaussian-type orbitals~({\cGTO}s),
-Coulomb-Strumians as a representative of Sturmian-type orbitals
-as well as a fully numerical approach based on Finite Elements
-as an example for numerical basis functions.
+a finite-element based discretisation method
+as an example of a fully numerical approach
+as well as so-called Coulomb-Sturmian-type orbitals.
 
-
-
-
-We will both introduce desirable properties
-and measures for judging the quality of 
-
-
-Our discussion will involve both the usual approach
-of so-called contracted Gaussian-type atomic orbitals
-as well as alternat
-
-
-discussing common basis fu
-
-We will discuss a set of desirable properties
-for a good basis set for \HF or in fact any electronic structure theory method.
-Based on these criteria we will contrast several types of basis functions,
-which are either used very much in practice
-for atomic and molecular calculations or which show some very noteworthy properties.
-
-These are typically not extremely suitable in the single atom or single molecule setting,
-which we focus on,
-
- 
-Even though this selection represents a fair amount of methods
-used in electronic structure theory nowadays,
-it is not at all exhaustive.
-
+Even though we mostly concentrate on the \HF problem in this section,
+quite a few of the observations made here
+apply to \DFT or methods going beyond Hartree-Fock as well.
+In this sense the outlined discussion
+can be seen as an example case for the use of the mentioned
+basis function types in electronic structure theory as a whole.
 
 \subsection{Desirable properties}
 Why can we not use every kind of function?
 Issue with evaluating the integrals
 get the correct physics
 
-
-Plane waves neglected
-because not dealing with extended systems or condensed matter
-
-local energy
-relative error?
 
 
 \begin{rem}
@@ -77,11 +51,17 @@ which is very helpful for investigating how well a basis represents
 the wavefunction is the \newterm{local energy}
 \begin{defn}
 	Local energy
+	Trial wavefunction $\Psi$
+	\[
+		E_L(\vec{x}) \equiv \frac{\Op{H}_{\Nelec} \Phi}{\Phi}
+	\]
+	approximately constant for good approximations.
 \end{defn}
 This concept originates from the quantum Monte Carlo community%
 ~\cite{Foulkes2001,Ma2005}
 where the 
 % Ma paper has a good explanation for local energy and what it means
+% physically
 
 
 
@@ -170,6 +150,9 @@ relating the potential to the charge density $\rho$ which generates it.
 	\label{fig:StructureSturmianFock}
 \end{figure}
 \end{landscape}
+
+\todoil{Talk about contraction-based methods for the first time.
+Allows to pick this up in the next section}
 
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
