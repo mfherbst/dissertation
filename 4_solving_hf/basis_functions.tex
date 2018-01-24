@@ -1,14 +1,95 @@
+\defineabbr{CS}{CS\xspace}{Coulomb-Sturmian or Coulomb-Sturmian basis, see section \vref{sec:BasisCS}}
+\defineabbr{cGTO}{cGTO\xspace}{Contracted Gaussian-type orbitals, see section \vref{sec:cGTO}}
+\defineabbr{STO}{STO\xspace}{Slater-type orbitals, see section \vref{sec:STO}}
+\defineabbr{ETO}{ETO\xspace}{Exponential-type orbitals, orbitals with radial part of the form Polynomial in $r$ times $\exp{-\alpha r}$ with some parameter $\alpha$.}
+\defineabbr{FE}{FE\xspace}{Finite elements, see section \vref{sec:FE}}
+\defineabbr{ACO}{ACO\xspace}{atom-centered orbitals}
+
 \section{Basis function types}
+This section will introduce and contrast various classes of functions,
+which can be used to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
+for formulating and solving the discretised \HF problem
+as it was introduced in section \vref{sec:DiscreteHF}.
+For this we will first introduce a set of desirable properties
+for a basis,
+not only in the context of \HF but in quantum-chemistry as a whole.
+Next we will proceed to discuss four types of basis functions in depth.
+The historic Slater-type orbitals~({\STO}s),
+the most commonly employed contracted Gaussian-type orbitals~({\cGTO}s),
+Coulomb-Strumians as a representative of Sturmian-type orbitals
+as well as a fully numerical approach based on Finite Elements
+as an example for numerical basis functions.
 
-\subsection{General remarks about basis functions}
-Why can we not use everything?
+
+
+
+We will both introduce desirable properties
+and measures for judging the quality of 
+
+
+Our discussion will involve both the usual approach
+of so-called contracted Gaussian-type atomic orbitals
+as well as alternat
+
+
+discussing common basis fu
+
+We will discuss a set of desirable properties
+for a good basis set for \HF or in fact any electronic structure theory method.
+Based on these criteria we will contrast several types of basis functions,
+which are either used very much in practice
+for atomic and molecular calculations or which show some very noteworthy properties.
+
+These are typically not extremely suitable in the single atom or single molecule setting,
+which we focus on,
+
+ 
+Even though this selection represents a fair amount of methods
+used in electronic structure theory nowadays,
+it is not at all exhaustive.
+
+
+\subsection{Desirable properties}
+Why can we not use every kind of function?
 Issue with evaluating the integrals
+get the correct physics
 
 
-\subsection{Employing Slater-type orbitals}
-\defineabbr{STO}{STO\xspace}{Slater-type orbtital}
+Plane waves neglected
+because not dealing with extended systems or condensed matter
 
-\subsection{Employing a contracted Gaussian basis}
+local energy
+relative error?
+
+
+\begin{rem}
+	This remark provides a short recap of some
+	fundamental physical properties of the electronic Schrödinger equation.
+
+Kato's cusp condition~\cite{Kato1957}
+Energy-dependent exponential decay at infinity
+(easy to rationalise physically)
+\end{rem}
+
+
+Apart from relative and absolute errors a concept,
+which is very helpful for investigating how well a basis represents
+the wavefunction is the \newterm{local energy}
+\begin{defn}
+	Local energy
+\end{defn}
+This concept originates from the quantum Monte Carlo community%
+~\cite{Foulkes2001,Ma2005}
+where the 
+% Ma paper has a good explanation for local energy and what it means
+
+
+
+\subsection{Slater-type orbitals}
+\label{sec:STO}
+
+\subsection{Contracted Gaussian-type orbitals}
+\label{sec:cGTO}
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Brief rationale
@@ -19,7 +100,8 @@ Issue with evaluating the integrals
 % Convention:
 %    Use \chi_\mu for primitives
 
-\subsection{Employing a Finite Element basis}
+\subsection{Finite-element based discretisation}
+\label{sec:FE}
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Show what needs to be done
@@ -30,7 +112,6 @@ Issue with evaluating the integrals
 		\item How does it connect to the SCF methods
 	\end{itemize}
 }
-
 
 % Use as an example to explain the ideas of finite elements
 An important equation from classical electrodynamics which
@@ -90,7 +171,7 @@ relating the potential to the charge density $\rho$ which generates it.
 \end{figure}
 \end{landscape}
 
-\subsection{Employing a Coulomb-Sturmian basis}
+\subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
 
 % A few historic words and references
@@ -102,7 +183,6 @@ relating the potential to the charge density $\rho$ which generates it.
 \cite{Avery2017} % Fast evaluation of STOs
 
 
-\defineabbr{CS}{CS\xspace}{Coulomb-Strumian or Coulomb-Strumian basis}
 
 \begin{equation}
 	bla
@@ -164,7 +244,48 @@ Coulomb-Sturmian basis function is composed of
 %    - HF electron-electron interaction scales with k: Lower if k lower
 % Refer to these results in the chapter about Sturmian calculations
 
+\subsection{Other types of basis functions}
+The selection of basis function types presented so far
+represents a fair amount of what is used for electronic structure theory
+calculations nowadays.
+Nevertheless there are few more basis function types,
+which should not go unmentioned.
+
+This first of all applies to
+plane-wave and projector-augmented wave approaches
+~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010},
+which are both extremely popular as well as extremely suitable for performing
+electronic structure calculations
+on extended periodic systems or systems in the solid state.
+Over the years there has also been an enormous amount of development
+into the direction of numerical basis functions.
+\citet{Frediani2015} provides an excellent review.
+The approaches range from a so-called fully numerical treatment,
+where similar to the finite-element method as mentioned above,
+the complete problem is treated by grid-based methods.
+This includes employing clever
+numerical integration grids~\cite{Losilla2012DCRsp,Toivanen2015,Enkovaara2010}
+or discretisation schemes
+based on finite-differences~\cite{Kobus2013}
+or finite-elements~\cite{Tsuchida1995,Briggs1996,Pask05,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
+Some approaches~\cite{Soler2002} use a dual representation,
+where the same orbitals are both represented on a real-space grid
+as well as in the form of orbitals
+or they only treat
+part of the electronic wavefunction numerically~\cite{Fischer1978,LUCAS}.
+Such methods for example employ a factorisation of the one-particle functions
+into a numerical radial part and a spherical harmonic function.
+Last but not least one should also mention
+wavelet-based methods~\cite{Bischoff2011,Bischoff2012,Bischoff2013,Bischoff2014,Bischoff2014a,Bischoff2017},
+where quite some progress has been made in recent years.
+
 \subsection{Mixed bases}
+Already done in some or another sense in practice.
+For example the SIESTA method~\cite{Soler2002} uses
+a dual representation on a real-space grid as well as
+an atomic orbital basis
+
+
 Suggest an ansatz basis $\{\varphi_i + \chi_i\}_{i\in\Ibas}$
 where $\chi_i$ is a fixed, predetermined Sturmian solution
 and $\varphi_i$ are corrections to be found from FE.

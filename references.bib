@@ -1,5 +1,21 @@
 % Encoding: UTF-8
 
+@Article{Alizadegan2010,
+  author    = {R. Alizadegan and K. J. Hsia and T. J. Martinez},
+  title     = {A divide and conquer real space finite-element {Hartree}--{Fock} method},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2010},
+  volume    = {132},
+  number    = {3},
+  pages     = {034101},
+  doi       = {10.1063/1.3290949},
+  eid       = {034101},
+  keywords  = {ab initio calculations; divide and conquer methods; finite element analysis; HF calculations; quantum chemistry; variational techniques},
+  numpages  = {11},
+  publisher = {AIP},
+  url       = {http://link.aip.org/link/?JCP/132/034101/1},
+}
+
 @PhdThesis{Avery2011PhD,
   author    = {James Avery},
   title     = {New Computational Methods in the Quantum Theory of Nano-Structures},
@@ -28,6 +44,36 @@
   url       = {http://www.worldscientific.com/worldscibooks/10.1142/8151},
 }
 
+@Article{Bischoff2013,
+  author    = {Bischoff, Florian A. and Valeev, Edward F.},
+  title     = {Computing molecular correlation energies with guaranteed precision},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2013},
+  volume    = {139},
+  number    = {11},
+  pages     = {-},
+  comment   = {Spectral element wavelet},
+  doi       = {http://dx.doi.org/10.1063/1.4820404},
+  eid       = {114106},
+  url       = {http://scitation.aip.org/content/aip/journal/jcp/139/11/10.1063/1.4820404},
+}
+
+@Article{Boffi2016,
+  author    = {Nicholas M. Boffi and Manish Jain and Amir Natan},
+  title     = {Efficient Computation of the Hartree–Fock Exchange in Real-Space with Projection Operators},
+  journal   = {Journal of Chemical Theory and Computation},
+  year      = {2016},
+  volume    = {0},
+  number    = {0},
+  pages     = {null},
+  note      = {PMID: 27387558},
+  abstract  = {We describe an efficient projection-based real-space implementation of the nonlocal single-determinant exchange operator. Through a matrix representation of the projected operator, we show that this scheme works equally well for both occupied and virtual states. Our scheme reaches a speedup of 2 orders of magnitude and has no significant loss of accuracy compared to an implementation of the full nonlocal single-determinant exchange operator. We find excellent agreement upon comparing Hartree–Fock eigenvalues, dipoles, and polarizabilities of selected molecules calculated using our method to values in the literature. To illustrate the efficiency of this scheme we perform calculations on systems with up to 240 carbon atoms.},
+  doi       = {10.1021/acs.jctc.6b00376},
+  eprint    = {http://dx.doi.org/10.1021/acs.jctc.6b00376},
+  url       = { http://dx.doi.org/10.1021/acs.jctc.6b00376
+},
+}
+
 @Article{Born1927,
   author    = {Born, M. and Oppenheimer, R.},
   title     = {Zur {Q}uantentheorie der {M}olekeln},
@@ -41,6 +87,20 @@
   keywords  = {Born Oppenheimer Approximation},
   publisher = {WILEY-VCH Verlag},
   url       = {http://dx.doi.org/10.1002/andp.19273892002},
+}
+
+@Article{Briggs1996,
+  author    = {Briggs, E. L. and Sullivan, D. J. and Bernholc, J.},
+  title     = {Real-space multigrid-based approach to large-scale electronic structure calculations},
+  journal   = {Phys. Rev. B},
+  year      = {1996},
+  volume    = {54},
+  pages     = {14362--14375},
+  month     = {Nov},
+  doi       = {10.1103/PhysRevB.54.14362},
+  issue     = {20},
+  publisher = {American Physical Society},
+  url       = {http://link.aps.org/doi/10.1103/PhysRevB.54.14362},
 }
 
 @Article{Cances08,
@@ -57,6 +117,34 @@
 },
 }
 
+@Article{Davydov2015,
+  author    = {Davydov, Denis and Young, Toby D. and Steinmann, Paul/},
+  title     = {On the adaptive finite element analysis of the Kohn–Sham equations: methods, algorithms, and implementation},
+  journal   = {International Journal for Numerical Methods in Engineering},
+  year      = {2015},
+  pages     = {n/a--n/a},
+  issn      = {1097-0207},
+  note      = {nme.5140},
+  abstract  = {In this paper, details of an implementation of a numerical code for computing the Kohn–Sham equations are presented and discussed. A fully self-consistent method of solving the quantum many-body problem within the context of density functional theory using a real-space method based on finite element discretisation of realspace is considered. Various numerical issues are explored such as (i) initial mesh motion aimed at co-aligning ions and vertices; (ii) a priori and a posteriori optimization of the mesh based on Kelly's error estimate; (iii) the influence of the quadrature rule and variation of the polynomial degree of interpolation in the finite element discretisation on the resulting total energy. Additionally, (iv) explicit, implicit and Gaussian approaches to treat the ionic potential are compared. A quadrupole expansion is employed to provide boundary conditions for the Poisson problem. To exemplify the soundness of our method, accurate computations are performed for hydrogen, helium, lithium, carbon, oxygen, neon, the hydrogen molecule ion and the carbon-monoxide molecule. Our methods, algorithms and implementation are shown to be stable with respect to convergence of the total energy in a parallel computational environment. Copyright © 2015 John Wiley & Sons, Ltd.},
+  doi       = {10.1002/nme.5140},
+  keywords  = {adaptive finite element method, Kohn-Sham equations, atomic and molecular physics},
+  url       = {http://dx.doi.org/10.1002/nme.5140},
+}
+
+@Article{Fischer1978,
+  author    = {Charlotte Froese Fischer},
+  title     = {Numerical solution of general Hartree-Fock equations for atoms},
+  journal   = {Journal of Computational Physics},
+  year      = {1978},
+  volume    = {27},
+  number    = {2},
+  pages     = {221 - 240},
+  issn      = {0021-9991},
+  abstract  = {Two methods, M1 and ∼M2, for improving numerical Hartree-Fock (HF) radial functions during an SCF iteration are considered. It is shown that when rotations are introduced into the SCF process, functions can be improved one at a time, without direct concern over orthonormality conditions. Convergence characteristics for various classes of HF problems are considered. Generally M1 has the faster rate of convergence but when no exchange is present ∼M2 is preferable becoming, in effect, inverse iteration with a difference correction. In all cases, except the hydrogenic one, the asymptotic rate of convergence of the SCF process is linear.},
+  doi       = {http://dx.doi.org/10.1016/0021-9991(78)90006-2},
+  url       = {http://www.sciencedirect.com/science/article/pii/0021999178900062},
+}
+
 @Article{Jensen2005,
   author    = {Jensen, Frank},
   title     = {Estimating the Hartree---Fock limit from finite basis set calculations},
@@ -69,6 +157,37 @@
   doi       = {10.1007/s00214-005-0635-2},
   issn      = {1432-2234},
   url       = {http://dx.doi.org/10.1007/s00214-005-0635-2},
+}
+
+@Article{Kobus2013,
+  author    = {Jacek Kobus},
+  title     = {A finite difference Hartree–Fock program for atoms and diatomic molecules},
+  journal   = {Computer Physics Communications},
+  year      = {2013},
+  volume    = {184},
+  number    = {3},
+  pages     = {799 - 811},
+  issn      = {0010-4655},
+  abstract  = {The newest version of the two-dimensional finite difference Hartree–Fock program for atoms and diatomic molecules is presented. This is an updated and extended version of the program published in this journal in 1996. It can be used to obtain reference, Hartree–Fock limit values of total energies and multipole moments for a wide range of diatomic molecules and their ions in order to calibrate existing and develop new basis sets, calculate (hyper)polarizabilities ( α z z , β z z z , γ z z z z , A z,zz , B z z , z z ) of atoms, homonuclear and heteronuclear diatomic molecules and their ions via the finite field method, perform DFT-type calculations using \{LDA\} or \{B88\} exchange functionals and \{LYP\} or \{VWN\} correlations ones or the self-consistent multiplicative constant method, perform one-particle calculations with (smooth) Coulomb and Krammers–Henneberger potentials and take account of finite nucleus models. The program is easy to install and compile (tarball+configure+make) and can be used to perform calculations within double- or quadruple-precision arithmetic. Program summary Program title: 2dhf Catalogue identifier: ADEB_v2_0 Program summary URL:http://cpc.cs.qub.ac.uk/summaries/ADEB_v2_0.html Program obtainable from: \{CPC\} Program Library, Queen’s University, Belfast, N. Ireland Licensing provisions: \{GNU\} General Public License version 2 No. of lines in distributed program, including test data, etc.: 171196 No. of bytes in distributed program, including test data, etc.: 9481802 Distribution format: tar.gz Programming language: Fortran 77, C. Computer: any 32- or 64-bit platform. Operating system: Unix/Linux. RAM: Case dependent, from few \{MB\} to many \{GB\} Classification: 16.1. Catalogue identifier of previous version: ADEB_v1_0 Journal reference of previous version: Comput. Phys. Comm. 98(1996)346 Does the new version supersede the previous version?: Yes Nature of problem: The program finds virtually exact solutions of the Hartree–Fock and density functional theory type equations for atoms, diatomic molecules and their ions. The lowest energy eigenstates of a given irreducible representation and spin can be obtained. The program can be used to perform one-particle calculations with (smooth) Coulomb and Krammers–Henneberger potentials and also DFT-type calculations using \{LDA\} or \{B88\} exchange functionals and \{LYP\} or \{VWN\} correlations ones or the self-consistent multiplicative constant method. Solution method: Single-particle two-dimensional numerical functions (orbitals) are used to construct an antisymmetric many-electron wave function of the restricted open-shell Hartree–Fock model. The orbitals are obtained by solving the Hartree–Fock equations as coupled two-dimensional second-order (elliptic) partial differential equations (PDEs). The Coulomb and exchange potentials are obtained as solutions of the corresponding Poisson equations. The \{PDEs\} are discretized by the eighth-order central difference stencil on a two-dimensional single grid, and the resulting large and sparse system of linear equations is solved by the (multicolour) successive overrelaxation ((MC)SOR) method. The self-consistent-field iterations are interwoven with the (MC)SOR ones and orbital energies and normalization factors are used to monitor the convergence. The accuracy of solutions depends mainly on the grid and the system under consideration, which means that within double precision arithmetic one can obtain orbitals and energies having up to 12 significant figures. If more accurate results are needed, quadruple-precision floating-point arithmetic can be used. Reasons for new version: Additional features, many modifications and corrections, improved convergence rate, overhauled code and documentation. Summary of revisions: see ChangeLog found in tar.gz archive Restrictions: The present version of the program is restricted to 60 orbitals. The maximum grid size is determined at compilation time. Unusual features: The program uses two C routines for allocating and deallocating memory. Several \{BLAS\} (Basic Linear Algebra System) routines are emulated by the program. When possible they should be replaced by their library equivalents. Additional comments: automake and autoconf tools are required to build and compile the program; checked with f77, gfortran and ifort compilers Running time: Very case dependent — from a few \{CPU\} seconds for the \{H2\} defined on a small grid up to several weeks for the Hartree–Fock-limit calculations for 40–50 electron molecules. },
+  doi       = {http://dx.doi.org/10.1016/j.cpc.2012.09.033},
+  keywords  = {Schrödinger equation of one-electron atomic and diatomic systems},
+  url       = {http://www.sciencedirect.com/science/article/pii/S0010465512003311},
+}
+
+@Article{Lehtovaara2009,
+  author    = {Lauri Lehtovaara and Ville Havu and Martti Puska},
+  title     = {All-electron density functional theory and time-dependent density functional theory with high-order finite elements},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2009},
+  volume    = {131},
+  number    = {5},
+  pages     = {054103},
+  doi       = {10.1063/1.3176508},
+  eid       = {054103},
+  keywords  = {density functional theory; mesh generation; molecular electronic states},
+  numpages  = {10},
+  publisher = {AIP},
+  url       = {http://link.aip.org/link/?JCP/131/054103/1},
 }
 
 @Article{Lenthe1990,
@@ -99,6 +218,18 @@
   doi       = {http://dx.doi.org/10.1016/S0166-1280(96)04823-3},
   keywords  = {Hartree-Fock SCF limit},
   url       = {http://www.sciencedirect.com/science/article/pii/S0166128096048233},
+}
+
+@Article{Pask05,
+  author    = {J E Pask and P A Sterne},
+  title     = {Finite element methods in ab initio electronic structure calculations},
+  journal   = {Modelling and Simulation in Materials Science and Engineering},
+  year      = {2005},
+  volume    = {13},
+  number    = {3},
+  pages     = {R71},
+  abstract  = {We review the application of the finite element (FE) method to ab initio electronic structure calculations in solids. The FE method is a general approach for the solution of differential and integral equations which uses a strictly local, piecewise-polynomial basis. Because the basis is composed of polynomials, the method is completely general and its accuracy is systematically improvable. Because the basis is strictly local in real space, the method allows for variable resolution in real space; produces sparse, structured matrices, enabling the effective use of iterative solution methods; and is well suited for parallel implementation. The method thus combines significant advantages of both real-space-grid and basis-oriented approaches, and so is well suited for large, accurate ab initio calculations. We review the construction and properties of the required FE bases and their use in the self-consistent solution of the Kohn–Sham equations of density functional theory.},
+  url       = {http://stacks.iop.org/0965-0393/13/i=3/a=R01},
 }
 
 @Article{Pulay1982,
@@ -139,6 +270,18 @@
   author    = {R. Shankar},
 }
 
+@Article{Soler2002,
+  author    = {José M Soler and Emilio Artacho and Julian D Gale and Alberto García and Javier Junquera and Pablo Ordejón and Daniel Sánchez-Portal},
+  title     = {The {SIESTA} method for ab initio order-{N} materials simulation},
+  journal   = {Journal of Physics: Condensed Matter},
+  year      = {2002},
+  volume    = {14},
+  number    = {11},
+  pages     = {2745},
+  abstract  = {We have developed and implemented a selfconsistent density functional method using standard norm-conserving pseudopotentials and a flexible, numerical linear combination of atomic orbitals basis set, which includes multiple-zeta and polarization orbitals. Exchange and correlation are treated with the local spin density or generalized gradient approximations. The basis functions and the electron density are projected on a real-space grid, in order to calculate the Hartree and exchange-correlation potentials and matrix elements, with a number of operations that scales linearly with the size of the system. We use a modified energy functional, whose minimization produces orthogonal wavefunctions and the same energy and density as the Kohn-Sham energy functional, without the need for an explicit orthogonalization. Additionally, using localized Wannier-like electron wavefunctions allows the computation time and memory required to minimize the energy to also scale linearly with the size of the system. Forces and stresses are also calculated efficiently and accurately, thus allowing structural relaxation and molecular dynamics simulations.},
+  url       = {http://stacks.iop.org/0953-8984/14/i=11/a=302},
+}
+
 @Book{Cances2000,
   title     = {Mathematical Models and Methods for Ab Initio Quantum Chemistry},
   publisher = {Springer},
@@ -149,6 +292,20 @@
   series    = {Lecture Notes in Chemistry},
   doi       = {10.1007/978-3-642-57237-1},
   url       = {https://link.springer.com/book/10.1007/978-3-642-57237-1},
+}
+
+@Article{Tsuchida1995,
+  author    = {Tsuchida, Eiji and Tsukada, Masaru},
+  title     = {Electronic-structure calculations based on the finite-element method},
+  journal   = {Phys. Rev. B},
+  year      = {1995},
+  volume    = {52},
+  pages     = {5573--5578},
+  month     = {Aug},
+  doi       = {10.1103/PhysRevB.52.5573},
+  issue     = {8},
+  publisher = {American Physical Society},
+  url       = {http://link.aps.org/doi/10.1103/PhysRevB.52.5573},
 }
 
 @Article{Cances2000a,
@@ -240,6 +397,19 @@
   eprintclass = {physics.chem-ph},
   eprinttype  = {arXiv},
   keywords    = {physics.chem-ph},
+}
+
+@Article{Enkovaara2010,
+  author   = {J Enkovaara and C Rostgaard and J J Mortensen and J Chen and M Dułak and L Ferrighi and J Gavnholt and C Glinsvad and V Haikola and H A Hansen and H H Kristoffersen and M Kuisma and A H Larsen and L Lehtovaara and M Ljungberg and O Lopez-Acevedo and P G Moses and J Ojanen and T Olsen and V Petzold and N A Romero and J Stausholm-Møller and M Strange and G A Tritsaris and M Vanin and M Walter and B Hammer and H Häkkinen and G K H Madsen and R M Nieminen and J K Nørskov and M Puska and T T Rantala and J Schiøtz and K S Thygesen and K W Jacobsen},
+  title    = {Electronic structure calculations with GPAW: a real-space implementation of the projector augmented-wave method},
+  journal  = {Journal of Physics: Condensed Matter},
+  year     = {2010},
+  volume   = {22},
+  number   = {25},
+  pages    = {253202},
+  note     = {SecondQuantizatonAlgebra},
+  abstract = {Electronic structure calculations have become an indispensable tool in many areas of materials science and quantum chemistry. Even though the Kohn–Sham formulation of the density-functional theory (DFT) simplifies the many-body problem significantly, one is still confronted with several numerical challenges. In this article we present the projector augmented-wave (PAW) method as implemented in the GPAW program package ( https://wiki.fysik.dtu.dk/gpaw [https://wiki.fysik.dtu.dk/gpaw] ) using a uniform real-space grid representation of the electronic wavefunctions. Compared to more traditional plane wave or localized basis set approaches, real-space grids offer several advantages, most notably good computational scalability and systematic convergence properties. However, as a unique feature GPAW also facilitates a localized atomic-orbital basis set in addition to the grid. The efficient atomic basis set is complementary to the more accurate grid, and the possibility to seamlessly switch between the two representations provides great flexibility. While DFT allows one to study ground state properties, time-dependent density-functional theory (TDDFT) provides access to the excited states. We have implemented the two common formulations of TDDFT, namely the linear-response and the time propagation schemes. Electron transport calculations under finite-bias conditions can be performed with GPAW using non-equilibrium Green functions and the localized basis set. In addition to the basic features of the real-space PAW method, we also describe the implementation of selected exchange–correlation functionals, parallelization schemes, ΔSCF-method, x-ray absorption spectra, and maximally localized Wannier orbitals.},
+  url      = {http://stacks.iop.org/0953-8984/22/i=25/a=253202},
 }
 
 @Article{Parrish2017,
@@ -683,12 +853,181 @@
   edition   = {1st edn.},
 }
 
+@Article{Frediani2015,
+  author    = {Frediani, Luca and Sundholm, Dage},
+  title     = {Real-space numerical grid methods in quantum chemistry},
+  journal   = {Phys. Chem. Chem. Phys.},
+  year      = {2015},
+  volume    = {17},
+  pages     = {31357-31359},
+  doi       = {10.1039/C5CP90198G},
+  issue     = {47},
+  publisher = {The Royal Society of Chemistry},
+  url       = {http://dx.doi.org/10.1039/C5CP90198G},
+}
+
+@Article{Mortensen2005,
+  author    = {Mortensen, J. J. and Hansen, L. B. and Jacobsen, K. W.},
+  title     = {Real-space grid implementation of the projector augmented wave method},
+  journal   = {Phys. Rev. B},
+  year      = {2005},
+  volume    = {71},
+  pages     = {035109},
+  month     = {Jan},
+  doi       = {10.1103/PhysRevB.71.035109},
+  issue     = {3},
+  numpages  = {11},
+  publisher = {American Physical Society},
+  url       = {https://link.aps.org/doi/10.1103/PhysRevB.71.035109},
+}
+
 @Misc{Jupyter,
   author       = {Thomas Kluyver and Benjamin Ragan-Kelley and Fernando P\'erez and Brian Granger and Matthias Bussonnier and Jonathan Frederic and Kyle Kelley and Jessica Hamrick and Jason Grout and Sylvain Corlay and Paul Ivanov and Damián Avila and Safia Abdalla and Carol Willing and {Jupyter Development Team}},
   title        = {Jupyter Notebooks - a publishing format for reproducible computational workflows},
   howpublished = {\url{https://jupyter.org/}},
   year         = {2016},
   doi          = {10.3233/978-1-61499-649-1-87},
+}
+
+@Article{Bischoff2014,
+  author    = {Florian A. Bischoff},
+  title     = {Regularizing the molecular potential in electronic structure calculations. II. Many-body methods},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2014},
+  volume    = {141},
+  number    = {18},
+  pages     = {184106},
+  doi       = {10.1063/1.4901022},
+  eprint    = {https://doi.org/10.1063/1.4901022},
+  url       = {
+        https://doi.org/10.1063/1.4901022
+
+},
+}
+
+@Article{Bischoff2014a,
+  author    = {Florian A. Bischoff},
+  title     = {Regularizing the molecular potential in electronic structure calculations. I. SCF methods},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2014},
+  volume    = {141},
+  number    = {18},
+  pages     = {184105},
+  doi       = {10.1063/1.4901021},
+  eprint    = {https://doi.org/10.1063/1.4901021},
+  url       = {
+        https://doi.org/10.1063/1.4901021
+
+},
+}
+
+@Article{Bischoff2011,
+  author    = {Florian A. Bischoff and Edward F. Valeev},
+  title     = {Low-order tensor approximations for electronic wave functions: Hartree–Fock method with guaranteed precision},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2011},
+  volume    = {134},
+  number    = {10},
+  pages     = {104104},
+  doi       = {10.1063/1.3560091},
+  eprint    = {https://doi.org/10.1063/1.3560091},
+  url       = {
+        https://doi.org/10.1063/1.3560091
+
+},
+}
+
+@Article{Bischoff2012,
+  author    = {Florian A. Bischoff and Robert J. Harrison and Edward F. Valeev},
+  title     = {Computing many-body wave functions with guaranteed precision: The first-order Møller-Plesset wave function for the ground state of helium atom},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2012},
+  volume    = {137},
+  number    = {10},
+  pages     = {104103},
+  doi       = {10.1063/1.4747538},
+  eprint    = {https://doi.org/10.1063/1.4747538},
+  url       = {
+        https://doi.org/10.1063/1.4747538
+
+},
+}
+
+@Article{Bischoff2017,
+  author    = {Florian A. Bischoff},
+  title     = {Analytic second nuclear derivatives of Hartree-Fock and DFT using multi-resolution analysis},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2017},
+  volume    = {146},
+  number    = {12},
+  pages     = {124126},
+  doi       = {10.1063/1.4978957},
+  eprint    = {https://doi.org/10.1063/1.4978957},
+  url       = {
+        https://doi.org/10.1063/1.4978957
+
+},
+}
+
+@Article{Toivanen2015,
+  author    = {Toivanen, Elias A. and Losilla, Sergio A. and Sundholm, Dage},
+  title     = {The grid-based fast multipole method - a massively parallel numerical scheme for calculating two-electron interaction energies},
+  journal   = {Phys. Chem. Chem. Phys.},
+  year      = {2015},
+  volume    = {17},
+  pages     = {31480-31490},
+  abstract  = {Algorithms and working expressions for a grid-based fast multipole method (GB-FMM) have been developed and implemented. The computational domain is divided into cubic subdomains{,} organized in a hierarchical tree. The contribution to the electrostatic interaction energies from pairs of neighboring subdomains is computed using numerical integration{,} whereas the contributions from further apart subdomains are obtained using multipole expansions. The multipole moments of the subdomains are obtained by numerical integration. Linear scaling is achieved by translating and summing the multipoles according to the tree structure{,} such that each subdomain interacts with a number of subdomains that are almost independent of the size of the system. To compute electrostatic interaction energies of neighboring subdomains{,} we employ an algorithm which performs efficiently on general purpose graphics processing units (GPGPU). Calculations using one CPU for the FMM part and 20 GPGPUs consisting of tens of thousands of execution threads for the numerical integration algorithm show the scalability and parallel performance of the scheme. For calculations on systems consisting of Gaussian functions ([small alpha] = 1) distributed as fullerenes from C20 to C720{,} the total computation time and relative accuracy (ppb) are independent of the system size.},
+  comment   = {Finite Element Paper by Sundholm},
+  doi       = {10.1039/C5CP01173F},
+  issue     = {47},
+  publisher = {The Royal Society of Chemistry},
+  url       = {http://dx.doi.org/10.1039/C5CP01173F},
+}
+
+@Article{Losilla2012DCRsp,
+  author    = {S. A. Losilla and D. Sundholm},
+  title     = {A divide and conquer real-space approach for all-electron molecular electrostatic potentials and interaction energies},
+  journal   = {The Journal of Chemical Physics},
+  year      = {2012},
+  volume    = {136},
+  number    = {21},
+  pages     = {214104},
+  doi       = {10.1063/1.4721386},
+  eprint    = {https://doi.org/10.1063/1.4721386},
+  url       = {
+        https://doi.org/10.1063/1.4721386
+
+},
+}
+
+@Article{Kresse1999,
+  author    = {Kresse, G. and Joubert, D.},
+  title     = {From ultrasoft pseudopotentials to the projector augmented-wave method},
+  journal   = {Phys. Rev. B},
+  year      = {1999},
+  volume    = {59},
+  pages     = {1758--1775},
+  month     = {Jan},
+  doi       = {10.1103/PhysRevB.59.1758},
+  issue     = {3},
+  numpages  = {0},
+  publisher = {American Physical Society},
+  url       = {https://link.aps.org/doi/10.1103/PhysRevB.59.1758},
+}
+
+@Article{Kresse1996,
+  author    = {Kresse, G. and Furthmüller, J.},
+  title     = {Efficient iterative schemes for ab initio total-energy calculations using a plane-wave basis set},
+  journal   = {Phys. Rev. B},
+  year      = {1996},
+  volume    = {54},
+  pages     = {11169--11186},
+  month     = {Oct},
+  doi       = {10.1103/PhysRevB.54.11169},
+  issue     = {16},
+  numpages  = {0},
+  publisher = {American Physical Society},
+  url       = {https://link.aps.org/doi/10.1103/PhysRevB.54.11169},
 }
 
 @Article{Jensen2007,
@@ -789,6 +1128,18 @@
   doi       = {10.1016/S0065-3276(03)43005-0},
   issn      = {0065-3276},
   npages    = {185 - 206},
+}
+
+@Article{Ma2005,
+  author  = {A. Ma and M. D. Towler and N. D. Drummond and R. J. Needs},
+  title   = {Scheme for adding electron–nucleus cusps to Gaussian orbitals},
+  journal = {The Journal of Chemical Physics},
+  year    = {2005},
+  volume  = {122},
+  number  = {22},
+  pages   = {224322},
+  comment = {Why the Quantum Monte-Carlo people do not get away with GTOs},
+  doi     = {10.1063/1.1940588},
 }
 
 @Book{Mueller2000,
@@ -1144,65 +1495,113 @@
 }
 
 @Article{Wolfsberg1952,
-  author        = {Max Wolfsberg and Lindsay Helmholz},
-  title         = {The {S}pectra and {E}lectronic {S}tructure of the {T}etrahedral {I}ons \ce{MnO4-}, \ce{CrO4 2-}, and \ce{ClO4-}},
-  journal       = {The Journal of Chemical Physics},
-  year          = {1952},
-  volume        = {20},
-  number        = {5},
-  pages         = {837-843},
-  doi           = {10.1063/1.1700580},
-  eprint        = {https://doi.org/10.1063/1.1700580},
-  url           = {
+  author  = {Max Wolfsberg and Lindsay Helmholz},
+  title   = {The {S}pectra and {E}lectronic {S}tructure of the {T}etrahedral {I}ons \ce{MnO4-}, \ce{CrO4 2-}, and \ce{ClO4-}},
+  journal = {The Journal of Chemical Physics},
+  year    = {1952},
+  volume  = {20},
+  number  = {5},
+  pages   = {837-843},
+  doi     = {10.1063/1.1700580},
+  eprint  = {https://doi.org/10.1063/1.1700580},
+  url     = {
         https://doi.org/10.1063/1.1700580
 
 },
 }
 
 @Article{Hoffmann1963,
-  author        = {Roald Hoffmann},
-  title         = {An Extended Hückel Theory. I. Hydrocarbons},
-  journal       = {The Journal of Chemical Physics},
-  year          = {1963},
-  volume        = {39},
-  number        = {6},
-  pages         = {1397-1412},
-  doi           = {10.1063/1.1734456},
-  eprint        = {https://doi.org/10.1063/1.1734456},
-  url           = {
+  author  = {Roald Hoffmann},
+  title   = {An Extended Hückel Theory. I. Hydrocarbons},
+  journal = {The Journal of Chemical Physics},
+  year    = {1963},
+  volume  = {39},
+  number  = {6},
+  pages   = {1397-1412},
+  doi     = {10.1063/1.1734456},
+  eprint  = {https://doi.org/10.1063/1.1734456},
+  url     = {
         https://doi.org/10.1063/1.1734456
 
 },
 }
 
 @Article{Lee2015,
-  author        = {M. Lee and K. Leiter and C. Eisner and J. Crone and J. Knap},
-  title         = {Extended Hückel and Slater’s rule initial guess for real space grid-based density functional theory},
-  journal       = {Computational and Theoretical Chemistry},
-  year          = {2015},
-  volume        = {1062},
-  pages         = {24 - 29},
-  issn          = {2210-271X},
-  doi           = {https://doi.org/10.1016/j.comptc.2015.03.011},
-  keywords      = {Finite element method, Molecular orbital, Slater orbital, Self-consistent field, Iterative eigensolver, Poisson equation},
-  url           = {http://www.sciencedirect.com/science/article/pii/S2210271X15001176},
+  author   = {M. Lee and K. Leiter and C. Eisner and J. Crone and J. Knap},
+  title    = {Extended Hückel and Slater’s rule initial guess for real space grid-based density functional theory},
+  journal  = {Computational and Theoretical Chemistry},
+  year     = {2015},
+  volume   = {1062},
+  pages    = {24 - 29},
+  issn     = {2210-271X},
+  doi      = {https://doi.org/10.1016/j.comptc.2015.03.011},
+  keywords = {Finite element method, Molecular orbital, Slater orbital, Self-consistent field, Iterative eigensolver, Poisson equation},
+  url      = {http://www.sciencedirect.com/science/article/pii/S2210271X15001176},
 }
 
 @Article{Lenthe2006,
-  author        = {van Lenthe, J. H. and Zwaans, R. and Van Dam, H. J. J. and Guest, M. F.},
-  title         = {Starting SCF calculations by superposition of atomic densities},
-  journal       = {Journal of Computational Chemistry},
-  year          = {2006},
-  volume        = {27},
-  number        = {8},
-  pages         = {926--932},
-  issn          = {1096-987X},
-  doi           = {10.1002/jcc.20393},
-  keywords      = {SCF calculations, atomic densities},
-  publisher     = {Wiley Subscription Services, Inc., A Wiley Company},
-  url           = {http://dx.doi.org/10.1002/jcc.20393},
+  author    = {van Lenthe, J. H. and Zwaans, R. and Van Dam, H. J. J. and Guest, M. F.},
+  title     = {Starting SCF calculations by superposition of atomic densities},
+  journal   = {Journal of Computational Chemistry},
+  year      = {2006},
+  volume    = {27},
+  number    = {8},
+  pages     = {926--932},
+  issn      = {1096-987X},
+  doi       = {10.1002/jcc.20393},
+  keywords  = {SCF calculations, atomic densities},
+  publisher = {Wiley Subscription Services, Inc., A Wiley Company},
+  url       = {http://dx.doi.org/10.1002/jcc.20393},
 }
 
+@Article{Foulkes2001,
+  author    = {Foulkes, W. M. C. and Mitas, L. and Needs, R. J. and Rajagopal, G.},
+  title     = {Quantum Monte Carlo simulations of solids},
+  journal   = {Rev. Mod. Phys.},
+  year      = {2001},
+  volume    = {73},
+  pages     = {33--83},
+  month     = {Jan},
+  doi       = {10.1103/RevModPhys.73.33},
+  issue     = {1},
+  numpages  = {0},
+  publisher = {American Physical Society},
+  url       = {https://link.aps.org/doi/10.1103/RevModPhys.73.33},
+}
+
+@Article{Glaesemann2010,
+  author  = {Glaesemann, Kurt R. and Schmidt, Michael W.},
+  title   = {On the Ordering of Orbital Energies in High-Spin ROHF},
+  journal = {The Journal of Physical Chemistry A},
+  year    = {2010},
+  volume  = {114},
+  number  = {33},
+  pages   = {8772-8777},
+  note    = {PMID: 20443582},
+  doi     = {10.1021/jp101758y},
+  eprint  = {http://dx.doi.org/10.1021/jp101758y},
+  url     = {
+        http://dx.doi.org/10.1021/jp101758y
+
+},
+}
+
+@Article{Li2016,
+  author        = {Li, Haichen and Yaron, David J.},
+  title         = {A Least-Squares Commutator in the Iterative Subspace Method for Accelerating Self-Consistent Field Convergence},
+  journal       = {Journal of Chemical Theory and Computation},
+  year          = {2016},
+  volume        = {12},
+  number        = {11},
+  pages         = {5322-5332},
+  note          = {PMID: 27709930},
+  doi           = {10.1021/acs.jctc.6b00666},
+  eprint        = {http://dx.doi.org/10.1021/acs.jctc.6b00666},
+  url           = {
+        http://dx.doi.org/10.1021/acs.jctc.6b00666
+
+},
+}
 @Misc{WikipediaBornOppenheimer,
   title           = {Wikipedia on Born-Oppenheimer approximation},
   note            = {Accessed: 10-01-2018},
@@ -1226,4 +1625,9 @@
   month           = jan,
   year            = {2018},
   howpublished    = {\url{https://github.com/greglandrum/yaehmop}},
+}
+
+@Misc{LUCAS,
+  author          = {Olsen, J. and Sundholm, D.},
+  title           = {{LUCAS}, an atomic program},
 }
