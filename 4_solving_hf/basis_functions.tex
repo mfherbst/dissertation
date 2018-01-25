@@ -53,7 +53,7 @@ the wavefunction is the \newterm{local energy}
 	Local energy
 	Trial wavefunction $\Psi$
 	\[
-		E_L(\vec{x}) \equiv \frac{\Op{H}_{\Nelec} \Phi}{\Phi}
+		E_L(\vec{x}) \equiv \frac{\Op{H}_{\Nelec} \Phi(\vec{x})}{\Phi(\vec{x})}
 	\]
 	approximately constant for good approximations.
 \end{defn}
@@ -62,6 +62,7 @@ This concept originates from the quantum Monte Carlo community%
 where the 
 % Ma paper has a good explanation for local energy and what it means
 % physically
+
 
 
 
@@ -79,6 +80,31 @@ where the
 }
 % Convention:
 %    Use \chi_\mu for primitives
+
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cgto}
+	\caption{Local energy of contracted Gaussian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCgto}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cgto_zoom}
+	\caption{Zoom-in for local energy of contracted Gaussian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCgtoZoom}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/relative_error_cgto}
+	\caption{Relative error of a selection of contracted Gaussian basis sets
+		for hydrogen.}
+	\label{fig:LocalEnergyCgto}
+\end{figure}
+
+
 
 \subsection{Finite-element based discretisation}
 \label{sec:FE}
@@ -156,6 +182,29 @@ Allows to pick this up in the next section}
 
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cs}
+	\caption{Local energy of a Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCS}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cs_zoom}
+	\caption{Zoom-in for local energy of Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCSZoom}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/relative_error_cs}
+	\caption{Relative error for Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCS}
+\end{figure}
+
+
 
 % A few historic words and references
 \cite{Rotenberg1970}
