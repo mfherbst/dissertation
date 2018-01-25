@@ -3,7 +3,11 @@ add_inputs(
 	scf_overview.tex
 	guess.tex
 	scf_algos.tex
-	basis_functions.tex
+	functions.tex
+	functions_sto.tex
+	functions_cgto.tex
+	functions_fe.tex
+	functions_cs.tex
 )
 
 #

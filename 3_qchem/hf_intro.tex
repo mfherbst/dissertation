@@ -834,16 +834,17 @@ yields the discretised \HF equations
 \end{equation}
 where the elements of the \newterm{Fock matrix} $\matFfull$
 are computed by applying the sesquilinear form
-\[
+\begin{equation}
 	a(\phi,\chi)
 		= \int_{\R^3} \braket{\phi(\vec{r})}{ \left(\Op{F}_\Theta \chi\right)\!(\vec{r})}_2
 			\D \vec{r}
 		= \int_{\R^3}
 			\cc{\left(\phi^\alpha(\vec{r})\right)}
-				\left(\Op{F}_\Theta\chi^\alpha\right)\!(\vec{r})
+				\left(\Op{F}_\Theta\chi\right)^\alpha\!(\vec{r})
 			+ \cc{\left(\phi^\beta(\vec{r})\right)}
-				\left(\Op{F}_\Theta\chi^\beta\right)\!(\vec{r})
-\]
+				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r})
+	\label{eqn:SesquilinearFormFock}
+\end{equation}
 to all pairs of basis spinors $(\phi, \chi)$ with
 \[ \phi, \chi \in \left\{ \mm{\varphi\\ 0}, \mm{0\\ \varphi} \,\middle|\,
 	\varphi \in \{\varphi_\mu\}_{\mu\in\Ibas} \right\}.

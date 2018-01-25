@@ -1,0 +1,95 @@
+\subsection{Coulomb-Sturmian-type orbitals}
+\label{sec:BasisCS}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cs}
+	\caption{Local energy of a Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCS}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/local_energy_cs_zoom}
+	\caption{Zoom-in for local energy of Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCSZoom}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/relative_error_cs}
+	\caption{Relative error for Coulomb-Sturmian basis sets for hydrogen.}
+	\label{fig:LocalEnergyCS}
+\end{figure}
+
+
+
+% A few historic words and references
+\cite{Rotenberg1970}
+\cite{Gruzdev1990}
+\cite{Avery2006} % Blue book
+\cite{Avery2011} % Purple book
+\cite{Morales2016}
+\cite{Avery2017} % Fast evaluation of STOs
+
+
+
+\begin{equation}
+	bla
+	\label{eqn:CSEquation}
+\end{equation}
+
+% Sturmians form a complete basis for H^2(R^3) and for H^1(R^1) (only the radial part)
+
+% complete but not over-complete
+
+In previous work we have investigated the use of so-called generalised Sturmians as basis functions
+in electronic structure theory.
+%
+\newcommand{\rpack}{\vec{r}_1, \ldots, \vec{r}_N}
+Generalised Sturmians $\Phi_\nu(\rpack)$ are the solutions to $N$-body Schrödinger-like equation
+\begin{equation}
+	\left( -\frac12 \sum_{j=1}^N \Delta_j + \beta_\nu V_0(\rpack) - E \right) \Phi_\nu(\rpack) = 0
+	\label{eqn:GenSturm}
+\end{equation}
+where $V_0(\rpack)$ is
+a zero-th order potential.
+
+In case of atoms a good choice is the nuclear attraction:
+The electrostatic electron-nucleus interaction
+\[
+	V_0(\rpack) = - \sum_{j=1}^N \frac{Z}{r_j}.
+\]
+\todo[inline]{Is many nuclei also possible here?}
+Note that the electron-nucleus interaction is scaled by the factor $\beta_\nu$ in \eqref{eqn:GenSturm}
+such that the solutions $\Phi_\nu(\rpack)$ all become isoenergetic.
+This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
+as well as properly represent the nuclear cusp at the core.
+As such the functional form of generalised Sturmians is very much related to STOs.
+Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
+to make computing them less demanding.
+This requires, however, that the mathematical properties of the Sturmians
+can be fully exploited during the computation,
+which in turn requires the Fock matrix to be arranged in a specific way.
+Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
+but much rather only use these matrices in the form of matrix-vector products,
+since this overall saves an order of magnitude in the computational scaling.
+
+
+Coulomb-Sturmian basis function is composed of
+\[ \varphi_\mu(\vec{r}) = \]
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item What are Coulomb-Sturmians and where do they come from
+		\item Show what needs to be done
+		\item Show problems $\Rightarrow$ Lazy matrices
+	\end{itemize}
+}
+
+% TODO Things to show:
+%    - The larger n, the larger the energy under the action of the fock operator
+%    - HF Kinetic energy scales with k: Lower if k lower
+%    - HF Nuclear attraction energy scales with k: Higher if k lower
+%    - HF electron-electron interaction scales with k: Lower if k lower
+% Refer to these results in the chapter about Sturmian calculations
