@@ -1,5 +1,6 @@
 \defineabbr{CS}{CS\xspace}{Coulomb-Sturmian or Coulomb-Sturmian basis, see section \vref{sec:BasisCS}}
 \defineabbr{cGTO}{cGTO\xspace}{Contracted Gaussian-type orbitals, see section \vref{sec:cGTO}}
+\defineabbr{GTO}{cGTO\xspace}{Gaussian-type orbitals, see section \vref{sec:cGTO}}
 \defineabbr{STO}{STO\xspace}{Slater-type orbitals, see section \vref{sec:STO}}
 \defineabbr{ETO}{ETO\xspace}{Exponential-type orbitals, orbitals with radial part of the form Polynomial in $r$ times $\exp{-\alpha r}$ with some parameter $\alpha$.}
 \defineabbr{FE}{FE\xspace}{Finite elements, see section \vref{sec:FE}}
@@ -51,10 +52,10 @@ as well as the overlap matrix \eqref{eqn:Sbas}.
 The challenging step for this is typically the evaluation
 of the electron repulsion tensor \eqref{eqn:ERI}
 \[
-	\eriMu{\psi_i \psi_j}{\psi_k \psi_l}
+	\eriMu{\varphi_\mu \varphi_\nu}{\varphi_\kappa \varphi_\lambda}
 		= \int_{\R^3} \int_{\R^3}
-			\frac{\cc{\psi_i}(\vec{r}_1) \psi_j(\vec{r}_1)
-				\,\cc{\psi_k}(\vec{r}_2) \psi_l(\vec{r}_2)}
+			\frac{\cc{\varphi_\mu}(\vec{r}_1) \varphi_\nu(\vec{r}_1)
+				\,\cc{\varphi_\kappa}(\vec{r}_2) \varphi_\lambda(\vec{r}_2)}
 			{\norm{\vec{r}_1 - \vec{r}_2}_2}
 			\D \vec{r}_1 \D \vec{r}_2.
 \]

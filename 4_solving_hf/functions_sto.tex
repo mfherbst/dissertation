@@ -79,29 +79,43 @@ by over two decades.
 In \citeyear{Slater1930} \citet{Slater1930}
 obtained approximate solutions to the electronic Schrödinger equation
 for many atoms of the periodic table.
-He employed basis sets $\{\varphi_\mu\}_{\mu\in\Ibas}$
+He employed basis sets $\{\varphi_\mu\}_{\mu\in\Ibas} \subset H^1(\R^3,\R)$
 made out of exponentially decaying functions.
 Motivated from the solution to the Schrödinger equation of the Hydrogen atom,
 his ansatz was to write each basis function as
 \begin{equation}
-	\varphi_\mu(\vec{r}) = R_\mu\left(\norm{\vec{r} - \vec{R}_\mu}\right) Y_l^m(\theta, \phi),
-	\label{eqn:STOansatz}
+	\varphi^\text{STO}_\mu(\vec{r})
+	= R^\text{STO}_\mu\!\left(\norm{\vec{r} - \vec{R}_\mu}\right)\, Y_{l_\mu}^{m_\mu}(\theta, \phi),
+	\label{eqn:ACproduct}
 \end{equation}
-\ie as a product of radial part $R_\mu$ centred at the nuclear
+\ie as a product of radial part $R^\text{STO}_\mu$ centred at the nuclear
 coordinate $\vec{R}_\mu$
-and spherical harmonic.
+and real-valued%
+\footnote{Keeping in mind that all $2l+1$ spherical harmonics
+	$Y_l^m$ with the same value for $l$ correspond to the same eigenspace
+	one can always find an alternative representation to the functional
+	form given in \eqref{eqn:SphericaHarmonics},
+	where all spherical harmonics are real-valued functions.
+	See \cite{Avery2018} for details.
+} spherical harmonic $Y_{l_\mu}^{m_\mu}$.
 For the radial part he used a polynomial times exponential form
-\[ R_\mu(r) = N_\mu r^{n-1} \exp(-\zeta_\mu r) \, Y_l^m(\theta, \phi), \]
-where $\zeta_\mu$ is a constant depending on the nuclear charge as well as
+\begin{equation}
+	R_\mu(r) = N_\mu r^{n_{\mu}-1} \exp(-\zeta_\mu r),
+	\label{eqn:STOradial}
+\end{equation}
+where $\zeta_\mu$
+is a constant depending on the nuclear charge as well as
 the orbital in question and
 $N_\mu$ is the normalisation factor
-\[ N_\mu = \left( 2\zeta_\mu \right)^n \sqrt{\frac{2\zeta_\mu}{(2n)!}}. \]
-He was able to construct rules of thumb for obtaining the exponents $\zeta$
+\[ N_\mu = \left( 2\zeta_\mu \right)^{n_\mu} \sqrt{\frac{2\zeta_\mu}{(2n_\mu)!}}. \]
+He was able to construct rules of thumb for obtaining the exponents $\zeta_\mu$
 for many elements by introducing
 a concept now known as \newterm{shielding}~\cite{Slater1930}.
 A more detailed discussion about shielding constants
 can be found in section \vref{sec:ValuesKopt}.
-In his honour {\ETO}s of the form \eqref{eqn:STOansatz} are called Slater-type orbitals~({\STO}s).
+In his honour {\ETO}s of the form \eqref{eqn:ACproduct}
+with radial part \eqref{eqn:STOradial}
+are called Slater-type orbitals~({\STO}s).
 
 As mentioned above {\STO}s are physically rather sound
 and as such in many cases only few of them are required to achieve good results
