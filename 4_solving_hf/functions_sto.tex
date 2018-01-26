@@ -1,31 +1,125 @@
 \subsection{Slater-type orbitals}
 \label{sec:STO}
 
-Motivate with cusp condition.
+In section \vref{sec:HydrogenAtom}
+we discussed the analytical solution of the simplest chemical systems,
+namely the hydrogen-like atoms or ions with only a single nucleus and a single electron.
+Their solutions where functions
+\[ \Psi_{nlm}(\vec{r}) = N_{nl} \tilde{P}_{nl}\left(\frac{2Zr}{n}\right)
+	Y_l^m(\theta, \phi) \exp\left(-\frac{Zr}{n} \right) \]
+where $\tilde{P}_{nl}$ is polynomial of degree $n-1$ in $\frac{2Zr}{n}$,
+see \eqref{eqn:HydrogenRadialSolution} for details.
+Characteristic for the functional form of these solutions
+is both the exponential decay as $r \to \infty$ as well as
+the discontinuity at the origin, \ie the position of the nucleus.
+These two fundamental observations can be generalised to the setting of the
+full electronic Hamiltonian $\Op{H}_{\Nelec}$ as summarised in the following remark.
 
 \begin{rem}
-	This remark provides a short recap of some
-	fundamental physical properties of the electronic Schrödinger equation.
-
-Kato's cusp condition~\cite{Kato1957}
-Energy-dependent exponential decay at infinity
-(easy to rationalise physically)
+	\label{rem:PhysicalProperties}
+	Let $\Psi_i(\vec{x})$ be an exact eigenstate of the electronic
+	Hamiltonian $\Op{H}_{\Nelec}$ with eigenenergy $E^{\Nelec}_i$.
+	It holds:
+	\begin{itemize}
+		\item Kato's electron-nucleus cusp condition~\cite{Kato1957}:
+			\[
+				\left. \frac{\partial \langle\Psi(\vec{x})\rangle}
+				{\partial r_i} \right|_{\vec{r}_i = \vec{R}_A}
+				= -Z_A \left. \langle\Psi(\vec{x})\rangle \right|_{\vec{r}_i = \vec{R}_A}
+			\]
+			where $\left. \langle\Psi(\vec{x})\rangle \right|_{\vec{r}_i = \vec{R}_A}$
+			denotes the average value on a hypersphere with $\vec{r}_i = \vec{R}_A$ fixed.
+			Notice, that this expression can be reformulated to yield
+			the more well-known result
+			\[
+				\left. \frac{\partial \rho(\vec{r})}{\partial \vec{r}} \right|_{\vec{r} = \vec{R}_A}
+				= -2 Z_A \rho(\vec{R}_A).
+			\]
+		\item At large distances $r_1 \to \infty$,
+			where all other electronic and nuclear coordinates stay finite,
+			the first electron is essentially decoupled from the motion
+			of the other particles and only sees them as a point charge
+			of value
+			\[ Z^\text{net} = \sum_{A=1}^M Z_A - \Nelec\]
+			of the full system.
+			The remaining system is effectively a $\Nelec-1$-electron system.
+			This allows to approximately write
+			\[ \Psi_i(\vec{x}) = \tilde{\Psi}^\text{rest}_j(\vec{x}) \tilde{\Psi}^1_i(\vec{r}_1), \]
+			where $\tilde{\Psi}^\text{rest}_j$ has only parametric dependence%
+			\footnote{Notice that this ansatz is somewhat related to the Born-Oppenheimer
+			approximation.}
+			on $\vec{r}_1$.
+			Approximately it is an eigenfunction to $\Op{H}_{\Nelec-1}$.
+			With this ansatz the electronic Schrödinger equation at large $r_1$
+			reduces for $\tilde{\Psi}^1_i(\vec{r}_1)$ to
+			\begin{equation}
+				\left( -\frac12 \Delta_{\vec{r}_1} - \frac{Z^\text{net}}{r_1} - E^\text{net}_i \right)
+				\tilde{\Psi}_i^1(\vec{r}_1) \simeq 0,
+				\label{eqn:ExponentialDecay}
+			\end{equation}
+			where
+			\[ Z^\text{net} = \sum_{A=1}^M Z_A - \Nelec - 1\]
+			is the net charge and $E^\text{net}_i$ is the net energy eigenvalue
+			roughly equal to \linebreak
+			$E^{\Nelec}_i - E^{\Nelec-1}_j < 0$.
+			For a neutral $\Nelec$-system $Z_\text{net} = 1$,
+			such that the solution of \eqref{eqn:ExponentialDecay} is
+			\[ \tilde{\Psi}_i^1(\vec{r}_1) \simeq \exp\left( - \sqrt{-2E^\text{net}_i} \, r_1 \right), \]
+			\ie an energy-dependent exponential decay.
+	\end{itemize}
 \end{rem}
+Both these results motivate the use of exponential-type atomic orbitals~(\ETO)
+involving a factor $\exp\left(-\zeta \norm{\vec{r} - \vec{R}_A} \right)$
+as basis functions for molecular calculations,
+since such a basis will give rise to solutions,
+which satisfy both conditions if the factor $\zeta$ is chosen correctly.
 
+The first attempt to do this predates the rigorous results by Kato~\cite{Kato1951,Kato1957}
+by over two decades.
+In \citeyear{Slater1930} \citet{Slater1930}
+obtained approximate solutions to the electronic Schrödinger equation
+for many atoms of the periodic table.
+He employed basis sets $\{\varphi_\mu\}_{\mu\in\Ibas}$
+made out of exponentially decaying functions.
+Motivated from the solution to the Schrödinger equation of the Hydrogen atom,
+his ansatz was to write each basis function as
+\begin{equation}
+	\varphi_\mu(\vec{r}) = R_\mu\left(\norm{\vec{r} - \vec{R}_\mu}\right) Y_l^m(\theta, \phi),
+	\label{eqn:STOansatz}
+\end{equation}
+\ie as a product of radial part $R_\mu$ centred at the nuclear
+coordinate $\vec{R}_\mu$
+and spherical harmonic.
+For the radial part he used a polynomial times exponential form
+\[ R_\mu(r) = N_\mu r^{n-1} \exp(-\zeta_\mu r) \, Y_l^m(\theta, \phi), \]
+where $\zeta_\mu$ is a constant depending on the nuclear charge as well as
+the orbital in question and
+$N_\mu$ is the normalisation factor
+\[ N_\mu = \left( 2\zeta_\mu \right)^n \sqrt{\frac{2\zeta_\mu}{(2n)!}}. \]
+He was able to construct rules of thumb for obtaining the exponents $\zeta$
+for many elements by introducing
+a concept now known as \newterm{shielding}~\cite{Slater1930}.
+A more detailed discussion about shielding constants
+can be found in section \vref{sec:ValuesKopt}.
+In his honour {\ETO}s of the form \eqref{eqn:STOansatz} are called Slater-type orbitals~({\STO}s).
 
-
-Starting from the exponential form of the analytical solutions of the
-Schrödinger equation for hydrogen,
-\citet{Slater1930} started introducing exponentially decaying basis functions
-in order to compute atomic properties,
-the nowadays well-known Slater-type orbitals~(STOs).
-
-Applying the STOs to molecules turned out to be much more
-challenging due to the demanding structure of the electron repulsion integrals~(ERIs)
-for such types of basis functions.
-\todoil{I cannot download that paper so im not too sure what is in it}
-In \citeyear{Boys1950} \citeauthor{Boys1950} realised that employing
-atom-centered Gaussian type basis functions~(GTOs) leads to integrals
-which are much easier to evaluate numerically.
-
-
+As mentioned above {\STO}s are physically rather sound
+and as such in many cases only few of them are required to achieve good results
+as errors are generally small and convergence fast%
+~\cite{Shepard2007,Guell2008,Hoggan2009,Hoggan2011}.
+Their big drawback, however,
+is that evaluating the electron repulsion tensor
+$\eriMu{\varphi_\mu \varphi_\nu}{\varphi_\kappa \varphi_\lambda}$
+is challenging,
+such that \STO-based methods
+are not amongst the most commonly used quantum-chemistry methods nowadays.
+Nevertheless their promising properties and fast convergence
+has motivated many people to work on optimising \STO expansions
+and on designing efficient evaluation schemes for the \ERI tensor%
+~\cite{Weniger1983,Hoggan2009,Hoggan2011,Avery2013,Avery2017}.
+As a result a number of packages
+like STOP~\cite{Bouferguene1996},
+SMILES~\cite{FernandezRico2001}
+and ADF~\cite{Velde2001}
+have become available,
+which employ basis sets composed of {\STO}s.

@@ -1,5 +1,24 @@
 \subsection{Contracted Gaussian-type orbitals}
 \label{sec:cGTO}
+
+
+
+
+
+
+
+Applying the STOs to molecules turned out to be much more
+challenging due to the demanding structure of the electron repulsion integrals~(ERIs)
+for such types of basis functions.
+\todoil{I cannot download that paper so im not too sure what is in it}
+In \citeyear{Boys1950} \citeauthor{Boys1950} realised that employing
+atom-centered Gaussian type basis functions~(GTOs) leads to integrals
+which are much easier to evaluate numerically.
+
+
+
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Brief rationale
@@ -34,3 +53,18 @@
 \end{figure}
 
 
+\begin{landscape}
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/fock_gaussian}
+	\caption{Structure of the Fock matrix for a cGTO-based SCF
+		for the beryllium atom
+		using a pc-2 basis set.
+		The three figures show the SCF with a Pulay error
+		Frobenius norm of $0.18$, $0.0063$ and $4.1 \cdot 10^{-7}$
+		from left to right.}
+		% 12 out of 15 rows are diagonal-dominant in each case.
+		% Matrix is symmetric
+	\label{fig:StructureGaussianFock}
+\end{figure}
+\end{landscape}
