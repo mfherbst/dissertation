@@ -942,12 +942,12 @@ satisfies exactly the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
 such that
 \newcommand{\matFzfull}{\mat{F}\!\!\left[\mat{C}_0\tp{\mat{C}_0}\right]}
 \[
-	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \mat{E}
+	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \tilde{\mat{E}}
 \]
 where
 \[
-	\mat{E} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
-		\varepsilon_{\Nelec}).
+	\tilde{\mat{E}} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
+		\varepsilon_{\Nelec}) \in \R^{\Nelec \times \Nelec}.
 \]
 This condition can be equivalently expressed as~\cite{Pulay1982}
 \begin{equation}
@@ -971,7 +971,7 @@ of eigenvectors and corresponding eigenvalues
 	\mat{E}^{(n+1)}
 	= \text{diag}\left(\varepsilon_1^{(n+1)},
 	\varepsilon_2^{(n+1)}, \ldots,
-	\varepsilon_{\Norb}^{(n+1)}\right).
+	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}.
 \]
 such that
 \begin{equation}

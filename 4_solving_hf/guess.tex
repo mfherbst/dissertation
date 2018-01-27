@@ -94,7 +94,7 @@ and with it a trial Fock matrix
 $\mat{F}^\text{t} = \mat{F}\!\left[\mat{D}^\text{t}\right]$.
 A diagonalisation
 \[
-	\mat{F}^\text{t} \mat{C}^{(0)} = \mat{E}^\text{t} \mat{C}^{(0)}
+	\mat{F}^\text{t} \mat{C}^{(0)} = \mat{C}^{(0)} \mat{E}^\text{t}
 \]
 finally yields the initial coefficients $\mat{C}^{(0)}$
 along with some trial energies along the diagonal matrix $\mat{E}^\text{t}$.
@@ -128,9 +128,50 @@ A few remarks about the SAD guess method:
 
 \subsection{Guesses by projection}
 \label{sec:GuessProject}
-Idea would be to project from a prior calculation (smaller basis, different basis type)
-\todoil{TODO. See orca manual}
+\todoil{Rethink / research this. At the moment this text is not correct.}
+\todoil{Maybe kill this section as a whole if unclear}
+A common procedure in many discretisation approaches
+is to first obtain a basic idea of the actual problem
+by employing a fast calculation using only a small basis set
+and then to continue with a larger basis to get an accurate result.
+Ideally as much of the crude result obtained in the small basis
+are kept for starting the large calculation.
 
+In the context of the \SCF procedure we would like to use
+the final coefficients $\mat{c}_0$ from a calculation
+in the small basis $\{\chi_\nu\}_{\nu=1,\ldots,N_s}$ as a guess
+for a more refined calculation
+in the larger basis $\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$.
+There are multiple ways this can be achieved.
+Conceptionally one needs to compute the transformation matrix
+$\mat{U} \in \C^{N_s\times N_b}$
+with elements
+\[ U_{\mu\nu} = \braket{\varphi_\mu}{\chi_\nu}_1 \]
+and use this matrix to express $\mat{c}_0$ in the new basis.
+Since $U_{\mu\nu}$ is not necessarily unitary,
+the simple matrix-matrix product $\mat{U} \mat{c}_0$ might not be orthonormal
+with respect to the overlap matrix $\mat{S} \in \R^{N_b \times N_b}$
+in the new basis
+and is thus not usable.
+
+Recall that the final coefficients $\mat{c}_0 \in  \R^{N_b \times \Norb}$
+from the previous \SCF
+as well as the final energies
+$\bm{\varepsilon} = \diag\left(\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_{\Norb}\right)$
+diagonalise the final Fock matrix $\mat{f}_0 \in \R^{N_b \times N_b}$
+from the \SCF in the old basis.
+In other words
+\todoil{Note: The equivalence is wrong here }
+\[ \mat{f}_0 \mat{c}_0 = \mat{s} \mat{c}_0 \bm{\varepsilon}
+\quad \Leftrightarrow \quad \mat{f}_0 = \mat{s} \mat{c}_0 \bm{\varepsilon} \tp{\left(\mat{c}_0\right)}\]
+where $\mat{s}$ is the overlap matrix of the old basis.
+
+\todoil{There is some argument missing here}
+This matrix can be projected to the new basis using $\mat{U}$
+to yield
+\[ \mat{U} \mat{s} \mat{c}_0 \bm{\varepsilon} \tp{\left(\mat{c}_0\right)} \tp{\mat{U}}. \]
+Finally this matrix can be diagonalised with respect to $\mat{S}$
+to yield the initial guess coefficients $\mat{C}^{(0)}$ in the new basis.
 
 \subsection{Extended Hückel guess}
 The extended Hückel~(EH) procedure for obtaining estimates

@@ -22,8 +22,14 @@ which is by no means complete or exhaustive.
 
 \subsection{Roothaan repeated diagonalisation}
 \label{sec:RoothaanRepeatedDiag}
+- Plainly take $\tilde{F}^{(n-1)}0= \mat{F}[CC^T]$
+- Simple, but works remarkably well in many cases
+- can proof (cances) it either iterates between two solutions or converges
 
 \subsection{Level-shifting modification}
+- Add multiple of the density matrix
+- Show what this causes
+- Show that it can help (see cances)
 
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
@@ -35,6 +41,9 @@ Can define~\cite{Lions1988,Cances2000}
 \left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
 
 \subsection{Truncated optimal damping algorithm}
+ODA not great for coefficent-based setting
+Approximation, which destroys many nice mathematical properties
+Still: Automatically determine sensible damping factor (rather than a fixed one)
 
 \subsection{Direct inversion of the iterative subspace}
 
@@ -44,7 +53,12 @@ Other ways~\cite{Shepard2007}
 LSIIS (least-squares commutator DIIS)~\cite{Li2016}
 
 \subsection{Geometric direct minimisation}
+Only brief
 
 \subsection{Second-order \SCF algorithms}
+Only brief
+mention that approximate methods exist, too
 
 \subsection{Combinations of algorithms}
+Ideally want to switch every now and then
+

@@ -154,12 +154,11 @@ to hold for {\cGTO} basis sets as well.
 We now consider the accuracy of a \HF or \FCI%
 \footnote{Notice: For hydrogen \HF is equivalent to solving the full Schrödinger equation.}
 calculation of the hydrogen atom in a range of standard \cGTO basis sets.
-\todoil{Complete citations}\noindent
 This includes the minimal basis set STO-3g~\cite{Hehre1969},
 the double-$\zeta$ basis sets cc-pVDZ~\cite{Dunning1989}
-and pc-1~\cite{   },
-the quadruple-$\zeta$ basis set pc-3~\cite{   }
-as well as the sextuple-$\zeta$ basis set cc-pV6Z~\cite{   }.
+and pc-1~\cite{Jensen2001},
+the quadruple-$\zeta$ basis set pc-3~\cite{Jensen2001}
+as well as the sextuple-$\zeta$ basis set cc-pV6Z~\cite{Wilson1996}.
 The relative error against the exact analytic solution
 of the hydrogen ground state can be found in figure \vref{fig:RelativeErrorCgto},
 wheres as the local energies can be found in figures \vref{fig:LocalEnergyCgto}
@@ -185,14 +184,14 @@ Local energy:
 
 
 
-\begin{figure}
+\begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cgto}
 	\caption{Local energy of contracted Gaussian basis sets for hydrogen.}
 	\label{fig:LocalEnergyCgto}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cgto_zoom}
 	\caption{Zoom-in for local energy of contracted Gaussian basis sets for hydrogen.}
@@ -263,3 +262,6 @@ keeping matrix in memory is fine
 Available in a large range of quantum chemistry programs
 \cite{Ahlrichs1989,ORCA,Hutter2014,Sun2017,Verstraelen2017,PyQuante}
 \todoil{Cite some more}
+
+
+% Then do sturmian-type basis sets
