@@ -6,6 +6,10 @@ import numpy as np
 from molsturm import integrals
 from scipy import linalg
 
+XLABEL = r"relative distance in Bohr"
+ELLABEL = r"$E_L(r)$ in Hartree"
+RELABEL = r"relative error"
+
 
 def hydrogen_local_energy(basis, coefficients,
                           r=np.linspace(0, 10, 1000), dr=5e-6):
@@ -60,7 +64,7 @@ def hydrogen_relative_error(basis, coefficients, r=np.linspace(0, 10, 1000)):
         raw = basis.evaluate_at(x, y, z)[:, 0, :, 0]
         return np.einsum("b,br->r", coefficients, raw)
 
-    rel_err = (exact_1s(r) - orbital_1s(r)) / exact_1s(r)
+    rel_err = (orbital_1s(r) - exact_1s(r)) / exact_1s(r)
     r = np.concatenate((-r[::-1], r))
     rel_err = np.concatenate((rel_err[::-1], rel_err))
     return r, rel_err

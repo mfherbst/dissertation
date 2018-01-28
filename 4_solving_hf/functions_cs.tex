@@ -1,6 +1,10 @@
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
 
+% https://www.math.tu-berlin.de/fachgebiete_ag_modnumdiff/fg_modellierung_simulation_und_optimierung_in_natur_und_ingenieurswissenschaften/v_menue/mitarbeiter/prof_dr_reinhold_schneider/publikationen/
+
+
+
 \begin{figure}
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs}
@@ -94,20 +98,5 @@ Coulomb-Sturmian basis function is composed of
 %    - HF electron-electron interaction scales with k: Lower if k lower
 % Refer to these results in the chapter about Sturmian calculations
 
-\begin{landscape}
-\begin{figure}
-	\centering
-	\includeimage{4_solving_hf/fock_sturmian}
-	\caption{Structure of the Fock matrix for a Coulomb-Strumian based SCF
-		for the beryllium atom starting from using a $(5,1,1)$
-		Coulomb-Strumian basis in $mln$ order
-		and a Sturmian exponent of $\kexp = 1.99$.
-		The three figures show left to right the Fock matrix
-		at an SCF step with a Pulay error Frobenius norm of
-		$0.13$, $0.0079$, $6.7 \cdot 10^{-8}$.}
-		% 14 out of 17 are diagonal-dominant in each case.
-		% Matrix is symmetric
-	\label{fig:StructureSturmianFock}
-\end{figure}
-\end{landscape}
-
+\todoil{Talk about contraction-based methods for the first time.
+Allows to pick this up in the next section}

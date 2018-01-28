@@ -25,6 +25,7 @@ def plot_mtcs(mtcs, vrange=(-7, 1)):
         logabs = np.log10(mtxabs)
 
         ax = fig.add_subplot(1, n_mtx, i+1)
+        # norm=common.LogNorm()
         img = ax.matshow(logabs, cmap=cmap, vmin=vrange[0], vmax=vrange[1])
 
     if n_mtx < 3:

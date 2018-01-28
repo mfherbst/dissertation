@@ -22,12 +22,12 @@ def plot_overview():
         r, locen = common.hydrogen_local_energy(bas, coeff, r, dr=1e-6)
         plt.plot(r, locen, label=baset)
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(r"$E_L(r)$ in Hartree")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(common.ELLABEL)
 
     plt.plot(r, -0.5*np.ones_like(locen), label="exact")
     plt.legend(loc='upper right')
-    plt.ylim(-6, 6)
+    plt.ylim(-5, 5)
 
 
 def plot_closeup():
@@ -43,12 +43,12 @@ def plot_closeup():
         r, locen = common.hydrogen_local_energy(bas, coeff, r, dr=1e-6)
         plt.plot(r, locen, label=baset)
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(r"$E_L(r)$ in Hartree")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(common.ELLABEL)
 
     plt.plot(r, -0.5*np.ones_like(locen), label="exact")
     plt.legend(loc='lower right')
-    plt.ylim(-6, 6)
+    plt.ylim(-5, 5)
 
 
 def plot_relative_error(log=False):
@@ -70,8 +70,8 @@ def plot_relative_error(log=False):
             plt.plot(r, err, label=baset)
             extra = ""
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(extra + r"relative error")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(extra + common.RELABEL)
 
     plt.legend(loc='lower right')
     plt.ylim(-0.2, 0.2)

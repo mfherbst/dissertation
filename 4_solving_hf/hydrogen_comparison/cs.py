@@ -35,8 +35,8 @@ def plot_local_energy_overview():
         label += r" $k_\text{exp}=" + "{:.1f}$".format(bas.k_exp)
         plt.plot(r, locen, label=label)
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(r"$E_L(r)$ in Hartree")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(common.ELLABEL)
     plt.ylim(-1.5, 0.5)
 
     plt.plot(r, -0.5*np.ones_like(locen), label="exact")
@@ -68,8 +68,8 @@ def plot_local_energy_closeup():
         label += r" $k_\text{exp}=" + "{:.1f}$".format(bas.k_exp)
         plt.plot(r, locen, label=label)
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(r"$E_L(r)$ in Hartree")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(common.ELLABEL)
     plt.ylim(-1.5, -0.25)
 
     plt.legend()
@@ -107,8 +107,8 @@ def plot_relative_error(log=False):
             plt.plot(r, err, label=label)
             extra = ""
 
-    plt.xlabel(r"radial distance $r$ in Bohr")
-    plt.ylabel(extra + r"relative error")
+    plt.xlabel(common.XLABEL)
+    plt.ylabel(extra + common.ELLABEL)
     plt.ylim(-0.2, 0.2)
 
     plt.legend()
