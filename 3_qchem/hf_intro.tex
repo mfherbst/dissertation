@@ -14,6 +14,13 @@ Note, that $\Norb \le \Nbas$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
 	If the error is below this value, the process should be considered converged.}
 
+
+\nomenclature{$\Theta$}{Tuple of all occupied one-particle SCF orbitals $(\psi_1, \psi_2, \ldots, \psi_{\Nelec}$}
+\nomenclature{$\rho_\Theta(\vec{r})$}{
+	Electron density, see \eqref{eqn:HFDensityNoSpin}}
+\nomenclature{$\gamma_\Theta(\vec{r}_1,\vec{r}_2)$}{
+	One-particle reduced density matrix, see \eqref{eqn:HFDensityNoSpin}}
+	
 \nomenclature{$\Op{K}$}{One-electron exchange operator}
 \nomenclature{$\Op{J}$}{Effective Coulomb operator}
 
@@ -242,6 +249,7 @@ and generalise the formalism.
 	\[ \nabla \psi_1 \equiv \mm{ \nabla \psi_1^\alpha \\ \nabla \psi_1^\beta } \in \C^6 \]
 	as a vector from $\C^6$
 	and define the density as
+
 	\begin{align}
 		\rho_\Theta(\vec{r}) &= \sum_{i=1}^{\Nelec} \norm{\psi_i(\vec{r})}_2^2
 		= \sum_{i=1}^{\Nelec} \abs{\psi_i^\alpha(\vec{r})}^2 + \abs{\psi_i^\beta(\vec{r})}^2 \\
