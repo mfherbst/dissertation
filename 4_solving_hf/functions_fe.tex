@@ -1,47 +1,299 @@
 \subsection{Finite-element based discretisation}
 \label{sec:FE}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Show what needs to be done
-		\item Show problems $\Rightarrow$ Lazy matrices
-		\item Hint at the underlying linear algebra (eigensolvers, linear solvers)
-		\item Multigrid methods
-		\item Refinement
-		\item How does it connect to the SCF methods
-	\end{itemize}
-}
+\newcommand{\Nquadc}{\ensuremath N_\text{quadc}}
+\newcommand{\Ncell}{\ensuremath N_\text{cell}}
 
-A completely different ansatz to so-called
-atom-centered basis functions,
-\ie basis functions, which are associated to a particular atom,
-are grid-based basis functions.
-The idea here is to partition three-dimensional space
-by employing a grid
-and place piecewise polynomials on these.
-As such the basis functions are not related to any particular atom.
+The Slater-type orbitals and Gaussian-type orbitals
+we introduced in the previous sections
+are examples for so-called atom-centered basis functions
+or \newterm{atom-centered orbital}s~({\ACO}s).
+A different ansatz in many respects
+are grid-based methods,
+where the underlying idea is to partition three-dimensional real space
+into smaller parts using a structured grid
+solve the problem by interpolation and numerical integration.
+The example we want to consider in this work are \newterm{finite elements},
+which are specially constructed piecewise polynomials
+often employed in structural mechanics or engineering
+for solving partial differential equations~\cite{Johnson1987}.
+Multiple approaches for
+solving the \HF problem or the Kohn-Sham equations approximately
+using finite-element based discretisations
+have been performed over the years as well%
+~\cite{Tsuchida1995,Soler2002,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Lee2015,Boffi2016},
+This section will only give a short overview of the finite-element method
+in the light of the \HF problem.
+For more details the reader is referred
+to the rich literature~\cite{Johnson1987,Grossmann1992,Bangerth2003,Brenner2008}.
 
-truely black box
+Compared to the atom-centered basis functions,
+where a discretisation based on the complete domain $\R^3$ is possible,
+any grid-based method can only achieve this
+on a subset $\Omega \subset \R^3$,
+which is taken to be open.
+At the boundary $\partial\Omega$ one needs
+to impose a boundary condition for the solution to be unique.
+There are a couple of options, which will be contrasted later.
+For now let us assume that $\Omega$ is large enough,
+such that the \SCF orbitals are essentially zero at the boundary $\partial\Omega$
+and we can impose a homogeneous Dirichlet boundary%
+\footnote{This implies that the \HF eigenfunctions are forced
+	to be exactly zero at the boundary $\partial\Omega$.}.
+Using this approximation
+as well as the inner product
+\[ \braket{\psi}{\chi}_1 \equiv \int_\Omega \psi(\vec{r}) \chi(\vec{r})  \D \vec{r} \]
+the spin-free, real-valued \HF equations \eqref{eqn:HFequations} can be adapted to
+%
+\begin{equation}
+\label{eqn:HFequationsFE}
+\begin{aligned}
+	\Op{F}_{\Theta^0} \psi_i^0(\vec{r}) &= \varepsilon_i \psi_i^0(\vec{r}) && \vec{r} \in \Omega \\
+	\psi_i^0(\vec{r}) &=0 &&\vec{r} \in \partial \Omega \\
+	\text{where}\qquad \braket{\psi_i^0}{\psi_j^0}_1 &= \delta_{ij},
+\end{aligned}
+\end{equation}
+for $\Theta^0 = (\psi_1^0, \psi_2^0, \ldots, \psi_{\Nelec}^0) \in \left( H^2(\Omega,\R) \right)^{\Nelec}$
+being the minimiser to the \HF problem \eqref{eqn:HFMO}.
+The corresponding bilinear form
+\[ a_{\Theta^0}(\psi, \chi)
+	\equiv \int_\Omega \psi(\vec{r}) \Op{F}_{\Theta^0} \chi(\vec{r}) \D \vec{r} \]
+is defined in analogy to \eqref{eqn:SesquilinearFormFock}.
+By partial integration it can be seen that this form
+is defined on the domain $Q(\Theta^0) = H^1(\Omega, \R)$.
+In the \newterm{finite-element method}
+the aim is to solve \eqref{eqn:HFequationsFE} variationally
+in the sense of remark \vref{rem:DiscreteFormulation}
+employing a hierarchy of approximation spaces $S_n$
+consisting of piecewise polynomials.
+Such an attempt is only sensible
+is these spaces are more and more accurate
+approximations of the form domain $H^1(\Omega, \R)$
+in the sense of \eqref{eqn:CondSubspaces}.
+
+To outline the construction of such spaces,
+let us consider at first a (fictitious) one-dimensional case
+where $\Omega = (a,b)$ with $a,b \in \R$.
+This domain can be subdivided into $\Ncell$ parts
+\[ a = x_0 < x_1 < x_2 < \cdots < x_{\Ncell} = b, \]
+which do not need to be of equal size.
+The open intervals $c_j = (x_j, x_{j+1})$ for $j=0, 1, \ldots, \Ncell-1$
+are called grid \newterm{cells}
+and the set $\mathcal{M}_h = \{c_j \, | \, j=0, 1, \ldots, \Ncell-1 \}$
+of all grid cells is called a \newterm{mesh} or a \newterm{triangulation}.
+In this set the index $h$ stands for the maximal size of a grid cell
+defined as
+\[ h \equiv \max_{c \in \mathcal{M}_h} \abs{\max(c) - \min(c)} \]
+in one dimension. Using the vector space
+\[
+	\set{P}_k^1 \equiv \left\{ u \in C^\infty(\R) \,\middle|\, u(x) = \sum_{i=0}^k c_i x^i, c_i \in \R \right\}
+\]
+of all real polynomials of order at most $k$ in one dimension,
+we can define
+\begin{equation}
+	P_k(\mathcal{M}_h)
+	\equiv \left\{ u \in C^0(\overline{\Omega}) \ \middle| \
+	\forall c \in \mathcal{M}_h: \
+	u|_{\bar{c}} \in \set{P}_k^1 \right\},
+	\label{eqn:PiecewisePolynomialsOne}
+\end{equation}
+the set of piecewise polynomials of at most degree $k$.
+The elements of $P_k(\mathcal{M}_h)$
+are on the complete domain $\Omega$ at least continuous
+and inside the grid cells
+they reduce to being polynomials, thus smooth.
+It can be shown~\cite[Lemma 4.1]{Grossmann1992} that this implies
+$P_k(\mathcal{M}_h) \subset H^1(\Omega, \R)$.
+As $h \to 0$ such approximations become more exact,
+which make $P_k(\mathcal{M}_h)$ the desired approximation
+spaces of $H^1(\Omega, \R)$ for a one-dimensional problem.
+
+\begin{figure}
+	\centering
+	\missingfigure{grid}
+	\caption{One D case for linear FEs}
+	\label{fig:FEoneDimLin}
+\end{figure}
+\begin{figure}
+	\centering
+	\missingfigure{grid}
+	\caption{One D case for quadratic FEs}
+	\label{fig:FEoneDimQuad}
+\end{figure}
+For representing $P_k(\mathcal{M}_h)$
+\newcommand{\Ibash}{\mathcal{I}_{\text{bas},h}}
+one typically chooses a \newterm{Lagrange basis} $\{\varphi_\mu\}_{\mu\in \Ibash}$
+consisting of basis functions $\varphi_\mu$ with $0 \leq \mu \leq k \Ncell$
+defined as
+\begin{align*}
+	\varphi_\mu &\in P_k(\mathcal{M}_h), &
+	\varphi_\mu(\tilde{x}_\nu) &= \delta_{\mu\nu}
+\end{align*}
+where%
+\footnote{In equation \eqref{eqn:FEnodalPointsOneD} $\nu/k$ denotes integer division
+without remainder.}
+\begin{equation}
+	\tilde{x}_\nu = x_{\nu/k} + \frac{\nu \!\! \mod k}{k} \left( x_{(\nu/k) +1} - x_{\nu/k} \right)
+	\label{eqn:FEnodalPointsOneD}
+\end{equation}
+for $0 \leq \nu \leq k \Ncell$ are the \newterm{nodal points}.
+An alternative term to refer to such
+basis functions $\varphi_\mu$
+is \textbf{finite element of order $k$},
+the order $k$ being a reference to the maximal polynomial degree inside the cells $c$.
+Examples for linear and quadratic finite elements are
+illustrated in figures \ref{fig:FEoneDimLin} and \ref{fig:FEoneDimQuad} respectively.
+In each case the finite element functions
+are either $1$ or $0$ at the nodal points and only
+have support on a few cells, which are furthermore direct neighbours.
+
+In the following we want to generalise this construction
+for a three-dimensional domain $\Omega$.
+In the most general form a mesh can be defined as
+\begin{defn}[Mesh]
+	Let $\Omega$ be a domain in $\R^3$.
+	A mesh is a finite set $\mathcal{M}_h = {c_0, c_1, \ldots, c_{\Ncell-1}}$
+	of $\Ncell$ bounded domains $c_i$ with sufficiently regular boundary%
+	\footnote{More precisely the boundary has to be Lipschitz.},
+	such that
+	\begin{align*}
+		\overline{\Omega} &= \bigcup_{i=0}^{\Ncell-1} \overline{c_i}
+		&c_i \cap c_j = \emptyset \quad \forall i \neq j,
+	\end{align*}
+	\ie such that these domains fully partition $\Omega$.
+	Furthermore we set for each $c \in \mathcal{M}_h$
+	the \newterm{cell diameter}
+	\[ h(c) = \max_{\vec{x},\vec{y} \in bar{c}} \norm{\vec{x}-\vec{y}}_2 \]
+	and call
+	\[ h = \max_{c \in \mathcal{M}_h} h(c) \]
+	the \newterm{mesh size}.
+\end{defn}
+In many cases one does, however, only consider
+so-called \newterm{affine} meshes.
+\begin{defn}
+	A mesh is called affine if a reference cell $c_0$
+	and affine transformations%
+	\footnote{A transformation $\tau$ is affine iff $\tau(\vec{x}) = \mat{A}\vec{x} + \vec{b}$ with $\mat{A}$ being a transformation matrix and $b$ being a constant shift vector.}
+	$\tau_{c_i}$ exist for each cell $c_i \in \mathcal{M}_h$,
+	such that $\overline{c_i} = \tau_{c_i}(c_0)$.
+\end{defn}
+In other words a mesh is affine exactly if each
+grid cell can be generated from the reference cell $c_0$
+by a linear transformation followed by a shift to the correct position.
+This work only considers \textbf{cuboidal meshes},
+where the reference cell $c_0 = [0,1]^3$ is the unit cube.
+Similar to the construction of the grid cells,
+the finite elements of order $k$
+on each cuboidal grid cell $c \in \mathcal{M}_h$
+can be constructed by applying the affine transformation $\tau_c$
+to a set of template polynomials of order $k$
+defined on the reference cell $c_0$.
+These template polynomials are called
+\newterm{shape function}s.
+%
+\begin{figure}
+	\centering
+	\missingfigure{shape functions}
+	\caption{Shape functions}
+	\label{fig:ShapeFunctions}
+\end{figure}
+%
+A few examples in one and two dimensions are illustrated
+in figure \ref{fig:ShapeFunctions}.
+Notice how the shape functions in two (and higher) dimensions
+can be constructed as mere tensor products
+of the shape functions in one dimension.
+This is a special property of the so-called $Q_k$ finite elements,
+which are typically used in cuboidal meshes.
+
+Let us denote with $S_h$ the
+space spanned by all the $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
+on a cuboidal mesh $\mathcal{M}_h$,
+constructed by the means of appropriate affine maps and shape functions.
+Even though we always have $S_h \subset H^1(\Omega, \R)$,
+condition \eqref{eqn:CondSubspaces}
+is not always satisfied as the mesh size $h \to 0$.
+In other words vanishing mesh size is not enough
+to ensure convergence of the Ritz-Galerkin procedure in three dimensions.
+The missing aspect is the regularity of the mesh.
+Roughly speaking one needs to make sure that going to finer and finer meshes
+one does not construct needle-like cells.
+Much rather all grid cells $c\in \mathcal{M}_h$ should
+be uniformly refined and their shape should be as close to being
+a ball as possible%
+\footnote{The mathematical terms are \textit{uniform}
+and \textit{shape-regular} for such meshes.}
+in all meshes.
+
+%
+% ---------------------------------------------------
+%
+
+If these conditions are satisfied
+convergence in higher dimensions is possible, too.
+Higher dimensions: FEs still only have support at a  few cells,
+which are direct neighbours.
+Just more neighbours than in 2 dimensions.
+
+Take away:
+Truely black box
+error estimates
+grid refinement strategies
 discretisation adapts to problem
+Locality built into basis
+Need large number of basis functions
 
 
-% Use as an example to explain the ideas of finite elements
-An important equation from classical electrodynamics which
-involves the Laplace operator is Poisson's equation
+With this approach get $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
+which can be used to discretise \eqref{eqn:HFequationsFE}.
+Following the procedure in section \vref{sec:DiscreteHF}
+we obtain a non-linear eigenproblem
+\[
+	\begin{aligned}
+		\matFnfull \mat{C}_F^{(n+1)} &= \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)} \\
+		\tp{\mat{C}} \mat{S} \mat{C} &= \mat{I}_{\Nelec}
+	\end{aligned}
+\]
+with the eigenvalues
+\[
+	\mat{E}^{(n+1)}
+	= \text{diag}\left(\varepsilon_1^{(n+1)},
+	\varepsilon_2^{(n+1)}, \ldots,
+	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}.
+\]
+in analogy to remark \vref{rem:PropertiesDiscretised}.
+
+
+Expression of terms still \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
+just with the replacement
+\[ \int_{\R^3} \to \int_\Omega. \]
+Still an SCF
+
+Indicate Relationship between polynomial order, number of cells
+and number of finite elements
+
+Let us consider in detail the evaluation of a local operator
+like the one leading to $S_{\mu\nu}$, $(V_0)_{\mu\nu}$ or $T_{\mu\nu}$.
+For computation one can thus
+think of each finite-element function
+as being constructed from a reference cell
+by affine mapping.
+This allows to evaluate integrals cell-wise
+See presentation molsturm
+Linear in FE
+
+Evaluation of Coulomb needs poisson equation
 \begin{equation}
 	\Delta V_H(\vec{r}) = \rho(\vec{r})
 	\label{eqn:Poisson}
 \end{equation}
 relating the potential to the charge density $\rho$ which generates it.
+% other boundary conditions
+% large enough domain ... Coulomb falls off slowly -> a problem
+% Robin BC
 
-% TODO 
-%  Note that norm wrt fock operator F is equivalent to H1 norm due to Laplace part
-%  Lipschitz continuity
-%  well-posedness
-
-% TODO Talk about convergence rates?
-
-
-
+Evaluation of exchange problematic.
+Naive approach quadratic
+Evaluation leads full fock matrix
 \begin{figure}
 	\centering
 	\includeimage{4_solving_hf/fock_fe}
@@ -49,7 +301,13 @@ relating the potential to the charge density $\rho$ which generates it.
 		with an error of about $0.1$}
 	\label{fig:StructureFiniteElementFock}
 \end{figure}
-
-
 \todoil{Talk about contraction-based methods for the first time.
 Allows to pick this up in the next section}
+
+
+Mention as summary:
+fe exact apart from polynomial interpolation
+Eigensolver techniques
+Multigrid preconditioning
+Need coefficient-based SCF
+
