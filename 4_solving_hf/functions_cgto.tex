@@ -114,17 +114,21 @@ Notice, that each contracted Gaussian inside such basis sets
 is typically in turn made up from multiple primitives.
 For a particular basis set family the error generally decreases
 going to higher zeta levels.
-For some families like Dunning's correlation-consistent
-basis sets~\cite{Dunning1989}
+For some families like Dunning's correlation-consistent basis sets~\cite{Dunning1989}
 empirical formulas for estimating the error at a particular zeta
-level exist~\cite{Jensen2005}, see appendix \vref{apx:CbsLimit} for details.
-To the best of my knowledge none of these results have been
-backed up by rigorous analysis yet.
-One should, however, mention a recent work by \citet{Bachmayr2014} in this context,
-where error estimates
-in the relevant $H^1(\R^3,\R)$-norm are derived for Gaussian basis sets,
-which only consists of primitive \GTO functions.
-Such a result should be be generalisable towards {\cGTO} basis sets as well.
+level exist~\cite{Jensen2005}.
+These results have been used for many years
+to estimate properties at the so-called \newterm{complete basis set}~(\CBS) limit,
+\ie the theoretical value obtained if an infinitely large basis set of {\cGTO}s
+would be employed for the calculation.
+See appendix \vref{apx:CbsLimit} for more details.
+A recent work by \citet{Bachmayr2014}
+provides some mathematical support for such formulas
+by rigorously deriving error estimates in the relevant $H^1(\R^3,\R)$-norm.
+One should note, however, that these results strictly speaking
+only apply to a basis of uncontracted even-tempered {\GTO}s.
+The authors point out, however, that a generalisation towards
+{\cGTO}s should be possible.
 
 \begin{figure}
 	\centering
@@ -271,23 +275,29 @@ or the long-range behaviour is typically only an issue,
 if either parts of the wave functions are especially important
 for a particular property.
 Examples would be the determination of Rydberg-like excited states,
-the computation electron affinities
+the computation electron affinities,
+the computation of X-ray absorption spectroscopy
 or the computation of nuclear-magnetic resonance properties.
 In such cases specific basis sets
 are required~\cite{Hill2013,Jensen2013},
 which include further \cGTO basis functions
-to either sample the core region or the long-range tail
-more accurately.
-Is such basis sets are not employed
-it may happen that the desired features are completely missed
-or described very inaccurately.
+to either sample the core region or the long-range tail more accurately.
+If such basis sets are not employed
+it may happen that the desired features are completely missed or described very inaccurately.
 In this sense {\cGTO}s are not fully black-box and
-require some sense of chemical intuition to pick a sensible basis set
-and get the right number.
-Conversely if one already has a clear idea about the electronic structure
-of a chemical system,
-it is usually possible to find a basis set,
-which promises to represent the required features both efficiently and accurately.
+picking a reasonable basis set for a particular problem
+usually requires some idea of the electronic structure already.
+On the other hand if such special basis sets are employed,
+one may encounter numerical issues
+due to rather large overlap matrix elements $\braket{\varphi_\mu}{\varphi_\nu}_1$
+and almost linearly dependent basis functions $\varphi_\mu$.
+This problem arises
+since firstly
+the full set of possible \cGTO basis functions is over-complete
+and secondly
+since the special basis sets for sampling the core and tail region
+contain {\cGTO}s of similar exponents,
+which makes over-completeness manifest more strongly.
 
 \begin{landscape}
 \begin{figure}
@@ -323,8 +333,9 @@ as well as diagonalising it can be performed using dense methods%
 	and then use Cuppen's divide and conquer
 	or an algorithm based on relatively robust representations.
 }.
-On top of that the numerical structure of a \cGTO-based Fock matrix
-is rather advantageous.
+Ignoring the basis sets suffering from over-completeness for a second
+the numerical structure of a \cGTO-based Fock matrix
+is rather advantageous in most cases.
 Figure \vref{fig:StructureGaussianFock}, for example,
 shows some Fock matrices from an \SCF calculation
 of a beryllium atom
@@ -343,33 +354,33 @@ satisfying the condition for \newterm{diagonal-dominance}
 \[
 	\sum_{\nu=1}^{\Nbas} F_{\mu\nu} < 2 F_{\mu\mu}.
 \]
-For larger example systems,
-the structure gets worse due to interactions between
-the atoms, but still stays almost diagonal-dominant.
+For larger systems, the structure generally gets
+worse due to interactions between the atoms,
+but if a proper description of the core region or the tail is not required
+$\mat{F}$ stays numerically manageable and almost diagonal-dominant.
 This allows to additionally employ
 iterative eigensolver methods like Davidson's method~(see section \vref{sec:Davidson})
 to efficiently obtain eigenpairs of the Fock matrix if not all are required.
-In summary both obtaining and diagonalising Fock matrices
-from a \cGTO discretisation is numerically no problem.
 
-These numerically rather nice properties
-have made \cGTO-based methods
-historically the most feasible route
-to describing a chemical systems within a decent accuracy.
-Even though they are physically not the most sensible basis functions,
-the rather pragmatic ansatz of Boys, Hehre, Pulay and others
-has overall made them the most popular discretisation method in quantum-chemistry,
-which is implemented in countless quantum-chemistry program packages.
+Since for most cases in chemistry the core-like region
+and the long-range tail are not extremely important
+both obtaining and diagonalising Fock matrices
+from a \cGTO discretisation is straightforward.
+Even though {\cGTO}s are physically not the most sensible basis function type
+this has historically made \cGTO-based methods
+the most predominant approach to describe
+a chemical systems within decent accuracy
+such that these methods are now implemented in countless quantum-chemistry packages.
 In light of this it is remarkable,
 that only in \citeyear{Bachmayr2014}
-error bounds were developed by \citet{Bachmayr2014} for some special
-kinds of Gaussian basis sets,
-which furthermore do not see any application in practice
-to the best of my knowledge.
-I personally consider at a problem
+error bounds were rigorously derived by \citet{Bachmayr2014} for some special
+kinds of Gaussian basis sets
+and these results are not employed on a daily basis.
+
+I personally consider it a problem
 that selecting the \cGTO basis set for performing a calculation is often done
 based on habit rather than proper scientific evaluation
-of the discretisation error in light of the chemical problem at hand.
+in light of the chemical problem at hand.
 I do not dare to estimate how many published works
 draw conclusions based on calculations,
 where a more appropriately chosen basis
