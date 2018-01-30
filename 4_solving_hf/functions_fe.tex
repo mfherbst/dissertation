@@ -26,6 +26,7 @@ in the light of the \HF problem.
 For more details the reader is referred
 to the rich literature~\cite{Johnson1987,Grossmann1992,Bangerth2003,Brenner2008}.
 
+\subsubsection{Construction of a \FE grid}
 Compared to the atom-centered basis functions,
 where a discretisation based on the complete domain $\R^3$ is possible,
 any grid-based method can only achieve this
@@ -54,7 +55,7 @@ the spin-free, real-valued \HF equations \eqref{eqn:HFequations} can be adapted 
 \end{equation}
 for $\Theta^0 = (\psi_1^0, \psi_2^0, \ldots, \psi_{\Nelec}^0) \in \left( H^2(\Omega,\R) \right)^{\Nelec}$
 being the minimiser to the \HF problem \eqref{eqn:HFMO}.
-The corresponding bilinear form
+The corresponding sesquilinear form
 \[ a_{\Theta^0}(\psi, \chi)
 	\equiv \int_\Omega \psi(\vec{r}) \Op{F}_{\Theta^0} \chi(\vec{r}) \D \vec{r} \]
 is defined in analogy to \eqref{eqn:SesquilinearFormFock}.
@@ -109,13 +110,13 @@ spaces of $H^1(\Omega, \R)$ for a one-dimensional problem.
 
 \begin{figure}
 	\centering
-	\missingfigure{grid}
+	\missingfigure{1D grid with linear}
 	\caption{One D case for linear FEs}
 	\label{fig:FEoneDimLin}
 \end{figure}
 \begin{figure}
 	\centering
-	\missingfigure{grid}
+	\missingfigure{1D grid with quadratic}
 	\caption{One D case for quadratic FEs}
 	\label{fig:FEoneDimQuad}
 \end{figure}
@@ -198,12 +199,13 @@ These template polynomials are called
 \end{figure}
 %
 A few examples in one and two dimensions are illustrated
-in figure \ref{fig:ShapeFunctions}.
-Notice how the shape functions in two (and higher) dimensions
-can be constructed as mere tensor products
-of the shape functions in one dimension.
-This is a special property of the so-called $Q_k$ finite elements,
+in figure \ref{fig:ShapeFunctions},
+where the shape functions in two dimensions
+have been constructed as tensor products from the one-dimensional ones.
+This construction is a special property of so-called $Q_k$ finite elements,
 which are typically used in cuboidal meshes.
+This tensor product ansatz allows to construct $Q_k$ elements
+in three and higher dimensions as well.
 
 Let us denote with $S_h$ the
 space spanned by all the $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
@@ -212,102 +214,503 @@ constructed by the means of appropriate affine maps and shape functions.
 Even though we always have $S_h \subset H^1(\Omega, \R)$,
 condition \eqref{eqn:CondSubspaces}
 is not always satisfied as the mesh size $h \to 0$.
-In other words vanishing mesh size is not enough
-to ensure convergence of the Ritz-Galerkin procedure in three dimensions.
-The missing aspect is the regularity of the mesh.
-Roughly speaking one needs to make sure that going to finer and finer meshes
-one does not construct needle-like cells.
-Much rather all grid cells $c\in \mathcal{M}_h$ should
-be uniformly refined and their shape should be as close to being
-a ball as possible%
-\footnote{The mathematical terms are \textit{uniform}
-and \textit{shape-regular} for such meshes.}
-in all meshes.
+In other words to ensure convergence of the Ritz-Galerkin procedure in three dimensions
+vanishing mesh size is not sufficient.
+On top of that the mesh needs to stay
+what is called \textbf{uniform} and \textbf{shape-regular}.
+Roughly speaking these conditions ensure that
+all grid cells have roughly the same size
+and their shape is closer to being a ball than to being a needle.
 
-%
-% ---------------------------------------------------
-%
+If those conditions are taken into account,
+an initial mesh can be refined more and more
+until the \HF problem \eqref{eqn:HFequationsFE}
+is solved up to the desired accuracy.
+Furthermore \textit{a priori} and \textit{a posteriori} error estimates
+can be derived for regular meshes and
+those grid cells, which contribute most
+to the estimated error, can be identified.
+Usually the error in a grid cell $c$
+is related to its diameter $h(c)$,
+which suggest to refine a mesh adaptively at those cells,
+where the error is largest.
+Since \FE grids do not need to be equally spaced,
+this suggests a scheme where starting from a crude initial grid
+the problem \eqref{eqn:HFequationsFE} is solved,
+whilst adaptively refining the grid only at some places
+until the desired accuracy is achieved.
+In this manner the density of grid points
+is lower where the electron density does not change a lot
+and is higher,
+where more grid cells are needed to represent the problem properly.
+Notice, how this can be entirely automatised.
+Compared to a \cGTO-based discretisation
+the finite-element method is therefore truly back box.
 
-If these conditions are satisfied
-convergence in higher dimensions is possible, too.
-Higher dimensions: FEs still only have support at a  few cells,
-which are direct neighbours.
-Just more neighbours than in 2 dimensions.
+There are a couple of caveats to the finite-element method,
+which should not go unmentioned.
+First of all the tensor product construction of the $Q_k$ finite elements
+in two and three dimensions implies
+that the three dimensional \FE basis $\{\varphi_\mu\}_{\mu\in\Ibash}$
+has extremely local support as well.
+The difference is that instead of 2 neighbours like in 1D,
+most cells now have $2^3 = 8$ neighbours instead.
+Consequently a $Q_k$ finite-element in 3D can have support on at most 8 cells,
+\ie stays highly localised.
+This is an advantage for evaluating the integrals
+involved in the sesquilinear form $a_\Theta(\slot,\slot)$
+as such become embarrassingly parallel for local operators.
+See the discussion below for details.
+It implies further, however, that many finite elements
+are typically required for a proper description of the \HF orbitals
+on the full domain $\Omega$,
+typically in the order of millions.
+Thus all algorithmic approaches for solving the numerical problems
+arising from a \FE discretisation need to
+scale linearly or sub-linearly in the number of finite-element basis functions.
 
-Take away:
-Truely black box
-error estimates
-grid refinement strategies
-discretisation adapts to problem
-Locality built into basis
-Need large number of basis functions
+Secondly the electron-nuclear cusp tends to be an issue.
+Even the simplest cell-wise error estimators employed in the finite-element method,
+like the Kelly error estimator~\cite{KellyError},
+contain a term involving the gradient of the approximate solution.
+In other words a larger amount of grid points
+and thus a larger amount of finite-element basis functions
+is required around regions where the gradient is large.
+Both the wave function as well as the \HF orbitals
+have large gradients around the electron-nuclear cusp~\cite{Kato1957}.
+Furthermore the only discontinuity occurs at the nuclear position~\cite{Kato1951}.
+Even though the region around the core
+is not very interesting from a chemical point of view,
+it thus consumes a large number of \FE basis functions
+for proper representation.
+In the light of the previous paragraph this is not at all ideal.
+As a remedy most \FE-based approaches to quantum chemistry employ pseudo-potentials
+to represent the core region~\cite{Davydov2015},
+leaving only the regions of smaller gradients
+to be represented by finite elements.
+Overall this significantly reduces the number of finite elements required.
+For simplicity we will not consider pseudo-potentials
+in the remaining discussion about finite-elements,
+but our expressions can be easily modified to incorporate such.
 
-
-With this approach get $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
-which can be used to discretise \eqref{eqn:HFequationsFE}.
-Following the procedure in section \vref{sec:DiscreteHF}
-we obtain a non-linear eigenproblem
-\[
+\subsubsection{Evaluating the discretised Fock matrix}
+Let us now consider a particular cuboidal mesh $\mathcal{M}_h$
+at some stage during
+the process of solving \eqref{eqn:HFequationsFE} up to desired accuracy.
+On $\mathcal{M}_h$ we can construct
+a set of $\Nbas$ $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
+following the procedure outlined above
+and use these to discretise \eqref{eqn:HFequationsFE}
+in a completely analogous procedure to section \vref{sec:DiscreteHF}.
+This again results in a non-linear eigenproblem
+\begin{equation}
 	\begin{aligned}
 		\matFnfull \mat{C}_F^{(n+1)} &= \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)} \\
-		\tp{\mat{C}} \mat{S} \mat{C} &= \mat{I}_{\Nelec}
+		\tp{\mat{C}} \mat{S} \mat{C} &= \mat{I}_{\Nelec},
 	\end{aligned}
-\]
-with the eigenvalues
-\[
-	\mat{E}^{(n+1)}
-	= \text{diag}\left(\varepsilon_1^{(n+1)},
-	\varepsilon_2^{(n+1)}, \ldots,
-	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}.
-\]
-in analogy to remark \vref{rem:PropertiesDiscretised}.
-
-
-Expression of terms still \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
-just with the replacement
-\[ \int_{\R^3} \to \int_\Omega. \]
-Still an SCF
-
-Indicate Relationship between polynomial order, number of cells
-and number of finite elements
-
-Let us consider in detail the evaluation of a local operator
-like the one leading to $S_{\mu\nu}$, $(V_0)_{\mu\nu}$ or $T_{\mu\nu}$.
-For computation one can thus
-think of each finite-element function
-as being constructed from a reference cell
-by affine mapping.
-This allows to evaluate integrals cell-wise
-See presentation molsturm
-Linear in FE
-
-Evaluation of Coulomb needs poisson equation
-\begin{equation}
-	\Delta V_H(\vec{r}) = \rho(\vec{r})
-	\label{eqn:Poisson}
+	\label{eqn:SCFproblemFE}
 \end{equation}
-relating the potential to the charge density $\rho$ which generates it.
-% other boundary conditions
-% large enough domain ... Coulomb falls off slowly -> a problem
-% Robin BC
+where
+\begin{align*}
+	\matFnfull &= \mat{T} + \mat{V}_0 + \matJnfull + \matKnfull, \\
+	\mat{E}^{(n+1)}
+	&= \text{diag}\left(\varepsilon_1^{(n+1)},
+	\varepsilon_2^{(n+1)}, \ldots,
+	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}
+\end{align*}
+and the occupied coefficients $\mat{C}^{(n+1)} \in \R^{\Nbas \times \Nelec}$
+are the first $\Nelec$ columns of the full coefficient matrix
+$\mat{C}_F^{(n+1)} \in \R^{\Nbas \times \Norb}$
+according to Aufbau principle.
+The individual terms of the Fock matrix and the overlap matrix
+are given by expressions \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
+just with the replacement of the integration over $\R^3$
+by an integration over $\Omega$.
+Naturally problem \eqref{eqn:SCFproblemFE} can be solved
+by a self-consistent field procedure of remark \vref{rem:SCFcoeff}.
 
-Evaluation of exchange problematic.
-Naive approach quadratic
-Evaluation leads full fock matrix
-\begin{figure}
-	\centering
-	\includeimage{4_solving_hf/fock_fe}
-	\caption{Structure of the Finite-Element Fock matrix in beryllium
-		with an error of about $0.1$}
-	\label{fig:StructureFiniteElementFock}
-\end{figure}
-\todoil{Talk about contraction-based methods for the first time.
-Allows to pick this up in the next section}
+For evaluating the Fock matrix $\matFnfull$,
+let us first consider the easy cases,
+namely the terms $\mat{T}$ and $\mat{V}_0$ as well as the overlap matrix $\mat{S}$.
+This amounts to evaluating integrals
+\begin{align*}
+O_{\mu\nu} &=  \int_\Omega \varphi_\mu(\vec{r}) \, \Op{O} \, \varphi_\nu(\vec{r}) \D\vec{r}
+&&\text{where} \quad \Op{O} = \Op{T}, \Op{V}_0 \text{ or } \id_{H^1(\Omega,\R)}.
+\intertext{
+With reference to the grid $\mathcal{M}_h$ we can write this as a
+sum of cell contributions $O^c_{\mu\nu}$
+}
+O_{\mu\nu} &= \sum_{c\in\mathcal{M}_h} O^c_{\mu\nu}
+&&\text{where} \quad O^c_{\mu\nu} = \int_c \varphi_\mu(\vec{r})\, \Op{O}\, \varphi_\nu(\vec{r}) \D\vec{r}.
+\end{align*}
+All of the operators $\Op{T}$, $\Op{V}_0$ or $\id$
+are so-called \newterm{local operators},
+which implies
+\[ \forall \nu\in\Ibash: \quad \text{Supp}\left(\Op{O}\, \varphi_\nu\right) \subseteq \text{Supp}\left(\varphi_\nu\right), \]
+where
+\[ \text{Supp}(\chi) \equiv \left\{ \vec{r} \in \Omega \,\middle|\, \chi(\vec{r}) \neq 0 \right\} \]
+denotes the \newterm{support} of a function $\chi$.
+In other words $\left(\Op{O} \varphi_\nu\right)(\vec{r})$
+is non-zero only if $\varphi_\nu(\vec{r})$ is non-zero,
+which implies
+\[ c \not\in \text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu)
+	\quad \Rightarrow \quad
+	O^c_{\mu\nu} = 0.
+\]
+Conversely to build the matrix $\mat{O}$
+we only need to consider those elements $O_{\mu\nu}$
+where $\text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu) \neq \emptyset$.
+A particular $\varphi_\mu$ only has support in 8 cells as indicated above.
+In each cell at most $(k+1)^3$ finite elements have support,
+such that for a particular $\mu\in\Ibash$,
+$O_{\mu\nu}$ can only be non-zero
+for at most $8 (k+1)^3$ values of $\nu\in\Ibash$.
+Using a clever ordering of the finite-element functions
+one can determine the set of finite-elements $\varphi_\nu$,
+which couple with a given element $\varphi_\mu$ immediately~\cite{CuthillMcKee},
+such that $\mat{O}$ can be evaluated by only considering
+a number of pairs $(\mu,\nu) \in \left(\Ibash\right)^2$,
+which scales linearly with the number of finite elements $\Nbas$.
+Furthermore the cell contributions $O^c_{\mu\nu}$ to $\mat{O}$
+are independent from another,
+such that $\mat{O}$ can be determined by an embarrassingly parallel MapReduce step.
 
+By construction for each finite-element
+$\varphi_\mu$ one can find a shape function $e_i$
+such that on a particular cell $c \in \mathcal{M}_h$
+\[
+	\varphi_\mu\big|_c(\vec{r}) = e_i\left( \tau_c^{-1}(\vec{r}) \right).
+\]
+Let similarly $e_j$ be the shape function corresponding to $\varphi_\nu$
+and further let $J_c(\vec{\xi})$ denote the Jacobian matrix
+of the mapping $\vec{r} = \tau_c(\vec{\xi})$,
+defined as
+\[
+	\forall \alpha,\beta \in \{x,y,z\}:
+	\left( J_c (\vec{\xi}) \right)_{\alpha\beta} = \frac{\partial \left( \tau_c(\vec{\xi})  \right)_\alpha}{\partial \xi_\beta}.
+\]
+Then we can evaluate $O^c_{\mu\nu}$ as
+\begin{align*}
+	O^c_{\mu\nu} &= \int_c \varphi_\mu(\vec{r})\, \Op{O} \, \varphi_\nu(\vec{r}) \D\vec{r} \\
+	&= \int_c e_i\left( \tau_c^{-1}(\vec{r}) \right) \, \Op{O} \,
+		e_j\left( \tau_c^{-1}(\vec{r}) \right) \\
+		&= \int_{c_0} e_i(\vec{\xi}) \, \Op{O} \, e_j(\vec{\xi}) \det\left( J_c(\vec{\xi}) \right) \D \vec{\xi} \\
+	&= \sum_{q=1}^{\Nquadc} e_i(\vec{\xi}_q) \, \Op{O} \, e_j(\vec{\xi}_q) \det\left( J_c(\vec{\xi}_q) \right) w_q,
+\end{align*}
+where in the last step we introduced a quadrature for the integration
+using $\Nquadc$ quadrature points
+$\vec{\xi}_1, \vec{\xi}_2, \ldots, \vec{\xi}_{\Nquadc} \in c_0$
+with quadrature weights $w_1, w_2, \ldots, w_{\Nquadc}$.
+If we assume $\Nquadc$ is large enough,
+this quadrature can be made exact,
+since $e_i$ and $e_j$ are only polynomials of order $k$.
+Notice that both the quadrature as well as the Jacobian
+only need to be computed on the reference cell $c_0$
+and can be re-used for all cells by the means of the affine transformation $\tau_c$.
+Together with the guaranteed linear scaling
+in the number of matrix elements $O_{\mu\nu}$
+which need to be computed
+as well as the embarrassingly parallel procedure
+this makes the computation of the matrices $\mat{T}$,
+$\mat{V}_0$ and $\mat{S}$ extremely efficient despite
+the large number of basis functions $\Nbas$ for a
+finite-element based discretisation.
+Since we know already \emph{before} any computation
+the pairs of finite elements $(\varphi_\mu, \varphi_\nu)$
+which do not have common support,
+we can already set-up sensible storage schemes
+for these matrices,
+which do not store these zeros explicitly.
+This leads to linear scaling in storage with respect to the number
+of finite elements as well.
 
-Mention as summary:
-fe exact apart from polynomial interpolation
-Eigensolver techniques
-Multigrid preconditioning
-Need coefficient-based SCF
+For the evaluation of the Coulomb term $\matJ$
+and the exchange term $\matK$ this naive approach does not work,
+unfortunately, since neither $\Op{J}$ nor $\Op{K}$ are local operators.
+Let us first treat the Coulomb term.
+With reference to \eqref{eqn:OperatorCoulomb}
+we can write
+for all $\mu, \nu \in \Ibash$
+\begin{equation}
+	\label{eqn:CoulombFE}
+	J_{\mu\nu}\!\left[\mat{C}^{(n)}
+		\left(\mat{C}^{(n)}\right)^\dagger\right]
+	= \int_\Omega \varphi_\mu(\vec{r}_1)
+	\left(\int_\Omega \frac{\rho^{(n)}(\vec{r}_2)}
+		{ r_{12} }\D \vec{r}_2 \right)
+	\varphi_\nu(\vec{r}_1) \D \vec{r}_1,
+\end{equation}
+where we introduced the discretised electron density
+\begin{equation}
+	\rho^{(n)}(\vec{r}) \equiv \sum_{i\in\Iocc} \abs{\sum_{\mu\in\Ibash} C^{(n)}_{\mu i} \varphi_\mu(\vec{r})}^2.
+	\label{eqn:ElectronDensityFE}
+\end{equation}
+Following classical electrostatics~\cite{Jackson1999}
+such an electron density gives rise to a potential $V^{(n)}_H(\vec{r})$,
+defined by a Poission equation
+\begin{equation}
+\label{eqn:PoissionFE}
+\begin{aligned}
+	-\Delta V^{(n)}_H(\vec{r}) &= 4\pi \rho^{(n)}(\vec{r}) &&\vec{r} \in \Omega \\
+	V^{(n)}_H(\vec{r}) &= 0 && \vec{r} \in \partial\Omega.
+\end{aligned}
+\end{equation}
+In this case $V^{(n)}_H(\vec{r})$ is called the \newterm{Hartree potential} as well.
+Assuming \eqref{eqn:PoissionFE} can be solved,
+this allows to rewrite \eqref{eqn:CoulombFE} to yield
+\[
+	J_{\mu\nu}\!\left[\mat{C}^{(n)}\left(\mat{C}^{(n)}\right)^\dagger\right]
+	= \int_\Omega \varphi_\mu(\vec{r}_1) V^{(n)}_H(\vec{r}_1) \varphi_\nu(\vec{r}_1) \D \vec{r}_1.
+\]
+Since the Hatree potential $V^{(n)}_H$ is a local operator,
+this latter integral can be evaluated in $\bigO(\Nbas)$
+time and space using the cell-wise numerical integration scheme discussed above.
+
+Solving the Poission equation \eqref{eqn:PoissionFE}
+is a well-understood problem in numerical mathematics.
+Using a combination of multigrid preconditioning~\cite{Hackbusch1985}
+and a conjugate-gradient linear solver~\cite{Grossmann1992},
+this problem can be solved in $\bigO(\Nbas)$%
+\footnote{Try this yourself using the
+	example program \url{http://dealii.org/developer/doxygen/deal.II/step_16.html}
+	distributed alongside
+	the \texttt{deal.ii} finite-element library~\cite{Arndt2017,Bangerth2007}.
+}.
+
+A question worth addressing in this context is which boundary condition to choose.
+In \eqref{eqn:SCFproblemFE} as well as \eqref{eqn:PoissionFE}
+we used a  homogeneous Dirichlet boundary in both cases.
+Whilst this is still somewhat sensible for the \SCF orbitals,
+this can lead to issues for the Hartree potential, which only falls off as $-1/r$.
+So even at distances of $10^6$ Bohr from the nucleus the potential
+will still be around $10^{-6}$.
+The situation can be improved by approximating the density $\rho^{(n)}(\vec{r})$
+at large distances by a point charge in the sense of a multipole expansion.
+The solution to the Poisson equation in this case is trivial,
+yielding the Coulomb potential
+\[ V_P(\vec{r}) = \frac{\Nelec -1}{r}. \]
+For the complete \SCF problem \eqref{eqn:SCFproblemFE}
+one could similarly employ a multipole approximation
+to yield an approximate solution at the boundary,
+related to what we already did in remark
+\vref{rem:PhysicalProperties}.
+In both cases such approximate solutions can be enforced
+using appropriate boundary conditions.
+The options are
+\begin{itemize}
+	\item Dirichlet boundary conditions:
+		\begin{align}
+			V_H^{(n)}(\vec{r}) &= V_P(\vec{r}) \qquad \vec{r} \in \partial\Omega
+			\label{eqn:PoissonHartreeBCDirichlet}
+		\end{align}
+	\item Neumann boundary conditions:
+		\begin{align}
+			\partial_n V_H^{(n)}(\vec{r}) &= \partial_n V_P(\vec{r}) \qquad \vec{r} \in \partial\Omega,
+			\label{eqn:PoissonHartreeBCNeumann}
+		\end{align}
+		where $\partial_n V_H^{(n)}$ denotes the normal derivative at the boundary $\partial\Omega$.
+	\item Robin boundary conditions:
+		\begin{align}
+			\label{eqn:PoissonHartreeBCRobin}
+			\alpha(\vec{r}) \tilde{V}_H^{(n)}(\vec{r})
+				&= \partial_n \tilde{V}_H(\vec{r}) \qquad \vec{r} \in \partial\Omega \\
+		\intertext{where $\alpha(\vec{r})$ is determined from}
+			\nonumber
+			\alpha(\vec{r}) V_P(\vec{r}) &= \partial_n  V_P(\vec{r}) 
+		\end{align}
+\end{itemize}
+For the Poisson equation Robin boundary conditions usually
+\eqref{eqn:PoissonHartreeBCRobin} work best in practice,
+since they somewhat enforce resemblance of the gradient and the value
+of $V_P(\vec{r}$ at the same time.
+
+In theory there is no reason why
+one should use the same discretisation
+for solving the Poission equation \eqref{eqn:PoissionFE}
+and for solving the \HF equations \eqref{eqn:HFequationsFE}.
+Using different meshes is possible,
+but leads to complications when projecting the Hartree potential $V_H^{(n)}$
+onto the grid used for solving the \HF equations.
+The use of different polynomial orders for example
+has been investigated by \citet{Davydov2015}
+in the context of the related Kohn-Sham equations.
+Their results suggest to use twice the polynomial order for solving the Poission equation
+compared to the polynomials used for the \HF problem.
+This can be rationalised by looking at the expression \eqref{eqn:ElectronDensityFE}
+for the discretised density.
+If $\varphi_\mu$ and $\varphi_\nu$ denote two $Q_k$ finite elements,
+which are used for the discretisation of \eqref{eqn:HFequationsFE},
+solving the Poisson equation \eqref{eqn:PoissionFE} requires to represent
+the density $\rho^{(n)}(\vec{r})$,
+which consists of products $\varphi_\mu, \varphi_\nu$.
+These can only be represented exactly if at least $Q_{2k}$ elements
+are used to discretise \eqref{eqn:PoissionFE}.
+
+\subsubsection{Evaluating the \HF exchange contribution}
+Similar to the Coulomb term we
+use \eqref{eqn:OperatorExchange} and \eqref{eqn:Kbas} to
+write the exchange matrix elements for all $\mu, \nu \in \Ibash$ as
+\begin{equation}
+	\label{eqn:ExchangeFE}
+	K^{(n)}_{\mu\nu} \equiv
+	K_{\mu\nu}\!\left[\mat{C}^{(n)} \left(\mat{C}^{(n)}\right)^\dagger\right]
+	%
+	= \int_\Omega \int_\Omega
+		\varphi_\mu(\vec{r}_1) \frac{\gamma^{(n)}(\vec{r}_1, \vec{r}_2)}
+		{ r_{12} }\varphi_\nu(\vec{r}_2) \D \vec{r}_2 \D \vec{r}_1,
+\end{equation}
+where we introduced the discretised one-particle reduced density matrix
+\begin{equation}
+	\gamma^{(n)}(\vec{r}_1, \vec{r}_2)
+	\equiv \sum_{i\in\Iocc} \, \sum_{\mu,\nu\in\Ibash}
+	C^{(n)}_{\mu i} \varphi_\mu(\vec{r}_1) \, C^{(n)}_{\nu i} \varphi_\nu(\vec{r}_2).
+	\label{eqn:DensityMatrixFE}
+\end{equation}
+The double integral \eqref{eqn:ExchangeFE}
+can be split into a sum of contributions from each grid cell pair
+$(c,d) \in \left( \mathcal{M}_h \right)^2$
+\begin{align*}
+	K^{(n)}_{\mu\nu}
+	&= \sum_{c,d \in \mathcal{M}_h}
+		\int_{c} \int_{d}
+		\frac{\varphi_\mu(\vec{r}_1) \, \gamma^{(n)}(\vec{r}_1, \vec{r}_2)
+			\,\varphi_\nu(\vec{r}_2)}
+		{r_{12}} \D \vec{r}_2 \D \vec{r}_1 \\
+	&= \sum_{c,d \in \mathcal{M}_h}
+		\int_{c_0} \int_{c_0}
+		\frac{e_i(\vec{\xi}_1)\,
+			\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_1), \tau_d(\vec{\xi}_2)\right)
+			\,e_j(\vec{\xi}_2)}
+		{\norm{\tau_c(\vec{\xi}_1) - \tau_d(\vec{\xi}_2)}_2}
+		\D \vec{\xi}_1 \D \vec{\xi}_2,
+\end{align*}
+where $e_i$ is the shape function corresponding to $\varphi_\mu$
+and $e_j$ the one corresponding to $\varphi_\nu$.
+Introducing two quadratures $\mathcal{Q}$ and $\mathcal{Q}'$
+with quadrature points $\vec{\xi}_q$, $\vec{\xi}_r'$
+and corresponding weights $w_q$ and $w_r'$ yields
+\begin{align*}
+	K^{(n)}_{\mu\nu}
+		&\simeq \sum_{c,d \in \mathcal{M}_h}
+		\sum_{q=1}^{\Nquadc}
+		\sum_{r=1}^{\Nquadc'}
+		\frac{
+			e_i(\vec{\xi}_q) \,
+			\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)
+			\,e_j(\vec{\xi}'_r)}
+		{\norm{\tau_c(\vec{\xi}_q) - \tau_d(\vec{\xi}'_r)}_2}
+		w_q w_r'
+\end{align*}
+
+\todoil{Rephrase from here}
+In this expression the non-local nature of \HF exchange can be clearly observed:
+Unlike the previous Fock matrix terms
+no immediate criterion for excluding some
+pairs of finite element indices $(\mu, \nu)$ can be found
+from the derived expression.
+It is, however, well-known that the density matrix $\gamma^{(n)}(\vec{r}_1, \vec{r}_2)$
+decays exponentially with distance
+originating from the exponential decay behaviour of the wave function.
+Furthermore $1/r_{12}$ decays with increasing distance of the cells from another,
+such that overall some distance cut-off can most likely be found
+in order to exclude at least some pairs of cells in the sum.
+
+For evaluating the computational complexity,
+let us first consider the evaluation of
+$\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)$
+on one cell pair $(c,d)$ and for one pair
+of quadrature points $(\vec{\xi}_q, \vec{\xi}'_r)$.
+Let $N_\text{shape}$ denote the number of shape functions per grid cell.
+Due to the local support of the finite element functions
+we discussed before,
+there will be at most $\Nelec N_\text{shape}^2$
+terms in \eqref{eqn:DensityMatrixFE},
+which are non-zero.
+In other words evaluating
+$\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)$
+takes $\bigO(\Nelec N_\text{shape}^2)$.
+Overall this makes the evaluation of $\matK$ scale as
+\[ \bigO(\Ncell^2 \Nquadc \Nquadc' \Nelec N_\text{shape}^4) = \bigO(\Nbas^2 \Nquadc \Nquadc' \Nelec N_\text{shape}^2), \]
+which is quadratic in the number of finite elements.
+Since nothing about the sparsity structure is known the memory
+requirements for storing $\mat{K}$ are $\bigO(\Nbas^2)$ as well,
+which is highly undesirable.
+
+Luckily in many cases storing this matrix is not required.
+The reason for this is that iterative diagonalisation methods
+like the Arnoldi procedure~(see section \ref{sec:Arnoldi})
+or Davidson's method~(see section \ref{sec:Davidson})
+only need to be able to apply the matrix to be diagonalised to
+a test vector $\vec{x}$.
+In the case of the exchange matrix this allows to change
+the order of the summation in a very favourable way.
+Using expression \eqref{eqn:ExchangeFE} we can write
+for the application of $\matK$ to a test vector $\vec{x}$:
+\todoil{Use some colour to make things more clear}
+\begin{equation}
+\label{eqn:ExchangeApply}
+\begin{aligned}
+	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
+	&= \sum_{\nu\in\Ibash} K^{(n)}_{\mu\nu} x_\nu \\
+	&= \sum_{\nu\in\Ibash} \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash} \sum_{\lambda\in\Ibash}
+		x_\nu \\
+		&\hspace{70pt}
+		\int_\Omega \int_\Omega
+		\varphi_\mu(\vec{r}_1)
+		\frac{
+			C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1) \,
+			C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2)
+		}{r_{12}}
+		\varphi_\nu(\vec{r}_2) \D \vec{r}_2 \D \vec{r}_1 \\
+	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+		\int_\Omega
+			\varphi_\mu(\vec{r}_1) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1) \\
+		&\hspace{70pt}
+		\left(
+		\int_\Omega
+		\sum_{\nu,\lambda\in\Ibash}
+			\frac{C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2) \, x_\nu \varphi_\nu(\vec{r}_2)}
+			{r_{12}}
+		\D \vec{r}_2
+		\right) \D \vec{r}_1 \\
+	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+		\int_\Omega
+			\varphi_\mu(\vec{r}_1) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1)
+		\left(
+		\int_\Omega \frac{\rho_{\vec{x},i}^{(n)}(\vec{r}_2)}{r_{12}} \D \vec{r}_2
+		\right) \D \vec{r}_1,
+\end{aligned}
+\end{equation}
+where we introduced the \newterm{exchange contraction densities}
+\begin{equation}
+	\label{eqn:ExchangeContrDens}
+	\rho_{\vec{x},i}^{(n)}(\vec{r}) = \sum_{\nu,\lambda\in\Ibash}
+	C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2) \, x_\nu \varphi_\nu(\vec{r}_2).
+\end{equation}
+For each $i\in\Iocc$ we can solve a Poisson equation
+\begin{equation}
+\label{eqn:ExchangePoissonEqns}
+\begin{aligned}
+	- \Delta V_{\vec{x}, i}(\vec{r}) &= 4 \pi \rho_{\vec{x},i}^{(n)}(\vec{r})
+		&& \vec{r} \in \Omega \\
+	V^{(n)}_{\vec{x}, i}(\vec{r}) &= 0 && \vec{r} \in \partial\Omega
+\end{aligned}
+\end{equation}
+defining implicity the \newterm{exchange contraction potentials} $V^{(n)}_{\vec{x}, i}$.
+With these potentials \eqref{eqn:ExchangeApply} becomes
+\begin{align*}
+	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
+	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+		\int_\Omega
+		\varphi_\mu(\vec{r}) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r})
+		V^{(n)}_{\vec{x}, i}(\vec{r}) \D \vec{r}.
+\end{align*}
+Since $V^{(n)}_{\vec{x}, i}$ is a local operator,
+the integral can be evaluated in $\bigO(\Nbas)$
+and thus the complete expression in $\bigO(\Nelec \Nbas)$
+once the  $V^{(n)}_{\vec{x}, i}$ are known.
+
+%
+% TODO complete scaling
+%
 
