@@ -55,6 +55,16 @@ add_custom_command(
 	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/hydrogen_comparison/common.py
 )
 
+set(PDF_OUTPUTS ${PDF_OUTPUTS}
+	fe_grid_linear.pdf fe_grid_quadratic.pdf
+)
+add_custom_command(
+	OUTPUT
+	fe_grid_linear.pdf fe_grid_quadratic.pdf
+	COMMAND ${CMAKE_CURRENT_LIST_DIR}/plot_fe_grid.py
+	COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
+	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/plot_fe_grid.py
+)
 
 foreach(out ${PDF_OUTPUTS})
         pdf_image(${CMAKE_CURRENT_BINARY_DIR}/${out} TMP)

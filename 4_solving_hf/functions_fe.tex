@@ -110,14 +110,29 @@ spaces of $H^1(\Omega, \R)$ for a one-dimensional problem.
 
 \begin{figure}
 	\centering
-	\missingfigure{1D grid with linear}
-	\caption{One D case for linear FEs}
+	\includeimage{4_solving_hf/fe_grid_linear}
+	\caption{
+		A few examples of linear finite elements
+		on a one-dimensional grid
+		with unevenly spread grid points
+		$x_0$ to $x_{N_\text{cell}}$.
+		The cells are split from another
+		by vertical dashed grey lines.
+	}
 	\label{fig:FEoneDimLin}
 \end{figure}
 \begin{figure}
 	\centering
-	\missingfigure{1D grid with quadratic}
-	\caption{One D case for quadratic FEs}
+	\includeimage{4_solving_hf/fe_grid_quadratic}
+	\caption{
+		A few examples of quadratic finite elements
+		on a one-dimensional grid
+		with unevenly spread grid points.
+		The cells are split from another
+		by vertical dashed grey lines
+		and the nodal points are indicated
+		on the $x$ axis.
+	}
 	\label{fig:FEoneDimQuad}
 \end{figure}
 For representing $P_k(\mathcal{M}_h)$
@@ -428,7 +443,7 @@ For the evaluation of the Coulomb term $\matJ$
 and the exchange term $\matK$ this naive approach does not work,
 unfortunately, since neither $\Op{J}$ nor $\Op{K}$ are local operators.
 Let us first treat the Coulomb term.
-With reference to \eqref{eqn:OperatorCoulomb}
+With reference to \eqref{eqn:OperatorCoulomb} and \eqref{eqn:Jbas}
 we can write
 for all $\mu, \nu \in \Ibash$
 \begin{equation}
