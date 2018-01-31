@@ -1,11 +1,51 @@
 \section{Standard \SCF algorithms}
 \label{sec:SCFAlgorithms}
 
+From the discussion in this chapter
+as well as the vastly different Fock matrix structures
+in figures \vref{fig:StructureGaussianFock},
+\vref{fig:StructureFiniteElementFock}
+and \vref{fig:StructureSturmianFock}
+it should be rather obvious,
+that the numerical properties of an \FE-based
+discretisation, a \cGTO-based discretisation
+and a \CS-based discretisation differ.
+With this in mind it should not come as a surprise
+that not all \SCF algorithms,
+which work for a \cGTO-based discretisation
+are the best choice for the other cases as well.
+For example all \SCF algorithms,
+which assume that multiple copies of the iterated Fock matrix $\mat{F}^{(n)}$
+or the iterated density matrix $\mat{D}^{(n)}$
+can be stored cannot be used without modification
+for \FE-based discretisations
+plainly because storing such matrices with $\Nbas^2$ non-zeros is not feasible.
+On a similar note just comparing the memory requirements
+between the density matrix $\mat{D}^{(n)} \in \Nbas\times\Nbas$
+and the coefficient matrix
+$\mat{C} \in \R^{\Nbas\times\Norb}$
+suggests, that for \FE-based discretisations
+coefficient-based \SCF schemes are more appropriate.
+On top of that the computationally
+more favourable
+\contract-based ansatz for computing
+$\matJ$ and $\matK$ for a \CS basis
+suggests to avoid the density matrix for this type of basis function as well.
+In this section we will therefore
+mostly focus on coefficient-based \SCF algorithms.
+For a few cases like the direct inversion of the iterative subspace~(DIIS)
+or the optimal damping algorithm~(ODA)
+we will suggest modifications
+which bring these methods to the coefficient-based setting.
+
+
+
 Pick up on the point raised about the \contraction-based
 methods in the previous section
 and explain why for them typically
 coefficent-based \SCF schemes are best.
 
+\todoil{Check out: Linear scaling SCF as minimisation \cite{Salek2007}}
 
 
 % TODO Maybe talk about basis functions first, because then it is more
@@ -27,6 +67,7 @@ which is by no means complete or exhaustive.
 - can proof (cances) it either iterates between two solutions or converges
 
 \subsection{Level-shifting modification}
+- Level-shifting techniques \cite{Mehrotra1977}
 - Add multiple of the density matrix
 - Show what this causes
 - Show that it can help (see cances)
@@ -58,6 +99,9 @@ Only brief
 \subsection{Second-order \SCF algorithms}
 Only brief
 mention that approximate methods exist, too
+
+Quadratically-convergent scf \cite{Ochsenfeld1997}
+Augmented Roothan-Hall \cite{Hoest2008}
 
 \subsection{Combinations of algorithms}
 Ideally want to switch every now and then

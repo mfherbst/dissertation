@@ -10,40 +10,42 @@ or \newterm{atom-centered orbital}s~({\ACO}s).
 A different ansatz in many respects
 are grid-based methods,
 where the underlying idea is to partition three-dimensional real space
-into smaller parts using a structured grid
-solve the problem by interpolation and numerical integration.
+into smaller parts using a structured grid.
+The problem is then solved by grid interpolation and numerical integration
+instead of analytical evaluation of integrals.
 The example we want to consider in this work are \newterm{finite elements},
-which are specially constructed piecewise polynomials
+which are specifically constructed piecewise polynomials,
 often employed in structural mechanics or engineering
 for solving partial differential equations~\cite{Johnson1987}.
 Multiple approaches for
-solving the \HF problem or the Kohn-Sham equations approximately
-using finite-element based discretisations
-have been performed over the years as well%
-~\cite{Tsuchida1995,Soler2002,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Lee2015,Boffi2016},
-This section will only give a short overview of the finite-element method
-in the light of the \HF problem.
+solving the \HF problem or the Kohn-Sham equations
+using finite-element-based discretisations
+have been performed over the years%
+~\cite{Tsuchida1995,Soler2002,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Lee2015,Boffi2016}.
+This section only gives a short overview of the finite-element method
+in the light of the \HF problem
+with special focus on the things I have tried during my PhD.
 For more details the reader is referred
 to the rich literature~\cite{Johnson1987,Grossmann1992,Bangerth2003,Brenner2008}.
 
 \subsubsection{Construction of a \FE grid}
-Compared to the atom-centered basis functions,
+Compared to atom-centered basis functions,
 where a discretisation based on the complete domain $\R^3$ is possible,
 any grid-based method can only achieve this
-on a subset $\Omega \subset \R^3$,
-which is taken to be open.
+on a subset $\Omega \subset \R^3$.
+Typically $\Omega$ is taken to be open.
 At the boundary $\partial\Omega$ one needs
-to impose a boundary condition for the solution to be unique.
+to impose a boundary condition in order for the solution to be unique.
 There are a couple of options, which will be contrasted later.
 For now let us assume that $\Omega$ is large enough,
-such that the \SCF orbitals are essentially zero at the boundary $\partial\Omega$
+such that the \SCF orbitals are essentially zero on $\partial\Omega$
 and we can impose a homogeneous Dirichlet boundary%
 \footnote{This implies that the \HF eigenfunctions are forced
 	to be exactly zero at the boundary $\partial\Omega$.}.
 Using this approximation
 as well as the inner product
 \[ \braket{\psi}{\chi}_1 \equiv \int_\Omega \psi(\vec{r}) \chi(\vec{r})  \D \vec{r} \]
-the spin-free, real-valued \HF equations \eqref{eqn:HFequations} can be adapted to
+the spin-free, real-valued \HF equations \eqref{eqn:HFequations} can be adapted to read
 %
 \begin{equation}
 \label{eqn:HFequationsFE}
@@ -60,36 +62,34 @@ The corresponding sesquilinear form
 	\equiv \int_\Omega \psi(\vec{r}) \Op{F}_{\Theta^0} \chi(\vec{r}) \D \vec{r} \]
 is defined in analogy to \eqref{eqn:SesquilinearFormFock}.
 By partial integration it can be seen that this form
-is defined on the domain $Q(\Theta^0) = H^1(\Omega, \R)$.
+is defined on the domain $Q(\Op{F}_{\Theta^0}) = H^1(\Omega, \R)$.
 In the \newterm{finite-element method}
 the aim is to solve \eqref{eqn:HFequationsFE} variationally
 in the sense of remark \vref{rem:DiscreteFormulation}
-employing a hierarchy of approximation spaces $S_n$
-consisting of piecewise polynomials.
-Such an attempt is only sensible
-is these spaces are more and more accurate
+employing a hierarchy of approximation spaces $S_n$.
+Such an attempt is of course only sensible
+if such spaces are more and more accurate
 approximations of the form domain $H^1(\Omega, \R)$
 in the sense of \eqref{eqn:CondSubspaces}.
 
-To outline the construction of such spaces,
-let us consider at first a (fictitious) one-dimensional case
+To outline the construction the spaces $S_n$,
+let us consider at first a (fictitious) one-dimensional chemical system,
 where $\Omega = (a,b)$ with $a,b \in \R$.
 This domain can be subdivided into $\Ncell$ parts
 \[ a = x_0 < x_1 < x_2 < \cdots < x_{\Ncell} = b, \]
-which do not need to be of equal size.
+which do not need to be of equal size~(see figure \vref{fig:FEoneDimLin}).
 The open intervals $c_j = (x_j, x_{j+1})$ for $j=0, 1, \ldots, \Ncell-1$
 are called grid \newterm{cells}
 and the set $\mathcal{M}_h = \{c_j \, | \, j=0, 1, \ldots, \Ncell-1 \}$
 of all grid cells is called a \newterm{mesh} or a \newterm{triangulation}.
 In this set the index $h$ stands for the maximal size of a grid cell
 defined as
-\[ h \equiv \max_{c \in \mathcal{M}_h} \abs{\max(c) - \min(c)} \]
-in one dimension. Using the vector space
+\[ h \equiv \max_{c \in \mathcal{M}_h} \big| \max(c) - \min(c) \big|. \]
+Using the vector space
 \[
 	\set{P}_k^1 \equiv \left\{ u \in C^\infty(\R) \,\middle|\, u(x) = \sum_{i=0}^k c_i x^i, c_i \in \R \right\}
 \]
-of all real polynomials of order at most $k$ in one dimension,
-we can define
+of all real polynomials of order at most $k$, we can define
 \begin{equation}
 	P_k(\mathcal{M}_h)
 	\equiv \left\{ u \in C^0(\overline{\Omega}) \ \middle| \
@@ -99,9 +99,8 @@ we can define
 \end{equation}
 the set of piecewise polynomials of at most degree $k$.
 The elements of $P_k(\mathcal{M}_h)$
-are on the complete domain $\Omega$ at least continuous
-and inside the grid cells
-they reduce to being polynomials, thus smooth.
+are at least continuous on the complete domain $\Omega$
+and inside the grid cells they are completely smooth.
 It can be shown~\cite[Lemma 4.1]{Grossmann1992} that this implies
 $P_k(\mathcal{M}_h) \subset H^1(\Omega, \R)$.
 As $h \to 0$ such approximations become more exact,
@@ -130,21 +129,21 @@ spaces of $H^1(\Omega, \R)$ for a one-dimensional problem.
 		with unevenly spread grid points.
 		The cells are split from another
 		by vertical dashed grey lines
-		and the nodal points are indicated
+		and the nodal points are indicated as by ticks
 		on the $x$ axis.
 	}
 	\label{fig:FEoneDimQuad}
 \end{figure}
-For representing $P_k(\mathcal{M}_h)$
 \newcommand{\Ibash}{\mathcal{I}_{\text{bas},h}}
-one typically chooses a \newterm{Lagrange basis} $\{\varphi_\mu\}_{\mu\in \Ibash}$
-consisting of basis functions $\varphi_\mu$ with $0 \leq \mu \leq k \Ncell$
+For representing $P_k(\mathcal{M}_h)$
+one typically chooses a \newterm{Lagrange basis} $\{\varphi_\mu\}_{\mu\in \Ibash}$,
+consisting of basis functions $\varphi_\mu$ with $0 \leq \mu \leq k \Ncell$,
 defined as
 \begin{align*}
 	\varphi_\mu &\in P_k(\mathcal{M}_h), &
-	\varphi_\mu(\tilde{x}_\nu) &= \delta_{\mu\nu}
+	\varphi_\mu(\tilde{x}_\nu) &= \delta_{\mu\nu}.
 \end{align*}
-where%
+In this expression%
 \footnote{In equation \eqref{eqn:FEnodalPointsOneD} $\nu/k$ denotes integer division
 without remainder.}
 \begin{equation}
@@ -160,7 +159,7 @@ Examples for linear and quadratic finite elements are
 illustrated in figures \ref{fig:FEoneDimLin} and \ref{fig:FEoneDimQuad} respectively.
 In each case the finite element functions
 are either $1$ or $0$ at the nodal points and only
-have support on a few cells, which are furthermore direct neighbours.
+are non-zero on a few cells, which are always direct neighbours.
 
 In the following we want to generalise this construction
 for a three-dimensional domain $\Omega$.
@@ -168,43 +167,47 @@ In the most general form a mesh can be defined as
 \begin{defn}[Mesh]
 	Let $\Omega$ be a domain in $\R^3$.
 	A mesh is a finite set $\mathcal{M}_h = {c_0, c_1, \ldots, c_{\Ncell-1}}$
-	of $\Ncell$ bounded domains $c_i$ with sufficiently regular boundary%
-	\footnote{More precisely the boundary has to be Lipschitz.},
+	of $\Ncell$ domains $c_i$ with sufficiently regular boundary%
+	\footnote{The boundary of the domains has to be Lipschitz.},
 	such that
 	\begin{align*}
 		\overline{\Omega} &= \bigcup_{i=0}^{\Ncell-1} \overline{c_i}
+		&&\text{and}
 		&c_i \cap c_j = \emptyset \quad \forall i \neq j,
 	\end{align*}
-	\ie such that these domains fully partition $\Omega$.
+	\ie such that these domains completely partition $\Omega$.
 	Furthermore we set for each $c \in \mathcal{M}_h$
 	the \newterm{cell diameter}
-	\[ h(c) = \max_{\vec{x},\vec{y} \in bar{c}} \norm{\vec{x}-\vec{y}}_2 \]
+	\[ h(c) = \max_{\vec{x},\vec{y} \in \bar{c}} \norm{\vec{x}-\vec{y}}_2 \]
 	and call
 	\[ h = \max_{c \in \mathcal{M}_h} h(c) \]
 	the \newterm{mesh size}.
 \end{defn}
-In many cases one does, however, only consider
-so-called \newterm{affine} meshes.
+\noindent
+Usually one only considers so-called \newterm{affine} meshes.
 \begin{defn}
 	A mesh is called affine if a reference cell $c_0$
-	and affine transformations%
+	and for each cell $c_i \in \mathcal{M}_h$
+	affine transformations%
 	\footnote{A transformation $\tau$ is affine iff $\tau(\vec{x}) = \mat{A}\vec{x} + \vec{b}$ with $\mat{A}$ being a transformation matrix and $b$ being a constant shift vector.}
-	$\tau_{c_i}$ exist for each cell $c_i \in \mathcal{M}_h$,
+	$\tau_{c_i}$ exist,
 	such that $\overline{c_i} = \tau_{c_i}(c_0)$.
 \end{defn}
 In other words a mesh is affine exactly if each
 grid cell can be generated from the reference cell $c_0$
-by a linear transformation followed by a shift to the correct position.
+by a linear transformation followed by a shift.
 This work only considers \textbf{cuboidal meshes},
 where the reference cell $c_0 = [0,1]^3$ is the unit cube.
 Similar to the construction of the grid cells,
-the finite elements of order $k$
-on each cuboidal grid cell $c \in \mathcal{M}_h$
-can be constructed by applying the affine transformation $\tau_c$
-to a set of template polynomials of order $k$
-defined on the reference cell $c_0$.
-These template polynomials are called
-\newterm{shape function}s.
+the finite elements of order $k$ themselves
+can be constructed by applying the affine transformations
+to a set of template polynomials of the same order $k$.
+Typically one defines these so-called
+\newterm{shape function}s ${e_i}_i$
+on the reference cell $c_0$
+and uses the affine transformation $\tau_c$
+to generate the finite elements on each cell
+via $\tau_c(e_i)$.
 %
 \begin{figure}
 	\centering
@@ -213,26 +216,28 @@ These template polynomials are called
 	\label{fig:ShapeFunctions}
 \end{figure}
 %
-A few examples in one and two dimensions are illustrated
-in figure \ref{fig:ShapeFunctions},
-where the shape functions in two dimensions
+A few examples of shape functions in one and two dimensions are illustrated
+in figure \ref{fig:ShapeFunctions}.
+Notice, that the shape functions in two dimensions
 have been constructed as tensor products from the one-dimensional ones.
 This construction is a special property of so-called $Q_k$ finite elements,
 which are typically used in cuboidal meshes.
-This tensor product ansatz allows to construct $Q_k$ elements
-in three and higher dimensions as well.
+Via the tensor product ansatz $Q_k$ elements
+in three and higher dimensions can be constructed as well.
 
 Let us denote with $S_h$ the
-space spanned by all the $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
+space spanned by all $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
 on a cuboidal mesh $\mathcal{M}_h$,
-constructed by the means of appropriate affine maps and shape functions.
+which have been constructed by applying
+appropriate affine maps to a set of shape functions.
 Even though we always have $S_h \subset H^1(\Omega, \R)$,
 condition \eqref{eqn:CondSubspaces}
-is not always satisfied as the mesh size $h \to 0$.
-In other words to ensure convergence of the Ritz-Galerkin procedure in three dimensions
-vanishing mesh size is not sufficient.
-On top of that the mesh needs to stay
-what is called \textbf{uniform} and \textbf{shape-regular}.
+is \emph{not} necessarily satisfied as $h \to 0$.
+In other words to ensure convergence
+of the Ritz-Galerkin procedure in three dimensions
+a vanishing mesh size is not sufficient.
+The further required conditions are that the mesh
+is \textbf{uniform} and \textbf{shape-regular}.
 Roughly speaking these conditions ensure that
 all grid cells have roughly the same size
 and their shape is closer to being a ball than to being a needle.
@@ -242,21 +247,24 @@ an initial mesh can be refined more and more
 until the \HF problem \eqref{eqn:HFequationsFE}
 is solved up to the desired accuracy.
 Furthermore \textit{a priori} and \textit{a posteriori} error estimates
-can be derived for regular meshes and
-those grid cells, which contribute most
-to the estimated error, can be identified.
-Usually the error in a grid cell $c$
-is related to its diameter $h(c)$,
-which suggest to refine a mesh adaptively at those cells,
-where the error is largest.
+can be derived for regular meshes.
+From these estimates grid cells,
+which contribute most to the estimated error,
+can be identified and refined
+--- typically by splitting them into four equal-sized parts.
+This refinement strategy%
+\footnote{%
+In practice there is a bit more to it,
+since the meshes should stay uniform and shape-regular.
+}
+is called \newterm{adaptive refinement}.
 Since \FE grids do not need to be equally spaced,
-this suggests a scheme where starting from a crude initial grid
-the problem \eqref{eqn:HFequationsFE} is solved,
-whilst adaptively refining the grid only at some places
+one may well start from a crude initial grid
+and refine the grid adaptively
+whilst solving the problem \eqref{eqn:HFequationsFE}
 until the desired accuracy is achieved.
 In this manner the density of grid points
-is lower where the electron density does not change a lot
-and is higher,
+is lower where the electron density does not change a lot and is higher,
 where more grid cells are needed to represent the problem properly.
 Notice, how this can be entirely automatised.
 Compared to a \cGTO-based discretisation
@@ -265,35 +273,33 @@ the finite-element method is therefore truly back box.
 There are a couple of caveats to the finite-element method,
 which should not go unmentioned.
 First of all the tensor product construction of the $Q_k$ finite elements
-in two and three dimensions implies
-that the three dimensional \FE basis $\{\varphi_\mu\}_{\mu\in\Ibash}$
-has extremely local support as well.
-The difference is that instead of 2 neighbours like in 1D,
-most cells now have $2^3 = 8$ neighbours instead.
-Consequently a $Q_k$ finite-element in 3D can have support on at most 8 cells,
-\ie stays highly localised.
-This is an advantage for evaluating the integrals
-involved in the sesquilinear form $a_\Theta(\slot,\slot)$
-as such become embarrassingly parallel for local operators.
-See the discussion below for details.
-It implies further, however, that many finite elements
-are typically required for a proper description of the \HF orbitals
-on the full domain $\Omega$,
-typically in the order of millions.
-Thus all algorithmic approaches for solving the numerical problems
-arising from a \FE discretisation need to
-scale linearly or sub-linearly in the number of finite-element basis functions.
+in two and three dimensions
+implies that
+the three-dimensional \FE basis $\{\varphi_\mu\}_{\mu\in\Ibash}$
+is only non-zero in a few cells as well.
+For a proper description of the \HF orbitals
+on the full domain $\Omega$
+therefore many finite elements are required,
+typically $10^5$ to $10^6$~\cite{Davydov2015}.
+All approaches for solving the numerical problems arising from a \FE
+discretisation may therefore scale at most linearly to be feasible.
+Luckily the strict locality of the \FE basis functions
+usually implies that exactly this can be done.
 
-Secondly the electron-nuclear cusp tends to be an issue.
-Even the simplest cell-wise error estimators employed in the finite-element method,
-like the Kelly error estimator~\cite{KellyError},
-contain a term involving the gradient of the approximate solution.
-In other words a larger amount of grid points
-and thus a larger amount of finite-element basis functions
-is required around regions where the gradient is large.
+Secondly the electron-nuclear cusp tends to be an issue
+for finite elements as well.
+For most problems the cell-wise error contains
+a term involving the gradient of the approximate solution.
+See the Kelly error estimator~\cite{KellyError} for a very simple example.
+The adaptive refinement process
+will therefore place a larger amount of grid points
+--- and thus a larger amount of finite-element basis functions ---
+around the regions,
+where the gradient of the approximated function is large.
 Both the wave function as well as the \HF orbitals
-have large gradients around the electron-nuclear cusp~\cite{Kato1957}.
-Furthermore the only discontinuity occurs at the nuclear position~\cite{Kato1951}.
+have large gradients around the electron-nuclear cusp~\cite{Kato1957},
+which is furthermore the only discontinuity of these
+functions~\cite{Kato1951}.
 Even though the region around the core
 is not very interesting from a chemical point of view,
 it thus consumes a large number of \FE basis functions
@@ -305,7 +311,7 @@ leaving only the regions of smaller gradients
 to be represented by finite elements.
 Overall this significantly reduces the number of finite elements required.
 For simplicity we will not consider pseudo-potentials
-in the remaining discussion about finite-elements,
+in the remaining discussion about finite elements,
 but our expressions can be easily modified to incorporate such.
 
 \subsubsection{Evaluating the discretised Fock matrix}
@@ -314,10 +320,10 @@ at some stage during
 the process of solving \eqref{eqn:HFequationsFE} up to desired accuracy.
 On $\mathcal{M}_h$ we can construct
 a set of $\Nbas$ $Q_k$ finite elements $\{\varphi_\mu\}_{\mu\in\Ibash}$
-following the procedure outlined above
-and use these to discretise \eqref{eqn:HFequationsFE}
-in a completely analogous procedure to section \vref{sec:DiscreteHF}.
-This again results in a non-linear eigenproblem
+following the procedure outlined above.
+In a completely analogous procedure to section \vref{sec:DiscreteHF}
+we use these to discretise \eqref{eqn:HFequationsFE},
+which results in the non-linear eigenproblem
 \begin{equation}
 	\begin{aligned}
 		\matFnfull \mat{C}_F^{(n+1)} &= \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)} \\
@@ -331,22 +337,22 @@ where
 	\mat{E}^{(n+1)}
 	&= \text{diag}\left(\varepsilon_1^{(n+1)},
 	\varepsilon_2^{(n+1)}, \ldots,
-	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}
+	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}.
 \end{align*}
-and the occupied coefficients $\mat{C}^{(n+1)} \in \R^{\Nbas \times \Nelec}$
-are the first $\Nelec$ columns of the full coefficient matrix
-$\mat{C}_F^{(n+1)} \in \R^{\Nbas \times \Norb}$
-according to Aufbau principle.
+By the Aufbau principle
+the occupied coefficients $\mat{C}^{(n+1)} \in \R^{\Nbas \times \Nelec}$
+are as usual the first $\Nelec$ columns of the full coefficient matrix
+$\mat{C}_F^{(n+1)} \in \R^{\Nbas \times \Norb}$.
 The individual terms of the Fock matrix and the overlap matrix
 are given by expressions \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
-just with the replacement of the integration over $\R^3$
-by an integration over $\Omega$.
-Naturally problem \eqref{eqn:SCFproblemFE} can be solved
-by a self-consistent field procedure of remark \vref{rem:SCFcoeff}.
+just with the integration over $\R^3$ replaced by
+an integration over $\Omega$.
+Naturally problem \eqref{eqn:SCFproblemFE} can in principle be solved
+by the self-consistent field procedure of remark \vref{rem:SCFcoeff}.
 
 For evaluating the Fock matrix $\matFnfull$,
-let us first consider the easy cases,
-namely the terms $\mat{T}$ and $\mat{V}_0$ as well as the overlap matrix $\mat{S}$.
+let us first consider the terms
+$\mat{T}$ and $\mat{V}_0$ as well as the overlap matrix $\mat{S}$.
 This amounts to evaluating integrals
 \begin{align*}
 O_{\mu\nu} &=  \int_\Omega \varphi_\mu(\vec{r}) \, \Op{O} \, \varphi_\nu(\vec{r}) \D\vec{r}
@@ -368,20 +374,21 @@ denotes the \newterm{support} of a function $\chi$.
 In other words $\left(\Op{O} \varphi_\nu\right)(\vec{r})$
 is non-zero only if $\varphi_\nu(\vec{r})$ is non-zero,
 which implies
-\[ c \not\in \text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu)
+\[ c \not\subset \text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu)
 	\quad \Rightarrow \quad
 	O^c_{\mu\nu} = 0.
 \]
+\todoil{Read from here till the end of the section}
 Conversely to build the matrix $\mat{O}$
 we only need to consider those elements $O_{\mu\nu}$
 where $\text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu) \neq \emptyset$.
-A particular $\varphi_\mu$ only has support in 8 cells as indicated above.
+A particular $\varphi_\mu$ only has support in up to $2^3 = 8$ cells.
 In each cell at most $(k+1)^3$ finite elements have support,
 such that for a particular $\mu\in\Ibash$,
 $O_{\mu\nu}$ can only be non-zero
 for at most $8 (k+1)^3$ values of $\nu\in\Ibash$.
 Using a clever ordering of the finite-element functions
-one can determine the set of finite-elements $\varphi_\nu$,
+one can determine the set of finite elements $\varphi_\nu$,
 which couple with a given element $\varphi_\mu$ immediately~\cite{CuthillMcKee},
 such that $\mat{O}$ can be evaluated by only considering
 a number of pairs $(\mu,\nu) \in \left(\Ibash\right)^2$,
@@ -390,7 +397,7 @@ Furthermore the cell contributions $O^c_{\mu\nu}$ to $\mat{O}$
 are independent from another,
 such that $\mat{O}$ can be determined by an embarrassingly parallel MapReduce step.
 
-By construction for each finite-element
+By construction for each finite element
 $\varphi_\mu$ one can find a shape function $e_i$
 such that on a particular cell $c \in \mathcal{M}_h$
 \[
@@ -429,7 +436,7 @@ as well as the embarrassingly parallel procedure
 this makes the computation of the matrices $\mat{T}$,
 $\mat{V}_0$ and $\mat{S}$ extremely efficient despite
 the large number of basis functions $\Nbas$ for a
-finite-element based discretisation.
+finite-element-based discretisation.
 Since we know already \emph{before} any computation
 the pairs of finite elements $(\varphi_\mu, \varphi_\nu)$
 which do not have common support,
@@ -561,10 +568,15 @@ which consists of products $\varphi_\mu, \varphi_\nu$.
 These can only be represented exactly if at least $Q_{2k}$ elements
 are used to discretise \eqref{eqn:PoissionFE}.
 
-\subsubsection{Evaluating the \HF exchange contribution}
-Similar to the Coulomb term we
-use \eqref{eqn:OperatorExchange} and \eqref{eqn:Kbas} to
-write the exchange matrix elements for all $\mu, \nu \in \Ibash$ as
+%
+% -------------
+%
+
+\todoil{Pagebreak?}
+Now we consider the exchange term.
+Using \eqref{eqn:OperatorExchange} and \eqref{eqn:Kbas} we can
+deduce an expression of the exchange matrix elements.
+For all $\mu, \nu \in \Ibash$ we get
 \begin{equation}
 	\label{eqn:ExchangeFE}
 	K^{(n)}_{\mu\nu} \equiv
@@ -594,7 +606,7 @@ $(c,d) \in \left( \mathcal{M}_h \right)^2$
 	&= \sum_{c,d \in \mathcal{M}_h}
 		\int_{c_0} \int_{c_0}
 		\frac{e_i(\vec{\xi}_1)\,
-			\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_1), \tau_d(\vec{\xi}_2)\right)
+			\gamma^{(n)}\!\!\left(\tau_c(\vec{\xi}_1), \tau_d(\vec{\xi}_2)\right)
 			\,e_j(\vec{\xi}_2)}
 		{\norm{\tau_c(\vec{\xi}_1) - \tau_d(\vec{\xi}_2)}_2}
 		\D \vec{\xi}_1 \D \vec{\xi}_2,
@@ -603,7 +615,7 @@ where $e_i$ is the shape function corresponding to $\varphi_\mu$
 and $e_j$ the one corresponding to $\varphi_\nu$.
 Introducing two quadratures $\mathcal{Q}$ and $\mathcal{Q}'$
 with quadrature points $\vec{\xi}_q$, $\vec{\xi}_r'$
-and corresponding weights $w_q$ and $w_r'$ yields
+and corresponding weights $w_q$ and $w_r'$ yields approximately
 \begin{align*}
 	K^{(n)}_{\mu\nu}
 		&\simeq \sum_{c,d \in \mathcal{M}_h}
@@ -611,80 +623,156 @@ and corresponding weights $w_q$ and $w_r'$ yields
 		\sum_{r=1}^{\Nquadc'}
 		\frac{
 			e_i(\vec{\xi}_q) \,
-			\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)
+			\gamma^{(n)}\!\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)
 			\,e_j(\vec{\xi}'_r)}
 		{\norm{\tau_c(\vec{\xi}_q) - \tau_d(\vec{\xi}'_r)}_2}
 		w_q w_r'
 \end{align*}
-
-\todoil{Rephrase from here}
-In this expression the non-local nature of \HF exchange can be clearly observed:
+There are a couple of issues with this expression.
+First of all there is the $1/r_{12}$ singularity,
+which becomes $\norm{\tau_c(\vec{\xi}_q) - \tau_d(\vec{\xi}'_r)}_2^{-1}$
+after we introduced the numerical quadrature.
+If the resulting matrix elements should be numerically meaningful
+one needs to at least make sure that the quadrature
+points $\vec{\xi}_q$ and $\vec{\xi}'_r$ are rather different for both
+quadratures in order to avoid divergence.
+More properly one needs to use a particular quadrature scheme,
+suitable for integrating this singularity
+or one needs a lot of quadrature points.
+Already this aspect makes the construction of $\mat{K}$ more challenging
+than the other matrices.
+Additionally the non-local nature of \HF exchange really comes
+into play as well.
 Unlike the previous Fock matrix terms
 no immediate criterion for excluding some
 pairs of finite element indices $(\mu, \nu)$ can be found
 from the derived expression.
-It is, however, well-known that the density matrix $\gamma^{(n)}(\vec{r}_1, \vec{r}_2)$
-decays exponentially with distance
-originating from the exponential decay behaviour of the wave function.
-Furthermore $1/r_{12}$ decays with increasing distance of the cells from another,
-such that overall some distance cut-off can most likely be found
-in order to exclude at least some pairs of cells in the sum.
 
-For evaluating the computational complexity,
-let us first consider the evaluation of
+Luckily each element $K^{(n)}_{\mu\nu}$
+can be evaluated in $\bigO(k^6 \Nquadc \Nquadc' \Nelec)$
+computational time.
+To see this let us first consider the evaluation of
 $\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)$
 on one cell pair $(c,d)$ and for one pair
 of quadrature points $(\vec{\xi}_q, \vec{\xi}'_r)$.
-Let $N_\text{shape}$ denote the number of shape functions per grid cell.
-Due to the local support of the finite element functions
-we discussed before,
-there will be at most $\Nelec N_\text{shape}^2$
-terms in \eqref{eqn:DensityMatrixFE},
-which are non-zero.
+With each cell $c$ only $\bigO(k^3)$ finite element functions share support.
+Therefore
+there will be at most $\bigO(\Nelec (k^3)^2)$
+terms in \eqref{eqn:DensityMatrixFE}, which are non-zero.
 In other words evaluating
 $\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)$
-takes $\bigO(\Nelec N_\text{shape}^2)$.
-Overall this makes the evaluation of $\matK$ scale as
-\[ \bigO(\Ncell^2 \Nquadc \Nquadc' \Nelec N_\text{shape}^4) = \bigO(\Nbas^2 \Nquadc \Nquadc' \Nelec N_\text{shape}^2), \]
-which is quadratic in the number of finite elements.
-Since nothing about the sparsity structure is known the memory
-requirements for storing $\mat{K}$ are $\bigO(\Nbas^2)$ as well,
+takes $\bigO(\Nelec k^6)$,
+which makes a single element $K^{(n)}_{\mu\nu}$ get evaluated
+in $\bigO(k^6 \Nquadc \Nquadc' \Nelec)$.
+Overall the computational scaling for the naive
+procedure outlined above is therefore $\bigO(\Nbas^2)$.
+In storage we would expect the same quadratic scaling,
 which is highly undesirable.
 
-Luckily in many cases storing this matrix is not required.
-The reason for this is that iterative diagonalisation methods
-like the Arnoldi procedure~(see section \ref{sec:Arnoldi})
-or Davidson's method~(see section \ref{sec:Davidson})
-only need to be able to apply the matrix to be diagonalised to
-a test vector $\vec{x}$.
-In the case of the exchange matrix this allows to change
-the order of the summation in a very favourable way.
+Theoretically one would expect,
+that this can be improved by considering some distance cut-off.
+The physical justification for this is the exponential decay of the wave function,
+which causes the density matrix $\gamma^{(n)}(\vec{r}_1, \vec{r}_2)$
+to decay exponentially with $\norm{\vec{r}_1 - \vec{r}_2}_2$
+as well,
+provided that the discretisation is sensible for describing the problem.
+In combination with the additional decay of $1/r_{12}$
+it should be possible to \textit{a priori} exclude some index pairs $(\mu, \nu)$
+and thus reduce the scaling.
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/fock_fe}\\[-0.7em]
+	\begin{tabularx}{0.67\textwidth}{XcX}
+		a) $\mat{T} + \mat{V}_0 + \mat{J}$ & \hspace{0.27\textwidth} &
+		\hspace{0.02\textwidth}b) $\mat{F}$
+	\end{tabularx}
+	\caption[Local terms and Fock matrix for a finite-element-based Hartree-Fock]
+		{Structure of the local terms $\mat{T}+\mat{V}_0 + \mat{J}$
+		and the Fock matrix $\mat{F}$
+		for a finite-element-based \HF treatment
+		of the beryllium atom
+		in a small \FE basis of around 7000 basis functions.
+		The Pulay error of the depicted Fock matrix
+		is around $0.1$.
+		The colouring depends on the absolute value of the entries
+		with entries smaller than $10^{-10}$ being shown in white.
+	}
+	\label{fig:StructureFiniteElementFock}
+\end{figure}
+
+From the preliminary results I obtained,
+I would not expect this attempt to be more beneficial
+compared to other strategies, we will be outline in the next paragraph.
+To illustrate this, consider figure \vref{fig:StructureFiniteElementFock},
+where both the structure of the local terms $\mat{T}+\mat{V}_0 + \mat{J}$
+and the structure of the complete Fock matrix
+\[ \mat{F} = \mat{T}+\mat{V}_0 + \mat{J} + \mat{K} \]
+is depicted for a closed-shell treatment of the beryllium atom.
+Notice that we only used a rather small finite-element basis with
+around 7000 finite element functions.
+The colouring depends on the absolute value of the entries,
+where white indicates values less than $10^{-10}$.
+From the figure it is immediately visible,
+that the extra exchange term $\mat{K}$
+seems to play a major role only in some blocks of the Fock matrix,
+but not so much in others.
+Whilst this probably allows to neglect the evaluation
+of some blocks of $\mat{K}$,
+still a large amount of elements cannot be ignored.
+Notice, that even in the upper left corner of $\mat{F}$
+some elements originating from $\mat{K}$ are larger than $10^{-10}$.
+Compared to the structure of the local terms $\mat{T}+\mat{V}_0 + \mat{J}$,
+even a clever reordering scheme
+will probably not improve the sparsity structure very much.
+I therefore believe it to be challenging if not impossible
+to achieve an $\bigO(\Nbas)$-scaling in the number
+of matrix entries $K^{(n)}_{\mu\nu}$,
+which have to be computed.
+
+An alternative strategy
+is to avoid building and storing the matrix $\mat{K}$ at all
+and instead recompute its elements whenever needed.
+At first sight this seems like walking into the opposite direction
+not making the problem any easier.
+As we will demonstrate for the example
+of the application of the exchange matrix $\mat{K}$,
+to an arbitrary vector $\vec{x} \in \R^{\Nbas}$,
+this is not always true.
+The trick is usually that changing the order of summation and integration
+often allows to compute the elements of a matrix like $\mat{K}$
+in a more efficient way,
+changing the overall computational scaling reduces to $\bigO(\Nbas)$.
+For easier writing of the following algebra, let
+\[ \psi_i^{(n)}(\vec{r}) = \sum_{\mu\in\Ibash} C^{(n)}_{\mu i} \varphi_\mu(\vec{r}) \]
+such that
+\[
+	\gamma^{(n)}(\vec{r}_1, \vec{r}_2)
+	= \sum_{i\in\Iocc} \psi_i^{(n)}(\vec{r}_1) \psi_i^{(n)}(\vec{r}_2)
+\]
 Using expression \eqref{eqn:ExchangeFE} we can write
-for the application of $\matK$ to a test vector $\vec{x}$:
-\todoil{Use some colour to make things more clear}
+the application of $\matK$ to a vector $\vec{x}$ as:
 \begin{equation}
 \label{eqn:ExchangeApply}
 \begin{aligned}
 	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
-	&= \sum_{\nu\in\Ibash} K^{(n)}_{\mu\nu} x_\nu \\
-	&= \sum_{\nu\in\Ibash} \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash} \sum_{\lambda\in\Ibash}
-		x_\nu \\
-		&\hspace{70pt}
+	&= \sum_{\nu\in\Ibash} x_\nu K^{(n)}_{\mu\nu} \\
+	&= \sum_{\nu\in\Ibash}
+		x_\nu
 		\int_\Omega \int_\Omega
 		\varphi_\mu(\vec{r}_1)
+		\sum_{i\in\Iocc}
 		\frac{
-			C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1) \,
-			C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2)
+			\psi_i^{(n)}(\vec{r}_1) \psi_i^{(n)}(\vec{r}_2)
 		}{r_{12}}
 		\varphi_\nu(\vec{r}_2) \D \vec{r}_2 \D \vec{r}_1 \\
-	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+	&= \sum_{i\in\Iocc}
 		\int_\Omega
-			\varphi_\mu(\vec{r}_1) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1) \\
-		&\hspace{70pt}
+		\varphi_\mu(\vec{r}_1) \psi_i^{(n)}(\vec{r}_1)
 		\left(
 		\int_\Omega
-		\sum_{\nu,\lambda\in\Ibash}
-			\frac{C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2) \, x_\nu \varphi_\nu(\vec{r}_2)}
+		\sum_{\nu\in\Ibash}
+			\frac{\psi_i^{(n)}(\vec{r}_2) \, x_\nu \varphi_\nu(\vec{r}_2)}
 			{r_{12}}
 		\D \vec{r}_2
 		\right) \D \vec{r}_1 \\
@@ -702,7 +790,7 @@ where we introduced the \newterm{exchange contraction densities}
 	\rho_{\vec{x},i}^{(n)}(\vec{r}) = \sum_{\nu,\lambda\in\Ibash}
 	C^{(n)}_{\lambda i} \varphi_\lambda(\vec{r}_2) \, x_\nu \varphi_\nu(\vec{r}_2).
 \end{equation}
-For each $i\in\Iocc$ we can solve a Poisson equation
+For each $i\in\Iocc$ we can solve a Poisson equation in analogy to \eqref{eqn:PoissionFE}
 \begin{equation}
 \label{eqn:ExchangePoissonEqns}
 \begin{aligned}
@@ -711,21 +799,150 @@ For each $i\in\Iocc$ we can solve a Poisson equation
 	V^{(n)}_{\vec{x}, i}(\vec{r}) &= 0 && \vec{r} \in \partial\Omega
 \end{aligned}
 \end{equation}
-defining implicity the \newterm{exchange contraction potentials} $V^{(n)}_{\vec{x}, i}$.
+defining implicitly the \newterm{exchange contraction potentials} $V^{(n)}_{\vec{x}, i}$.
 With these potentials \eqref{eqn:ExchangeApply} becomes
-\begin{align*}
+\begin{equation}
 	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
-	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+	= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
 		\int_\Omega
 		\varphi_\mu(\vec{r}) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r})
 		V^{(n)}_{\vec{x}, i}(\vec{r}) \D \vec{r}.
-\end{align*}
+	\label{eqn:ExchangeFromPotentials}
+\end{equation}
 Since $V^{(n)}_{\vec{x}, i}$ is a local operator,
-the integral can be evaluated in $\bigO(\Nbas)$
-and thus the complete expression in $\bigO(\Nelec \Nbas)$
-once the  $V^{(n)}_{\vec{x}, i}$ are known.
+the integrals in \eqref{eqn:ExchangeFromPotentials}
+can be evaluated in $\bigO(k^3 \Nbas \Nquadc)$
+one the potentials $V^{(n)}_{\vec{x}, i}$ are known.
+Consequently the complete expression \eqref{eqn:ExchangeFromPotentials}
+can be computed in $\bigO(k^3 \Nquadc \Nelec \Nbas)$ time.
 
-%
-% TODO complete scaling
-%
+Assuming we use the same grid and polynomial order
+for solving the Poission equations \eqref{eqn:ExchangePoissonEqns}
+and for discretising \eqref{eqn:HFequationsFE},
+each of the exchange contraction densities
+\eqref{eqn:ExchangeContrDens}
+can be evaluated on the grid in $\bigO(k^3 \Nquadc \Nbas)$.
+Solving each Poission equation \eqref{eqn:ExchangePoissonEqns}
+is again $\bigO(\Nbas)$,
+such that overall obtaining the potentials $V^{(n)}_{\vec{x}, i}$
+takes $\bigO(k^3 \Nquadc \Nelec \Nbas)$ time.
+Even though computing the complete matrix $\mat{K}$ is quadratic
+in $\Nbas$,
+the application to a vector $\vec{x}$
+can be done in $\bigO(\Nbas)$ computational time
+with this scheme.
+When it comes to storage,
+the most costly step is the discretisation
+of the Laplace operator $\Delta$ for solving the Poission equations
+\eqref{eqn:ExchangePoissonEqns},
+which is after all still linear in $\Nbas$.
 
+Many iterative diagonalisation algorithms,
+like Arnoldi's method~(see section \ref{sec:Arnoldi})
+or Davidson's method~(see section \ref{sec:Davidson})
+do not make explicit reference the elements of the matrix to be diagonalised.
+Much rather they only require a way to perform the matrix-vector product.
+In the context of the ARPACK~\cite{Lehoucq1998} library
+this has been possible since the 90s
+by means of their celebrated reverse communication interface.
+Notice that it is very costly
+to obtain \emph{all} eigenpairs of the diagonalised matrix
+by these algorithms
+and thus typically avoided.
+On the upside obtaining some selected part of the eigenspectrum
+of a particular matrix
+can be achieved even \emph{without} having the complete matrix in memory.
+In the context of the finite-element method
+so-called \newterm{matrix-free methods}~\cite{Kronbichler2012}
+have been developed recently,
+which follow this strategy.
+These methods avoid avoid building
+any finite-element-discretised form of any operator in memory,
+including local operators like $\Op{T}$, $\Op{V}_0$ or $\Op{J}$.
+If properly preconditioned iterative linear solvers are used,
+such methods tend to perform better~\cite{Kronbichler2012}
+than their traditional counterparts.
+
+In the context of finite-element-based \HF
+this seems to be a very promising ansatz.
+Already lifting the requirement to build the Fock matrix $\mat{F}$
+and intstead only employ
+iterative diagonalisation algorithms
+allows to formally reduce the scaling from $\bigO{\Nbas^2}$ to $\bigO{\Nbas}$
+--- in both storage and time.
+In our preliminary implementation of such a scheme,
+we were, however, not able to implement such an ansatz successfully.
+The biggest challenge is
+the application of the exchange term $\mat{K}$.
+Even though the formal scaling is linear in $\Nbas$,
+one still needs to solve the Poisson equations \eqref{eqn:ExchangePoissonEqns}
+a lot of times.
+Already for each matrix-vector application
+$\Nelec$ Poission-solves are required.
+For both Davidson and Arnoldi one usually needs around 50 iterations,
+with a couple of hundred matrix-vector products to be computed.
+If we further need around 30 \SCF steps,
+this alltogether makes some 1000 Poisson-solves
+already for very small chemical systems.
+The only way this can be achieved is by
+proper approximations, proper preconditioning and
+the caching of important intermediate results.
+Beyond the multigrid preconditioning we already mentioned
+in the context of the Coulomb term \eqref{eqn:PoissionFE},
+other options for preconditioning include
+an incomplete Choleski factorisation
+\todo{cite}
+of the discretised form of $\Delta$
+or potentially even an exact sparse inversion
+using libraries like UMFPACK
+\todo{cite}.
+Even though such approaches are comparatively costly,
+they are extremely good preconditioners up to the point,
+where solving the Poisson equations \eqref{eqn:ExchangePoissonEqns}
+reduces to a single matrix-vector product.
+Since $\Delta$ is essentially equivalent to $\mat{T}$
+and occurrs both is the computation of $\matJ$
+as well as the equations \eqref{eqn:ExchangePoissonEqns}
+for applying $\matK$ to a vector, the costs could amortise overall.
+If one accepts storing the discretised form of $\Delta$
+as well as its approximate or exact inverse,
+one can reduce the costs even further,
+since these quantities only need to be computed
+once for each discretisation grid
+and not once per \SCF cycle.
+Another problem in the proposed scheme for \FE-based \HF
+is numerical stability.
+In integrals like \eqref{eqn:ExchangeFromPotentials}
+the integrand is no longer a simple polynomial function,
+but could have a rather complex funcitonal form,
+such that higher quadrature orders than usual
+could be neccessary.
+Furthermore our experiments seem to suggest,
+that the Poission equations \eqref{eqn:ExchangePoissonEqns}
+need to be solved to rather low residual threshold
+in order to result in meaningful eigenpairs
+in the iterative diagonalisation method.
+We have not yet managed to achieve
+a good choice of error thresholds in the quadratures
+and various iterative solvers to finish even a simple \SCF
+in reasonable time.
+
+Despite these numerical challenges
+finite-element-based \HF is still very promising.
+Once clear relationships between the quadrature orders
+and the required accuracies between the iterative solvers
+are known,
+the error is completely controlled by the discretisation itself.
+An adaptively refined grid should therefore allow to solve
+the \HF problem up to arbitrary precision.
+Instead of choosing a discretisation basis set
+like for {\cGTO}s,
+which perhaps does not lead to the correct answer,
+the finite-element method
+allows that the discretisation chooses itself automatically
+up to a certain extend.
+Even though no further results from \FE-based quantum chemistry
+will be presented in this work,
+many decisions made with respect to program and algorithm design
+will keep the numerical requirements of finite elements
+in mind as well.
