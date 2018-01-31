@@ -1,43 +1,59 @@
 from matplotlib import pyplot as plt
 import gint
 import matplotlib
+from matplotlib.colors import LogNorm
 import numpy as np
 
 
 # Other potentially sensible vrange values
 # (-12, 2), (-8, 2)
-def plot_mtcs(mtcs, vrange=(-7, 1)):
+def plot_mtcs(mtcs, middle_labels=True, vrange=(-8, 2)):
     plt.close()
 
     cmap = matplotlib.cm.YlOrRd
     cmap.set_bad("white", 1.)
-    vrange = min(vrange), max(vrange)
+    cmap.set_over(cmap(cmap.N), 1.)
+    cmap.set_under("white", 1.)
+    norm = LogNorm(vmin=10**min(vrange), vmax=10**max(vrange))
+
+    ticks = []
+    for i in range(min(vrange), max(vrange)):
+        ticks += list(np.linspace(10**i, 10*10**i, 5, endpoint=False))
+    ticks += [10**max(vrange)]
 
     n_mtx = len(mtcs)
-    size = 2.4
-    if n_mtx < 3:
+    if n_mtx == 1:
         size = 3
+        adjust_right = 0.90
+        cbar_axis = [0.92, 0.23, 0.03, 0.55]
+    elif n_mtx == 2:
+        size = 2.6
+        adjust_right = 0.91
+        cbar_axis = [0.93, 0.23, 0.015, 0.55]
+    else:
+        size = 2.4
+        adjust_right = 0.91
+        cbar_axis = [0.93, 0.23, 0.01, 0.55]
 
     fig = plt.figure(figsize=((size + 0.1) * n_mtx, size))
     for i, mtx in enumerate(mtcs):
-        # Compute logabs, but enforce a numerical zero:
-        mtxabs = np.abs(mtx)
-        logabs = np.log10(mtxabs)
-
         ax = fig.add_subplot(1, n_mtx, i+1)
-        # norm=common.LogNorm()
-        img = ax.matshow(logabs, cmap=cmap, vmin=vrange[0], vmax=vrange[1])
+        img = ax.matshow(np.abs(mtx), cmap=cmap, norm=norm)
 
-    if n_mtx < 3:
-        fig.subplots_adjust(right=0.90)
-        cbar_ax = fig.add_axes([0.92, 0.23, 0.03, 0.55])
-    else:
-        fig.subplots_adjust(right=0.91)
-        cbar_ax = fig.add_axes([0.93, 0.23, 0.01, 0.55])
+        # Adjust ticks if requested
+        if not middle_labels and i > 0:
+            n_ticks = len(ax.get_yticklabels())
+            ax.set_yticklabels(n_ticks * [""])
+        if mtx.shape[0] > 1000:
+            newlabels = [
+                str(int(x)) if i == 1 or i % 2 == 0 else ""
+                for i, x in enumerate(ax.get_xticks())
+            ]
+            ax.set_xticklabels(newlabels)
 
-    cbar = fig.colorbar(img, cax=cbar_ax)
-    cbar.set_clim(vrange[0], vrange[1])
-
+    fig.subplots_adjust(right=adjust_right)
+    cbar_ax = fig.add_axes(cbar_axis)
+    fig.colorbar(img, cax=cbar_ax, ticks=ticks)
     plt.draw()
 
 
