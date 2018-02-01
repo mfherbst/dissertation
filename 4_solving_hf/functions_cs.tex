@@ -1,5 +1,8 @@
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
+
+\todoil{TODO}
+
 The last type of basis function
 we want to consider here is again
 an atom-centered basis function,
@@ -96,6 +99,15 @@ Coulomb-Sturmian basis function is composed of
 	\end{itemize}
 }
 
+
+\begin{equation}
+	todo
+	\label{eqn:ApplicationKcs}
+\end{equation}
+Explain how this only works if the coefficients are around as separate quantities
+and not contracted as a density matrix
+
+
 % TODO Things to show:
 %    - The larger n, the larger the energy under the action of the fock operator
 %    - HF Kinetic energy scales with k: Lower if k lower
@@ -106,9 +118,9 @@ Coulomb-Sturmian basis function is composed of
 \begin{sidewaysfigure}
 	\centering
 	\includeimage{4_solving_hf/fock_sturmian}
-	\caption{Structure of the Fock matrix for a Coulomb-Strumian based SCF
+	\caption{Structure of the Fock matrix for a Coulomb-Sturmian based SCF
 		for the beryllium atom starting from using a $(5,1,1)$
-		Coulomb-Strumian basis in $mln$ order
+		Coulomb-Sturmian basis in $mln$ order
 		and a Sturmian exponent of $\kexp = 1.99$.
 		The three figures show left to right the Fock matrix
 		at an SCF step with a Pulay error Frobenius norm of
@@ -125,4 +137,5 @@ Coulomb-Sturmian basis function is composed of
 introduce
 contraction-based methods~(see chapter \ref{ch:LazyMatrices})
 generalisation of matrix-free methods
+
 

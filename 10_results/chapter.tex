@@ -9,31 +9,31 @@ wrong times; premature optimization is the root of all evil
 {Donald Knuth~(1928--present)}
 
 In this chapter we will turn our attention to performing
-quantum-chemical calculations using Coulomb-Strumian~(\CS) functions
+quantum-chemical calculations using Coulomb-Sturmian~(\CS) functions
 as the discretisation basis in our Ritz-Galerkin ansatz.
 
 The first section is concerned with the fundamental properties
-of the Coulomb-Strumian basis,
+of the Coulomb-Sturmian basis,
 i.e. the convergence behaviour of the computational results
 when fundamental parameters of the basis are changed.
 Our investigation focuses on finding sensible sets of parameters
 for the computation of energies at the Hartree-Fock and MP2 level of theory
-and concludes with a recommendation for Coulomb-Strumian basis
+and concludes with a recommendation for Coulomb-Sturmian basis
 sets for computations of atoms of the second and third period.
 
-The second section tries to contrast Coulomb-Strumian basis sets
+The second section tries to contrast Coulomb-Sturmian basis sets
 with Gaussian basis sets.
 \todoil{Extend once this section has been written}
 
 Last but not least we will briefly look at a couple of examples,
-where we computed excited states using Coulomb-Strumian basis sets
+where we computed excited states using Coulomb-Sturmian basis sets
 and try to hint that especially the description of $s$-like
 Rydberg states in alkaline metals is a possible application
-for Coulomb-Strumian basis sets.
+for Coulomb-Sturmian basis sets.
 \todoil{Extend and reword once the final section has been written}
 
-\section{Convergence properties of Coulomb-Strumian basis sets}
-For our initial investigation of Coulomb-Strumian basis sets
+\section{Convergence properties of Coulomb-Sturmian basis sets}
+For our initial investigation of Coulomb-Sturmian basis sets
 we have mainly focused on Hartree-Fock as well as MP2
 calculations of the atoms of the second and third
 row of the periodic table.
@@ -47,7 +47,7 @@ we think that Hartree-Fock as a self-consistent field method
 and MP2 to perturbatively capture correlation effects
 provide good insight into what could be expected
 for other single-reference ground state methods as well
-if Coulomb-Strumian basis sets are to be used.
+if Coulomb-Sturmian basis sets are to be used.
 
 \newcommand{\nmax}{\ensuremath n_\text{max}}
 \newcommand{\lmax}{\ensuremath l_\text{max}}
@@ -67,7 +67,7 @@ $Y_l^m$ being a spherical harmonic and $\mathcal{N}_\mu$ being a normalisation
 constant,
 can be uniquely described by its quantum numbers $\mu \equiv (n,l,m)$
 as well as the its Coulomb-Sturmian exponent $\kexp$ (\cf section \vref{sec:BasisCS}).
-Since the exponent $\kexp$ is shared amongst all Coulomb-Strumians in a basis,
+Since the exponent $\kexp$ is shared amongst all Coulomb-Sturmian in a basis,
 we can define a particular \CS basis
 by specifying the common exponent $\kexp$
 and the set of quantum number triples $(n, l, m)$ of all \CS basis functions
@@ -859,7 +859,7 @@ as \texttt{molsturm.sturmian.cs.find\_kopt}
 % establish: effective nuclear charge increases across the period
 % due to averaging trends become less apparent as we move to larger period numbers
 
-Figure \vref{fig:KoptVsAtnum} shows the optimal Coulomb-Strumian exponents
+Figure \vref{fig:KoptVsAtnum} shows the optimal Coulomb-Sturmian exponents
 for the neutral atoms across the second and the third period of the periodic table.
 As can be seen the values for $\kopt$ follow a rough linear increase
 as we go from the alkaline metals to the noble gases,
