@@ -7,6 +7,7 @@
 \defineabbr{ACO}{ACO\xspace}{atom-centered orbitals}
 
 \section{Basis function types}
+\label{sec:BasisTypes}
 This section tries to address the question,
 which classes of functions can be used
 in order to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
@@ -214,6 +215,7 @@ is the only methodology where guaranteed precision in the solution to the
 respective problems can be achieved.
 
 \subsection{Mixed bases}
+\todoil{Do later if time}
 Already done in some or another sense in practice.
 For example the SIESTA method~\cite{Soler2002} uses
 a dual representation on a real-space grid as well as
@@ -237,9 +239,59 @@ for fine structure.
 
 
 \subsection{Takeaway}
-\todoil{
-	Maybe go a bit into contrasting the basis function types
-	if not already done before properly.
-	
-	Some summarising remarks for this probably rather long section.
-}
+In the previous sections we saw that different basis function types
+can lead to rather different numerical properties in the discretised \HF problem.
+Just considering the three figures
+\vref{fig:StructureGaussianFock},
+\vref{fig:StructureFiniteElementFock}
+and \vref{fig:StructureSturmianFock}
+illustrating the structures of the Fock matrices
+the overall differences are apparent.
+Whilst the number of basis functions of the atom-centred
+\cGTO and \CS discretisations depends on the number of atoms
+in the chemical system,
+\FE discretisations need very similar number of basis functions
+for atoms and molecules.
+In contrast to \ACO approaches \FE-based discretisations
+need many more basis functions, in the order of millions
+compared to hundreds for \ACO discretisations.
+For this reason only iterative methods
+are feasible for a \FE discretisation,
+where a \contract-based scheme can theoretically
+lead to linear scaling in the number of basis functions.
+On the other hand the finite-element method
+does not rely on the intuition of the user very much.
+Initial grids can be easily auto-generated and
+while the calculation is running adaptively refined.
+Nevertheless prior knowledge of the physics can be incorporated
+into the initial grid generation.
+Leaving the numerical issues aside
+the \FE approach in theory comes very close to the ideal
+basis function type we sketched in \vref{sec:BasisDesiredProperties}.
+
+From a practical point of view
+the \ACO approaches are less black-box,
+since more choices about the particular basis set need to be made before the calculation,
+but they are numerically much more feasible.
+Especially for \cGTO-based methods the evaluation of the integrals
+is considerably less challenging compared to the other basis functions
+we considered in depth and is rather well-understood by now.
+Coulomb-Sturmians on the other hand are physically much more sound than
+{\cGTO}s allowing to represent the wave function
+much better.
+Contrast figures \vref{fig:LocalEnergyCgto} and \vref{fig:LocalEnergyCS} for example.
+Unlike the \STO based approaches
+the integrals in \CS discretisations can be evaluated rather efficiently
+due to the restriction to a single exponent $k$.
+In a \contract-based ansatz linear scaling in the basis set size
+is theoretically possible.
+As \ref{fig:LocalEnergyCS} suggests the convergence properties
+can be expected to be rather decent and predictable
+going to larger and larger basis sets.
+Originating from the completeness of the \CS functions
+with respect to the form domain $Q(\Op{F}) = H^1(\R^3,\R)$
+eventually both the long-range part as well as the cusp can be represented
+perfectly with larger and larger basis sets.
+The convergence properties of \CS basis sets in the context of
+quantum-chemical calculations will be investigated
+thoroughly in chapter \vref{ch:CSQChem}.
