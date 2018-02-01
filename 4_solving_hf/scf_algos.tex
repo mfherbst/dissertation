@@ -1,67 +1,85 @@
-\section{Standard \SCF algorithms}
+\section{Self-consistent field algorithms}
 \label{sec:SCFAlgorithms}
 
-From the discussion in this chapter
-as well as the vastly different Fock matrix structures
-in figures \vref{fig:StructureGaussianFock},
-\vref{fig:StructureFiniteElementFock}
-and \vref{fig:StructureSturmianFock}
-it should be rather obvious,
-that the numerical properties of an \FE-based
-discretisation, a \cGTO-based discretisation
-and a \CS-based discretisation differ.
-With this in mind it should not come as a surprise
-that not all \SCF algorithms,
-which work for a \cGTO-based discretisation
-are the best choice for the other cases as well.
-For example all \SCF algorithms,
-which assume that multiple copies of the iterated Fock matrix $\mat{F}^{(n)}$
-or the iterated density matrix $\mat{D}^{(n)}$
-can be stored cannot be used without modification
-for \FE-based discretisations
-plainly because storing such matrices with $\Nbas^2$ non-zeros is not feasible.
-On a similar note just comparing the memory requirements
-between the density matrix $\mat{D}^{(n)} \in \Nbas\times\Nbas$
-and the coefficient matrix
-$\mat{C} \in \R^{\Nbas\times\Norb}$
-suggests, that for \FE-based discretisations
-coefficient-based \SCF schemes are more appropriate.
-On top of that the computationally
-more favourable
-\contract-based ansatz for computing
-$\matJ$ and $\matK$ for a \CS basis
-suggests to avoid the density matrix for this type of basis function as well.
-In this section we will therefore
-mostly focus on coefficient-based \SCF algorithms.
-For a few cases like the direct inversion of the iterative subspace~(DIIS)
-or the optimal damping algorithm~(ODA)
-we will suggest modifications
+In this section we want to discuss a few standard self-consistent field algorithms
+in the light of the various types of basis functions we discussed in the previous section.
+Even though it is my hope that the selection of algorithms discussed here
+is representative,
+the vast number of methods,
+which has been developed over the years,
+makes it impossible to be exhaustive.
+
+Most \SCF algorithms are designed only with a \cGTO-based
+discretisation of the \HF and Kohn-Sham \DFT problem in mind.
+The deviating numerical properties of the finite-element method
+or a \CS-based discretisation,
+therefore often call for minor modifications of the schemes.
+For example both finite elements as well as Coulomb-Sturmians
+favour \contract-based methods
+due to the better scaling of equations like \eqref{eqn:ExchangeApply}
+and \eqref{eqn:ApplicationKcs}
+compared to building the full matrix.
+Therefore the Fock matrix might not be built in memory any more,
+which implies that a linear combination of Fock matrices
+cannot be computed in memory either.
+This does not imply that \SCF schemes,
+which form linear combinations of Fock matrices
+are completely ruled out,
+but they might become less favourable compared to other schemes.
+See section \ref{sec:DIIS} below for details.
+
+On the other hand in \FE-based approaches all quantities,
+which scale quadratically in $\Nbas$ cannot be stored in memory.
+This applies not only to the iterated Fock matrix $\mat{F}^{(n)}$,
+but to the density matrix $\mat{D}^{(n)} \in \R^{\Nbas\times \Nbas}$ as well.
+Even though clever low-rank approximation methods
+like hierarchical matrices or tensor decomposition methods
+\todo{cite}
+could reduce the memory footprint of the density matrix,
+this work will try to indicate ways
+by which building the density matrix in an \SCF can be avoided.
+Naturally this implies
+a focus on coefficient-based \SCF schemes as well,
+where the number of iterated parameters
+--- the coefficient matrix $\mat{C} \in \R^{\Nbas\times\Norb}$ ---
+scales only linearly in $\Nbas$.
+Furthermore coefficient-based \SCF schemes have the advantage,
+that iterating the density matrix
+destroys the possibility to perform the
+linear-scaling application of $\mat{K}$ for \CS-based methods,
+see equation \eqref{eqn:ApplicationKcs} for details.
+
+It was already pointed out in section \vref{sec:OverviewSCF}
+that focusing on coefficient-based schemes
+is hardly a restriction in terms of the number of possible approaches,
+since coefficient-based and density-based schemes can be interconverted,
+at least approximately.
+We will suggest modifications of the
+optimal damping algorithm~(ODA)~\cite{Cances2000a} in section \ref{sec:tODA}
+and Pulay's direct inversion of the iterative subspace~\cite{Pulay1982}
+in section \ref{sec:DIIS},
 which bring these methods to the coefficient-based setting.
 
-
-
-Pick up on the point raised about the \contraction-based
-methods in the previous section
-and explain why for them typically
-coefficent-based \SCF schemes are best.
-
-\todoil{Check out: Linear scaling SCF as minimisation \cite{Salek2007}}
-
-
-% TODO Maybe talk about basis functions first, because then it is more
-% clear why we focus so much on coefficient-based stuff
-
-
-Notice, that many \SCF algorithms only consider the necessary condition \eqref{eqn:PulayError},
-but do not check the sufficient conditions as well.
-
-% general remarks -> follow cances, bris book
-
-This is just a representative selection of algorithms,
-which is by no means complete or exhaustive.
+Most of the \SCF algorithms we will consider here
+only converge the \HF equations \eqref{eqn:HFiterated}
+until the Pulay error \eqref{eqn:PulayError} vanishes
+following our general description in remark \vref{rem:SCFcoeff}.
+Regarding the \HF optimisation problem \eqref{eqn:HFOptCoeff}
+this is only the necessary condition for a stationary point on the Stiefel
+manifold $\mathcal{C}$.
+Only some \SCF algorithms
+termed \newterm{second-order self-consistent field method}s
+guarantee (usually only appropriately)
+that the stationary point they find is truly a minimum.
+They are briefly considered in section \ref{sec:SOSCF}.
 
 \subsection{Roothaan repeated diagonalisation}
 \label{sec:RoothaanRepeatedDiag}
+
+remark \vref{rem:SCFcoeff}
+
+
+
 - Plainly take $\tilde{F}^{(n-1)}0= \mat{F}[CC^T]$
 - Simple, but works remarkably well in many cases
 - can proof (cances) it either iterates between two solutions or converges
@@ -74,6 +92,8 @@ which is by no means complete or exhaustive.
 
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
+ODA~\cite{Cances2000,Cances2000a}
+
 $\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
 wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
 Can define~\cite{Lions1988,Cances2000}
@@ -82,13 +102,15 @@ Can define~\cite{Lions1988,Cances2000}
 \left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
 
 \subsection{Truncated optimal damping algorithm}
+\label{sec:tODA}
 ODA not great for coefficent-based setting
 Approximation, which destroys many nice mathematical properties
 Still: Automatically determine sensible damping factor (rather than a fixed one)
 
 \subsection{Direct inversion of the iterative subspace}
+\label{sec:DIIS}
 
-Standard commutator DIIS by Pulay
+Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
 
 Other ways~\cite{Shepard2007}
 LSIIS (least-squares commutator DIIS)~\cite{Li2016}
@@ -97,11 +119,18 @@ LSIIS (least-squares commutator DIIS)~\cite{Li2016}
 Only brief
 
 \subsection{Second-order \SCF algorithms}
+\label{sec:SOSCF}
 Only brief
 mention that approximate methods exist, too
 
+% https://www.sciencedirect.com/science/article/pii/0301010481851567
+
 Quadratically-convergent scf \cite{Ochsenfeld1997}
 Augmented Roothan-Hall \cite{Hoest2008}
+
+\todoil{Check out: Linear scaling SCF as minimisation \cite{Salek2007} --- this is second order
+and based on the density, preconditioned CG-like minimisation}
+
 
 \subsection{Combinations of algorithms}
 Ideally want to switch every now and then
