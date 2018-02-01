@@ -33,7 +33,8 @@ which scale quadratically in $\Nbas$ cannot be stored in memory.
 This applies not only to the iterated Fock matrix $\mat{F}^{(n)}$,
 but to the density matrix $\mat{D}^{(n)} \in \R^{\Nbas\times \Nbas}$ as well.
 Even though clever low-rank approximation methods
-like hierarchical matrices or tensor decomposition methods
+like hierarchical matrices~\cite{Hackbusch1999,Hackbusch2002,Grasedyck2003,Hackbusch2015}
+or tensor decomposition methods
 \todo{cite}
 could reduce the memory footprint of the density matrix,
 this work will try to indicate ways
@@ -49,6 +50,8 @@ destroys the possibility to perform the
 linear-scaling application of $\mat{K}$ for \CS-based methods,
 see equation \eqref{eqn:ApplicationKcs} for details.
 
+\todoil{Pagebreak here?}
+\pagebreak
 It was already pointed out in section \vref{sec:OverviewSCF}
 that focusing on coefficient-based schemes
 is hardly a restriction in terms of the number of possible approaches,
