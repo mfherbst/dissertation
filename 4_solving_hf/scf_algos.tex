@@ -116,7 +116,7 @@ but instead diagonalises the matrix
 where $b > 0$,
 already a much better convergence is achieved.
 This modification is called \newterm{level shifting}%
-~\cite{Saunders1973,Guest1974,Mehrotra1977},
+~\cite{Saunders1973,Guest1974},
 where $b$ is the \textbf{level-shifting parameter},
 typically chosen in the range between $0.1$ and $0.5$.
 Effectively this modification increases the energy gap between occupied and virtual
@@ -165,9 +165,276 @@ can be forced even for cases where the original \HF equations \eqref{eqn:HFMO}
 have no solution (like the negative ions with $N > 2Z + M$).
 In such a case the result is no physical ground state, however.
 
+One can show~\cite{Saunders1973}
+that the level-shifting modification is mathematically equivalent
+to another modification of Roothaan's repeated diagonalisation,
+called \newterm{damping}.
+In this procedure one chooses a \newterm{damping factor} $0 < \alpha < 1$
+and sets
+\begin{equation}
+	\tilde{\mat{F}}^{(n)} = (1-\alpha) \tilde{\mat{F}}^{(n-1)} + \alpha \matFnfull,
+	\label{eqn:FockDamping}
+\end{equation}
+such that the new Fock matrix to diagonalise contains still a share
+of the old Fock matrix.
+
+\defineabbr{ODA}{ODA\xspace}{Optimal damping algorithm}
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
-ODA~\cite{Cances2000,Cances2000a}
+The optimal damping algorithm~(\ODA) was proposed by \citet{Cances2000a}
+based on their analysis of the Roothaan algorithm
+including the level-shifting modification.
+
+\begin{figure}
+	\centering
+	\missingfigure{Optimal damping algorithm}
+	\caption{Optimal damping algorithm}
+	\label{fig:OptimalDampingAlgorithm}
+\end{figure}
+In unmodified form~\cite{Cances2000,Cances2000a} it is a density-based \SCF algorithm.
+Starting from an initial density $\tilde{\mat{D}}^{(0)} = \mat{D}^{(0)}$,
+the procedure is roughly~(compare figure \ref{fig:OptimalDampingAlgorithm})
+for $n=1, 2, 3, \ldots$
+\begin{itemize}
+	\item Build the Fock matrix
+	\begin{equation}
+	\tilde{\mat{F}}^{(n-1)} = \mat{F}\left[ \tilde{\mat{D}}^{(n)} \right]
+		\label{eqn:ODAupFock}
+	\end{equation}
+	and diagonalise it to obtain the new coefficient $\mat{C}_F^{(n)}$.
+	Form the new density $\mat{D}^{(n)}$ according to the Aufbau principle from these
+	as
+	\[ \mat{D}^{(n)} = \mat{C}^{(n)} \tp{\left( \mat{C}^{(n)} \right)}. \]
+	%
+	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
+		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
+	%
+	\item Set
+		\begin{equation}
+			\tilde{\mat{D}}^{(n+1)}
+			= \arginf_{\tilde{\mat{D}} \in
+			\text{Seg}\left[\tilde{\mat{D}}^{(n)}, \mat{D}^{(n+1)}\right]}
+			\mathcal{E}_D^\text{HF}[\tilde{\mat{D}}]
+			\label{eqn:ODAupDens}
+		\end{equation}
+		where
+		\[
+			\text{Seg}\left[\mat{D}_1, \mat{D}_2\right]
+				= \left\{ (1-\lambda) \mat{D}_1 + \lambda \mat{D}_2 \, \Big|\,
+				\lambda \in [0,1] \right\} \subset \mathcal{P}
+		\]
+		is a line segment of the Grassmann manifold $\mathcal{P}$
+		and the energy functional $\mathcal{E}_D^\text{HF}$
+		is defined as in \eqref{eqn:HFEnergyFunctionalDens}
+		and repeat the process.
+\end{itemize}
+The remaining question to complete the picture of the \ODA
+is how to obtain minimal density $\tilde{\mat{D}}^{(n+1)}$ along the density segment.
+For this first define
+%
+\newcommand{\Gfct}[1]{  \mat{G}\left[ #1 \right]   }
+\newcommand{\Pet}[1]{\textcolor{dkred}{\tilde{\mat{D}}^{(#1)}}}
+\newcommand{\Pe}[1]{\textcolor{dkblue}{\mat{D}^{(#1)}}}
+\newcommand{\Fot}[1]{\textcolor{dkred}{\tilde{\mat{F}}^{(#1)}}}
+\newcommand{\Fo}[1]{\textcolor{dkblue}{\mat{F}^{(#1)}}}
+\newcommand{\la}[1]{\lambda^{(#1)}}
+\newcommand{\ila}[1]{\left( 1 - \la{#1} \right)}
+\newcommand{\EHFD}[1]{\mathcal{E}_D^\text{HF}\left[#1\right]}
+%
+\newcommand{\Pn}{\Pet{n}}
+\newcommand{\Pnn}{\Pe{n+1}}
+\begin{align*}
+	E_1 \left[\mat{D}\right] &\equiv \tr\left( \mat{T} \mat{D} + \mat{V}_0 \mat{D} \right), \\
+	\mat{G}\left[ \mat{D} \right] &\equiv
+		\mat{F}\left[ \mat{D} \right] + \mat{K}\left[ \mat{D} \right] \\
+\intertext{and}
+	E_2 \left[\mat{D}\right] &\equiv
+		\frac12 \tr\left( \mat{D} \, \mat{G}\left[ \mat{D} \right] \right).
+\end{align*}
+For all $\mat{D}_1,  \mat{D}_2 \in \mathcal{P}$ we can show the properties~\cite{Cances2000a}
+\begin{align}
+	\label{eqn:TermGsymmetry}
+	\tr \left( \mat{D}_1 \mat{G}\left[ \mat{D}_2 \right] \right)
+		&= \tr \left( \mat{D}_2 \mat{G}\left[ \mat{D}_1 \right] \right) \\
+	\label{eqn:GmatTrace}
+	\tr\left( \mat{F}\left[ \mat{D}_1 \right] \mat{D}_2 \right)
+	&= E_1[\mat{D}_2] + \tr\left( \mat{P}_1 \Gfct{\mat{P}_2} \right)
+\end{align}
+These imply for $E_2$ and arbitrary $\alpha, \beta \in \R$
+\begin{equation}
+	\begin{aligned}
+	E_2[\alpha \mat{D}_1 + \beta\mat{D}_2]
+	&= \frac 1 2 \tr\left( \alpha^2  \mat{D}_1 \Gfct{\mat{D_1}} \right)
+		+ \frac 1 2 \tr\left( \alpha\beta \mat{D_1} \Gfct{\mat{D}_2} \right) \\
+		\nonumber
+		&\hspace{30pt}
+		+ \frac 1 2 \tr\left( \alpha\beta \mat{D}_2 \Gfct{\mat{D_1}} \right)
+		+ \frac 1 2 \tr\left( \beta^2 \mat{D}_2 \Gfct{\mat{D}_2} \right) \\
+	 &\stackrel{\eqref{eqn:GmatTrace}}{=}
+	 \alpha^2 E_2[\mat{D_1}] + \beta^2 E_2[\mat{D}_2]
+	 + \alpha\beta \tr\left( \mat{D_1} \Gfct{\mat{D}_2} \right),
+	\end{aligned}
+	\label{eqn:HFE2}
+\end{equation}
+whereas $E_1$ is linear
+\begin{equation}
+	E_1[\alpha \mat{D}_1 +\beta \mat{D}_2] = \alpha E_1[\mat{D}_1] + \beta E_1[\mat{D}_2].
+	\label{eqn:HFE1}
+\end{equation}
+These results allow to expand
+the \HF energy for a member $\Pet{n+1}$
+of the density matrix segment
+$\text{Seg}\left[\Pet{n}, \Pe{n+1}\right]$
+as
+\begin{equation}
+\begin{aligned}
+	\EHFD{\Pet{n+1}} &= \EHFD{\ila{n+1} \Pet{n} + \la{n+1} \Pe{n+1}} \\
+	&= \EHFD{\Pet{n} + \la{n+1} \left( \Pe{n+1}  - \Pet{n} \right)} \\
+	&= E_1\left[ \Pet{n} + \la{n+1} \left( \Pe{n+1}  - \Pet{n} \right) \right] \\
+		&\hspace{50pt}+E_2\left[\Pet{n} + \la{n+1} \left( \Pe{n+1}  - \Pet{n} \right) \right] \\
+	&= E_1[\Pet{n}] + \la{n+1} E_1\left[\Pe{n+1}  - \Pet{n}\right] + E_2[\Pet{n}]\\
+		&\hspace{50pt} + \la{n+1} \tr \left( \Pet{n} \Gfct{\Pe{n+1}-\Pet{n}} \right) \\
+		&\hspace{50pt}
+		+ \left( \la{n+1} \right)^2 E_2[\Pe{n}-\Pet{n}] \\
+	&= \EHFD{\Pet{n}}
+	+ \la{n+1} \underbrace{\tr\left( \Pet{n} \mat{F} \left[ \Pe{n+1}-\Pet{n} \right] \right)}_{=s} \\
+	&\hspace{50pt}
+	+ \left( \la{n+1} \right)^2 \underbrace{E_2[\Pe{n}-\Pet{n}]}_{=c} \\
+	&= \EHFD{ \Pet{n} } + \la{n+1} s + \left( \la{n+1} \right)^2 c
+\end{aligned}
+\label{eqn:ODAquadratic}
+\end{equation}
+The coefficients $s$ and $c$ can alternatively be written as
+\begin{equation}
+\begin{aligned}
+	s &= \tr\left( \Fot{n} \left( \Pe{n+1} - \Pet{n} \right) \right) \\
+	&= \tr \left( \Fot{n} \Pe{n+1} \right) - E_\text{HF}[\Pet{n}] - E_2 [\Pet{n}] \\
+	&= \tr \left( \Fot{n} \Pe{n+1} \right) - E_1[\Pet{n}] - 2 E_2 [\Pet{n}]  \\
+\end{aligned}
+\label{eqn:ODAs}
+\end{equation}
+and\footnote{Note that the original paper \cite{Cances2000a} uses a deviating formalism %
+which causes an extra factor of $2$ to appear in their expression for $c$.}
+\begin{equation}
+\begin{aligned}
+	c &= E_2\left[ \Pe{n+1} - \Pet{n} \right] \\
+	&\stackrel{\eqref{eqn:HFE2}}{=}
+		E_2 [\Pe{n+1}] - \tr\left( \Gfct{\Pet{n}} \Pe{n+1} \right) + E_2 [\Pet{n}] \\
+	&= E_2 [\Pe{n+1}] - \tr \left( \Fot{n} \Pe{n+1} \right) + E_1[\Pe{n+1}] + E_2 [\Pet{n}] 
+\end{aligned}
+\label{eqn:ODAc}
+\end{equation}
+Now the stationary point along the density matrix segment
+can be determined by differentiating \eqref{eqn:ODAquadratic} resulting in
+\begin{align*}
+	\frac{\partial \EHFD{\Pet{n+1}}}{\partial \la{n+1}}
+	&= s + 2 \la{n+1} c
+	&&\text{and}&
+	\frac{\partial^2 \EHFD{\Pet{n+1}}}{\partial \left(\la{n+1}\right)^2} &= 2c
+\end{align*}
+Due to $E_2[\mat{D}] \geq 0$~\cite{Cances2000a} for all $\mat{D} \in \mathcal{P}$
+one easily deduces $c \geq 0$,
+such that the stationary point of the above expression is always a minimum.
+Since $\la{n+1} \in [0,1]$ the minimiser is
+\[
+	\la{n+1}_\text{min} = \left\{
+	\begin{array}{cl}
+		1 & \text{if $2c \leq -s$} \\
+		- \frac{s}{2c} & \text{else}
+	\end{array}
+	\right.,
+\]
+where the cases $c=0$ and $s=0$ have been ignored, since they only occur at convergence.
+This closes the missing link and allows to implement a \ODA
+in as a density-based \SCF.
+
+\noindent
+Defining
+\begin{align*}
+	\Fot{n} &\equiv  \mat{F}\left[ \Pet{n} \right] &
+	\Fo{n} &\equiv \mat{F}\left[ \Pe{n} \right]
+\end{align*}
+we can rewrite \eqref{eqn:ODAupFock} as
+\begin{equation}
+	\label{eqn:ODAdamping}
+	\Fot{n}
+	= \mat{F}\left[ \ila{n} \Pet{n-1} + \la{n} \Pe{n} \right]
+	= \ila{n} \Fot{n-1} + \la{n} \Fo{n},
+\end{equation}
+where the ``$\text{min}$'' subscripts were dropped.
+Comparing with equation \eqref{eqn:FockDamping}
+one can identify with $\la{n}$ the damping factor $\alpha$.
+Since $\la{n}$ is optimal in the sense of minimising the energy along the line segment
+spanned by $\Pe{n}$ and $\Pet{n-1}$,
+the optimal damping algorithm can be described by repetitively finding the optimal damping
+parameter from \SCF step to \SCF step.
+Notice that its construction guarantees that the \SCF energy will always decrease.
+It is hence guaranteed to converge to a local minimum of the \HF problem
+\eqref{eqn:HFOptDens}~\cite{Cances2000,Cances2000a}.
+The \ODA is only a particularly simple example from a whole family
+of density-based \SCF algorithms called relaxed constraints algorithms,
+which are discussed in detail in \cite{Cances2000a}.
+
+\noindent
+By induction and using the idea of \eqref{eqn:ODAdamping} one can show
+that
+\begin{align}
+	\label{eqn:ODAFock}
+	\Fot{n} &= \sum_{j = 0}^n \Fo{j} \la{j} \prod_{i=j+1}^n \ila{i}, \\
+	\label{eqn:ODADens}
+	\Pet{n} &= \sum_{j = 0}^n \Pe{j} \la{j} \prod_{i=j+1}^n \ila{i},
+\end{align}
+where we set $\la{0} \equiv 1$. Since
+\begin{align*}
+	\Fo{n} &= \matFnfull \\
+	\Pe{n} &= \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \\
+\end{align*}
+these results in theory allow to express the complete \ODA
+in terms of the coefficients.
+In practice this is not a fruitful approach for two reasons.
+Firstly it requires to store a growing list of coefficients
+--- one for each \SCF step.
+Since in a \contract-based ansatz the Fock matrix cannot be stored,
+the application of $\Fot{n}$ to a vector $\vec{x}$
+can only be performed by first forming $\Fo{j} \vec{x}$
+for each term $j$ and then adding the results,
+which is roughly $n$ times as expensive
+and furthermore gets more and more expensive as the \SCF progresses.
+Whilst an \ODA is therefore feasible for {\cGTO}s and \CS-based
+discretisations,
+in the unmodified form presented here
+it cannot be applied for solving the \HF problem with a \FE-based discretisation.
+
+
+\subsection{Truncated optimal damping algorithm}
+\label{sec:tODA}
+
+	Instead of linearly combining the densities, one can alternatively combine the
+		individual $\Fo{n} = \mat{F}\left[ \{\vec{c}^{(i,n)} \} \right]$ directly
+		computed from the coefficients.
+		See  \eqref{eqn:FockDC} and \eqref{eqn:FockLinComb} for details.
+		This yields the fock matrix $\Fot{n}$ as a growing
+		chain of fock terms (see \eqref{eqn:ODAFock})
+		Some of these terms might get small, since the coefficient
+		\begin{equation}
+			\label{eqn:ODAFockCoeff}
+			\lambda^{(j)} \prod_{i=j+1}^{n} \left(1- \lambda^{(i)}\right) \in [0,1]
+		\end{equation}
+		is a product of factors which are all between 0 and 1.
+		Thus some Fock terms can probably be ignored.
+		Moreover since
+		\[ \lambda^{(i)} \in [0,1] \qquad \Rightarrow \qquad \prod_{i=j}^{n} \left(1- \lambda^{(i)} \right) 
+		\leq \prod_{i=j+1}^{n} \left(1- \lambda^{(i)}\right) \]
+		the sequence of terms could probably be terminated unnaturally by demanding a
+		minimal value for the magnitude of the coefficients \eqref{eqn:ODAFockCoeff}.
+
+
+
+ODA not great for coefficent-based setting
+Approximation, which destroys many nice mathematical properties
+Still: Automatically determine sensible damping factor (rather than a fixed one)
+
+
 
 $\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
 wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
@@ -176,16 +443,13 @@ Can define~\cite{Lions1988,Cances2000}
 	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
 \left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
 
-\subsection{Truncated optimal damping algorithm}
-\label{sec:tODA}
-ODA not great for coefficent-based setting
-Approximation, which destroys many nice mathematical properties
-Still: Automatically determine sensible damping factor (rather than a fixed one)
+
+
+
 
 \subsection{Direct inversion of the iterative subspace}
 \label{sec:DIIS}
 
-Cances~\cite{Cances2000b} has something about this too
 
 Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
 
@@ -212,3 +476,5 @@ and based on the density, preconditioned CG-like minimisation}
 \subsection{Combinations of algorithms}
 Ideally want to switch every now and then
 
+
+DIIS and ODA
