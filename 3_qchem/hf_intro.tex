@@ -605,7 +605,7 @@ representations of \HF.
 	\begin{equation}
 		\Ehf_C(\mat{C})
 			= \tr \Big( \tp{\mat{C}} \left(\mat{T} + \mat{V}_0 \right) \mat{C} \Big)
-			+ \tr \Big( \tp{\mat{C}} \left(\matJfull + \matKfull \right) \mat{C} \Big),
+			+ \frac12 \tr \Big( \tp{\mat{C}} \left(\matJfull + \matKfull \right) \mat{C} \Big),
 		\label{eqn:HFEnergyFunctionalCoeff}
 	\end{equation}
 	where all involved matrices are $\alpha$-$\beta$ block-diagonal,
@@ -647,13 +647,13 @@ representations of \HF.
 			\end{equation}
 			Here as usual $\eriMu{\slot \slot}{\slot \slot}$
 			denotes the electron repulsion integrals defined like \eqref{eqn:ERI}.
-		\item the \newterm{Exchange matrix} $\matKfull$ has
+		\item the \newterm{exchange matrix} $\matKfull$ has
 			deviating $\alpha$ and $\beta$ blocks,
 			both depending on the coefficients.
 			For $\sigma \in \{\alpha\beta\}$ their elements are
 			\begin{equation}
 				K_{\mu\nu}^\sigma\!\left[\mat{C}\mat{C}^\dagger\right]
-					= \sum_{i=1}^{N_\text{elec}^\sigma}
+					= - \sum_{i=1}^{N_\text{elec}^\sigma}
 						C^\sigma_{\lambda i}
 						\cc{\left(C^\sigma_{\kappa i}\right)}
 						\eriMu{\varphi_{\kappa} \varphi_{\nu}}
@@ -733,7 +733,7 @@ representations of \HF.
 	\begin{equation}
 		\Ehf_D(\mat{D})
 			= \tr \big( \left(\mat{T} + \mat{V}_0 \right) \mat{D} \big)
-			+ \tr \big( \left(\matJfullD + \matKfullD \right) \mat{D} \big).
+			+ \frac12 \tr \big( \left(\matJfullD + \matKfullD \right) \mat{D} \big).
 		\label{eqn:HFEnergyFunctionalDens}
 	\end{equation}
 	The respective expressions for $\matJfullD$ and $\matKfullD$

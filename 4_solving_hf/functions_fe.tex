@@ -582,7 +582,7 @@ For all $\mu, \nu \in \Ibash$ we get
 	K^{(n)}_{\mu\nu} \equiv
 	K_{\mu\nu}\!\left[\mat{C}^{(n)} \left(\mat{C}^{(n)}\right)^\dagger\right]
 	%
-	= \int_\Omega \int_\Omega
+	= -\int_\Omega \int_\Omega
 		\varphi_\mu(\vec{r}_1) \frac{\gamma^{(n)}(\vec{r}_1, \vec{r}_2)}
 		{ r_{12} }\varphi_\nu(\vec{r}_2) \D \vec{r}_2 \D \vec{r}_1,
 \end{equation}
@@ -598,12 +598,12 @@ can be split into a sum of contributions from each grid cell pair
 $(c,d) \in \left( \mathcal{M}_h \right)^2$
 \begin{align*}
 	K^{(n)}_{\mu\nu}
-	&= \sum_{c,d \in \mathcal{M}_h}
+	&= -\sum_{c,d \in \mathcal{M}_h}
 		\int_{c} \int_{d}
 		\frac{\varphi_\mu(\vec{r}_1) \, \gamma^{(n)}(\vec{r}_1, \vec{r}_2)
 			\,\varphi_\nu(\vec{r}_2)}
 		{r_{12}} \D \vec{r}_2 \D \vec{r}_1 \\
-	&= \sum_{c,d \in \mathcal{M}_h}
+	&= -\sum_{c,d \in \mathcal{M}_h}
 		\int_{c_0} \int_{c_0}
 		\frac{e_i(\vec{\xi}_1)\,
 			\gamma^{(n)}\!\!\left(\tau_c(\vec{\xi}_1), \tau_d(\vec{\xi}_2)\right)
@@ -618,7 +618,7 @@ with quadrature points $\vec{\xi}_q$, $\vec{\xi}_r'$
 and corresponding weights $w_q$ and $w_r'$ yields approximately
 \begin{align*}
 	K^{(n)}_{\mu\nu}
-		&\simeq \sum_{c,d \in \mathcal{M}_h}
+		&\simeq -\sum_{c,d \in \mathcal{M}_h}
 		\sum_{q=1}^{\Nquadc}
 		\sum_{r=1}^{\Nquadc'}
 		\frac{
@@ -756,8 +756,8 @@ the application of $\matK$ to a vector $\vec{x}$ as:
 \label{eqn:ExchangeApply}
 \begin{aligned}
 	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
-	&= \sum_{\nu\in\Ibash} x_\nu K^{(n)}_{\mu\nu} \\
-	&= \sum_{\nu\in\Ibash}
+	&= -\sum_{\nu\in\Ibash} x_\nu K^{(n)}_{\mu\nu} \\
+	&= -\sum_{\nu\in\Ibash}
 		x_\nu
 		\int_\Omega \int_\Omega
 		\varphi_\mu(\vec{r}_1)
@@ -766,7 +766,7 @@ the application of $\matK$ to a vector $\vec{x}$ as:
 			\psi_i^{(n)}(\vec{r}_1) \psi_i^{(n)}(\vec{r}_2)
 		}{r_{12}}
 		\varphi_\nu(\vec{r}_2) \D \vec{r}_2 \D \vec{r}_1 \\
-	&= \sum_{i\in\Iocc}
+	&= -\sum_{i\in\Iocc}
 		\int_\Omega
 		\varphi_\mu(\vec{r}_1) \psi_i^{(n)}(\vec{r}_1)
 		\left(
@@ -776,7 +776,7 @@ the application of $\matK$ to a vector $\vec{x}$ as:
 			{r_{12}}
 		\D \vec{r}_2
 		\right) \D \vec{r}_1 \\
-	&= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+	&= -\sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
 		\int_\Omega
 			\varphi_\mu(\vec{r}_1) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r}_1)
 		\left(
@@ -803,7 +803,7 @@ defining implicitly the \newterm{exchange contraction potentials} $V^{(n)}_{\vec
 With these potentials \eqref{eqn:ExchangeApply} becomes
 \begin{equation}
 	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
-	= \sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
+	= -\sum_{i\in\Iocc} \sum_{\kappa\in\Ibash}
 		\int_\Omega
 		\varphi_\mu(\vec{r}) \, C^{(n)}_{\kappa i} \varphi_\kappa(\vec{r})
 		V^{(n)}_{\vec{x}, i}(\vec{r}) \D \vec{r}.
