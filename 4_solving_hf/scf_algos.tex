@@ -79,19 +79,91 @@ They are briefly considered in section \ref{sec:SOSCF}.
 \subsection{Roothaan repeated diagonalisation}
 \label{sec:RoothaanRepeatedDiag}
 
-remark \vref{rem:SCFcoeff}
+Roothaan's repeated diagonalisation~\cite{Roothaan1951}
+approach to the \HF problem \eqref{eqn:HFiterated} is by far the simplest.
+In the formalism of remark \vref{rem:SCFcoeff}
+this algorithm can be described by building the next Fock matrix
+$\tilde{\mat{F}}^{(n)}$ only by considering
+the current occupied coefficients $\mat{C}^{(n)}$,
+\ie $\tilde{\mat{F}}^{(n)} = \matFnfull$.
+The two-step iteration procedure of figure \vref{fig:RoothanRepeatedDiag} results.
+\begin{figure}
+	\centering
+	\missingfigure{Roothaan algorithm diagram}
+	\caption{Roothaan algorithm diagram}
+	\label{fig:RoothanRepeatedDiag}
+\end{figure}
 
-
-
-- Plainly take $\tilde{F}^{(n-1)}0= \mat{F}[CC^T]$
-- Simple, but works remarkably well in many cases
-- can proof (cances) it either iterates between two solutions or converges
+Even though Roothaan's algorithm already works for a few simple cases,
+it is far from being reliable.
+For example one can show~\cite{Cances2000,Cances2000b} that it
+either converges to a stationary point of the
+discretised \HF problem \eqref{eqn:HFOptCoeff}
+or alternatively it numerically oscillates between two states,
+where none of them are a stationary point of \eqref{eqn:HFOptCoeff}.
+In practice which of these cases occurs is dependent on the system
+as well as the basis set.
+Furthermore there is no guarantee that the resulting stationary point
+the Roothaan's algorithm finds is the \HF ground state.
+All these cases are already found for \HF calculations
+on the first three periods of the periodic table~\cite{Cances2000}.
 
 \subsection{Level-shifting modification}
-- Level-shifting techniques \cite{Mehrotra1977}
-- Add multiple of the density matrix
-- Show what this causes
-- Show that it can help (see cances)
+If one uses essentially the same \SCF scheme as \ref{fig:RoothanRepeatedDiag}
+but instead diagonalises the matrix
+\[ \tilde{\mat{F}}^{(n)} = \matFnfull
+	- b \mat{S} \, \mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)} \, \mat{S} \]
+where $b > 0$,
+already a much better convergence is achieved.
+This modification is called \newterm{level shifting}%
+~\cite{Saunders1973,Guest1974,Mehrotra1977},
+where $b$ is the \textbf{level-shifting parameter},
+typically chosen in the range between $0.1$ and $0.5$.
+Effectively this modification increases the energy gap between occupied and virtual
+orbital energies.
+To see this, let us consider the converged case, where
+\[ \mat{F} \mat{C}_F = \mat{S} \mat{C}_F \mat{E} \]
+exactly and let us partition the full coefficient matrix%
+\footnote{We assume \RHF here and furthermore only consider the $\alpha$ block.
+	For \UHF the analysis is exactly the same with
+	the relevant equations just replicated in $\alpha$ and $\beta$ block.}
+\[
+	\mat{C}_F = \mm{\mat{C} & \mat{C}_\text{virt}}
+\]
+into occupied and virtual parts.
+Now let $\tilde{\mat{F}} = \mat{F} - b \mat{S} \, \mat{C}\tp{\mat{C}} \, \mat{S}$
+such that
+\begin{align*}
+	\tilde{\mat{F}} \mat{C}_F
+	&= \left( \mat{F} - b \mat{S} \, \mat{C}\tp{\mat{C}} \, \mat{S} \right) \mat{C}_F \\
+	&= \mat{S} \mat{C}_F \mat{E} - b \mat{S} \mm{
+		\mat{C}\tp{\mat{C}} \mat{S} \mat{C} &
+		\mat{C}\tp{\mat{C}} \mat{S} \mat{C}_\text{virt}
+	} \\
+	&= \mat{S} \mat{C}_F \mat{E} - b \mat{S} \mm{ \mat{C} & 0 } \\
+	&= \mat{S} \mat{C}_F \mat{E} + \mat{S} \mat{C}_F \mm{ -b  & 0 } \\
+	&= \mat{S} \mat{C}_F \tilde{\mat{E}}
+\end{align*}
+where
+\[ \tilde{\mat{E}} = \diag\left(\varepsilon_1 - b, \varepsilon_2 - b, \ldots,
+	\varepsilon_{\Nelec} - b, \varepsilon_{\Nelec+1}, \ldots, \varepsilon_{\Norb}\right).
+\]
+In other words the virtual orbitals are uneffected
+whereas the occupied orbitals are shifted downwards in energy by an amount $b$.
+
+The effect of this is that coupling between both orbital spaces is reduced,
+which tends to lead to faster convergence
+especially if the gap between $\varepsilon_{\Nelec}$ and $\varepsilon_{\Nelec+1}$ is small.
+This empirical observation is backed up by more sophisticated
+mathematical analysis by \citet{Cances2000b}.
+Their result shows that for large enough $b$,
+the level-shifted Roothaan procedure is guaranteed to converge to a stationary
+point of the \HF problem \eqref{eqn:HFOptCoeff}.
+The also provide an expression for the lower bound of $b$.
+In this manner convergence to a stationary point
+can be forced even for cases where the original \HF equations \eqref{eqn:HFMO}
+have no solution (like the negative ions with $N > 2Z + M$).
+In such a case the result is no physical ground state, however.
 
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
@@ -112,6 +184,8 @@ Still: Automatically determine sensible damping factor (rather than a fixed one)
 
 \subsection{Direct inversion of the iterative subspace}
 \label{sec:DIIS}
+
+Cances~\cite{Cances2000b} has something about this too
 
 Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
 
