@@ -720,6 +720,12 @@ see section \vref{sec:CC}.
 In the optimisation community the \DIIS technique is known as
 \newterm{Anderson acceleration}\todo{cite Nocedal Wright?} in this context.
 
+%$\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
+%wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
+%Can define~\cite{Lions1988,Cances2000}
+%\[
+%	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
+%\left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
 Last but not least one should mention that a few
 improvements to the \DIIS have been suggested recently.
 This includes the \textbf{energy DIIS}~\cite{Kudin2002},
@@ -804,15 +810,41 @@ which can be seen as approximate second-order \SCF methods
 based on a minimisation of the coefficients as well.
 
 \subsection{Combinations of algorithms}
-Ideally want to switch every now and then
+In the previous sections we mentioned a few typical approaches
+to solve the \HF minimisation problem in an \SCF sense.
+Needless to say that not all algorithms are suitable
+to each use case.
+For this reason in practice often a mixture of some of these methods
+is employed in order to guarantee fast and reliable convergence.
+This section represents my own judgement of the situation
+and is entirely based on my hands-on experience and not at all
+on proper scientific evaluation or comparison%
+\footnote{Unfortunately I am not aware of a work,
+which properly compares the large range of \SCF algorithms
+with another.
+Most papers only compare to the Pulay \DIIS.}
+It should therefore not be taken as a final answer,
+rather a guideline.
 
-%TODO Tynsh: Energy diis, scf benchmark
+In the beginning of the procedure \ODA or \tODA are very useful,
+essentially directing the coefficients reliably into the right direction.
+The energy \DIIS can be seen as an accelerated improvement of those methods,
+which is certainly recommendable for \cGTO-based discretisation
+as the initial \SCF algorithm in my point of view.
 
+In the intermediate steps a Pulay \DIIS shows typically a faster
+convergence than the energy \DIIS~\cite{Kudin2002}.
+This can be rationalised by considering the conditions
+on the coefficients for the linear combination of Fock matrices.
+In the Pulay \DIIS these conditions are much laxer
+compared to the energy \DIIS%
+\footnote{The Pulay \DIIS \emph{extrapolates},
+whereas the energy \DIIS \emph{interpolates}.}
+making it easier to explore directions,
+which to lead to nearby stationary points.
 
-
-$\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
-wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
-Can define~\cite{Lions1988,Cances2000}
-\[
-	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
-\left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
+In the later steps the \DIIS becomes numerically more unstable,
+but since we are close to the \SCF minimum,
+second-order \SCF schemes like QCSCF now show the fastest convergence
+and should be used to obtain a highly-accurate \SCF minimum
+after the \DIIS becomes less effective.
