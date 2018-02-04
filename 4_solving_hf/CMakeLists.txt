@@ -8,6 +8,7 @@ add_inputs(
 	functions_cgto.tex
 	functions_fe.tex
 	functions_cs.tex
+	summary.tex
 )
 
 #
