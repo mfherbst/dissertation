@@ -710,14 +710,18 @@ representations of \HF.
 	is desirable.
 	The coefficient matrices from $\mathcal{C}$ span
 	\begin{equation}
-		\mathcal{P} = \left\{
+		\begin{aligned}
+		\mathcal{P} &= \left\{
 			\mm{\mat{D}^\alpha & 0 \\ 0 & \mat{D}^\beta}
 			\, \middle| \,
-			\forall \sigma \in \{\alpha, \beta\} \,
+			\forall \sigma \in \{\alpha, \beta\} \
 			\mat{D}^\sigma \in \C^{\Nbas\times\Nbas},
-			\tr\left(\mat{D}^\sigma\right) = N_\text{elec}^\sigma,
-			\left(\mat{D}^\sigma\right)^2 = \mat{D}^\sigma
-		\right\}.
+			\right. \\
+			&\hspace{80pt}
+			\tr\left(\mat{S}^\sigma \mat{D}^\sigma\right) = N_\text{elec}^\sigma, \,
+			\mat{D}^\sigma \mat{S}^\sigma \mat{D}^\sigma  = \mat{D}^\sigma
+		\bigg\}.
+		\end{aligned}
 		\label{eqn:HFGrassmann}
 	\end{equation}
 	With these definitions we can recast \eqref{eqn:HFOptCoeff} as

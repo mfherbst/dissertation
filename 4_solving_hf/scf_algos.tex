@@ -148,7 +148,7 @@ where
 \[ \tilde{\mat{E}} = \diag\left(\varepsilon_1 - b, \varepsilon_2 - b, \ldots,
 	\varepsilon_{\Nelec} - b, \varepsilon_{\Nelec+1}, \ldots, \varepsilon_{\Norb}\right).
 \]
-In other words the virtual orbitals are uneffected
+In other words the virtual orbitals are unaffected
 whereas the occupied orbitals are shifted downwards in energy by an amount $b$.
 
 The effect of this is that coupling between both orbital spaces is reduced,
@@ -221,16 +221,28 @@ for $n=1, 2, 3, \ldots$
 		\[
 			\text{Seg}\left[\mat{D}_1, \mat{D}_2\right]
 				= \left\{ (1-\lambda) \mat{D}_1 + \lambda \mat{D}_2 \, \Big|\,
-				\lambda \in [0,1] \right\} \subset \mathcal{P}
+				\lambda \in [0,1] \right\}
 		\]
-		is a line segment of the Grassmann manifold $\mathcal{P}$
+		is a line segment of density matrices
 		and the energy functional $\mathcal{E}_D^\text{HF}$
 		is defined as in \eqref{eqn:HFEnergyFunctionalDens}
 		and repeat the process.
 \end{itemize}
 The remaining question to complete the picture of the \ODA
 is how to obtain minimal density $\tilde{\mat{D}}^{(n+1)}$ along the density segment.
-For this first define
+First notice that in general the density matrix segment
+\[\text{Seg}\left[\mat{D}_1, \mat{D}_2\right] \not\subset \mathcal{P}\]
+even if $\mat{D}_1, \mat{D}_2 \in \mathcal{P}$.
+Much rather this line segment is fully contained only in a superset
+$\tilde{\mathcal{P}} \supset \mathcal{P}$,
+where we relax the constraint $\mat{D}^2 = \mat{D}$ to%
+\footnote{Let $\mat{A}, \mat{B} \in \R^{n\times n}$,
+then $\mat{A} \leq \mat{B}
+\Leftrightarrow \forall \vec{x} \in \R^n \
+\tp{\vec{x}}\mat{A} \vec{x} \leq \tp{\vec{x}}\mat{B}\vec{x}$}
+$\mat{D}^2 \leq \mat{D}$.
+See \cite{Cances2000} for details.
+For ease of notation let us define
 %
 \newcommand{\Gfct}[1]{  \mat{G}\left[ #1 \right]   }
 \newcommand{\Pet}[1]{\textcolor{dkred}{\tilde{\mat{D}}^{(#1)}}}
@@ -251,14 +263,15 @@ For this first define
 	E_2 \left[\mat{D}\right] &\equiv
 		\frac12 \tr\left( \mat{D} \, \mat{G}\left[ \mat{D} \right] \right).
 \end{align*}
-For all $\mat{D}_1,  \mat{D}_2 \in \mathcal{P}$ we can show the properties~\cite{Cances2000a}
+For all matrices $\mat{D}_1, \mat{D}_2 \in \tilde{\mathcal{P}}$
+we can show the properties~\cite{Cances2000a}
 \begin{align}
 	\label{eqn:TermGsymmetry}
 	\tr \left( \mat{D}_1 \mat{G}\left[ \mat{D}_2 \right] \right)
 		&= \tr \left( \mat{D}_2 \mat{G}\left[ \mat{D}_1 \right] \right) \\
 	\label{eqn:GmatTrace}
 	\tr\left( \mat{F}\left[ \mat{D}_1 \right] \mat{D}_2 \right)
-	&= E_1[\mat{D}_2] + \tr\left( \mat{P}_1 \Gfct{\mat{P}_2} \right)
+	&= E_1[\mat{D}_2] + \tr\left( \mat{D}_1 \Gfct{\mat{D}_2} \right)
 \end{align}
 These imply for $E_2$ and arbitrary $\alpha, \beta \in \R$
 \begin{equation}
@@ -320,7 +333,7 @@ which causes an extra factor of $2$ to appear in their expression for $c$.}
 	c &= E_2\left[ \Pe{n+1} - \Pet{n} \right] \\
 	&\stackrel{\eqref{eqn:HFE2}}{=}
 		E_2 [\Pe{n+1}] - \tr\left( \Gfct{\Pet{n}} \Pe{n+1} \right) + E_2 [\Pet{n}] \\
-	&= E_2 [\Pe{n+1}] - \tr \left( \Fot{n} \Pe{n+1} \right) + E_1[\Pe{n+1}] + E_2 [\Pet{n}] 
+	&= E_2 [\Pe{n+1}] - \tr \left( \Fot{n} \Pe{n+1} \right) + E_1[\Pe{n+1}] + E_2 [\Pet{n}]
 \end{aligned}
 \label{eqn:ODAc}
 \end{equation}
@@ -332,29 +345,37 @@ can be determined by differentiating \eqref{eqn:ODAquadratic} resulting in
 	&&\text{and}&
 	\frac{\partial^2 \EHFD{\Pet{n+1}}}{\partial \left(\la{n+1}\right)^2} &= 2c
 \end{align*}
-Due to $E_2[\mat{D}] \geq 0$~\cite{Cances2000a} for all $\mat{D} \in \mathcal{P}$
+Due to $E_2[\mat{D}] \geq 0$~\cite{Cances2000a} for all $\mat{D} \in \tilde{\mathcal{P}}$
 one easily deduces $c \geq 0$,
 such that the stationary point of the above expression is always a minimum.
 Since $\la{n+1} \in [0,1]$ the minimiser is
-\[
+\begin{equation}
+	\label{eqn:ODALambdaOpt}
 	\la{n+1}_\text{min} = \left\{
 	\begin{array}{cl}
 		1 & \text{if $2c \leq -s$} \\
 		- \frac{s}{2c} & \text{else}
 	\end{array}
 	\right.,
-\]
+\end{equation}
 where the cases $c=0$ and $s=0$ have been ignored, since they only occur at convergence.
 This closes the missing link and allows to implement a \ODA
 in as a density-based \SCF.
 
-\noindent
-Defining
+Let $\alpha, \beta \in \R$ and $\mat{D}_1, \mat{D}_2 \in \tilde{\mathcal{P}}$.
+Since $\matFfullD = \mat{T} + \mat{V}_0 + \matJfullD + \matKfullD$
+and the two-electron terms are linear in the density matrix, we have
+\begin{equation}
+	\mat{F}\!\left[\alpha \mat{D}_1 + \beta\mat{D}_2\right]
+	= \alpha \mat{F}\!\left[\mat{D}_1\right] + \beta \mat{F}\!\left[\mat{D}_2\right]
+	\label{eqn:FockLinearCombination}
+\end{equation}
+iff $\alpha + \beta = 1$. Defining
 \begin{align*}
 	\Fot{n} &\equiv  \mat{F}\left[ \Pet{n} \right] &
 	\Fo{n} &\equiv \mat{F}\left[ \Pe{n} \right]
 \end{align*}
-we can rewrite \eqref{eqn:ODAupFock} as
+this allows to rewrite \eqref{eqn:ODAupFock} as
 \begin{equation}
 	\label{eqn:ODAdamping}
 	\Fot{n}
@@ -376,8 +397,7 @@ of density-based \SCF algorithms called relaxed constraints algorithms,
 which are discussed in detail in \cite{Cances2000a}.
 
 \noindent
-By induction and using the idea of \eqref{eqn:ODAdamping} one can show
-that
+Using \eqref{eqn:ODAdamping} one can show by induction that
 \begin{align}
 	\label{eqn:ODAFock}
 	\Fot{n} &= \sum_{j = 0}^n \Fo{j} \la{j} \prod_{i=j+1}^n \ila{i}, \\
@@ -386,53 +406,180 @@ that
 \end{align}
 where we set $\la{0} \equiv 1$. Since
 \begin{align*}
-	\Fo{n} &= \matFnfull \\
-	\Pe{n} &= \mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \\
+	\Fo{j} &= \matFnfull \\
+	\Pe{j} &= \mat{C}^{(j)} \tp{\left(\mat{C}^{(j)}\right)} \\
 \end{align*}
 these results in theory allow to express the complete \ODA
-in terms of the coefficients.
-In practice this is not a fruitful approach for two reasons.
-Firstly it requires to store a growing list of coefficients
---- one for each \SCF step.
-Since in a \contract-based ansatz the Fock matrix cannot be stored,
-the application of $\Fot{n}$ to a vector $\vec{x}$
-can only be performed by first forming $\Fo{j} \vec{x}$
-for each term $j$ and then adding the results,
-which is roughly $n$ times as expensive
-and furthermore gets more and more expensive as the \SCF progresses.
-Whilst an \ODA is therefore feasible for {\cGTO}s and \CS-based
-discretisations,
-in the unmodified form presented here
-it cannot be applied for solving the \HF problem with a \FE-based discretisation.
+in terms of the coefficients
+such that expressions like \eqref{eqn:ExchangeApply}
+or \eqref{eqn:ApplicationKcs} could be used for a \FE-based
+or a \CS-based discretisation respectively.
 
+In practice this is usually not a fruitful approach for two reasons.
+Firstly it requires to store a growing list of coefficients,
+namely one for each \SCF step.
+Especially for a \FE approach this becomes increasingly costly in terms of memory.
+Secondly for a \contract-based ansatz
+we especially want to avoid storing the Fock matrices $\Fo{j}$
+in favour of \contract expression like \eqref{eqn:ExchangeApply}
+and \eqref{eqn:ApplicationKcs}.
+In other words each application of $\Fot{n}$ to a vector $\vec{x}$
+would need to be performed by first computing $\Fo{j} \vec{x}$ for each $j$
+and then adding the results.
+This procedure is roughly $n$ times as expensive as a single apply.
+Even though the \contract expressions formally scale better,
+the increasing number of times they need to be invoked
+should make this ansatz rather expensive.
 
+Overall the \ODA is very suitable for {\cGTO} and \CS-based discretisations,
+since for these density-based \SCF schemes are fine,
+but this algorithm is not suitable for solving the \HF problem
+with a \FE-based discretisation without further modifications.
+
+\defineabbr{tODA}{tODA\xspace}{Truncated optimal damping algorithm}
 \subsection{Truncated optimal damping algorithm}
 \label{sec:tODA}
 
-	Instead of linearly combining the densities, one can alternatively combine the
-		individual $\Fo{n} = \mat{F}\left[ \{\vec{c}^{(i,n)} \} \right]$ directly
-		computed from the coefficients.
-		See  \eqref{eqn:FockDC} and \eqref{eqn:FockLinComb} for details.
-		This yields the fock matrix $\Fot{n}$ as a growing
-		chain of fock terms (see \eqref{eqn:ODAFock})
-		Some of these terms might get small, since the coefficient
-		\begin{equation}
-			\label{eqn:ODAFockCoeff}
-			\lambda^{(j)} \prod_{i=j+1}^{n} \left(1- \lambda^{(i)}\right) \in [0,1]
-		\end{equation}
-		is a product of factors which are all between 0 and 1.
-		Thus some Fock terms can probably be ignored.
-		Moreover since
-		\[ \lambda^{(i)} \in [0,1] \qquad \Rightarrow \qquad \prod_{i=j}^{n} \left(1- \lambda^{(i)} \right) 
-		\leq \prod_{i=j+1}^{n} \left(1- \lambda^{(i)}\right) \]
-		the sequence of terms could probably be terminated unnaturally by demanding a
-		minimal value for the magnitude of the coefficients \eqref{eqn:ODAFockCoeff}.
+Let us again consider \eqref{eqn:ODAFock}.
+Due to $\la{i} \in [0,1]$ the Fock matrix prefactor
+\begin{equation}
+	\label{eqn:ODAFockCoeff}
+	\lambda^{(j)} \prod_{i=j+1}^{n} \left(1- \lambda^{(i)}\right) \in [0,1]
+\end{equation}
+is a product of factors,
+which are all between $0$ and $1$.
+Therefore this prefactor may become
+rather small for small values of $j$ as $n$ increases.
+In other words in the later \SCF steps the $\Fo{j}$ terms
+which were produced at the beginning of the \SCF procedure
+may be accompanied with a small prefactor and hence can at some point
+be neglected in \eqref{eqn:ODAFock}.
+This is the justification for the truncated optimal damping algorithm~(\tODA),
+which approximates the \ODA by artificially restricting the number
+of terms in \eqref{eqn:ODAFock} to the $m$ most recently
+obtained Fock matrices.
+If we define
+\[
+	j_0(n) \equiv n-m+1
+\]
+this allows to write the approximated sums as
+\begin{align}
+	\label{eqn:ODAFockApprox}
+	\Fot{n} &= \frac{1}{\la{j_0(n)}} \sum_{j = j_0(n)}^n \Fo{j} \la{j} \prod_{i=j+1}^n \ila{i}, \\
+\intertext{and analogously for the density matrices}
+	\label{eqn:ODADensApprox}
+	\Pet{n} &= \frac{1}{\la{j_0(n)}} \sum_{j = j_0(n)}^n \Pe{j} \la{j} \prod_{i=j+1}^n \ila{i}.
+\end{align}
+The factor $1/\la{j_0(n)}$ is required to make sure that
+the Fock matrix prefactors sum to $1$,
+\ie to make sure that the condition for
+the linear combination of Fock matrices
+\eqref{eqn:FockLinearCombination} is fulfilled.
+
+The simplest case of this class of approximations is $m=1$.
+This implies $j_0(n) = n$ such that \eqref{eqn:ODAFockApprox}
+and \eqref{eqn:ODADensApprox} simplify to read
+\begin{align*}
+	\Fot{n} &= \Fo{n} & \Pet{n} &= \Pe{n}
+\end{align*}
+In other words this 2-step \tODA is equivalent to an \textit{adhoc} modification
+of the exact ODA where we replace
+$\tilde{\mat{D}}^{(n)}$ by $\mat{D}^{(n)}$,
+the density of the previous \SCF step.
+Taking this into account the expressions \eqref{eqn:ODAs} and \eqref{eqn:ODAc}
+may be written as
+\begin{align}
+	\label{eqn:tODAs}
+	\nonumber
+	s &= \tr \left( \Fot{n} \Pe{n+1} \right) - E_1[\Pet{n}] - 2 E_2 [\Pet{n}] \\
+	  &= \tr \left( \tp{\left(\mat{C}^{(n+1)}\right)} \Fo{n} \mat{C}^{(n+1)} \right)
+	  - E_1\!\left[\mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)}\right]
+	  - 2 E_2\! \left[\mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)}\right] \\
+\intertext{and}
+	\label{eqn:tODAc}
+	\nonumber
+c &= E_2[\Pe{n+1}] - \tr \left( \Fot{n} \Pe{n+1} \right) + E_1[\Pe{n+1}]
+		+ E_2 [\Pet{n}] \\
+	\nonumber
+	&= E_2\!\left[\mat{C}^{(n+1)} \tp{\left(\mat{C}^{(n+1)}\right)}\right]
+		- \tr \left( \tp{\left(\mat{C}^{(n+1)}\right)} \Fo{n} \mat{C}^{(n+1)} \right) \\
+		&\hspace{50pt}
+		+ E_1\!\left[\mat{C}^{(n+1)} \tp{\left(\mat{C}^{(n+1)}\right)}\right]
+		+ E_2\!\left[\mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)}\right]
+\end{align}
+In contrast to the exact \ODA
+this yields a coefficient-based \SCF algorithm.
+Starting from an initial set of coefficients $\mat{C}^{(0)}$
+with corresponding initial Fock matrix $\Fot{0} =
+\mat{F}\!\!\left[\mat{C}^{(0)}\!\tp{\left(\mat{C}^{(0)}\right)}\right]$
+we proceed for $n=1,2,3,\ldots$ as follows.
+\begin{itemize}
+	\item Diagonalise $\Fot{n-1}$ in order to obtain coefficients
+		$\mat{C}_F^{(n)}$.
+	\item According to the Aufbau principle select $\mat{C}^{(n)}$
+		and build $\Fo{n} = \matFnfull$.
+	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
+		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
+	\item Compute $s$, $c$ and $\lambda^{(n)}$
+		according to \eqref{eqn:tODAs}, \eqref{eqn:tODAc}
+		and \eqref{eqn:ODALambdaOpt}.
+	\item Set
+		\[ \Fot{n} = \ila{n} \Fo{n-1} + \la{n} \Fo{n} \]
+		and repeat.
+\end{itemize}
+In this process one only needs the history of two Fock matrices $\Fo{n-1}$ and
+$\Fo{n}$, such that $\Fot{n}$ can be applied when needed.
+This in turn implies that only the coefficient matrices $\mat{C}^{(n-1)}$
+and $\mat{C}^{(n)}$ are required, such that $\Fo{n}$ and $\Fo{n-1}$
+can be applied whenever needed.
+
+Compared to the Roothaan algorithm~(see section \ref{sec:RoothaanRepeatedDiag})
+the \tODA only roughly doubles
+the cost of each diagonalisation, since two Fock matrices need to be applied.
+Additionally one needs to evaluate the trace
+\[
+	\tr \left( \tp{\left(\mat{C}^{(n+1)}\right)} \Fo{n} \mat{C}^{(n+1)} \right)
+\]
+and compute the energies
+$E_1[\mat{D}^{(n)}]$ and $E_2[\mat{D}^{(n)}]$ in order to obtain $c$ and $s$
+for each iteration.
+The former step costs about as much as a single matrix-vector product
+and the latter is usually done during the \SCF anyways
+to display the progress to the user,
+thus represents no extra cost.
+
+Even though about twice as expensive as the Roothaan algorithm
+if a \contract-based \SCF is performed,
+the advantage of the \tODA is,
+that it automatically finds the damping coefficient $\la{n}$,
+which reduces the energy at each iteration as much as possible.
+This amounts to break the oscillatory behaviour
+of the standard Roothaan repeated diagonalisation scheme
+in a slightly improved manner than the default damping
+or level-shifting modifications.
+
+One should mention, however, that the \tODA
+does not inherit all of the nice mathematical properties from the \ODA.
+For example it is no longer guaranteed that the \tODA
+converges to a stationary point of the \HF problem \eqref{eqn:HFOptCoeff}%
+~\cite{CancesODAprivate}.
+Especially close to convergence it may for example happen,
+that $\lambda^{(n)} \not\in [0,1]$ since both $c$ and $s$
+become rather small, thus $2c \leq s$ ill-defined.
+One can get around this by explicitly setting $\lambda^{(n)} = 1$ in the cases,
+where $\abs{c}$ and $\abs{s}$ become small.
+The \tODA is thus best used in the initial \SCF steps in order to
+effectively prevent the Roothaan oscillations from happening.
+
+\subsection{Direct inversion of the iterative subspace}
+\label{sec:DIIS}
 
 
 
-ODA not great for coefficent-based setting
-Approximation, which destroys many nice mathematical properties
-Still: Automatically determine sensible damping factor (rather than a fixed one)
+Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
+
+Other ways~\cite{Shepard2007}
+LSIIS (least-squares commutator DIIS)~\cite{Li2016}
 
 
 
@@ -444,17 +591,6 @@ Can define~\cite{Lions1988,Cances2000}
 \left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
 
 
-
-
-
-\subsection{Direct inversion of the iterative subspace}
-\label{sec:DIIS}
-
-
-Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
-
-Other ways~\cite{Shepard2007}
-LSIIS (least-squares commutator DIIS)~\cite{Li2016}
 
 \subsection{Geometric direct minimisation}
 Only brief
