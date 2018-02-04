@@ -581,8 +581,9 @@ effectively prevent the Roothaan oscillations from happening.
 
 In his celebrated \citeyear{Pulay1982} paper \citeauthor{Pulay1982}
 not only introduced the aforementioned Pulay error \eqref{eqn:PulayError},
-but also used this measure to suggest an acceleration scheme
-for the \SCF procedure now known
+but also improved upon his previously introduced
+\SCF convergence acceleration scheme~\cite{Pulay1980}.
+This effort resulted in the procedure now widely known
 by the term \newterm{direct inversion in the iterative subspace}~(\DIIS).
 In his variant of the DIIS procedure the next Fock matrix was found
 as a linear combination
@@ -646,8 +647,7 @@ or iterative methods rather fast.
 
 There are a few issues,
 which typically occur close to self-consistency,
-where
-the error matrices $\{\mat{e}^{(n-i)}\}_{i=0,\ldots,m-1}$
+where the error matrices $\{\mat{e}^{(n-i)}\}_{i=0,\ldots,m-1}$
 will be almost identical.
 This causes multiple rows in $\mat{B}$ to be extremely similar
 and thus gives rise to an ill-conditioned linear system \eqref{eqn:DIISlinsys}.
@@ -662,6 +662,13 @@ Last but not least one may always drop the oldest Fock matrix
 $\mat{F}^{(n-m+1)}$ if an ill-conditioned linear system is detected.
 Alternatively one can remove linear dependencies by a singular-value
 decomposition of $\mat{B}$.
+Another point worth noting is that the \DIIS procedure is an \emph{extrapolation}
+technique.
+In other words there is no guarantee,
+that the Fock matrix $\tilde{\mat{F}}^{(n)}$ is of any physical
+or mathematical significance.
+It could lead into totally the wrong direction causing the \SCF
+procedure to eventually diverge.
 
 Since there is no reason to build the density matrix
 in Pulay's \DIIS procedure
@@ -679,7 +686,7 @@ Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
 \begin{itemize}
 	\item Use the overlaps $\mat B$ to setup and solve \eqref{eqn:DIISlinsys}
 		for the new set of \DIIS coefficients $\vec{c}$.
-	\item Build the Fock matrix $\tilde{\mat{F}}$
+	\item Build the Fock matrix $\tilde{\mat{F}}^{(n)}$
 		according to \eqref{eqn:DIISfock}.
 		In this process skip coefficients $c_i$ below a certain threshold
 		in order to save some matrix-vector products when
@@ -703,7 +710,6 @@ Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
 		Drop coefficients, which are beyond the $m$ Fock matrices to keep
 		and repeat the process thereafter.
 \end{itemize}
-
 The Pulay \DIIS scheme outlined here is rather general
 and has been frequently applied to problems
 other than solving the \HF or Kohn-Sham equations~\cite{Hamilton1986}.
