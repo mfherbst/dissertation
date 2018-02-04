@@ -209,7 +209,7 @@ for $n=1, 2, 3, \ldots$
 	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
 		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
 	%
-	\item Set
+	\item Solve the line search problem
 		\begin{equation}
 			\tilde{\mat{D}}^{(n+1)}
 			= \arginf_{\tilde{\mat{D}} \in
@@ -225,11 +225,15 @@ for $n=1, 2, 3, \ldots$
 		\]
 		is a line segment of density matrices
 		and the energy functional $\mathcal{E}_D^\text{HF}$
-		is defined as in \eqref{eqn:HFEnergyFunctionalDens}
-		and repeat the process.
+		is defined as in \eqref{eqn:HFEnergyFunctionalDens}.
+		Repeat the process thereafter.
 \end{itemize}
+One can show~\cite{Cances2000} that the \ODA
+\emph{always} converges to a local minimum of \eqref{eqn:HFOptDens}.
+
 The remaining question to complete the picture of the \ODA
-is how to obtain minimal density $\tilde{\mat{D}}^{(n+1)}$ along the density segment.
+from a computational point of view
+is to find a way to obtain the minimal density $\tilde{\mat{D}}^{(n+1)}$.
 First notice that in general the density matrix segment
 \[\text{Seg}\left[\mat{D}_1, \mat{D}_2\right] \not\subset \mathcal{P}\]
 even if $\mat{D}_1, \mat{D}_2 \in \mathcal{P}$.
@@ -387,7 +391,7 @@ Comparing with equation \eqref{eqn:FockDamping}
 one can identify with $\la{n}$ the damping factor $\alpha$.
 Since $\la{n}$ is optimal in the sense of minimising the energy along the line segment
 spanned by $\Pe{n}$ and $\Pet{n-1}$,
-the optimal damping algorithm can be described by repetitively finding the optimal damping
+the \ODA can be described by repetitively finding the optimal damping
 parameter from \SCF step to \SCF step.
 Notice that its construction guarantees that the \SCF energy will always decrease.
 It is hence guaranteed to converge to a local minimum of the \HF problem
@@ -561,7 +565,7 @@ or level-shifting modifications.
 One should mention, however, that the \tODA
 does not inherit all of the nice mathematical properties from the \ODA.
 For example it is no longer guaranteed that the \tODA
-converges to a stationary point of the \HF problem \eqref{eqn:HFOptCoeff}%
+converges to a minimum of the \HF problem \eqref{eqn:HFOptCoeff}%
 ~\cite{CancesODAprivate}.
 Especially close to convergence it may for example happen,
 that $\lambda^{(n)} \not\in [0,1]$ since both $c$ and $s$
@@ -571,33 +575,177 @@ where $\abs{c}$ and $\abs{s}$ become small.
 The \tODA is thus best used in the initial \SCF steps in order to
 effectively prevent the Roothaan oscillations from happening.
 
-\subsection{Direct inversion of the iterative subspace}
+\subsection{Direct inversion in the iterative subspace}
 \label{sec:DIIS}
+\defineabbr{DIIS}{DIIS\xspace}{Direct inversion in the iterative subspace}
 
-
-
-Standard commutator DIIS by Pulay~\cite{Pulay1982,Hamilton1986}
-
-Other ways~\cite{Shepard2007}
-LSIIS (least-squares commutator DIIS)~\cite{Li2016}
-
-
-
-$\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
-wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
-Can define~\cite{Lions1988,Cances2000}
+In his celebrated \citeyear{Pulay1982} paper \citeauthor{Pulay1982}
+not only introduced the aforementioned Pulay error \eqref{eqn:PulayError},
+but also used this measure to suggest an acceleration scheme
+for the \SCF procedure now known
+by the term \newterm{direct inversion in the iterative subspace}~(\DIIS).
+In his variant of the DIIS procedure the next Fock matrix was found
+as a linear combination
+\begin{equation}
+	\tilde{\mat{F}}^{(n)} = \sum_{i=0}^{m-1} c_i \mat{F}^{(n-i)}
+	\label{eqn:DIISfock}
+\end{equation}
+of Fock matrices from the $m$ most recent \SCF steps, \ie
+\[ \mat{F}^{(j)}
+	= \mat{F}\!\!\left[\mat{C}^{(j)}\!\tp{\left(\mat{C}^{(j)}\right)}\right].
+\]
+The coefficients $\{c_i\}_{i=1,\ldots,m}$ are to be determined such that
+the norm of the corresponding linear combination of Pulay errors
+\begin{equation}
+	f_\text{DIIS}(c_0, c_1, \ldots, c_{m-1})
+	= \norm{\sum_{i=0}^{m-1} c_i \mat{e}^{(n-i)}}_\text{frob}^2 
+	= \sum_{i=0}^{m-1} \sum_{j=0}^{m-1} c_i c_j \tr\left( \mat{e}^{(n-i)} \mat{e}^{(n-j)}  \right)
+\end{equation}
+is minimal.
+Defining a real-symmetric matrix $\mat{B} \in \R^{m\times m}$ with elements
+\begin{equation}
+	B_{ij} = \tr\left( \mat{e}^{(n-i)} \mat{e}^{(n-j)} \right)
+	\label{eqn:BMatElem}
+\end{equation}
+we can alternatively write
+\begin{equation}
+	f_\text{DIIS}(\vec{c}) = \tp{\vec{c}} \mat{B} \vec{c}.
+	\label{eqn:DIISobjective}
+\end{equation}
+In agreement with what was discussed in equation \eqref{eqn:FockLinearCombination},
+we need to additionally impose the constraint
 \[
-	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
-\left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
+	\sum_{i=0}^{m-1} c_i = 1,
+\]
+such that the resulting Fock matrix $\tilde{\mat{F}}^{(n)}$ is physically sensible.
+In other words Pulay's \DIIS scheme can be expressed
+as the quadratic programming problem
+\[
+	\vec{c} = \argmin\left\{
+		\tp{\vec{c}} \mat{B} \vec{c}
+		\, \middle| \,
+		\sum_{i=0}^{m-1} c_i = 1
+	\right\},
+\]
+which has corresponding Euler-Lagrange equations
+\begin{equation}
+	\mm{
+		\mat{B} & \vec{1} \\
+		\tp{\vec{1}} & 0
+	}
+	\mm{\vec{c} \\ \lambda}
+	= \mm{\vec{0} \\ 1},
+	\label{eqn:DIISlinsys}
+\end{equation}
+where $\vec{1}, \vec{0} \in \R^m$ are column vectors of $m$ ones and $m$ zeros
+and $\lambda$ is the Lagrange multiplier corresponding to the constraint
+$\sum_{i=0}^{m-1} c_i = 1$.
+Typically one takes $m$ between $2$ and $10$,
+such that the linear system \eqref{eqn:DIISlinsys} can be solved by either dense
+or iterative methods rather fast.
 
+There are a few issues,
+which typically occur close to self-consistency,
+where
+the error matrices $\{\mat{e}^{(n-i)}\}_{i=0,\ldots,m-1}$
+will be almost identical.
+This causes multiple rows in $\mat{B}$ to be extremely similar
+and thus gives rise to an ill-conditioned linear system \eqref{eqn:DIISlinsys}.
+There are a couple of remedies typically used in practice~\cite{Kudin2002}.
+For example one may drop the Fock matrices $\mat{F}^{(n-i)}$
+where the coupling to the most recent Fock matrix $\mat{F}^{(n)}$,
+\ie the matrix element $B_{0i}$ is smaller than a certain threshold.
+Alternatively one may artificially bias the lowest-energy solution,
+by multiplying all other diagonal entries $B_{ii}$ by a penalty
+factor slightly larger than $1$.
+Last but not least one may always drop the oldest Fock matrix
+$\mat{F}^{(n-m+1)}$ if an ill-conditioned linear system is detected.
+Alternatively one can remove linear dependencies by a singular-value
+decomposition of $\mat{B}$.
 
+Since there is no reason to build the density matrix
+in Pulay's \DIIS procedure
+it is suitable for both density-based as well as coefficent-based \SCF settings.
+Moreover given that the $m$ coefficients $\{ \mat{C}^{(n-i)} \}_{i=0,\ldots,m-1}$
+are stored,
+the Fock matrix terms of \eqref{eqn:DIISfock}
+can be applied using expressions like \eqref{eqn:ExchangeApply}
+or \eqref{eqn:ApplicationKcs} without any problems,
+making the \DIIS suitable for a \contract-based \SCF as well.
+
+Let us briefly summarise the procedure in a \contract-based \SCF.
+Start from an initial set of occupied coefficients $\mat{C}^{(0)} \in \mathcal{C}$.
+Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
+\begin{itemize}
+	\item Use the overlaps $\mat B$ to setup and solve \eqref{eqn:DIISlinsys}
+		for the new set of \DIIS coefficients $\vec{c}$.
+	\item Build the Fock matrix $\tilde{\mat{F}}$
+		according to \eqref{eqn:DIISfock}.
+		In this process skip coefficients $c_i$ below a certain threshold
+		in order to save some matrix-vector products when
+		$\tilde{\mat{F}}$ is contracted with trial vectors during
+		the diagonalisation.
+		If one entry $c_i$ is very large, say $>10$,
+		then only keep this matrix in the expression.
+		In all cases be sure to renormalise,
+		such that all coefficients still sum to $1$.
+	\item Diagonalise $\tilde{\mat{F}}$
+		to obtain $\mat{C}_F^{(n)}$.
+		Select $\mat{C}$ by the Aufbau principle.
+	%
+	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
+		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
+	%
+	\item Calculate the new error overlaps
+		$B_{0i} = \braket{\mat{e}^{(n)}}{\mat{e}^{(n-i)}}$.
+		Note that only one row of $\mat{B}$ has to be calculated,
+		since the others can be kept from the previous \SCF iteration.
+		Drop coefficients, which are beyond the $m$ Fock matrices to keep
+		and repeat the process thereafter.
+\end{itemize}
+
+The Pulay \DIIS scheme outlined here is rather general
+and has been frequently applied to problems
+other than solving the \HF or Kohn-Sham equations~\cite{Hamilton1986}.
+For example it can be applied to accelerate
+the convergence of fixed-point problems
+as they occur for example in coupled-cluster theory,
+see section \vref{sec:CC}.
+In the optimisation community the \DIIS technique is known as
+\newterm{Anderson acceleration}\todo{cite Nocedal Wright?} in this context.
+
+Last but not least one should mention that a few
+improvements to the \DIIS have been suggested recently.
+This includes the \textbf{energy DIIS}~\cite{Kudin2002},
+which effectively interpolates between densities resulting
+from the \ODA accelerating \ODA convergence
+whilst showing mathematically highly desirable properties.
+\citet{Shepard2007} have suggested ways to improve the \DIIS
+by reformulating the original problem into a least squares
+or a linear least squares problem.
+The augmented Roothaan-Hall \DIIS~\cite{Hoest2008} is another take
+to yield a linear-scaling method with improved convergence.
+The
+\textbf{least-squares commutator in the Iterative Subspace}~\cite{Li2016} approach
+can also be seen as a variant of the \DIIS
+trying to correct some of its issues.
 
 \subsection{Geometric direct minimisation}
 Only brief
 
+\begin{figure}
+	\centering
+	\missingfigure{Geometric direct minimisation}
+	\caption{Geometric direct minimisation}
+	\label{fig:GeometricDirectMinimisation}
+\end{figure}
+
+
+
 \subsection{Second-order \SCF algorithms}
 \label{sec:SOSCF}
 Only brief
+%TODO Tynsh: Energy diis, scf benchmark
 mention that approximate methods exist, too
 
 % https://www.sciencedirect.com/science/article/pii/0301010481851567
@@ -609,8 +757,20 @@ Augmented Roothan-Hall \cite{Hoest2008}
 and based on the density, preconditioned CG-like minimisation}
 
 
+
+
+
 \subsection{Combinations of algorithms}
 Ideally want to switch every now and then
 
 
-DIIS and ODA
+
+
+
+
+$\tilde{\mat{F}}^{(n)}$ gradient of $\mathcal{E}_D(\mat{D})$
+wrt. $\mat{D}$~\cite{Lions1988,Cances2000}.
+Can define~\cite{Lions1988,Cances2000}
+\[
+	\mat{C}^{(n+1)} = \arginf_{\mat{C} \in \mathcal{C}}
+\left\{ \tr \tilde{\mat{F}}^{(n)} \mat{C} \tp{\mat{C}} \right\} \]
