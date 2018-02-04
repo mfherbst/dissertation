@@ -736,8 +736,44 @@ The
 can also be seen as a variant of the \DIIS
 trying to correct some of its issues.
 
-\subsection{Geometric direct minimisation}
-Only brief
+\subsection{Second-order \SCF algorithms}
+\label{sec:SOSCF}
+
+To conclude our review of a few common \SCF algorithms,
+this section will briefly touch upon so-called \newterm{second-order \SCF algorithms}.
+The general idea of such methods is
+to consider not only the \HF equations \eqref{eqn:HFDiscreteEquations},
+which effectively set the gradient of the minimisation problem \eqref{eqn:HFOptCoeff}
+to zero,
+but to also incorporate the Hessian of \eqref{eqn:HFOptCoeff} as well.
+The aim is to both achieve faster convergence
+and to furthermore ensure that convergence to a true \SCF minimum is guaranteed
+and other stationary points on $\mathcal{C}$ are avoided.
+Since forming the Hessian of \eqref{eqn:HFOptCoeff} can become rather expensive,
+many approaches use approximate Hessians instead.
+Typically it is also observed
+that convergence only becomes quadratic
+once the \SCF procedure is already reasonably
+close to the minimiser of \eqref{eqn:HFOptCoeff}.
+
+The first approach
+which falls in this category
+was the \textbf{quadratically-convergent \SCF}~(QCSCF)~\cite{Bacskay1981},
+which minimised the \SCF energy by considering a CI expansion
+based on the current set of \SCF orbitals
+up to second order.
+Similar to most methods discussed in this section,
+QCSCF employs normalised basis functions $\{\varphi_\mu\}_{\mu\in\Ibas}$.
+These have the advantage, that the occupied \SCF coefficients $\mat{C}^{(n)}$
+can be alternatively parametrised~\cite{Helgaker2013} as
+\[ \mat{C}_{(n)} = \mat{U}^{(n)} \mat{C}^{(0)} = \exp(-\mat{K}^{(n)}) \mat{C}^{(0)}, \]
+where $\mat{U}^{(n)} \in \R^{\Nbas \times \Nbas}$ is a unitary rotation matrix
+and $\mat{K}^{(n)}$ is an anti-Hermitian matrix.
+Since the entries of  $\mat{K}^{(n)}$ effectively rotate the coefficients
+$\mat{C}^{(0)}$,
+this matrix is typically called \newterm{orbital rotation matrix}.
+Further details about the orbital rotation ansatz for \SCF methods
+can be found in \cite{Helgaker2013}.
 
 \begin{figure}
 	\centering
@@ -745,32 +781,32 @@ Only brief
 	\caption{Geometric direct minimisation}
 	\label{fig:GeometricDirectMinimisation}
 \end{figure}
+Related to this \SCF ansatz is the \textbf{geometric direct minimisation}
+method~\cite{Voorhis2002}.
+This approach tries to directly
+optimise the coefficients $\mat{C}_{(n)}$ in the sense of \eqref{eqn:HFOptCoeff}
+on the Stiefel manifold $\mathcal{C}$.
+The algorithm determines the energy gradient $\mat{g}$ at the current
+coefficient set $\mat{C}^{(n)}$
+and then follows the geodesic defined by $\mat{g}$
+to find a new set $\mat{C}^{(n+1)}$.
+The step size is determined by a Newton-Raphson-like step,
+where the Hessian is constructed
+approximately using the Broyden-Fletcher-Goldfarb-Shanno
+update scheme.
+The algorithm is sketched in figure \vref{fig:GeometricDirectMinimisation}
+as well.
 
-
-
-\subsection{Second-order \SCF algorithms}
-\label{sec:SOSCF}
-Only brief
-%TODO Tynsh: Energy diis, scf benchmark
-mention that approximate methods exist, too
-
-% https://www.sciencedirect.com/science/article/pii/0301010481851567
-
-Quadratically-convergent scf \cite{Ochsenfeld1997}
-Augmented Roothan-Hall \cite{Hoest2008}
-
-\todoil{Check out: Linear scaling SCF as minimisation \cite{Salek2007} --- this is second order
-and based on the density, preconditioned CG-like minimisation}
-
-
-
-
+Last but not least one should mention the recent linear scaling
+\SCF approach by \citet{Salek2007}
+as well as the augmented Roothaan-Hall method~\cite{Hoest2008}
+which can be seen as approximate second-order \SCF methods
+based on a minimisation of the coefficients as well.
 
 \subsection{Combinations of algorithms}
 Ideally want to switch every now and then
 
-
-
+%TODO Tynsh: Energy diis, scf benchmark
 
 
 
