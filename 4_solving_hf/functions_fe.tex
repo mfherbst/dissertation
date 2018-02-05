@@ -211,13 +211,26 @@ via $\tau_c(e_i)$.
 %
 \begin{figure}
 	\centering
-	\missingfigure{shape functions}
-	\caption{Shape functions}
-	\label{fig:ShapeFunctions}
+	\includeimage{4_solving_hf/shape_functions_1d}
+	\caption{
+		The shape functions for polynomial orders $k=1$, $k=2$ and $k=3$
+		in one dimension.
+	}
+	\label{fig:ShapeFunctionsOneD}
+\end{figure}
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/shape_functions_2d}
+	\caption{
+		Examples for shape functions in two dimensions.
+		The upper left shape function is for $k=1$,
+		all others for $k=2$.
+	}
+	\label{fig:ShapeFunctionsTwoD}
 \end{figure}
 %
 A few examples of shape functions in one and two dimensions are illustrated
-in figure \ref{fig:ShapeFunctions}.
+in figure \vref{fig:ShapeFunctionsOneD} and \vref{fig:ShapeFunctionsTwoD}.
 Notice, that the shape functions in two dimensions
 have been constructed as tensor products from the one-dimensional ones.
 This construction is a special property of so-called $Q_k$ finite elements,
