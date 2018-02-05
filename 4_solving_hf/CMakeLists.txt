@@ -12,6 +12,14 @@ add_inputs(
 )
 
 #
+# TikZ images
+#
+tikz_image(roothaan_oda.tikz TMP)
+add_depends(${TMP})
+tikz_image(gdm.tikz TMP)
+add_depends(${TMP})
+
+#
 # Python pdf images
 #
 set(PDF_OUTPUTS "")
@@ -71,3 +79,4 @@ foreach(out ${PDF_OUTPUTS})
         pdf_image(${CMAKE_CURRENT_BINARY_DIR}/${out} TMP)
         add_depends(${TMP})
 endforeach()
+

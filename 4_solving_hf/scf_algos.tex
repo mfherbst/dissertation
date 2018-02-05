@@ -86,13 +86,7 @@ this algorithm can be described by building the next Fock matrix
 $\tilde{\mat{F}}^{(n)}$ only by considering
 the current occupied coefficients $\mat{C}^{(n)}$,
 \ie $\tilde{\mat{F}}^{(n)} = \matFnfull$.
-The two-step iteration procedure of figure \vref{fig:RoothanRepeatedDiag} results.
-\begin{figure}
-	\centering
-	\missingfigure{Roothaan algorithm diagram}
-	\caption{Roothaan algorithm diagram}
-	\label{fig:RoothanRepeatedDiag}
-\end{figure}
+The two-step iteration procedure of figure \vref{fig:RoothaanODA}a results.
 
 Even though Roothaan's algorithm already works for a few simple cases,
 it is far from being reliable.
@@ -109,7 +103,7 @@ All these cases are already found for \HF calculations
 on the first three periods of the periodic table~\cite{Cances2000}.
 
 \subsection{Level-shifting modification}
-If one uses essentially the same \SCF scheme as \ref{fig:RoothanRepeatedDiag}
+If one uses essentially the same \SCF scheme as \ref{fig:RoothaanODA}a
 but instead diagonalises the matrix
 \[ \tilde{\mat{F}}^{(n)} = \matFnfull
 	- b \mat{S} \, \mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)} \, \mat{S} \]
@@ -178,6 +172,18 @@ and sets
 such that the new Fock matrix to diagonalise contains still a share
 of the old Fock matrix.
 
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/roothaan_oda}
+	\todoil{Add step which indicates where error is computed and convergence flagged}
+	\todoil{Fix equation numbers}
+	\caption[Roothaan repeated diagonalisation and optimal damping algorithm]
+	{Schematic of Roothaan repeated diagonalisation and optimal damping algorithm.
+	The step which updates the Fock matrix is highlighted in red
+	and the step which updates the coefficients is highlighted in blue.
+	}
+	\label{fig:RoothaanODA}
+\end{figure}
 \defineabbr{ODA}{ODA\xspace}{Optimal damping algorithm}
 \subsection{Optimal damping algorithm}
 \label{sec:ODA}
@@ -185,20 +191,14 @@ The optimal damping algorithm~(\ODA) was proposed by \citet{Cances2000a}
 based on their analysis of the Roothaan algorithm
 including the level-shifting modification.
 
-\begin{figure}
-	\centering
-	\missingfigure{Optimal damping algorithm}
-	\caption{Optimal damping algorithm}
-	\label{fig:OptimalDampingAlgorithm}
-\end{figure}
 In unmodified form~\cite{Cances2000,Cances2000a} it is a density-based \SCF algorithm.
 Starting from an initial density $\tilde{\mat{D}}^{(0)} = \mat{D}^{(0)}$,
-the procedure is roughly~(compare figure \ref{fig:OptimalDampingAlgorithm})
+the procedure is roughly~(compare figure \ref{fig:RoothaanODA}a)
 for $n=1, 2, 3, \ldots$
 \begin{itemize}
 	\item Build the Fock matrix
 	\begin{equation}
-	\tilde{\mat{F}}^{(n-1)} = \mat{F}\left[ \tilde{\mat{D}}^{(n)} \right]
+	\tilde{\mat{F}}^{(n-1)} = \mat{F}\left[ \tilde{\mat{D}}^{(n-1)} \right]
 		\label{eqn:ODAupFock}
 	\end{equation}
 	and diagonalise it to obtain the new coefficient $\mat{C}_F^{(n)}$.
@@ -207,7 +207,9 @@ for $n=1, 2, 3, \ldots$
 	\[ \mat{D}^{(n)} = \mat{C}^{(n)} \tp{\left( \mat{C}^{(n)} \right)}. \]
 	%
 	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
-		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
+		from $\mat{F}\left[ \tilde{\mat{D}}^{(n)} \right]$
+		and $\mat{D}^{(n)}$.
+		End the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
 	%
 	\item Solve the line search problem
 		\begin{equation}
@@ -680,7 +682,7 @@ can be applied using expressions like \eqref{eqn:ExchangeApply}
 or \eqref{eqn:ApplicationKcs} without any problems,
 making the \DIIS suitable for a \contract-based \SCF as well.
 
-Let us briefly summarise the procedure in a \contract-based \SCF.
+Let us summarise the procedure in a \contract-based \SCF.
 Start from an initial set of occupied coefficients $\mat{C}^{(0)} \in \mathcal{C}$.
 Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
 \begin{itemize}
@@ -698,10 +700,12 @@ Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
 		such that all coefficients still sum to $1$.
 	\item Diagonalise $\tilde{\mat{F}}$
 		to obtain $\mat{C}_F^{(n)}$.
-		Select $\mat{C}$ by the Aufbau principle.
+		Select $\mat{C}^{(n)}$ by the Aufbau principle.
 	%
 	\item Evaluate the Pulay error $\mat{e}^{(n)}$ \eqref{eqn:PulayError}
-		and end the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
+		from $\mat{C}^{(n)}$ and
+		$\mat{F}\left[\mat{C}^{(n)} \tp{\left(\mat{C}^{(n)}\right)} \right]$.
+		End the process if $\norm{\mat{e}^{(n)}}_\text{frob} \leq \epsilonconv$.
 	%
 	\item Calculate the new error overlaps
 		$B_{0i} = \braket{\mat{e}^{(n)}}{\mat{e}^{(n-i)}}$.
@@ -745,94 +749,97 @@ trying to correct some of its issues.
 \subsection{Second-order \SCF algorithms}
 \label{sec:SOSCF}
 
-To conclude our review of a few common \SCF algorithms,
+To conclude our review of selected \SCF schemes
 this section will briefly touch upon so-called \newterm{second-order \SCF algorithms}.
-The general idea of such methods is
-to consider not only the \HF equations \eqref{eqn:HFDiscreteEquations},
-which effectively set the gradient of the minimisation problem \eqref{eqn:HFOptCoeff}
-to zero,
-but to also incorporate the Hessian of \eqref{eqn:HFOptCoeff} as well.
-The aim is to both achieve faster convergence
-and to furthermore ensure that convergence to a true \SCF minimum is guaranteed
-and other stationary points on $\mathcal{C}$ are avoided.
+Generally these methods try to go beyond incorporating
+gradient information of the \HF minimisation problem \eqref{eqn:HFOptCoeff}.
+Next to solving the \HF equations \eqref{eqn:HFDiscreteEquations}
+these methods thus incorporate the  Hessian
+of the energy functional \eqref{eqn:HFEnergyFunctionalCoeff}
+with respect to the parameters $\mat{C}$ as well.
+The aim is both to achieve faster convergence
+and to ensure that convergence is not to any stationary state on $\mathcal{C}$,
+but instead to a true \SCF minimum.
 Since forming the Hessian of \eqref{eqn:HFOptCoeff} can become rather expensive,
 many approaches use approximate Hessians instead.
-Typically it is also observed
+Typically it is observed
 that convergence only becomes quadratic
 once the \SCF procedure is already reasonably
 close to the minimiser of \eqref{eqn:HFOptCoeff}.
 
-The first approach
-which falls in this category
-was the \textbf{quadratically-convergent \SCF}~(QCSCF)~\cite{Bacskay1981},
-which minimised the \SCF energy by considering a CI expansion
-based on the current set of \SCF orbitals
-up to second order.
+One of the first approaches, which fall in this category,
+is the \textbf{quadratically-convergent \SCF}~(QCSCF)~\cite{Bacskay1981}.
+This approach minimises the \SCF energy by finding the minimum of a
+configuration interaction singles-doubles expansion
+based on the current set of \SCF orbitals.
 Similar to most methods discussed in this section,
 QCSCF employs normalised basis functions $\{\varphi_\mu\}_{\mu\in\Ibas}$.
 These have the advantage, that the occupied \SCF coefficients $\mat{C}^{(n)}$
 can be alternatively parametrised~\cite{Helgaker2013} as
-\[ \mat{C}_{(n)} = \mat{U}^{(n)} \mat{C}^{(0)} = \exp(-\mat{K}^{(n)}) \mat{C}^{(0)}, \]
-where $\mat{U}^{(n)} \in \R^{\Nbas \times \Nbas}$ is a unitary rotation matrix
+\[ \mat{C}^{(n)} = \mat{C}^{(0)} \mat{U}^{(n)} = \mat{C}^{(0)} \exp(-\mat{K}^{(n)}), \]
+where $\mat{U}^{(n)} \in \R^{\Norb \times \Norb}$ is a unitary rotation matrix
 and $\mat{K}^{(n)}$ is an anti-Hermitian matrix.
-Since the entries of  $\mat{K}^{(n)}$ effectively rotate the coefficients
-$\mat{C}^{(0)}$,
-this matrix is typically called \newterm{orbital rotation matrix}.
 Further details about the orbital rotation ansatz for \SCF methods
 can be found in \cite{Helgaker2013}.
 
 \begin{figure}
 	\centering
-	\missingfigure{Geometric direct minimisation}
-	\caption{Geometric direct minimisation}
+	\includeimage{4_solving_hf/gdm}
+	\todoil{Add step which indicates where error is computed and convergence flagged}
+	\todoil{Fix equation numbers}
+	\caption[Geometric direct minimisation algorithm]%
+	{Schematic of the geometric direct minimisation algorithm.
+	The step which updates the Fock matrix is highlighted in red
+	and the step which updates the coefficients is highlighted in blue.
+	}
 	\label{fig:GeometricDirectMinimisation}
 \end{figure}
-Related to this \SCF ansatz is the \textbf{geometric direct minimisation}
-method~\cite{Voorhis2002}.
+Related to the idea of an orbital rotation \SCF
+is the \textbf{geometric direct minimisation} method~\cite{Voorhis2002},
+see figure \vref{fig:GeometricDirectMinimisation}.
 This approach tries to directly
 optimise the coefficients $\mat{C}_{(n)}$ in the sense of \eqref{eqn:HFOptCoeff}
 on the Stiefel manifold $\mathcal{C}$.
-The algorithm determines the energy gradient $\mat{g}$ at the current
-coefficient set $\mat{C}^{(n)}$
-and then follows the geodesic defined by $\mat{g}$
-to find a new set $\mat{C}^{(n+1)}$.
+The algorithm determines the energy gradient $\mat{g}^{(n)}$
+of the current coefficient set $\mat{C}^{(n)}$.
+Then it follows the geodesic defined by $\mat{g}^{(n)}$
+to find a unitary rotation matrix $\mat{U}$,
+which defines the new set $\mat{C}^{(n+1)} \mat{U}$.
 The step size is determined by a Newton-Raphson-like step,
 where the Hessian is constructed
-approximately using the Broyden-Fletcher-Goldfarb-Shanno
-update scheme.
-The algorithm is sketched in figure \vref{fig:GeometricDirectMinimisation}
-as well.
+approximately using the Broyden-Fletcher-Goldfarb-Shanno update scheme.
 
-Last but not least one should mention the recent linear scaling
-\SCF approach by \citet{Salek2007}
-as well as the augmented Roothaan-Hall method~\cite{Hoest2008}
-which can be seen as approximate second-order \SCF methods
-based on a minimisation of the coefficients as well.
+Last but not least one should mention recent linear scaling \SCF approaches,
+for example the one by \citet{Salek2007}
+as well as the augmented Roothaan-Hall method~\cite{Hoest2008}.
+Both of these can be seen as approximate second-order \SCF methods,
+which try to directly minimise the coefficients as well.
 
 \subsection{Combinations of algorithms}
-In the previous sections we mentioned a few typical approaches
-to solve the \HF minimisation problem in an \SCF sense.
-Needless to say that not all algorithms are suitable
-to each use case.
-For this reason in practice often a mixture of some of these methods
+In the previous sections we mentioned quite a few approaches
+to solve the \HF minimisation problem using a self-consistent field ansatz.
+Needless to say that different algorithms tend to perform best in different cases.
+For this reason in practice often a mixture of methods
 is employed in order to guarantee fast and reliable convergence.
-This section represents my own judgement of the situation
-and is entirely based on my hands-on experience and not at all
-on proper scientific evaluation or comparison%
+This section I present my own judgement of the situation
+and give some suggestions based on own experience.
+Hardly any of this is resulted from any kind of proper
+scientific evaluation%
 \footnote{Unfortunately I am not aware of a work,
 which properly compares the large range of \SCF algorithms
 with another.
 Most papers only compare to the Pulay \DIIS.}
-It should therefore not be taken as a final answer,
-rather a guideline.
+and should therefore not be taken as a final answer,
+much rather as a guideline.
 
-In the beginning of the procedure \ODA or \tODA are very useful,
-essentially directing the coefficients reliably into the right direction.
+In the beginning of the procedure \ODA or \tODA work great,
+since they essentially direct the coefficients reliably into the right direction,
+breaking the oscillatory behaviour of the plain Roothaan algorithm.
 The energy \DIIS can be seen as an accelerated improvement of those methods,
-which is certainly recommendable for \cGTO-based discretisation
+which is recommendable for \cGTO-based discretisations
 as the initial \SCF algorithm in my point of view.
 
-In the intermediate steps a Pulay \DIIS shows typically a faster
+For the intermediate steps a Pulay \DIIS shows typically a faster
 convergence than the energy \DIIS~\cite{Kudin2002}.
 This can be rationalised by considering the conditions
 on the coefficients for the linear combination of Fock matrices.
@@ -840,11 +847,13 @@ In the Pulay \DIIS these conditions are much laxer
 compared to the energy \DIIS%
 \footnote{The Pulay \DIIS \emph{extrapolates},
 whereas the energy \DIIS \emph{interpolates}.}
-making it easier to explore directions,
+making it easier to explore the \SCF manifold
+and search for directions,
 which to lead to nearby stationary points.
 
-In the later steps the \DIIS becomes numerically more unstable,
-but since we are close to the \SCF minimum,
-second-order \SCF schemes like QCSCF now show the fastest convergence
-and should be used to obtain a highly-accurate \SCF minimum
-after the \DIIS becomes less effective.
+Close to convergence the \DIIS becomes numerically more unstable,
+but conversely
+second-order \SCF schemes like QCSCF now show the fastest and most reliable
+convergence to the \SCF minimum.
+These should be considered in the final \SCF steps in order to obtain
+a highly-accurate \SCF minimum after the \DIIS.
