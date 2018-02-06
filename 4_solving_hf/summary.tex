@@ -1,26 +1,81 @@
-\section{Summarising remarks}
+\section{Takeaway}
+The \SCF algorithms we discussed in this section all follow the general scheme,
+where a \textbf{Fock update} step and
+a \textbf{coefficient update} or \textbf{density matrix update}
+step are repetitively executed.
+In the former step a new Fock matrix $\mat{F}^{(n)}$ is constructed from
+the present set of \SCF coefficients $\mat{C}^{(n)}$
+or the present density matrix $\mat{D}^{(n)}$.
+In the latter step this Fock matrix $\mat{F}^{(n)}$,
+perhaps with additional insight gained in previous iterations,
+is used in order to generate a new set of coefficients $\mat{C}^{(n+1)}$.
+For Roothaan's repeated diagonalisation,
+the optimal damping algorithm and the geometric direct minimisation algorithm
+this sequence of steps is emphasised in figures
+\vref{fig:RoothaanODA} and \vref{fig:GeometricDirectMinimisation},
+where the Fock update step is highlighted in red
+and the coefficient/density update step in blue in each case.
+Motivated by the deviating structure of the aforementioned
+algorithms I consider it reasonable
+to assume that all \SCF algorithms can be thought of in such
+a two-step process.
 
-% Basis-type independence of SCF algorithms}
-% concluding remark for this chapter
+Another key result in this chapter is
+that different basis function types give rise to
+different numerical structure
+of the quantities involved in the \SCF procedure.
+We focused most on the Fock matrices
+of contracted Gaussian, finite-element and Coulomb-Sturmian discretisations,
+which are shown in figures
+\vref{fig:StructureGaussianFock},
+\vref{fig:StructureFiniteElementFock}
+and \vref{fig:StructureSturmianFock}.
+These matrices differ both in size as well as in sparsity.
+Both for \FE-based as well as \CS-based
+discretisations a \contract-based ansatz,
+where one avoids building the Fock matrix at all
+and instead thinks in terms of matrix-vector applications,
+showed noteworthy advantages in computational scaling.
 
-Fock matrix not diagonal dominant
+As we will discuss in depth in the next chapter
+a \contract-based ansatz can be thought of as a generalisation
+of a scheme keeping the matrices in memory.
+This suggests targeting a \contract-based \SCF scheme to achieve
+maximum generality of the \SCF algorithm
+and potentially independence of the \SCF code from
+the basis function type in a quantum chemistry program.
 
-SCFs all fit into Fock update - coefficient update
-In theory independent of basis function type
-In light of apply expressions of exchange for \FE and \CS
-and complexity of some \SCF algorithm 
-coding apply expressions into \SCF schemes can become cumbersome
-and non-intuitive
-\contract-based \SCF hard to achieve?
+As mentioned before this implies to formulate the \SCF in terms of coefficients
+to exploit the favourable computational scaling
+for some basis function types like the \FE or the \CS functions.
+We indicated for the \ODA algorithm
+how approximations allow to transform this density-based
+\SCF into the \tODA scheme,
+which can be formulated as a \contract-based \SCF.
+In section \vref{sec:OverviewSCF} we furthermore gave more general suggestions,
+which allow to transform every density-based \SCF
+into a coefficient-based \SCF in theory.
+We therefore believe it to be possible
+to construct an efficient \contract-based \SCF,
+which is independent from the basis function type
+and where one is able to switch between
+multiple algorithms depending on the numerical requirements of the basis functions.
+This in turn opens the door
+for achieving a single quantum-chemistry program,
+which is in theory compatible with every type of basis function.
+We will present such a program in chapter \vref{ch:Molsturm}.
 
-Such results hold for \HF and with minor modifications for \DFT
-
-but if Basis-function independent \SCF can be achieved
-basis-type independent quantum chemistry is within reach
-
-% Show schematic with Fock update - coefficient update
-%     in red and blue as in paper
-% Refer to appropriate equations from more detailed considerations in SCF
-% algorithms chapter.
-% TODO This could fit into the introductory part of the SCF algorithm
-% section or in the conclusion part of it as well
+In a \contract-based ansatz most of the complexity is effectively
+encoded in the actual contraction of the Fock matrix with a trial vector.
+Consider for example equations \eqref{eqn:ExchangeApply}
+and \eqref{eqn:ApplicationKcs},
+which already in the presented form are are all but simple expressions.
+Since this matrix-vector product is required in the most costly step
+of the \SCF iteration,
+typically an iterative diagonalisation or an iterative optimisation,
+it overall determines the cost of the procedure.
+Thus it needs to be implemented very efficiently,
+making the expressions even more complex.
+A sensible layer of abstraction between the actual \SCF algorithm
+and the implementation of the matrix-vector contractions
+is thus required to enable flexibility on both sides.
