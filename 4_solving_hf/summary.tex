@@ -32,15 +32,17 @@ which are shown in figures
 and \vref{fig:StructureSturmianFock}.
 These matrices differ both in size as well as in sparsity.
 Both for \FE-based as well as \CS-based
-discretisations a \contract-based ansatz,
+discretisations a \contraction-based ansatz%
+\footnote{See the next chapter for a proper introduction into the concept
+of \contraction-based methods.},
 where one avoids building the Fock matrix at all
 and instead thinks in terms of matrix-vector applications,
 showed noteworthy advantages in computational scaling.
 
 As we will discuss in depth in the next chapter
-a \contract-based ansatz can be thought of as a generalisation
+a \contraction-based ansatz can be thought of as a generalisation
 of a scheme keeping the matrices in memory.
-This suggests targeting a \contract-based \SCF scheme to achieve
+This suggests targeting a \contraction-based \SCF scheme to achieve
 maximum generality of the \SCF algorithm
 and potentially independence of the \SCF code from
 the basis function type in a quantum chemistry program.
@@ -51,12 +53,12 @@ for some basis function types like the \FE or the \CS functions.
 We indicated for the \ODA algorithm
 how approximations allow to transform this density-based
 \SCF into the \tODA scheme,
-which can be formulated as a \contract-based \SCF.
+which can be formulated as a \contraction-based \SCF.
 In section \vref{sec:OverviewSCF} we furthermore gave more general suggestions,
 which allow to transform every density-based \SCF
 into a coefficient-based \SCF in theory.
 We therefore believe it to be possible
-to construct an efficient \contract-based \SCF,
+to construct an efficient \contraction-based \SCF,
 which is independent from the basis function type
 and where one is able to switch between
 multiple algorithms depending on the numerical requirements of the basis functions.
@@ -65,17 +67,17 @@ for achieving a single quantum-chemistry program,
 which is in theory compatible with every type of basis function.
 We will present such a program in chapter \vref{ch:Molsturm}.
 
-In a \contract-based ansatz most of the complexity is effectively
+In a \contraction-based ansatz most of the complexity is effectively
 encoded in the actual contraction of the Fock matrix with a trial vector.
 Consider for example equations \eqref{eqn:ExchangeApply}
 and \eqref{eqn:ApplicationKcs},
 which already in the presented form are are all but simple expressions.
 Since this matrix-vector product is required in the most costly step
 of the \SCF iteration,
-typically an iterative diagonalisation or an iterative optimisation,
-it overall determines the cost of the procedure.
-Thus it needs to be implemented very efficiently,
-making the expressions even more complex.
-A sensible layer of abstraction between the actual \SCF algorithm
+which is typically an iterative diagonalisation or an iterative optimisation,
+it overall determines the runtime of the complete procedure.
+Thus this matrix-vector product needs to be implemented very efficiently,
+making the expressions even more complex in practice.
+A good layer of abstraction between the actual \SCF algorithm
 and the implementation of the matrix-vector contractions
-is thus required to enable flexibility on both sides.
+is therefore highly desirable to enable flexibility on both sides.

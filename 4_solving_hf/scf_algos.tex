@@ -15,7 +15,7 @@ The deviating numerical properties of the finite-element method
 or a \CS-based discretisation,
 therefore often call for minor modifications of the schemes.
 For example both finite elements as well as Coulomb-Sturmians
-favour \contract-based methods
+favour \contraction-based methods
 due to the better scaling of equations like \eqref{eqn:ExchangeApply}
 and \eqref{eqn:ApplicationKcs}
 compared to building the full matrix.
@@ -425,15 +425,15 @@ In practice this is usually not a fruitful approach for two reasons.
 Firstly it requires to store a growing list of coefficients,
 namely one for each \SCF step.
 Especially for a \FE approach this becomes increasingly costly in terms of memory.
-Secondly for a \contract-based ansatz
+Secondly for a \contraction-based ansatz
 we especially want to avoid storing the Fock matrices $\Fo{j}$
-in favour of \contract expression like \eqref{eqn:ExchangeApply}
+in favour of \contraction expressions like \eqref{eqn:ExchangeApply}
 and \eqref{eqn:ApplicationKcs}.
 In other words each application of $\Fot{n}$ to a vector $\vec{x}$
 would need to be performed by first computing $\Fo{j} \vec{x}$ for each $j$
 and then adding the results.
 This procedure is roughly $n$ times as expensive as a single apply.
-Even though the \contract expressions formally scale better,
+Even though the \contraction expressions formally scale better,
 the increasing number of times they need to be invoked
 should make this ansatz rather expensive.
 
@@ -555,7 +555,7 @@ to display the progress to the user,
 thus represents no extra cost.
 
 Even though about twice as expensive as the Roothaan algorithm
-if a \contract-based \SCF is performed,
+if a \contraction-based \SCF is performed,
 the advantage of the \tODA is,
 that it automatically finds the damping coefficient $\la{n}$,
 which reduces the energy at each iteration as much as possible.
@@ -680,9 +680,9 @@ are stored,
 the Fock matrix terms of \eqref{eqn:DIISfock}
 can be applied using expressions like \eqref{eqn:ExchangeApply}
 or \eqref{eqn:ApplicationKcs} without any problems,
-making the \DIIS suitable for a \contract-based \SCF as well.
+making the \DIIS suitable for a \contraction-based \SCF as well.
 
-Let us summarise the procedure in a \contract-based \SCF.
+Let us summarise the procedure in a \contraction-based \SCF.
 Start from an initial set of occupied coefficients $\mat{C}^{(0)} \in \mathcal{C}$.
 Set $B_{00} = 1$ and run for $n=1, 2, 3, \ldots$
 \begin{itemize}
