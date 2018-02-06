@@ -1,4 +1,8 @@
-add_inputs(chapter.tex)
+add_inputs(
+	chapter.tex
+	contraction.tex
+	lazy.tex
+)
 
 #
 # TikZ images

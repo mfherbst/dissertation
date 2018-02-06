@@ -1,0 +1,93 @@
+\section{Contraction-based algorithms}
+\label{sec:ContractionAlgos}
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Clock speed vs. memory increase plot (where to get the data from?)
+		\item Solves some of the issues mentioned in the previous chapter
+		\item See presentations
+		\item Contraction-based diagonalisation
+	\end{itemize}
+}
+
+In the specialised context where one wants to avoid storing
+large matrices during an iterative diagonalisation
+or when solving a linear system,
+this idea is all but new.
+Already \citet{Davidson1975} suggested in his celebrated paper
+about the Davidson diagonalisation method
+to completely avoid storing the CI matrix when solving for the
+lowest eigenvalues of a large CI or Full-CI matrix.
+Instead he suggested to employ an expression for computing
+the application of said CI matrix to some trial eigenvectors.
+Recently matrix-free methods~\cite{Kronbichler2012}
+for solving partial differential equations
+in a finite-element discretisation
+have become popular as well.
+These similarly employ well-crafted expressions for matrix-vector
+products instead of building the \FE system matrix in memory.
+
+
+
+Replace working on matrices stored in memory
+by matrix or tensor contraction
+like matrix-vector multiplication
+\contraction-based method or \contraction-based algorithm
+other names matrix-free or apply-based
+
+\begin{itemize}
+	\item In some cases 
+	\item SCF (and many other methods) use iterative solvers
+	\item They only need application or contraction of matrices
+	\item Can furthermore reduce scaling as we have seen
+	\item Typically matrix expression composed of many terms and dependent (with variations) on the problem we want to solve.
+	\item But expressions may become complicated:
+		\begin{itemize}
+			\item Requirements of individual matrix terms differ in storage scheme, contraction scheme
+			\item What to do in terms of approximations, matrix properties and the cost per application differs
+		\end{itemize}
+	\item[$\Rightarrow$] Contraction expression complicated to code
+	\item[$\Rightarrow$] We would like to stay flexible
+\end{itemize}
+
+
+In a \contraction-based ansatz most of the complexity is effectively
+encoded in the actual contraction of the Fock matrix with a trial vector.
+Consider for example equations \eqref{eqn:ExchangeApply}
+and \eqref{eqn:ApplicationKcs},
+which already in the presented form are are all but simple expressions.
+Since this matrix-vector product is required in the most costly step
+of the \SCF iteration,
+which is typically an iterative diagonalisation or an iterative optimisation,
+it overall determines the runtime of the complete procedure.
+Thus this matrix-vector product needs to be implemented very efficiently,
+making the expressions even more complex in practice.
+A good layer of abstraction between the actual \SCF algorithm
+and the implementation of the matrix-vector contractions
+is therefore highly desirable to enable flexibility on both sides.
+
+
+
+\subsection{Advantages and disadvantages of \contraction schemes}
+\begin{itemize}
+	\item Scaling typically reduced in examples to O(N)
+	\item Parallelisation is easier (less data management)
+	\item Hardware trends in favour: figure \vref{fig:MemCpuSpeedup}
+	%
+	\item Matrices more intuitive than dealing with contraction functions
+	\item More computations (FLOPS) are needed
+	\item Schemes need to be efficient and highly parallelisable
+	\item Algorithms typically become more complicated (bookkeeping)
+\end{itemize}
+
+
+\begin{figure}
+	\centering
+	\includeimage{6_contraction_lazy_matrices/mem_cpu_years}
+	\caption[Scale-up of memory bus speed and CPU clock speed]
+	{Scale-up of memory bus speed and CPU clock speed
+		relative to 1980 for selected hardware in each year.
+		Data taken from \cite{Gocon2014}.}
+	\label{fig:MemCpuSpeedup}
+\end{figure}
+
+
