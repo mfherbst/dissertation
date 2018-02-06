@@ -37,7 +37,7 @@ discretisations a \contraction-based ansatz%
 of \contraction-based methods.},
 where one avoids building the Fock matrix at all
 and instead thinks in terms of matrix-vector applications,
-showed noteworthy advantages in computational scaling.
+showed noteworthy improvements in formal computational scaling.
 
 As we will discuss in depth in the next chapter
 a \contraction-based ansatz can be thought of as a generalisation
@@ -59,25 +59,11 @@ which allow to transform every density-based \SCF
 into a coefficient-based \SCF in theory.
 We therefore believe it to be possible
 to construct an efficient \contraction-based \SCF,
-which is independent from the basis function type
+which is agnostic to the type of basis function used
 and where one is able to switch between
-multiple algorithms depending on the numerical requirements of the basis functions.
+multiple algorithms depending on the numerical requirements of the basis functions
+as well as the chemical system.
 This in turn opens the door
 for achieving a single quantum-chemistry program,
 which is in theory compatible with every type of basis function.
 We will present such a program in chapter \vref{ch:Molsturm}.
-
-In a \contraction-based ansatz most of the complexity is effectively
-encoded in the actual contraction of the Fock matrix with a trial vector.
-Consider for example equations \eqref{eqn:ExchangeApply}
-and \eqref{eqn:ApplicationKcs},
-which already in the presented form are are all but simple expressions.
-Since this matrix-vector product is required in the most costly step
-of the \SCF iteration,
-which is typically an iterative diagonalisation or an iterative optimisation,
-it overall determines the runtime of the complete procedure.
-Thus this matrix-vector product needs to be implemented very efficiently,
-making the expressions even more complex in practice.
-A good layer of abstraction between the actual \SCF algorithm
-and the implementation of the matrix-vector contractions
-is therefore highly desirable to enable flexibility on both sides.

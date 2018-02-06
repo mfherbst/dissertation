@@ -1,4 +1,5 @@
-\chapter{Lazy matrices and contraction-based algorithms}
+\chapter{Contraction-based algorithms and lazy matrices}
+\chaptermark{Contraction-based algorithms \& lazy matrices}
 \label{ch:LazyMatrices}
 \chapquote{%
 There is a race between the increasing complexity of the
@@ -11,6 +12,38 @@ reliable for all but a relatively small set of common tasks.
 Given how hard thinking is, if those intellectual tools are
 to succeed, they will have to substitute calculation
 for thought.}{Leslie Lamport~(1941--present)}
+%
+%
+
+\noindent
+Summarised in one sentence the basic idea of \contraction-based algorithms
+is to avoid storing large tensors in memory
+and instead employ highly optimised
+\contraction expressions of this tensor with other tensors for computations.
+We already saw in the previous chapter that applying
+such a strategy to the Fock matrix resulting from a \FE-based
+or a \CS-based discretisation of the \HF problem
+can lead to an improved formal computational scaling
+making the \contraction-based approach rather promising in those cases.
+\contraction-based algorithms are, however,
+not limited to \SCF procedures or quantum-chemical calculations.
+
+This chapter will give a general introduction into
+the concept of \contraction-based algorithms,
+contrasting them with traditional approaches,
+where the matrices are stored in memory.
+Closely connected to \contraction-based approaches is the concept of lazy matrices,
+which is a direct generalisation to the traditional matrix concept
+in the form of a domain-specific language for \contraction-based algorithms.
+Most importantly this implies that algorithms programmed
+with lazy matrices can automatically
+be used with dense matrices or in a \contraction-based fashion without change to the code.
+A preliminary \cpp implementation of lazy matrices
+is available in the \lazyten library,
+which focuses predominantly on user-friendliness and flexibility
+in the computational back-end.
+We will demonstrate by the means of examples.
+
 
 \section{Contraction-based algorithms}
 \label{sec:ContractionAlgos}
@@ -22,6 +55,31 @@ for thought.}{Leslie Lamport~(1941--present)}
 		\item Contraction-based diagonalisation
 	\end{itemize}
 }
+
+In the specialised context where one wants to avoid storing
+large matrices during an iterative diagonalisation
+or when solving a linear system,
+this idea is all but new.
+Already \citet{Davidson1975} suggested in his celebrated paper
+about the Davidson diagonalisation method
+to completely avoid storing the CI matrix when solving for the
+lowest eigenvalues of a large CI or Full-CI matrix.
+Instead he suggested to employ an expression for computing
+the application of said CI matrix to some trial eigenvectors.
+Recently matrix-free methods~\cite{Kronbichler2012}
+for solving partial differential equations
+in a finite-element discretisation
+have become popular as well.
+These similarly employ well-crafted expressions for matrix-vector
+products instead of building the \FE system matrix in memory.
+
+
+
+Replace working on matrices stored in memory
+by matrix or tensor contraction
+like matrix-vector multiplication
+\contraction-based method or \contraction-based algorithm
+other names matrix-free or apply-based
 
 \begin{itemize}
 	\item In some cases 
@@ -37,6 +95,24 @@ for thought.}{Leslie Lamport~(1941--present)}
 	\item[$\Rightarrow$] Contraction expression complicated to code
 	\item[$\Rightarrow$] We would like to stay flexible
 \end{itemize}
+
+
+In a \contraction-based ansatz most of the complexity is effectively
+encoded in the actual contraction of the Fock matrix with a trial vector.
+Consider for example equations \eqref{eqn:ExchangeApply}
+and \eqref{eqn:ApplicationKcs},
+which already in the presented form are are all but simple expressions.
+Since this matrix-vector product is required in the most costly step
+of the \SCF iteration,
+which is typically an iterative diagonalisation or an iterative optimisation,
+it overall determines the runtime of the complete procedure.
+Thus this matrix-vector product needs to be implemented very efficiently,
+making the expressions even more complex in practice.
+A good layer of abstraction between the actual \SCF algorithm
+and the implementation of the matrix-vector contractions
+is therefore highly desirable to enable flexibility on both sides.
+
+
 
 \subsection{Advantages and disadvantages of \contraction schemes}
 \begin{itemize}
@@ -54,9 +130,10 @@ for thought.}{Leslie Lamport~(1941--present)}
 \begin{figure}
 	\centering
 	\includeimage{6_contraction_lazy_matrices/mem_cpu_years}
-	\caption{Scale-up of memory band width and CPU clock speed over the years.
-	Data taken from \url{https://dave.cheney.net/2014/06/07/five-things-that-make-go-fast}
-	}
+	\caption[Scale-up of memory bus speed and CPU clock speed]
+	{Scale-up of memory bus speed and CPU clock speed
+		relative to 1980 for selected hardware in each year.
+		Data taken from \cite{Gocon2014}.}
 	\label{fig:MemCpuSpeedup}
 \end{figure}
 
@@ -246,6 +323,20 @@ Fazit
 	\item Plug and play integrals libraries (see next chapter)
 	\item Basis-type independent SCF / quantum chemistry
 \end{itemize}
+
+
+designed to add lazy matrix support to existing
+linear algebra packages.
+It effectively provides a layer of abstraction between the code
+describing the algorithms
+
+
+In the previous chapter we already mentioned
+how similar ideas can reduce the formal
+computational scaling of the \SCF procedure
+for certain kinds of discretisations
+and additionally could even lead to a basis-function
+agnostic \SCF.
 
 \section{Examples}
 An example showing the performance and how we can run things with bohrium as well
