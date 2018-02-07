@@ -855,29 +855,21 @@ like Arnoldi's method~(see section \ref{sec:Arnoldi})
 or Davidson's method~(see section \ref{sec:Davidson})
 do not make explicit reference the elements of the matrix to be diagonalised.
 Much rather they only require a way to perform the matrix-vector product.
-In the context of the ARPACK~\cite{Lehoucq1998} library
-this has been possible since the 90s
-by means of their celebrated reverse communication interface.
-Notice that it is very costly
-to obtain \emph{all} eigenpairs of the diagonalised matrix
-by these algorithms
-and thus typically avoided.
-On the upside obtaining some selected part of the eigenspectrum
-of a particular matrix
-can be achieved even \emph{without} having the complete matrix in memory.
+In this manner obtaining a few selected eigenpairs
+is possible \emph{without} having the complete matrix in memory.
 In the context of the finite-element method
 so-called \newterm{matrix-free methods}~\cite{Kronbichler2012}
-have been developed recently,
-which follow this strategy.
-These methods avoid avoid building
-any finite-element-discretised form of any operator in memory,
-including local operators like $\Op{T}$, $\Op{V}_0$ or $\Op{J}$.
+have been developed recently.
+These follow this strategy and avoid
+building any finite-element-discretised form of any operator in memory.
+This includes local operators like $\Op{T}$, $\Op{V}_0$ or $\Op{J}$ in our case.
 If properly preconditioned iterative linear solvers are used,
 such methods tend to perform better~\cite{Kronbichler2012}
 than their traditional counterparts.
-We will discuss such ideas in more detail in the next chapter,
-where we will formally introduce the notion of \contraction-based
-methods --- a generalisation of matrix-free methods.
+For reasons which will become more clear in the next chapter,
+I will refer to efforts,
+where storing matrix data is avoided as much as possible,
+as \contraction-based methods instead.
 
 For achieving a finite-element-based \HF
 this seems to be a very promising ansatz as well.

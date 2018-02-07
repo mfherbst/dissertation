@@ -16,33 +16,32 @@ for thought.}{Leslie Lamport~(1941--present)}
 %
 
 \noindent
-Summarised in one sentence the basic idea of \contraction-based algorithms
-is to avoid storing large tensors in memory
+Summarised in one sentence the main idea of \contraction-based algorithms
+is to avoid storing large matrices or tensors in memory
 and instead employ highly optimised
-\contraction expressions of this tensor with other tensors for computations.
+\contraction expressions between tensors for the necessary computations.
 We already saw in the previous chapter that applying
 such a strategy to the Fock matrix resulting from a \FE-based
-or a \CS-based discretisation of the \HF problem
+or a \CS-based discretisation
 can lead to an improved formal computational scaling
-making the \contraction-based approach rather promising in those cases.
+making these methods a promising approach.
 \contraction-based algorithms are, however,
-not limited to \SCF procedures or quantum-chemical calculations.
+not at all limited to \SCF procedures or quantum-chemical calculations.
+This chapter will give a general overview
+of \contraction-based methods,
+giving some examples where these methods are employed
+as well as discussing pros and cons.
 
-This chapter will give a general introduction into
-the concept of \contraction-based algorithms,
-contrasting them with traditional approaches,
-where the matrices are stored in memory.
-Closely connected to \contraction-based approaches is the concept of lazy matrices,
-which is a direct generalisation to the traditional matrix concept
-in the form of a domain-specific language for \contraction-based algorithms.
-Most importantly this implies that algorithms programmed
-with lazy matrices can automatically
-be used with dense matrices or in a \contraction-based fashion without change to the code.
+Closely connected to \contraction-based methods is the concept of lazy matrices,
+which is a direct generalisation to the conventional matrices
+in the form of a domain-specific language
+for coding \contraction-based algorithms.
+Main goal of the lazy matrix language is to result code,
+which can be used both with matrices stored in memory
+and additionally in a \contraction-based fashion without noteworthy changes.
 A preliminary \cpp implementation of lazy matrices
-is available in the \lazyten library,
-which focuses predominantly on user-friendliness and flexibility
-in the computational back-end.
-We will demonstrate by the means of examples.
+with focus on user-friendliness and flexibility
+is available in the \lazyten library.
 
 \input{6_contraction_lazy_matrices/contraction.tex}
 \input{6_contraction_lazy_matrices/lazy.tex}

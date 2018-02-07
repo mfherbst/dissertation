@@ -1,85 +1,182 @@
 \section{Contraction-based algorithms}
 \label{sec:ContractionAlgos}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Clock speed vs. memory increase plot (where to get the data from?)
-		\item Solves some of the issues mentioned in the previous chapter
-		\item See presentations
-		\item Contraction-based diagonalisation
-	\end{itemize}
-}
 
-In the specialised context where one wants to avoid storing
-large matrices during an iterative diagonalisation
-or when solving a linear system,
-this idea is all but new.
-Already \citet{Davidson1975} suggested in his celebrated paper
-about the Davidson diagonalisation method
-to completely avoid storing the CI matrix when solving for the
-lowest eigenvalues of a large CI or Full-CI matrix.
-Instead he suggested to employ an expression for computing
-the application of said CI matrix to some trial eigenvectors.
-Recently matrix-free methods~\cite{Kronbichler2012}
-for solving partial differential equations
-in a finite-element discretisation
-have become popular as well.
-These similarly employ well-crafted expressions for matrix-vector
-products instead of building the \FE system matrix in memory.
+The underlying idea of \contraction-based methods,
+namely to avoid storing large matrices in favour of using
+matrix-vector-product expressions,
+is hardly new.
+In his paper from \citeyear{Davidson1975}
+\citet{Davidson1975} not only describes his now famous
+iterative diagonalisation method~(see section \ref{sec:Davidson}),
+but furthermore he suggests to use an algorithmic expression
+for computing the required matrix-vector products.
+The use case Davidson had in mind back then was the
+diagonalisation of the CI or Full-CI matrix,
+which is --- even today --- too large to keep in memory,
+see remark \vref{rem:EvalFCIMatrix}.
 
+Nowadays \contraction-based methods
+are rather widespread in quantum chemistry.
+Even though the \contraction expressions are sometimes given different
+names such as \textbf{working equations},
+making the concept less clear.
+Examples are recent implementations of the algebraic diagrammatic construction~(\ADC)
+scheme~\cite{Wormit2009,Wormit2014,Dreuw2014},
+which do not build the complete \ADC matrix to be diagonalised,
+and efficient coupled-cluster schemes~\cite{Helgaker2013},
+which similarly avoid constructing the matrix
+governing the \CC fixpoint problem explicitly.
+Instead both methods use appropriate tensor contractions
+and compute matrix-vector products on the fly
+during the respective iterative solves.
+A somewhat related take on this are the recent
+\textbf{matrix-free methods}~\cite{Kronbichler2012}
+for solving partial differential equations in a finite-element discretisation
+without building the system matrix in memory at all.
 
+From the algorithmic point of view one should notice,
+that some methods, like the dense eigensolvers and linear solvers
+implemented in LAPACK\todo{cite}
+do require random access into the matrix,
+are thus not available for a \contraction-based ansatz.
+In practice this an acceptable restriction.
+Firstly because for large matrices dense methods become
+unfavourably expensive anyway%
+\footnote{Usually exactly because they necessarily keep everything in memory.}.
+Secondly because many diagonalisation methods and methods for solving linear systems
+do not need the problem matrix in memory.
+Instead they can be operated just like the Davidson,
+by coding an expression for delivering the required matrix-vector products.
+In this category practically all Krylov-subspace approaches can be found,
+including widely-adopted algorithms like
+\todoil{cite}\noindent
+Arnoldi, Lanczos, conjugate gradient or GMRES.
+In the context of eigenproblems
+one should mention that such iterative methods
+have an additional disadvantage.
+It is typically very costly to obtain a large number of eigenpairs
+of the diagonalised matrix.
+Fortunately for large matrices this is hardly needed
+and techniques like Chebychev preconditioning~\todo{cite}
+or shift and invert~(see section \vref{sec:ShiftInvert})
+allow to effectively direct the diagonalisation routines
+towards the part of the eigenspectrum one is truely interested in.
 
-Replace working on matrices stored in memory
-by matrix or tensor contraction
-like matrix-vector multiplication
-\contraction-based method or \contraction-based algorithm
-other names matrix-free or apply-based
+On the one hand employing a \contraction-based method thus do not really
+restrict the range of numerical problems, which can be tackled.
+On the other hand avoiding the storage of the problem matrix
+immediately reduces the scaling in memory from quadratic (in system size) to linear.
+The rationale for this is that the memory bottleneck
+in most subspace algorithms is storing the generated subspace,
+\ie a fixed number of vectors, which take linear storage.
+This makes \contraction-based methods especially
+attractive for problems where memory is a bottleneck.
+For this reason this concept has been
+introduced in a range of fields of numerics and scientific computing
+under different names.
+Terms like \textbf{apply-based} method, \textbf{matrix-free} method
+or phrases like using \textbf{matrix-vector product expressions}
+or using \textbf{matrix-vector products}
+overall largely describe the same concept.
+I personally like the term \textbf{\contraction-based} best,
+because under the hood
+evaluating such matrix-vector products in many cases,
+that I came across,
+involves expressions with contractions over tensors with rank larger than 2.
+Consider for example the coupled-cluster doubles working equations~\eqref{eqn:CCDworking}
+or the contraction expression for the exchange matrix
+in a \CS-based discretisation of Hartree-Fock~\eqref{eqn:ApplicationKcs}.
+Additionally calling such algorithms \contraction-based
+indicates that the idea to substitute storage by expressions
+is more general than the matrix-vector product.
+In theory one could think of similar approaches for
+higher-order tensor contractions as well.
 
+\subsection{Advantages and disadvantages}
+\label{sec:ContraAdvDisadv}
+One of the things one needs to be constantly aware of,
+when designing \contraction-based methods
+is that most of the computational time will most probably be spent
+in evaluating the \contraction expression itself.
+For example a typical diagonalisation using Arnoldi's or Davidson's method
+requires a number in the low to mid hundreds of matrix-vector products to be computed.
+Usually this step therefore dominates the overall
+computational time and needs to be implemented efficiently.
+
+Even in the naive manner presented
+in equations \eqref{eqn:ExchangeApply} and \eqref{eqn:ApplicationKcs}
+the \contraction expressions
+of the exchange term of the Fock matrix with a trial vector
+look all but simple.
+In practice the actual expressions to implement
+will most probably be more involved,
+since issues like the following will need to be addressed
+in an algorithm achieving the maximal efficiency:
+\todoil{References for the guys in the itemize}
 \begin{itemize}
-	\item In some cases 
-	\item SCF (and many other methods) use iterative solvers
-	\item They only need application or contraction of matrices
-	\item Can furthermore reduce scaling as we have seen
-	\item Typically matrix expression composed of many terms and dependent (with variations) on the problem we want to solve.
-	\item But expressions may become complicated:
-		\begin{itemize}
-			\item Requirements of individual matrix terms differ in storage scheme, contraction scheme
-			\item What to do in terms of approximations, matrix properties and the cost per application differs
-		\end{itemize}
-	\item[$\Rightarrow$] Contraction expression complicated to code
-	\item[$\Rightarrow$] We would like to stay flexible
+	\item \textbf{Adoption to Hardware} and \textbf{parallelisation}:
+		The features provided by modern hardware
+		have of course changed a lot over the years.
+		This includes aspects like vectorisation
+		or the recent trend to employ general-purpose graphics cards
+		in scientific calculations.
+		A good algorithm takes modern features into account
+		and shows a parallelisation scheme,
+		which exploits the available hardware as good as possible.
+		Notice, that in many cases the requirements
+		can be contradictory,
+		such that achieving best performance in all circumstances
+		is a real challenge if not impossible.
+	\item \textbf{Storing intermediates:}
+		Often one can identify subexpressions
+		of a large \contraction expression,
+		where it makes sense to store it between individual
+		executions of the \contraction.
+	\item \textbf{Order of contractions:}
+		For more complicated expressions involving
+		multiple tensor contractions at once the order
+		in which the contractions are executed can be crucial
+		to achieve best computational scaling
+		as well as a low memory footprint.
+	\item \textbf{Approximations:}
+		Especially in iterative procedures one is typically not
+		interested in the numerically exact result
+		of a \contraction.
+		Much rather the iterative procedure will only solve
+		the problem up to a certain accuracy threshold,
+		such that computing elements,
+		which are smaller than this threshold is a waste of computational time.
+		Sometimes this can be incorporated into a \contraction expression
+		by prescreening the elements to compute or by other approximations.
 \end{itemize}
+Furthermore problem matrices
+are usually composed out of different terms
+with potentially different structure.
+In the case of the \SCF the Fock matrix, for example,
+is as sum of the local one-electron terms $\mat{T}$ and $\mat{V}_0$,
+which can just be computed,
+the Coulomb term $\mat{J}$,
+which requires the solution to a Poisson equation,
+and the exchange term $\mat{K}$ which requires to solve
+multiple equations on a single apply.
+It is therefore not hard to imagine
+that the best approach to the issues raised above might
+well differ from term to term.
+This implies that adding terms like $\mat{T}$, $\mat{V}_0$, $\mat{J}$
+and $\mat{K}$ together to form the Fock matrix is conceptionally
+more involved compared to the traditional case,
+where all these matrices reside in memory.
+On the upside the traditional case offers much less flexibility
+to address the above issues differently on each individual term.
 
-
-In a \contraction-based ansatz most of the complexity is effectively
-encoded in the actual contraction of the Fock matrix with a trial vector.
-Consider for example equations \eqref{eqn:ExchangeApply}
-and \eqref{eqn:ApplicationKcs},
-which already in the presented form are are all but simple expressions.
-Since this matrix-vector product is required in the most costly step
-of the \SCF iteration,
-which is typically an iterative diagonalisation or an iterative optimisation,
-it overall determines the runtime of the complete procedure.
-Thus this matrix-vector product needs to be implemented very efficiently,
-making the expressions even more complex in practice.
-A good layer of abstraction between the actual \SCF algorithm
-and the implementation of the matrix-vector contractions
-is therefore highly desirable to enable flexibility on both sides.
-
-
-
-\subsection{Advantages and disadvantages of \contraction schemes}
-\begin{itemize}
-	\item Scaling typically reduced in examples to O(N)
-	\item Parallelisation is easier (less data management)
-	\item Hardware trends in favour: figure \vref{fig:MemCpuSpeedup}
-	%
-	\item Matrices more intuitive than dealing with contraction functions
-	\item More computations (FLOPS) are needed
-	\item Schemes need to be efficient and highly parallelisable
-	\item Algorithms typically become more complicated (bookkeeping)
-\end{itemize}
-
-
+This rather paradoxical effect
+can be observed in other cases as well.
+Usually it originates from the fact that the delayed evaluation of the matrix elements
+\emph{during} an actual contraction with a vector,
+may allow to perform the
+tensor contractions in a more favourable order.
+Naturally the drawback of this is that computations need to be repeated
+many times over.
 \begin{figure}
 	\centering
 	\includeimage{6_contraction_lazy_matrices/mem_cpu_years}
@@ -89,5 +186,59 @@ is therefore highly desirable to enable flexibility on both sides.
 		Data taken from \cite{Gocon2014}.}
 	\label{fig:MemCpuSpeedup}
 \end{figure}
+In the light of the hardware trends this does no longer seem like an issue.
 
+
+Especially when it comes to hardware trends,
+the \contraction-based methods have another advantage.
+Figure \vref{fig:MemCpuSpeedup} shows the relative change
+in CPU clock speed versus memory bandwith compared to the year 1980.
+The gap between the CPU and the memory speedups
+is clearly visible%
+\footnote{The original source \cite{Gocon2014}
+does not provide a clear description how the data points in each year
+where computed from the range of processors and chipsets,
+which were released in this year.
+Nevertheless the trend is so clear, that I consider this aspect
+to have little influence on the overall trends.}.
+The takeaway from this is that
+computing data multiple times is nowadays in many cases
+more efficient than storing it and retrieving it from memory.
+The \contraction-based methods go exactly in this direction,
+replacing storage by repeated computation.
+As we saw in the previous chapter
+for \FE-based or \CS-based discretisations of \HF,
+the formal scaling in memory and time
+can become lower by recomputing data as well.
+
+Additionally one should note that parallelisation becomes
+easier if less memory / data needs to be managed
+and can be recomputed on different nodes or in the caches of different
+processors as needed.
+
+
+
+
+
+% transition to lazy tensors
+
+Additionally for these more complicated cases
+it is not exactly clear what the best answer will be,
+such that the flexibility to experiment with different aspects is key.
+Another aspect, which is often forgotten,
+but strongly emphasises the need for flexibility
+is that hardware frequently changes.
+So the best implementation to the current state of hardware,
+will be outdated in a few years time,
+calling for frequent changes to the implemented \contraction expression.
+
+Such changes should not influence the outer iterative process
+like the iterative diagonalisation or the actual \SCF algorithm,
+since not that much effort has to be put into these parts
+of the program for optimisation
+and thus these are not that much influenced by the hardware changes for example.
+This calls for a good layer of abstraction between the
+iterative routine and the implementation of the matrix-vector \contraction expressions.
+
+Hard to think about problem in terms of expressions.
 

@@ -1,4 +1,40 @@
 \section{Lazy matrices}
+
+
+
+% ---
+the \SCF algorithm
+and the implementation of the matrix-vector \contraction expressions.
+An additional advantage of such a layer would be that
+modifications of the system matrix can be transparently expressed
+to the iterative schemes.
+For example adding extra terms to the Fock matrix
+describing an electric field or a polarisable embedding
+or other contributions does not really require
+any change to the \SCF code at all.
+A good layer of abstraction between the actual \SCF algorithm
+and the implementation of the matrix-vector contractions
+is therefore highly desirable to enable flexibility on both sides.
+
+need flexibility in matrix expressions in real-world application
+like \SCF (extra terms of varying complexity from external field,
+polarisable embedding, fragment approaches, and so on)
+non-linearity of Coulomb and Exchange
+would be nice to transparently express this
+% ---
+
+
+
+contraction functions less intuitive to think about
+than matrices
+So ideas to make a matrix that is a contraction
+
+
+
+Lazy matrices can deal with the non-linearity of Coulomb and exchange
+and it makes it easy to add terms (maybe show example ??)
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Define
@@ -55,43 +91,6 @@ to the other arguments supplied by the \contraction call.
 % are a generalisation of non-contraction based methods.
 
 \todoil{Maybe this section is too long given that we want to publish on this again}
-
-As mentioned above for some basis function types it is advantageous
-to not build the coulomb and exchange matrices in memory,
-but instead only use them in the form of matrix-vector applications.
-Since iterative solvers like Krylov-subspace based methods or Davidson's algorithm
-only need the matrix-vector product in order to find a few of the eigenvalues
-of a particular matrix,
-this is not an issue with respect to the eigenproblem which needs to be solved
-as part of the SCF.
-Note, that this approach is furthermore not new in quantum chemistry at all.
-Other examples where one typically avoids to place the matrix to diagonalise
-into memory are the configuration interaction~(CI) matrix
-or the algebraic-diagrammatic construction~(ADC) matrix to name a few.
-
-We shall refer to algorithms which focus on implementing a matrix-vector product
-instead of the full matrix as \contraction-based algorithms.
-
-This concept has been invented many times
-and has hence been called a number of different things
-in the different communities.
-Other names include \texttt{matrix}-free
-\todoil{papers from Kronbichler}
-or apply-based
-\todoil{papers from Michi Wormit}
-
-
-The latter name is supposed to indicate that such a scheme is in principle
-not only restricted to the case of multiplying a matrix with a vector,
-much rather general tensor contractions could be expressed implicitly
-by the means of a function computing the contraction rather than
-by explicitly performing the contraction form tensor elements
-which reside in memory.
-\todoil{Also mention the term \texttt{apply}-based?
-Check what term is used in literature.
-Michi Wormit's thesis uses matrix-vector product as term for ADC
-}
-% Yes mention them all.
 
 Note that a disadvantage of \contraction-based algorithms is that the expressions
 computing the tensor contraction can become rather complicated.
@@ -197,6 +196,56 @@ computational scaling of the \SCF procedure
 for certain kinds of discretisations
 and additionally could even lead to a basis-function
 agnostic \SCF.
+
+
+
+\lazyten is the linear algebra interface of \molsturm.
+It not only implements the lazy matrix datastructures,
+which define the common interface of \gint and \gscf,
+but further contains code to make standard external
+iterative or direct solver implementations available
+from a lazy matrices-based setting.
+
+As can be seen in figure \ref{fig:lazyten} \lazyten provides
+a common interface for the \contraction-based algorithms in \gscf,
+regardless of the linear algebra~(LA) backend or the solver implementation,
+which is used to solve a particular problem.
+Lazy matrices like the integrals from \gint as well as built-in structures
+like for example a lazy matrix representing the inverse of a matrix
+can be used transparently and even in combination with stored matrices
+by the means of the automatic bookkeeping done by \lazyten.
+Whenever a call to for example the \contraction function enforces
+evaluation of a lazy matrix expression,
+\lazyten is flexible with respect to the LA backend which is used for
+this step as well.
+Both armadillo as a LAPACK-based backend as well as Bohrium as a array-operation based backend
+are currently available and by recompiling \molsturm with the appropriate configure options,
+the backend can be switched.
+
+When it comes to the choice of the solver algorithms, \lazyten is even more flexible.
+All algorithms for solving linear problems or eigenproblems are available as 
+convenient high-level interface from \gscf.
+For example a linear problem $A x = b$ with a lazy matrix $A$, known right-hand side $b$
+and unknown $x$ can either be solved by a call to a \texttt{solve} function or by
+the means of calling \texttt{inverse(A)} on $A$ and then subsequently
+multiplying the inverse matrix with $b$, quite literally coding it as $x = A^{-1} b$.
+In both cases \lazyten will perform some introspection regarding the properties of
+the lazy matrix expression behind $A$ and consider the number of solution
+vectors as well as the required accuracy in order to automatically determine the algorithm to use
+for solving the linear problem at hand.
+By the means of keyword arguments the user can influence or override the automatic
+choice made by \lazyten.
+
+Similarly the eigensolvers can be accessed from \gscf via a common interface,
+which abstracts the precise algorithm and allows \lazyten to make an automatic
+choice by looking at the precise structure of the Fock matrix at hand.
+If all eigenpairs are desired or the matrix is stored in memory anyway,
+\lazyten will favour the dense eigensolver algorithms from LAPACK,
+whereas if only few eigenpairs are desired,
+Krylov-subspace based methods from ARPACK are used.
+In either case the precise algorithm can also me chosen from the \python interface
+of \molsturm by supplying an appropriate keyword string.
+
 
 \section{Examples}
 An example showing the performance and how we can run things with bohrium as well
