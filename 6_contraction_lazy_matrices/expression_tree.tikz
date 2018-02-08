@@ -1,0 +1,23 @@
+[
+	wrapop/.style={align=center,minimum width=0.9cm, minimum height=0.9cm,
+		font=\larger[2]\bfseries,inner sep=0mm,node distance=0cm},
+	wrapmat/.style={wrapop,rectangle,minimum width=1.1cm,
+		 minimum height=1.1cm,draw=black,inner sep=2mm},
+	treemat/.style={align=center,font={\smaller},
+		node distance=0.2cm and 0.06cm,inner sep=0mm},
+	treeop/.style={treemat},
+]
+
+\node [wrapmat] (D) {$\mat D$};
+\node [wrapop,right=of D] (equals) {$=$};
+
+\node [wrapmat,right=of equals] (A) {$\mat{A}$};
+\node [wrapop,right=of A] (plus) {$+$};
+\node [wrapmat,right=of plus] (B) {$\mat{B}$};
+
+\node [wrapop,right=of B] (equals2) {$=$};
+
+\node [wrapmat, right=of equals2] (Res) {};
+\node [treeop, above= -0.3cm of Res, yshift=-0.15cm] (pt1) {$+$};
+\node [treemat,below left=of pt1] (At1) {$\mat{A}$}   edge (pt1);
+\node [treemat, below right=of pt1] (Bt1) {$\mat{B}$} edge (pt1);

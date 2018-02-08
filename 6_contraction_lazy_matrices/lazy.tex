@@ -1,4 +1,135 @@
 \section{Lazy matrices}
+\label{sec:lazymat}
+The idea of lazy matrices is to encapsulate the coding \contraction-based
+in a domain-specific language,
+which makes it feel as if one was dealing with actual matrices
+instead of \contraction expressions.
+Even though not all complications can be hidden,
+the resulting syntax allows to write algorithms in a high-level manner
+being agnostic to the underlying implementation of the \contraction expression.
+This will turn out to be the key aspect
+leading to the basis-type of the quantum-chemistry package \molsturm.
+
+For this purpose we generalise the concept of a matrix
+to objects we call a \newterm{lazy matrix}.
+Whilst a conventional or \newterm{stored matrix} is dense
+and has all its elements residing in a continuous chunk of memory,
+this restriction does no longer hold for a lazy matrix.
+It may for example follow a particular sparse storage scheme
+like compressed-row storage,
+but does not even need to be associated to any kind of storage at all.
+In the most general sense it can be thought of as an
+arbitrary \contraction expression for computing the matrix elements,
+which is dressed to look like an ordinary matrix from the outside.
+
+In other words one may still obtain individual matrix elements,
+add, subtract or multiply such lazy matrix objects together
+or apply them to a bunch of vectors or a stored matrix.
+Not all of these operations may be equally fast
+than there counterparts on stored matrices, however.
+Most importantly obtaining individual elements of such a matrix
+can become rather costly,
+since they might involve a computation as well
+and not just a lookup into memory.
+
+On the upside one gains a much more flexible data structure
+where a familiar matrix-like interface
+can be added to more complicated objects.
+Most notably a lazy matrix may well be non-linear or can have state,
+which may be changed by a \update function
+in order to influence the represented values at a later point.
+An example where this is sensible would be the Coulomb and Exchange matrices,
+where the values of these matrices depend on the set of occupied coefficients,
+which have been obtained in the previous iterations.
+Other examples include the \update of an accuracy threshold for a \contraction expression,
+which might change between iterations.
+
+\begin{figure}
+	\centering
+	\includeimage{6_contraction_lazy_matrices/expression_tree} \\[0.8em]
+	\includeimage{6_contraction_lazy_matrices/expression_tree2}
+	\caption[Examples for lazy matrix expression trees]
+	{
+		Examples for lazy matrix expression trees.
+		The upper represents the instruction
+		$\mat{D} = \mat{A} + \mat{B}$
+		and the lower the multiplication of the result $\mat{D}$
+		with $\mat{C}$.
+	}
+	\label{fig:LazyMatrixExpressionTree}
+\end{figure}
+All evaluation between lazy matrices
+like addition, subtraction or matrix-matrix multiplication
+is usually delayed until a contraction of the resulting
+expression with a vector or a stored matrix is performed
+and thus the represented values are unavoidably needed.
+This evaluation strategy is called \newterm{lazy evaluation}
+in programming language theory~\todo{cite https://dl.acm.org/citation.cfm?doid=72551.72554}, explaining the name of these data structures.
+To make this more clear consider the following instructions
+\begin{align*}
+	\mat{D} &= \mat{A} + \mat{B}, \\
+	\mat{E} &= \mat{D} \mat{C} \\
+\intertext{followed by}
+	\vec{y} &= \mat{E} \vec{x}
+\end{align*}
+where $\mat{A}$, $\mat{B}$ and $\mat{C}$ are lazy matrices
+and $\vec{x}$ is a vector stored in memory.
+The first two instructions do not give rise to any computation being done,
+they only amount to build an extended expression tree in the resulting
+lazy matrix $\mat{E}$, see figure \vref{fig:LazyMatrixExpressionTree}.
+The last line instructs the formation of a matrix-vector product.
+Now the complete expression tree needs to be worked upon in appropriate order
+to return the resulting vector $\vec{y}$.
+This implies that
+\[ \mat{E} \vec{x} = \left( \mat{A} + \mat{B} \right) \mat{C} \vec{x} \]
+is evaluated in steps.
+First $\tilde{\vec{x}} \equiv \mat{C} \vec{x}$ is formed,
+by evaluating the matrix-vector-product expression of the lazy matrix
+$\vec{C}$,
+then $\mat{A} \tilde{\vec{x}}$ and $\mat{B} \tilde{\vec{x}}$ is formed
+by considering the matrix-vector-product expressions of $\mat{A}$
+and $\mat{B}$ and finally the result is added to give $\vec{y}$.
+
+
+
+
+
+
+Let us introduce the terminology of a \newterm{primary lazy matrix expression},
+which is a lazy matrix
+that is directly associated with a \contraction expression for their values,
+\ie where the expression tree only consists of one node.
+
+
+
+
+
+
+
+% TODO Maybe have this paragraph in a later context after lazyten is introduced
+%      to make reader more aware of the role lazyten plays in molsturm
+Since lazy matrices are a straight generalisation of usual matrices,
+all algorithms written in terms of lazy matrices
+are at the same time applicable to dense matrices,
+sparse matrices or special matrices like in the case of Sturmians
+where a lazy evaluation scheme is needed.
+In the context of an \SCF this implies that high-level code
+written in terms of lazy matrices
+does not need to be changed if the low level matrix implementation
+is changed from one basis function type to another.
+
+
+
+
+
+introduce lazyten (statistics: number of lines of code)
+basic ideas behind lazyten / structures
+examples (davidson, exchange / coulomb <-- update function)
+-> show that it is more intuitive to think of \contraction expressions as lazy matrices
+
+advantage for scf and quantum chemistry
+hint at lazy tensors?
+transition to molsturm
 
 
 
@@ -21,38 +152,34 @@ like \SCF (extra terms of varying complexity from external field,
 polarisable embedding, fragment approaches, and so on)
 non-linearity of Coulomb and Exchange
 would be nice to transparently express this
+
+%----
+
+Additionally for these more complicated cases
+it is not exactly clear what the best answer will be,
+such that the flexibility to experiment with different aspects is key.
+Another aspect, which is often forgotten,
+but strongly emphasises the need for flexibility
+is that hardware frequently changes.
+So the best implementation to the current state of hardware,
+will be outdated in a few years time,
+calling for frequent changes to the implemented \contraction expression.
+
+Such changes should not influence the outer iterative process
+like the iterative diagonalisation or the actual \SCF algorithm,
+since not that much effort has to be put into these parts
+of the program for optimisation
+and thus these are not that much influenced by the hardware changes for example.
+This calls for a good layer of abstraction between the
+iterative routine and the implementation of the matrix-vector \contraction expressions.
+
+Hard to think about problem in terms of expressions.
+
 % ---
-
-
-
-contraction functions less intuitive to think about
-than matrices
-So ideas to make a matrix that is a contraction
-
 
 
 Lazy matrices can deal with the non-linearity of Coulomb and exchange
 and it makes it easy to add terms (maybe show example ??)
-
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Define
-		\item how it works
-		\item what it solves
-		\item In the context of HF
-	\end{itemize}
-}
-
-\begin{itemize}
-	\item Lazy matrices defined in contrast to stored matrices
-	\item Stored matrices: Everything resides in memory
-	\item Lazy matrices: Generalisation which lifts this restriction
-	\item Only a shell which looks like a matrix, but internally only contains expressions
-	\item Subject to lazy evaluation
-	\item Everything is delayed until \contraction with vector
-	\item For convenience: All matrix operations (including element retrieval) allowed.
-\end{itemize}
 
 Let $\mat{U}$ and $\mat{A}$ be lazy matrices and $\vec{x}$ be a normal vector.
 We wish to compute the expression
@@ -73,7 +200,6 @@ auto res = mat * x
 % Evaluation order
 
 
-\label{sec:lazymat}
 \todoil{Maybe illustrate the points mentioned here using the coulomb and exchange matrices as actual examples}
 
 % TODO a good paragraph for this part:
@@ -87,70 +213,6 @@ the expression history is considered and evaluated with respect
 to the other arguments supplied by the \contraction call.
 % end TODO
 
-% For the design chapter it is important to mention here that \contraction-based methods
-% are a generalisation of non-contraction based methods.
-
-\todoil{Maybe this section is too long given that we want to publish on this again}
-
-Note that a disadvantage of \contraction-based algorithms is that the expressions
-computing the tensor contraction can become rather complicated.
-Furthermore it usually is more intuitive to think of the
-numerical modelling in terms of tensors, matrices and vectors
-rather than \contraction functions.
-For this purpose we generalise the concept of a matrix
-to so-called \term{lazy matrix} objects.
-Whilst a normal or \term{stored matrix} is dense and has all its elements
-residing in memory,
-a lazy matrix is more general.
-It may follow a particular sparse storage scheme
-like compressed-row storage
-or even more general all its elements may just be arbitrary expressions.
-The values of lazy matrices are hence only computed upon request
-or whenever a contraction with another object is required.
-As such the lazy matrix may have, \ie a special \update function
-may be used to modify the expression of the lazy matrix
-at a later point.
-Note, however, that special storage schemes for storing
-sparse matrices are similarly just lazy matrices 
-\todoil{
-	Updating lazy matrices is a bit like reactive programming
-	\url{https://en.wikipedia.org/wiki/Reactive_programming}.
-	In fact one could use them to get reactive programming
-	into C++ in a simple way.
-	Mention this here (or in the \lazyten paper)
-}
-
-This on the one hand makes obtaining the lazy matrix elements
-expensive, but on the other hands gives a nice matrix-like
-interface to more complicated objects.
-All evaluation between lazy matrices
-(i.e. addition or matrix-matrix multiplication)
-is usually delayed until for example a contraction of the resulting
-expression with a vector is performed.
-One typically refers to this strategy as \term{lazy evaluation}.
-
-Since lazy matrices are a straight generalisation
-of usual matrices,
-all algorithms written in terms of lazy matrices
-are at the same time applicable to dense matrices,
-sparse matrices or special matrices like in the case of Sturmians
-where a lazy evaluation scheme is needed.
-So high-level code written in terms of lazy matrices
-does not need to be changed if the low level matrix implementation
-is changed from one basis function type to another.
-
-\todoil{One could mention the  processor-memory performance gap \ldots
-	    but I would leave it for the \lazyten paper}
-
-% 1/2 paragraph: Introducing the problem of large tensors in QM - apply based algorithms
-% 1/2 paragraph: One of the flexibilities of Molsturm is that we can switch between
-%                apply-based, sparse, and dense methods without changing high-level
-%                code (which simply mimic the formulæ). 
-%
-% define stored vs. lazy matrix
-% lazy: sparse or expressions
-% lazy matrix may have state
-% other key features of lazy matrices
 
 
 

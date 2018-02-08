@@ -7,8 +7,10 @@ add_inputs(
 #
 # TikZ images
 #
-tikz_image(lazyten_structure.tikz TMP)
-add_depends(${TMP})
+foreach(TIMG lazyten_structure expression_tree expression_tree2)
+	tikz_image(${TIMG}.tikz TMP)
+	add_depends(${TMP})
+endforeach()
 
 
 #
