@@ -65,49 +65,76 @@ expression with a vector or a stored matrix is performed
 and thus the represented values are unavoidably needed.
 This evaluation strategy is called \newterm{lazy evaluation}
 in programming language theory~\todo{cite https://dl.acm.org/citation.cfm?doid=72551.72554}, explaining the name of these data structures.
-To make this more clear consider the following instructions
-\begin{align*}
-	\mat{D} &= \mat{A} + \mat{B}, \\
-	\mat{E} &= \mat{D} \mat{C} \\
-\intertext{followed by}
-	\vec{y} &= \mat{E} \vec{x}
-\end{align*}
+To make this more clear consider the lazy matrix instructions
+\begin{equation}
+	\begin{aligned}
+		\label{eqn:LazyMatrixInstructions}
+		\mat{D} &= \mat{A} + \mat{B}, \\
+		\mat{E} &= \mat{D} \mat{C}, \\
+		\vec{y} &= \mat{E} \vec{x},
+	\end{aligned}
+\end{equation}
 where $\mat{A}$, $\mat{B}$ and $\mat{C}$ are lazy matrices
 and $\vec{x}$ is a vector stored in memory.
-The first two instructions do not give rise to any computation being done,
-they only amount to build an extended expression tree in the resulting
-lazy matrix $\mat{E}$, see figure \vref{fig:LazyMatrixExpressionTree}.
-The last line instructs the formation of a matrix-vector product.
-Now the complete expression tree needs to be worked upon in appropriate order
-to return the resulting vector $\vec{y}$.
-This implies that
-\[ \mat{E} \vec{x} = \left( \mat{A} + \mat{B} \right) \mat{C} \vec{x} \]
-is evaluated in steps.
-First $\tilde{\vec{x}} \equiv \mat{C} \vec{x}$ is formed,
-by evaluating the matrix-vector-product expression of the lazy matrix
-$\vec{C}$,
-then $\mat{A} \tilde{\vec{x}}$ and $\mat{B} \tilde{\vec{x}}$ is formed
-by considering the matrix-vector-product expressions of $\mat{A}$
-and $\mat{B}$ and finally the result is added to give $\vec{y}$.
+The first two do not give rise to any computation being done.
+They only amount to build an expression tree in the returned
+lazy matrix $\mat{E}$ as illustrated in figure \vref{fig:LazyMatrixExpressionTree}.
+The final line is a matrix-vector product with a stored vector,
+where an actual stored result should be returned in the vector $\vec{y}$.
+In the lazy matrix sense this triggers the complete expression tree to be
+evaluated in appropriate order,
+leading effectively to an evaluation of the expression
+\begin{equation}
+	\vec{y} = \left( \mat{A} + \mat{B} \right) \mat{C} \vec{x}
+	\label{eqn:LazyMatrixFinalExpression}
+\end{equation}
+at once at this very instance.
+\eqref{eqn:LazyMatrixFinalExpression} can be evaluated entirely only using
+matrix-vector \contraction expressions.
+For example one could first form the product $\tilde{\vec{x}} \equiv \mat{C} \vec{x}$
+using the  matrix-vector-product expression of the lazy matrix $\vec{C}$.
+Afterwards one would form $\mat{A} \tilde{\vec{x}}$ and $\mat{B} \tilde{\vec{x}}$
+again by appropriate \contraction expressions
+and finally add the result to give $\vec{y}$.
+This is just one way to perform the evaluation.
+An implementation of the lazy matrix language is free to choose
+a different route for evaluating \eqref{eqn:LazyMatrixFinalExpression}
+by reordering the expression if it considers this useful.
+If $\mat{C}$ for example was made up of a sum $\mat{F} + \mat{G}$,
+it could use distributivity to write
+\[ \left( \mat{A} + \mat{B} \right) \left( \mat{F} + \mat{G} \right) \vec{x}
+	= \mat{A} \left( \mat{F} \vec{x} \right) + \mat{A} \left( \mat{G}\vec{x}\right)
+	+ \mat{B} \left( \mat{F} \vec{x} \right) + \mat{B} \left( \mat{G}\vec{x}\right).
+\]
+Which of these routes is best differs very much on the structure
+of the lazy matrices being part of the expression to evaluate.
+But other factors like the operating system or hardware on which
+the program code is executed are not unimportant either.
+Since the evaluation is delayed
+until the call to $\mat{E}\vec{x}$ gets executed at the actual program runtime,
+all of this can in theory be taken into account for deciding
+which route to take.
+Naturally the design of an appropriate cost function
+will be in practice all but easy
+as previous attempts have shown~\todo{cite a few}.
+
+In either case such decision happen in the evaluation back end
+and are well-abstracted by the lazy matrix language
+from the instructions \eqref{eqn:LazyMatrixInstructions},
+which stay intelligible and understandable.
+Furthermore if the structure of the matrices changes,
+since for example the discretisation scheme changes,
+the evaluation route will automatically adapt
+given that the cost function is sensibly chosen.
+
+\section{\lazyten lazy matrix library}
 
 
 
 
+Nothings stops us to directly evaluate and keep expressions like $\mat{A} + \mat{B}$
+in memory if both matrices are stored once this result is needed for an apply.
 
-
-Let us introduce the terminology of a \newterm{primary lazy matrix expression},
-which is a lazy matrix
-that is directly associated with a \contraction expression for their values,
-\ie where the expression tree only consists of one node.
-
-
-
-
-
-
-
-% TODO Maybe have this paragraph in a later context after lazyten is introduced
-%      to make reader more aware of the role lazyten plays in molsturm
 Since lazy matrices are a straight generalisation of usual matrices,
 all algorithms written in terms of lazy matrices
 are at the same time applicable to dense matrices,
@@ -117,6 +144,7 @@ In the context of an \SCF this implies that high-level code
 written in terms of lazy matrices
 does not need to be changed if the low level matrix implementation
 is changed from one basis function type to another.
+
 
 
 
@@ -133,7 +161,7 @@ transition to molsturm
 
 
 
-% ---
+% ----
 the \SCF algorithm
 and the implementation of the matrix-vector \contraction expressions.
 An additional advantage of such a layer would be that
@@ -153,7 +181,7 @@ polarisable embedding, fragment approaches, and so on)
 non-linearity of Coulomb and Exchange
 would be nice to transparently express this
 
-%----
+% ----
 
 Additionally for these more complicated cases
 it is not exactly clear what the best answer will be,
@@ -175,6 +203,20 @@ iterative routine and the implementation of the matrix-vector \contraction expre
 
 Hard to think about problem in terms of expressions.
 
+% ---
+
+designed to add lazy matrix support to existing
+linear algebra packages.
+It effectively provides a layer of abstraction between the code
+describing the algorithms
+
+
+In the previous chapter we already mentioned
+how similar ideas can reduce the formal
+computational scaling of the \SCF procedure
+for certain kinds of discretisations
+and additionally could even lead to a basis-function
+agnostic \SCF.
 % ---
 
 
@@ -202,21 +244,7 @@ auto res = mat * x
 
 \todoil{Maybe illustrate the points mentioned here using the coulomb and exchange matrices as actual examples}
 
-% TODO a good paragraph for this part:
-Whenever operations are done on a matrix \lazyten does not automatically
-evaluate them in all cases.
-Much rather it usually just builds up a datastructure,
-which keeps track of the operations which \textit{should} be done
-at some point in the future.
-Whenever an actual call to the \contraction-function happens,
-the expression history is considered and evaluated with respect
-to the other arguments supplied by the \contraction call.
-% end TODO
 
-
-
-
-\section{\lazyten lazy matrix library}
 
 \begin{figure}
 	\centering
@@ -227,12 +255,6 @@ to the other arguments supplied by the \contraction call.
 
 
 
-
-\begin{itemize}
-	\item Builds up DAG instead of evaluating
-	\item Evaluation is done delayed upon \contraction
-	
-\end{itemize}
 
 Fazit
 \begin{itemize}
@@ -246,18 +268,6 @@ Fazit
 \end{itemize}
 
 
-designed to add lazy matrix support to existing
-linear algebra packages.
-It effectively provides a layer of abstraction between the code
-describing the algorithms
-
-
-In the previous chapter we already mentioned
-how similar ideas can reduce the formal
-computational scaling of the \SCF procedure
-for certain kinds of discretisations
-and additionally could even lead to a basis-function
-agnostic \SCF.
 
 
 
