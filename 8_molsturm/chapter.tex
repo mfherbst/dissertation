@@ -13,6 +13,22 @@ Lazy matrix formalism helps
 \contraction-based \SCF hard to achieve in non-flexible standard
 Q-Chem programs
 
+\lazyten is the linear algebra interface of \molsturm.
+It not only implements the lazy matrix datastructures,
+which define the common interface of \gint and \gscf,
+but further contains code to make standard external
+iterative or direct solver implementations available
+from a lazy matrices-based setting.
+
+Similarly the eigensolvers can be accessed from \gscf via a common interface,
+which abstracts the precise algorithm and allows \lazyten to make an automatic
+choice by looking at the precise structure of the Fock matrix at hand.
+
+\todoil{Lazyten common interface for different numerical structure
+depending on basis function type}
+\todoil{Automatic choice by introspection or alternatively
+	supply keywords to influence solver algortihms directly}
+
 \input{need_for_modular.tex}
 \input{related.tex}
 \input{design.tex}

@@ -3,6 +3,7 @@ add_inputs(
 	contraction.tex
 	lazy.tex
 )
+add_inputs(rhf_code.cpp)
 
 #
 # TikZ images
