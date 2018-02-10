@@ -37,46 +37,53 @@ void restricted_hartree_fock(const krims::GenMap& intparams, const size_t n_alph
   auto Jbb       = integrals.lookup_integral("coulomb");
   auto Kbb       = integrals.lookup_integral("exchange");
 
-// Get an hcore guess
-const auto hcorebb      = Tbb + Vbb;
+// Obtain a core Hamiltonian guess
+const auto hcorebb       = Tbb + Vbb;
 const auto eigensolution = eigensystem_hermitian(hcorebb, Sbb, n_orbs);
 
-// Current occupied coefficients in convenient data structure
+// View current occupied coefficients in convenient data structure
 const auto cocc = eigensolution.evectors().subview({0, n_alpha});
 
 // Initialise two-electron terms with guess coefficients
 Jbb.update({{"coefficients_occupied", cocc}});
 Kbb.update({{"coefficients_occupied", cocc}});
 
+// Start Roothaan repeated diagonalisation
 double oldene = 0;
 std::cout << "Iter      etot      echange" << std::endl;
 for (size_t i = 0; i < max_iter; ++i) {
-// Obtain new eigenpairs ...
-const auto Fbb          = hcorebb + (2 * Jbb - Kbb);
-const auto eigensolution = eigensystem_hermitian(Fbb, Sbb, n_orbs);
+  // Obtain new eigenpairs ...
+  const auto Fbb           = hcorebb + (2 * Jbb - Kbb);
+  const auto eigensolution = eigensystem_hermitian(Fbb, Sbb, n_orbs);
 
-// ... and new occupied coefficients
-const auto cocc = eigensolution.evectors().subview({0, n_alpha});
+  // ... and a new view to the occupied coefficients
+  const auto cocc = eigensolution.evectors().subview({0, n_alpha});
 
-// Compute HF energies: E.g. Coulomb energy is tr(C^T J C)
-double ene_one_elec = trace(outer_prod_sum(cocc, hcorebb * cocc));
-double ene_coulomb  = 2 * trace(outer_prod_sum(cocc, Jbb * cocc));
-double ene_exchge   = -trace(outer_prod_sum(cocc, Kbb * cocc));
-double energy       = 2 * (ene_one_elec + .5 * ene_coulomb +
-                                          .5 * ene_exchge);
+  // Compute HF energies:
+  //   Coulomb energy is 2 * tr(C^T J C),
+  //   where 2 appears, since we only consider alpha block,
+  //   but both alpha and beta coefficients would contribute.
+  double ene_coulomb  = 2 * trace(outer_prod_sum(cocc,
+                                                 Jbb * cocc));
+  double ene_exchge   = -trace(outer_prod_sum(cocc,
+                                              Kbb * cocc));
+  double ene_one_elec = trace(outer_prod_sum(cocc,
+                                             hcorebb * cocc));
+  double energy       = 2 * (ene_one_elec + 0.5 * ene_coulomb +
+                             0.5 * ene_exchge);
 
-// Display current iteration
-double energy_diff = energy - oldene;
-std::cout << i << " " << energy << " " << energy_diff << std::endl;
-oldene = energy;
+  // Display current iteration
+  double energy_diff = energy - oldene;
+  std::cout << i << " " << energy << " " << energy_diff << std::endl;
+  oldene = energy;
 
-// Check for convergence
-if (fabs(energy_diff) < 1e-6) break;
+  // Check for convergence
+  if (fabs(energy_diff) < 1e-6) break;
 
-// Update the two-electron integrals,
-// before coefficients go out of scope
-Jbb.update({{"coefficients_occupied", cocc}});
-Kbb.update({{"coefficients_occupied", cocc}});
+  // Update the two-electron integrals,
+  // before coefficients go out of scope
+  Jbb.update({{"coefficients_occupied", cocc}});
+  Kbb.update({{"coefficients_occupied", cocc}});
 }
 
   std::cout << "Doubly occupied orbitals: " << std::endl;

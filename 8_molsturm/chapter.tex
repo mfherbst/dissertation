@@ -34,3 +34,26 @@ depending on basis function type}
 \input{design.tex}
 \input{examples.tex}
 \input{state.tex}
+
+
+% ----
+
+lazyten layer
+An additional advantage of such a layer would be that
+modifications of the system matrix can be transparently expressed
+to the iterative schemes.
+For example adding extra terms to the Fock matrix
+describing an electric field or a polarisable embedding
+or other contributions does not really require
+any change to the \SCF code at all.
+A good layer of abstraction between the actual \SCF algorithm
+and the implementation of the matrix-vector contractions
+is therefore highly desirable to enable flexibility on both sides.
+
+need flexibility in matrix expressions in real-world application
+like \SCF (extra terms of varying complexity from external field,
+polarisable embedding, fragment approaches, and so on)
+non-linearity of Coulomb and Exchange
+would be nice to transparently express this
+
+% ---
