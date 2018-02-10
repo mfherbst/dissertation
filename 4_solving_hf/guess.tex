@@ -128,50 +128,59 @@ A few remarks about the SAD guess method:
 
 \subsection{Guesses by projection}
 \label{sec:GuessProject}
-\todoil{Rethink / research this. At the moment this text is not correct.}
-\todoil{Maybe kill this section as a whole if unclear}
 A common procedure in many discretisation approaches
-is to first obtain a basic idea of the actual problem
-by employing a fast calculation using only a small basis set
-and then to continue with a larger basis to get an accurate result.
-Ideally as much of the crude result obtained in the small basis
-are kept for starting the large calculation.
+is to first obtain a quick and crude solution
+using only a small basis set and to refine the result later in a larger basis.
+Ideally as much of the information gained in the crude result
+is used for starting the large calculation.
 
-In the context of the \SCF procedure we would like to use
-the final coefficients $\mat{c}_0$ from a calculation
-in the small basis $\{\chi_\nu\}_{\nu=1,\ldots,N_s}$ as a guess
-for a more refined calculation
-in the larger basis $\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$.
-There are multiple ways this can be achieved.
-Conceptionally one needs to compute the transformation matrix
-$\mat{U} \in \C^{N_s\times N_b}$
-with elements
-\[ U_{\mu\nu} = \braket{\varphi_\mu}{\chi_\nu}_1 \]
-and use this matrix to express $\mat{c}_0$ in the new basis.
-Since $U_{\mu\nu}$ is not necessarily unitary,
-the simple matrix-matrix product $\mat{U} \mat{c}_0$ might not be orthonormal
+In the context of the \SCF procedure one would for example
+like to use the final coefficients $\tilde{\mat{c}}_0$ from a calculation
+in the small basis $\{\chi_{\tilde{\nu}}\}_{\tilde{\nu}=1,\ldots,N_g}$
+with only $N_g$ functions
+to obtain a guess for the more refined calculation in the basis
+$\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$ with $N_b \leq N_g$.
+Conceptionally this requires to operate on the coefficients
+with the transformation matrix
+$\mat{U} \in \C^{N_b\times N_g}$
+consisting of elements
+\[ U_{\mu\tilde{\nu}} = \braket{\varphi_\mu}{\chi_{\tilde{\nu}}}_1. \]
+Since $U_{\mu\tilde{\nu}}$ is not necessarily unitary,
+the simple matrix-matrix product $\mat{U} \mat{c}_0$
+will in general not be orthonormal
 with respect to the overlap matrix $\mat{S} \in \R^{N_b \times N_b}$
-in the new basis
-and is thus not usable.
+in the new basis and is thus not directly usable.
+Instead a more involved treatment taking the overlap matrices
+both in the old and the new basis into account.
+If we use $\tilde{\mat{s}} \in \R^{\N_g \times \N_g}$
+to denote the overlap matrix in the new basis,
+a properly orthonormalised guess would be~\cite{Polly2004}
+\begin{align}
+	\mat{C}^{(0)} &= \mat{S}^{-1} \mat{U} \mat{c}_0 \mat{N}^{-1/2} \\
+	\intertext{where the matrix}
+	\mat{N} &= \tp{\tilde{\mat{c}}_0} \tp{\mat{U}} \mat{S}^{-1} \mat{U} \mat{c}_0
+\end{align}
+takes care of proper normalisation.
+The computation (and diagonalisation) of $\mat{N}$
+can be avoided if other techniques
+for orthogonalising the $\Norb$ column vectors $\mat{S}^{-1} \mat{U} \mat{c}_0$
+are used, like Gram-Schmidt procedure or a singular-value decomposition.
 
-Recall that the final coefficients $\mat{c}_0 \in  \R^{N_b \times \Norb}$
-from the previous \SCF
-as well as the final energies
-$\bm{\varepsilon} = \diag\left(\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_{\Norb}\right)$
-diagonalise the final Fock matrix $\mat{f}_0 \in \R^{N_b \times N_b}$
-from the \SCF in the old basis.
-In other words
-\todoil{Note: The equivalence is wrong here }
-\[ \mat{f}_0 \mat{c}_0 = \mat{s} \mat{c}_0 \bm{\varepsilon}
-\quad \Leftrightarrow \quad \mat{f}_0 = \mat{s} \mat{c}_0 \bm{\varepsilon} \tp{\left(\mat{c}_0\right)}\]
-where $\mat{s}$ is the overlap matrix of the old basis.
-
-\todoil{There is some argument missing here}
-This matrix can be projected to the new basis using $\mat{U}$
-to yield
-\[ \mat{U} \mat{s} \mat{c}_0 \bm{\varepsilon} \tp{\left(\mat{c}_0\right)} \tp{\mat{U}}. \]
-Finally this matrix can be diagonalised with respect to $\mat{S}$
-to yield the initial guess coefficients $\mat{C}^{(0)}$ in the new basis.
+A modification of this procedure would be to alternatively build
+\begin{align}
+	\label{eqn:GuessMatF}
+	\mat{f} &= \mat{U} \mat{c}_0 \tilde{\mat{E}} \tp{\mat{c}_0} \tp{\mat{U}}, \\
+	\intertext{where}
+	\nonumber
+	\tilde{\mat{E}} &= \diag\left(\tilde{\varepsilon}_1, \tilde{\varepsilon}_2,
+			\ldots \tilde{\varepsilon}_{\Norb}\right)
+\end{align}
+are the orbital energies obtained from the \SCF in the old basis.
+Diagonalisation of this matrix with respect to $\mat{S}$
+yields a set of initial guess coefficients $\mat{C}^{(0)}$ as the eigenvectors
+and the modified orbital energies as the eigenvalues.
+For example the quantum-chemistry program ORCA uses the latter
+approach by default~\cite{ORCA}.
 
 \subsection{Extended Hückel guess}
 The extended Hückel~(EH) procedure for obtaining estimates
