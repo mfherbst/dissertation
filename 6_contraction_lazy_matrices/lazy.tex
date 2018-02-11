@@ -289,9 +289,9 @@ for closed-shell systems coded in the syntax of \lazyten.
 \end{figure}
 Before the depicted code segment is executed,
 the integral library is given information about the chemical system
-and the desired discretisation and returns with
-the lazy matrices \texttt{T}, \texttt{V}, \texttt{J}, \texttt{K}
-and \texttt{S},
+and the desired discretisation and returns
+the objects \texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb}
+and \texttt{Sbb},
 which represent the matrices
 $\mat{T}$, $\mat{V}_0$, $\mat{J}$, $\mat{K}$ and $\mat{S}$
 as they are defined in \eqref{eqn:Tbas} to \eqref{eqn:Sbas}.
@@ -331,12 +331,12 @@ to the user, check for convergence and update the state
 of $\mat{J}$ and $\mat{K}$ for the next iteration.
 
 Despite its simplicity the depicted code is independent of
-the type of basis function used to discretise the problem.
-The reason for this is that \lazyten automatically adapts the
+the type of basis function used to discretise the problem as
+\lazyten automatically adapts the
 executed eigensolver routines for the calls in lines 6 and 18
 to the structure of the Fock matrix.
 Indirectly it is thus the structure of the matrices
-\texttt{T}, \texttt{V}, \texttt{J}, \texttt{K} and \texttt{S}
+\texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb} and \texttt{Sbb}
 and usually%
 \footnote{Since the automatic selection methods are not yet extremely advanced,
 it is necessary
@@ -347,26 +347,36 @@ Given that the basic heuristics currently implemented,
 the depicted code would for example perform a \contraction-based \SCF
 for a \CS-based discretisation and use dense eigensolves for a \cGTO-based
 discretisation.
-This implies that \lazyten becomes a very effective
-abstraction layer between the details of the lazy matrix implementation
+In the light of this \lazyten becomes a very effective
+abstraction layer between the details of the lazy matrix implementation,
+\ie the integral evaluation,
 and the \SCF algorithm.
 
-Notice further that the \SCF of figure \ref{fig:LazytenRhfCode}
-resembles the matrix expressions one would derive on paper
-up to a very large extent
-even though all involved matrices like
-\texttt{T}, \texttt{V}, \texttt{J}, \texttt{K} and \texttt{S}
-could be lazy.
-Adding an extra term to the Fock matrix in line 17 would be very easy
-and irrespective of the term being represented by a lazy
-or a stored matrix,
-it would be taken into account appropriately during the diagonalisation.
+In the \SCF depicted in figure \ref{fig:LazytenRhfCode}
+many expressions like lines 17 and 18 or the energy computation
+are designed to resemble the equivalent equations one would derive on paper
+up to a very large extent.
+Nevertheless the matrices like
+\texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb} and \texttt{Sbb}
+could be stored or lazy for the code to work.
+Adding an extra term to the Fock matrix expression in line 17 can be done by a simple
+addition of another matrix object
+irrespective whether the added object is lazy or stored.
+In either case its structure would be taken into account
+during the following diagonalisation
+without explicit user interaction.
+Still the user could influence the behaviour of the called solver
+by providing appropriate parameters explicitly.
+For this reason we believe \lazyten to be very suitable for teaching
+or experimentation with novel methods,
+since many details are abstracted and one may at first concentrate
+on the algorithm and not on numerics.
 
 Overall \lazyten therefore amount to yield a very intuitive syntax
-for \contraction-based methods,
+for \contraction-based methods in the form of lazy matrices,
 where algorithms can be written at a high level.
 By the means of changing the implementation behind the
-employed lazy matrices the code can be fixed but still flexible
-for teaching and experimentation.
-Even though the emphasis is on \contraction-based code in \lazyten
-it can be used equivalently for dense matrices as well.
+employed lazy matrix objects the code can be fixed but still flexible
+to changes in the available hardware or
+if novel types of basis functions with unusual matrix structures
+become available.
