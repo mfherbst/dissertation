@@ -27,8 +27,25 @@ polarisable embedding, fragment approaches, and so on)
 non-linearity of Coulomb and Exchange
 would be nice to transparently express this
 
-% ---
+% ----
 
+\lazyten is the linear algebra interface of \molsturm.
+It not only implements the lazy matrix datastructures,
+which define the common interface of \gint and \gscf,
+but further contains code to make standard external
+iterative or direct solver implementations available
+from a lazy matrices-based setting.
+
+Similarly the eigensolvers can be accessed from \gscf via a common interface,
+which abstracts the precise algorithm and allows \lazyten to make an automatic
+choice by looking at the precise structure of the Fock matrix at hand.
+
+\todoil{Lazyten common interface for different numerical structure
+depending on basis function type}
+\todoil{Automatic choice by introspection or alternatively
+	supply keywords to influence solver algortihms directly}
+
+% ----
 
 
 %JA: General criticism: 
@@ -726,7 +743,7 @@ choice by looking at the precise structure of the Fock matrix at hand.
 If all eigenpairs are desired or the matrix is stored in memory anyway,
 \lazyten will favour the dense eigensolver algorithms from LAPACK,
 whereas if only few eigenpairs are desired,
-Krylov-subspace based methods from ARPACK are used.
+Arnoldi methods from ARPACK~\cite{Lehoucq1998} are used.
 In either case the precise algorithm can also me chosen from the \python interface
 of \molsturm by supplying an appropriate keyword string.
 

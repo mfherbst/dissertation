@@ -4,35 +4,79 @@
 \chapquote{[C has] the power of assembly language and the convenience of \ldots assembly language.}{Dennis Ritchie~(1941--2011)} \\
 \chapquote{Keep it simple, make it general, and make it intelligible.}{Doug McIlroy~(1932--present)}
 
-\todoil{Statistics: Lines of code}
-\todoil{Maybe describe idea behind code structure}
-Historically the \fortran library ARPACK~\cite{Lehoucq1998}
+\noindent
 
+In chapter \vref{ch:NumSolveHF}
+hinted at general structure of \SCF algorithms,
+in previous chapter \ref{ch:LazyMatrices}
+presented lazy matrix formalism to code such algorithms at high level.
+\molsturm picks up on both these ideas to achieve
+a highly modular and flexible quantum-chemistry package,
+which aids the investigation of novel basis functions.
+
+different basis function types
+With our \molsturm package we want to support such research directions
+by providing a program package
+which offers a common platform for developing, testing and analysing
+quantum-chemical methods irrespective of the basis function type employed for
+the discretisation.
+
+Considering the flexibility which results from such approaches,
+they are a perfect ingredient for
+a quantum-chemical method development framework
+supporting the numerical requirements of various types of basis functions.
+Such a framework has been missing up to today to the best of our knowledge.
+
+This paper presents our new \molsturm quantum-chemistry framework.
+We do not only implement our \contraction-based SCF scheme
+in such a way that the code is fully agnostic to the type of basis function used,
+but we furthermore provide a powerful \python interface.
+By means of the latter obtaining, archiving and analysing results
+is easy and can be fully automatised
+as will be demonstrated in section \ref{sec:examples}.
+
+Once the SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-HF method,
+can be formulated entirely in the SCF orbital basis
+and without any reference to the underlying basis functions.
+Therefore a basis-function independent SCF scheme automatically
+leads to basis-function independent Post-HF methods as well.
+In fact the aforementioned \python interface of \molsturm
+makes it easy to re-use existing software modules
+together with \molsturm's SCF.
+In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
+for performing full configuration interaction~(FCI) calculations employing any of the
+basis function types implemented in \molsturm.
+Similarly a link between \molsturm and \adcman~\cite{Wormit2014}
+for computing excited state energies at ADC(2),
+ADC(2)-x and ADC(3)~\cite{Schirmer1982,Trofimov1999} level
+has been established recently.
+\molsturm is open-source and can be obtained from \url{https://molsturm.org}.
+
+
+\todoil{Statistics: Lines of code}
+\todoil{open source where can we get it from}
+
+
+origin of the name
+
+With respect to this, the name ``\molsturm'' is misleading
+as the package did outgrow its original purpose to support
+\textbf{mol}ecular calculations with so-called \textbf{Sturm}ian-type
+basis functions.
+
+
+%%%%% new
 % points in need for modular
 Pickup on idea of basis-type independent \SCF
 Lazy matrix formalism helps
 \contraction-based \SCF hard to achieve in non-flexible standard
 Q-Chem programs
+% points in need for modular
 
-\lazyten is the linear algebra interface of \molsturm.
-It not only implements the lazy matrix datastructures,
-which define the common interface of \gint and \gscf,
-but further contains code to make standard external
-iterative or direct solver implementations available
-from a lazy matrices-based setting.
-
-Similarly the eigensolvers can be accessed from \gscf via a common interface,
-which abstracts the precise algorithm and allows \lazyten to make an automatic
-choice by looking at the precise structure of the Fock matrix at hand.
-
-\todoil{Lazyten common interface for different numerical structure
-depending on basis function type}
-\todoil{Automatic choice by introspection or alternatively
-	supply keywords to influence solver algortihms directly}
 
 This chapter follows closely the ideas we presented in \cite{molsturmDesign}.
 
-\input{need_for_modular.tex}
 \input{related.tex}
 \input{design.tex}
 \input{examples.tex}

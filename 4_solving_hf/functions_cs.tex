@@ -44,6 +44,37 @@ which is closely related to {\STO}s.
 \cite{Morales2016}
 \cite{Avery2017} % Fast evaluation of STOs
 
+The simplest representative of the latter type of functions
+are the Coulomb-Sturmians~(CS)~\cite{Shull1959,Rotenberg1962,Rotenberg1970}.
+These can be formally obtained as the isoenergetic solutions
+$\varphi^\text{CS}_{nlm}$ to a hydrogenic Schrödinger-like equation
+\begin{equation}
+	\left( \Delta + \frac{k n}{r} - E \right) \varphi^\text{CS}_{nlm}(\vec{r}) = 0.
+	\label{eqn:CS}
+\end{equation}
+Their functional form is
+\begin{equation}
+	\varphi^\text{CS}_{nlm}(\vec{r}) = P_{nl}(r) \exp(- k r) Y_{lm}\left(\vec{r} / r \right),
+	\label{eqn:CSProduct}
+\end{equation}
+\ie a product of a particular polynomial $P_{nl}$,
+an exponential and a spherical harmonic.
+The structure of these functions is very similar compared to STOs
+with the important difference that the parameter $k$ is identical for
+all functions of the basis set.
+On the one hand this allows to reformulate the computation
+of the electron-repulsion integrals in a rather efficient way%
+~\cite{Avery2011PhD,Avery2011}.
+On the other hand this similarity permits such a basis to simultaneously
+represent the long-range tail and the nuclear cusp physically
+if the $k$ is chosen appropriately,
+which makes them rather promising.
+While Coulomb-Sturmians are only applicable for simulating atoms,
+a range of more generalised Sturmian-type basis functions exist%
+~\cite{Avery2011},
+where efficient algorithms for evaluating the repulsion integrals
+have been published recently~\cite{Avery2006,Avery2015,Morales2016,Avery2017}.
+\todo[inline]{James: Add citations for the ionising Sturmians.}
 
 
 \begin{equation}
