@@ -1,6 +1,5 @@
 add_inputs(
     chapter.tex
-    need_for_modular.tex
     related.tex
     design.tex
     examples.tex
