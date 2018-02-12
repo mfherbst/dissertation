@@ -1,4 +1,8 @@
-add_inputs(chapter.tex)
+add_inputs(
+	chapter.tex
+	sturmian_cgto.tex
+	sturmian_adc.tex
+)
 
 #
 # Tables
