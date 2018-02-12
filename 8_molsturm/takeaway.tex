@@ -1,0 +1,75 @@
+\section{Takeaway}
+
+The implementation of quantum-chemical methods
+employing novel types of basis functions often necessitates
+unusual numerical techniques as well.
+Implementing these into existing quantum chemistry packages
+can be rather challenging,
+since these are on the one hand highly optimised towards the methods
+they already accommodate,
+but on the other hand typically not flexible enough
+to meet the differing requirements.
+
+The \molsturm package we have presented here,
+tries to fill this gap
+by providing a light-weight package designed with a range of different
+basis functions in mind.
+The key ingredient to reach the necessary flexibility
+is our \contraction-based self-consistent field~(SCF) scheme,
+which we employ for solving the Hartree-Fock problem.
+In such an \contraction-based ansatz one formulates
+the numerical algorithms in a way that they only require the
+contraction of the Fock matrix with an arbitrary set of vectors.
+The details how this matrix-vector product is computed
+can be varied flexibly according to the numerical properties
+of the basis function type.
+In other words we have reached a scheme where the code describing
+the SCF algorithm and the code for doing the linear algebra
+computation are separated
+and thus where the SCF itself is basis-function independent.
+Even if changes to the SCF scheme or some back end
+library are to be underdone in the future our modular design
+will assure that the other parts of the \molsturm package will stay
+unaffected.
+
+On top of that we have made the interfaces
+of our SCF easy-to-use and readily extensible.
+This allows to quickly incorporate the functionality
+of third-party packages in order to extend \molsturm in ways we as the authors
+would have never thought of.
+Right now \molsturm may be used to perform
+calculations based on contracted Gaussians~\cite{Hehre1969} --- using
+the integral libraries \libint~\cite{Libint2_231,Libint2}
+or \libcint~\cite{Sun2015} --- and based on
+Coulomb-Sturmians~\cite{Shull1959,Avery2011} ---
+using \sturmint~\cite{sturmintWeb}.
+Selected Post-HF methods from \pyscf~\cite{Sun2017} as well as
+excited states methods from \adcman~\cite{Wormit2014} are available on top.
+Implementing further types of basis functions
+takes nothing more than providing appropriate interface classes in
+our integral interface library \gint.
+Thereafter such basis functions are available for the full \molsturm ecosystem
+including the Post-HF methods
+provided by the third-party libraries mentioned above.
+
+We have demonstrated the abilities of \molsturm
+by three practical examples with particular emphasis
+on the way our \python interface integrates with existing
+\python packages.
+We showed how to aid repetitive calculations,
+implement novel quantum-chemical methods
+or rapidly amend functionality in a preliminary way,
+where a proper implementation would be much more involved.
+We hinted how
+systematic comparisons with established basis functions
+as well as subsequent graphical analysis
+is convenient to perform by the means of our
+readily scriptable interface.
+We hope that in this manner \molsturm
+will be a useful package to rapidly try novel basis function types
+and get a feeling for their range of applicability.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "paper"
+%%% End:

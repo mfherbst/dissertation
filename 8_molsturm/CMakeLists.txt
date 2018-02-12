@@ -1,16 +1,18 @@
 add_inputs(
-        chapter.tex
-        need_for_modular.tex
-        related.tex
-        design.tex
-        examples.tex
-        examples/ccd/ccd_numpy.tex
-        state.tex
-        #
-        examples/dissociation/h2_dissociation.py
-        examples/ccd/ccd.py
-        examples/geo_opt.py
+    chapter.tex
+    need_for_modular.tex
+    related.tex
+    design.tex
+    examples.tex
+    examples/ccd/ccd_eqn_vs_code.tex
+    state.tex
+    takeaway.tex
+    #
+    examples/dissociation/h2_dissociation.py
+    examples/ccd/ccd.py
+    examples/geo_opt.py
 )
+add_images(8_molsturm/h2o_density.png)
 
 #
 # TikZ images
