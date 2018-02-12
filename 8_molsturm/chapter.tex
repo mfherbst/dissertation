@@ -5,21 +5,31 @@
 \chapquote{Keep it simple, make it general, and make it intelligible.}{Doug McIlroy~(1932--present)}
 
 \noindent
+In chapter \vref{ch:NumSolveHF} we looked at various ways to solve the
+\HF equations numerically both with respect to different types of basis functions
+for the discretisation as well as different \SCF algorithms.
+Our conclusion in section
+\ref{sec:SCFtakeaway}
+was firstly that all \SCF schemes can be condensed into a two-step
+coefficient/density matrix update followed by a Fock matrix update step.
+Secondly we mentioned that a \contraction-based ansatz could result in \SCF schemes,
+which are agnostic to the type of basis function used.
+The previous chapter presented the lazy matrix formalism
+and the \lazyten library as ways to express
+\contraction-based algorithms conveniently and at a high level.
+We already saw by the means of a simple example how
+the lazy matrix syntax of \lazyten could be applied within the context
+of an \SCF.
 
-In chapter \vref{ch:NumSolveHF}
-hinted at general structure of \SCF algorithms,
-in previous chapter \ref{ch:LazyMatrices}
-presented lazy matrix formalism to code such algorithms at high level.
-\molsturm picks up on both these ideas to achieve
-a highly modular and flexible quantum-chemistry package,
-which aids the investigation of novel basis functions.
-
-different basis function types
-With our \molsturm package we want to support such research directions
-by providing a program package
+The program package \molsturm, which we will present in this chapter,
+combines both these ideas 
+to achieve a highly modular and flexible program package,
 which offers a common platform for developing, testing and analysing
 quantum-chemical methods irrespective of the basis function type employed for
 the discretisation.
+
+
+
 
 Considering the flexibility which results from such approaches,
 they are a perfect ingredient for
@@ -33,28 +43,29 @@ in such a way that the code is fully agnostic to the type of basis function used
 but we furthermore provide a powerful \python interface.
 By means of the latter obtaining, archiving and analysing results
 is easy and can be fully automatised
-as will be demonstrated in section \ref{sec:examples}.
+as will be demonstrated in section \ref{sec:MolsturmExamples}.
 
-Once the SCF orbitals have been obtained,
-the remainder of a calculation, \eg a Post-HF method,
-can be formulated entirely in the SCF orbital basis
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method,
+can be formulated entirely in the \SCF orbital basis
 and without any reference to the underlying basis functions.
 Therefore a basis-function independent SCF scheme automatically
 leads to basis-function independent Post-HF methods as well.
 In fact the aforementioned \python interface of \molsturm
 makes it easy to re-use existing software modules
-together with \molsturm's SCF.
+together with \molsturm's \SCF.
 In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
 for performing full configuration interaction~(FCI) calculations employing any of the
 basis function types implemented in \molsturm.
 Similarly a link between \molsturm and \adcman~\cite{Wormit2014}
-for computing excited state energies at ADC(2),
-ADC(2)-x and ADC(3)~\cite{Schirmer1982,Trofimov1999} level
+for computing excited state energies at \ADC(2),
+\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level
 has been established recently.
-\molsturm is open-source and can be obtained from \url{https://molsturm.org}.
+\molsturm is open-source software licensed under the
+GNU General Public License and can be obtained from \url{https://molsturm.org}.
+% TODO Lines of code
 
 
-\todoil{Statistics: Lines of code}
 \todoil{open source where can we get it from}
 
 
@@ -65,6 +76,9 @@ as the package did outgrow its original purpose to support
 \textbf{mol}ecular calculations with so-called \textbf{Sturm}ian-type
 basis functions.
 
+% Make sure it comes across:
+%  - what are we doing different
+%  - flexibility and basis-type independence
 
 %%%%% new
 % points in need for modular
@@ -73,6 +87,15 @@ Lazy matrix formalism helps
 \contraction-based \SCF hard to achieve in non-flexible standard
 Q-Chem programs
 % points in need for modular
+The implementation of quantum-chemical methods
+employing novel types of basis functions often necessitates
+unusual numerical techniques as well.
+Implementing these into existing quantum chemistry packages
+can be rather challenging,
+since these are on the one hand highly optimised towards the methods
+they already accommodate,
+but on the other hand typically not flexible enough
+to meet the differing requirements.
 
 
 This chapter follows closely the ideas we presented in \cite{molsturmDesign}.
@@ -81,4 +104,3 @@ This chapter follows closely the ideas we presented in \cite{molsturmDesign}.
 \input{design.tex}
 \input{examples.tex}
 \input{state.tex}
-\input{takeaway.tex}

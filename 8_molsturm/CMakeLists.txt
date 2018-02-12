@@ -5,7 +5,6 @@ add_inputs(
     examples.tex
     examples/ccd/ccd_eqn_vs_code.tex
     state.tex
-    takeaway.tex
     #
     examples/dissociation/h2_dissociation.py
     examples/ccd/ccd.py

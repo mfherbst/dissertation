@@ -1,15 +1,11 @@
 \section{Related quantum-chemical software packages}
+\label{sec:MolsturmRelated}
 \newcommand{\psifour}{\texttt{Psi4}\xspace}
 \newcommand{\pyquante}{\texttt{pyQuante}\xspace}
 \newcommand{\horton}{\texttt{HORTON}\xspace}
 \newcommand{\gpaw}{\texttt{GPAW}\xspace}
 \newcommand{\ASE}{\texttt{ASE}\xspace}
 \newcommand{\CPtK}{\texttt{CP2K}\xspace}
-
-\label{sec:related}
-% Some of the programs mentioned here were discovered using
-%    https://en.wikipedia.org/wiki/List_of_quantum_chemistry_and_solid-state_physics_software
-%
 
 This section will briefly review the efforts of other program packages,
 which similar to \molsturm focus on flexibility or generality.
@@ -35,7 +31,7 @@ their existing \cpp core over the years.
 
 The popularity of the combination of \fortran or a \ccc-like
 language in the core and \python as the high-level interface language
-can be understood by considering the publication of \citet{Sun2017}
+can be understood by considering the recent publication of \citet{Sun2017}
 about the \pyscf package.
 They rationalise the choice of \python as follows:
 \begin{itemize}
@@ -50,7 +46,7 @@ They rationalise the choice of \python as follows:
 	\item Computations can be done interactively,
 		which is helpful for testing or debugging.
 \end{itemize}
-We would like to add here,
+Additionally one should mention,
 that \python as a high-productivity, multi-paradigm language
 often permits to achieve even complicated tasks with few lines of code,
 whilst still staying surprisingly easy to read.
@@ -58,7 +54,7 @@ In the context of quantum chemistry
 this has the pleasant side effect that a \python script
 used for performing calculations and subsequent analysis
 is typically not overly lengthy,
-but still documents the exact procedure which is followed.
+but still documents the exact procedure which is followed in a readable manner.
 All this comes at pretty much no downside
 if \python is combined with
 carefully optimised low-level \ccc or \fortran
@@ -101,14 +97,3 @@ To the best of our knowledge,
 the design of these packages is, however,
 very specific to the particular combinations of basis function type
 and method they support.
-\todoil{I (mfh) would leave this sentence out, since it is a repetition
-	of what was said in the previous paragraph and is kind of implicitly clear: \\[1em]
-Most notably implementing basis function types or methods with
-deviating numerical requirements from the present algorithms
-could still be rather involved.
-}
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "paper"
-%%% End:

@@ -5,6 +5,9 @@
 	the capability for describing data.
 }{Grace Hopper~(1906--1992)}
 
+% TODO Some conclusions?
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Conclusion, outlook and future work
@@ -21,3 +24,53 @@
 % Other types of CS basis sets,
 % motivate that from Gaussians a little
 
+
+% molsturm
+A good improvement for \molsturm on this front would be a cheap,
+but nevertheless effective \contraction-based \SCF scheme.
+%
+%
+A disadvantage of the current \molsturm interface is,
+that all data is stored as plain and dense memory.
+Both symmetry as well as sparsity properties of the involved tensors
+are entirely ignored at the moment.
+This yields an unacceptably large requirement in memory
+as well as a very unfavourable computational scaling
+for the demanding tensor contractions
+typically required in Post-HF methods like \CCD (see figure \ref{fig:codeCCD}).
+In the future we want to tackle this by extending
+\lazyten towards lazy tensors as well.
+In practice this would imply that the evaluation of
+tensor contractions like in figure \ref{fig:codeCCD} could be implicitly delayed
+for as long as possible.
+Only once the results are needed in the code,
+the calculation would be underdone
+for all delayed expressions at once.
+This could allow to automatically deduce an ideal evaluation strategy
+taking all sparsity and symmetry information
+of the involved tensors into account.
+Ideally this would happen transparently in the background
+without changing the \python interface at all.
+
+Another angle for future work would be to integrate more closely
+with existing quantum-chemistry libraries or program packages.
+A good example is the \texttt{libxc}~\cite{Lehtola2018} library,
+which offers a range of exchange-correlation functionals.
+Implementing an interface to this library inside appropriate
+lazy matrix objects would allow to construct the Kohn-Sham matrix
+inside \molsturm's \contraction-based \SCF as well,
+such that density-functional theory~(DFT) calculations
+could be performed.
+Similarly we would like to simplify
+data exchange with other quantum chemistry packages like \pyscf or \psifour
+by supporting some wide-spread file formats in quantum chemistry,
+\eg \texttt{MolPro}'s FCIDUMP~\cite{Knowles1989}.
+For facilitating plotting of \SCF orbitals or densities
+we plan to implement the \texttt{molden}~\cite{Schaftenaar2000} format
+as well as routines for dumping the data
+in \texttt{Gaussian}~\cite{Frisch2016} cube or VTK~\cite{Avila2010} files.
+
+%
+%
+Investigate usefulness of Sturmians for ADC
+Comparison to cGTO basis sets

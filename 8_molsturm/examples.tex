@@ -1,10 +1,7 @@
-%\definecolor{mauve}{rgb}{0.58,0,0.82}
-%\input{setup_listings.tex}
-%\newcommand{\code}{\lstinline[basicstyle=\normalsize\ttfamily]}
 \newcommand{\scipy}{\texttt{scipy}\xspace}
 
 \section{Examples}
-\label{sec:examples}
+\label{sec:MolsturmExamples}
 
 In this section we present a few examples,
 which demonstrate how the \python interface of \molsturm
@@ -24,37 +21,32 @@ with other types of basis functions as well.
 \newcommand{\lcall}{64\xspace}
 \newcommand{\lextract}{34\xspace}
 
-\begin{figure*}
-	\begin{minipage}{0.44\textwidth}
-	\lstinputlisting[firstline=8,firstnumber=8,lastline=36]{examples/dissociation/h2_dissociation.py}
+\begin{figure}
+	\centering
+	\begin{minipage}{0.58\textwidth}
+	\lstinputlisting[firstline=8,firstnumber=8,lastline=67]{examples/dissociation/h2_dissociation.py}
 	\end{minipage}
-	\hspace{15pt}
-	\begin{minipage}{0.48\textwidth}
-	\lstinputlisting[firstline=39,firstnumber=39,lastline=67]{examples/dissociation/h2_dissociation.py}
-	\end{minipage}
-	\caption{
-		Script for computing the \ce{H2} dissociation curve
+	\caption[\python script computing a \ce{H2} dissociation curve]{
+		Script for computing a \ce{H2} dissociation curve
 		and fitting a Morse potential to it.
 		The \texttt{import} statements and the explicit call to \texttt{main}
 		are stripped off.
-		The decision about the basis function type, the integral backend
+		The decision about the basis function type, the integral back end
 		as well as the basis set are only made in line \lcall,
 		where the \texttt{compute\_curve} is called with the chosen
 		set of parameters.
 	}
 	\label{fig:codeDissociation}
-\end{figure*}
-
-
+\end{figure}
 
 \begin{figure}
 	\centering
 	\includeimage[scale=0.8]{8_molsturm/h2_dissociation}
-	\caption{
+	\caption[Result from calling the python script of figure \ref{fig:codeDissociation}]{
 		Plot resulting from computing the \ce{H2}
 		dissociation curve in a def2-SVP basis set~\cite{Weigend2005}
 		at UMP2 level,
-		employing the script of \fig \ref{fig:codeDissociation}.
+		employing the script of figure \ref{fig:codeDissociation}.
 		Shown are both the UMP2 energy values as well as the fitted
 		Morse potential.}
 	\label{fig:dissociation}
@@ -90,22 +82,21 @@ This is a common problem in the practice of computational chemistry.
 
 Contrast this with the approach taken by packages like \molsturm,
 which are controlled solely by a scripting language interface.
-The \python script shown in \fig \ref{fig:codeDissociation} performs
+The \python script shown in figure \ref{fig:codeDissociation} performs
 exactly what has been discussed above:
 First, in the function \texttt{compute\_curve},
 it computes the energy of the \ce{H2} molecule
 at various bond distances using spin-unrestricted
 second-order Møller-Plesset perturbation theory~(UMP2).
+\todo{cite}
 Then it calls the function \texttt{plot\_morse\_fit}
 to plot the resulting data points of energies vs. distances
 and to fit a Morse potential through them,
-see \fig \ref{fig:dissociation}.
+see figure \ref{fig:dissociation}.
 Note, how the error-prone parsing step is replaced by just
-line \lextract of \fig \ref{fig:codeDissociation},
+line \lextract of figure \ref{fig:codeDissociation},
 where UMP2 ground state energy is requested from the
 dictionary of results returned by the calculation.
-\todoil{James: Is more detail explaining the script required or is it
-self-explanatory?}
 
 Since we are able to orchestrate the full computational procedure
 from a single script,
@@ -131,14 +122,15 @@ becomes available in \gint,
 only the appropriate keyword needs to be replaced in lines \ldict
 in order to employ it for the UMP2 calculations instead.
 
-\subsection{Coupled-cluster doubles~(CCD)}
+\subsection{Coupled-cluster doubles}
 \label{sec:ex:ccd}
 
-\begin{figure}
+\begin{sidewaysfigure}
 	\input{examples/ccd/ccd_eqn_vs_code.tex}
-	\caption{Equation for the coupled-cluster doubles~(CCD)
-		residual~\cite{Bartlett1978}
-		on the left and excerpt of a CCD implementation
+	\caption[Coupled-cluster doubles residual equation and implementation side-by-side]
+	{Equation for the coupled-cluster doubles~(CCD)
+		residual \eqref{eqn:CCDworking}
+		on the left and excerpt of a \CCD implementation
 		using \molsturm and \numpy on the right.
 		Equivalent quantities are highlighted in the same colour.
 		The first two lines of code show the computation of the
@@ -150,7 +142,7 @@ in order to employ it for the UMP2 calculations instead.
 		\texttt{t2}.
 	}
 	\label{fig:codeCCD}
-\end{figure}
+\end{sidewaysfigure}
 
 In this example we want to show how the
 high-level \python interface of \molsturm may be used
@@ -162,25 +154,25 @@ Even though \molsturm right now neither offers
 any coupled-cluster method nor
 an interface to any third-party coupled-cluster code,
 we managed to implement a simple, working
-coupled-cluster doubles~(CCD)~\cite{Hurley1976,Bartlett1978} algorithm
+coupled-cluster doubles~(\CCD)~\cite{Hurley1976,Bartlett1978} algorithm
 in only about 100 lines of code and about two days of work.
 The most relevant part of the implementation,
-namely computing the CCD residual for the current guess
+namely computing the \CCD residual for the current guess
 of the $T_2$ amplitudes $t_{ij}^{ab}$,
-is shown towards the right of \fig \ref{fig:codeCCD},
-side-by-side with the expression of the CCD residual~\cite{Bartlett1978}.
-The full CCD code is available as an example
+is shown on the right of figure \ref{fig:codeCCD},
+side-by-side with the expression of the \CCD residual~(compare \eqref{eqn:CCDworking}).
+The full \CCD code is available as an example
 in the file \url{examples/state_interface/coupled_cluster_doubles.py}
 of the \molsturm repository~\cite{molsturmWeb}.
 We follow the standard procedure
 of employing a quasi-Newton minimisation
-of the CCD residual with respect to the $T_2$ amplitudes
+of the \CCD residual with respect to the $T_2$ amplitudes
 using the orbital energy differences as an approximate Jacobian%
 ~\cite{Bartlett1978,Helgaker2013}.
 The guess for the $T_2$ amplitudes is taken
 from second order Møller-Plesset perturbation theory.
 
-The expression of the CCD residual $r_{ij}^{ab}$
+The expression of the \CCD residual $r_{ij}^{ab}$
 requires the evaluation of a sequence of tensor contractions
 involving the Fock matrix in the molecular orbital basis, $f_{pq}$,
 the antisymmetrised electron-repulsion integrals, $\langle pq||rs \rangle$,
@@ -190,14 +182,14 @@ to occupied orbitals and indices $a,b,e,f$
 refer to virtual, \ie unoccupied, orbitals.
 
 The \python implementation we show towards the right-hand side
-of \fig \ref{fig:codeCCD})
+of figure \ref{fig:codeCCD})
 computes those contractions.
 For this it employs the data structures \molsturm provides
-in the \texttt{state} object, which is returned by the SCF procedure.
+in the \texttt{state} object, which is returned by the \SCF procedure.
 Since our code uses chemists' indexing convention
 in the electron-repulsion integrals object \texttt{state.eri}
 and we do not store the antisymmetrised tensor,
-the first two lines of the code of \fig \ref{fig:codeCCD}
+the first two lines of the code of figure \ref{fig:codeCCD}
 need to be executed once to generate
 the antisymmetrised electron-repulsion integrals $\langle mn||ef \rangle$
 in the required physicists' indexing convention
@@ -205,7 +197,7 @@ inside the \texttt{eri} tensor object.
 All subsequent lines compute the residual tensor \texttt{res}
 by contracting the relevant blocks of the Fock matrix \texttt{state.fock},
 the \texttt{eri} object and the $T_2$ amplitudes contained in \texttt{t2}
-and are executed once per CCD iteration.
+and are executed once per \CCD iteration.
 For this the code makes heavy use of the \texttt{einsum} method from \numpy,
 which performs tensor contractions
 expressed in the form of Einstein's summation convention.
@@ -214,7 +206,7 @@ with the data structures \molsturm results in a
 strikingly close resemblance of implementation and actual equation.
 
 The \texttt{state} object
-provides access to more quantities from the SCF procedure
+provides access to more quantities from the \SCF procedure
 than just the Fock matrix and the repulsion integrals.
 Individual terms of the Fock matrix or
 quantities like the overlap matrix in terms of the underlying
@@ -222,19 +214,19 @@ discretisation basis functions may be obtained as well.
 We provide this data either as actual \numpy arrays
 or by the means of structures,
 which are based on \numpy arrays,
-such that the user can employ the SCF results freely and flexibly
+such that the user can employ the \SCF results freely and flexibly
 within the \python ecosystem.
 Coupled with the basis-function independence of \molsturm's
-SCF this allows for rapid development and systematic investigation
+\SCF this allows for rapid development and systematic investigation
 of Post-HF methods based on arbitrary basis functions.
 
 At the moment we make no efforts to employ symmetry or parallelise
 the computation of the tensor contractions
-shown in the script of \fig \ref{fig:codeCCD}.
+shown in the script of figure \ref{fig:codeCCD}.
 For this reason such implementations are all but suitable for
 real-world applications.
-Nevertheless the script presented in \fig \ref{fig:codeCCD}
-may be used for CCD calculations of small molecules with small basis sets.
+Nevertheless the script presented in figure \ref{fig:codeCCD}
+may be used for \CCD calculations of small molecules with small basis sets.
 For example an \ce{O2} 6-31G~\cite{Hehre1972} calculation on a recent laptop took
 about an hour to converge up to a residual $l_\infty$-norm of $10^{-4}$.
 For investigating new methods on top of the \molsturm framework
@@ -245,8 +237,11 @@ such scripts are therefore still well-suited.
 \label{sec:ex:geo}
 
 \begin{figure}
+	\centering
+	\begin{minipage}{0.58\textwidth}
 	\lstinputlisting[firstline=6,firstnumber=6,lastline=44]{examples/geo_opt.py}
-	\caption{
+	\end{minipage}
+	\caption[\python script for performing gradient-free optimisation]{
 		Example for performing a gradient-free optimisation
 		using Powell's method~\cite{Powell1964,Press1992} and \molsturm.
 		\python \texttt{import} statements at the top of the script
@@ -270,9 +265,9 @@ For performing such calculations,
 the implementation of of appropriate integral derivatives
 inside the integral library is required.
 Since doing so can become as difficult as implementing the integrals
-required for the SCF scheme itself,
+required for the \SCF scheme itself,
 one would much rather skip this step and concentrate
-only on what is required for the SCF at first.
+only on what is required for the \SCF at first.
 
 In this example we will demonstrate how the flexible design of \molsturm
 enables us to incorporate readily available building blocks of \python
@@ -282,7 +277,7 @@ on the side of the integral library
 and allows to perform simple structure optimisations
 even without nuclear gradients --- neither analytical nor numerical.
 
-The script shown in \fig \ref{fig:codeGeoOpt}
+The script shown in figure \ref{fig:codeGeoOpt}
 performs a geometry optimisation of a water
 based on Powell's gradient-free optimisation algorithm~\cite{Powell1964,Press1992}
 as it is implemented in the \texttt{scipy} library%
@@ -294,14 +289,14 @@ Then the final geometry is found
 by minimising to a lower convergence threshold in the more costly
 \mbox{def2-SV(P)}~\cite{Weigend2005} basis.
 
-Similar to the CCD example the time required to code the script
+Similar to the \CCD example the time required to code the script
 was very little, about 30 minutes.
 Nevertheless the script is able to converge
 in a couple of minutes to the equilibrium geometry shown
-in \fig \ref{fig:OptimalGeometryWater}.
+in figure \ref{fig:OptimalGeometryWater}.
 A novel basis function type,
-for which one just implemented the SCF integrals in \gint,
-can be used with the script of \fig \ref{fig:codeGeoOpt}
+for which one just implemented the \SCF integrals in \gint,
+can be used with the script of figure \ref{fig:codeGeoOpt}
 by only altering the parameters in lines \lgbasone and \lgbastwo.
 This makes the script very suitable for giving such basis functions
 a try in the context of geometry optimisation.
@@ -309,7 +304,8 @@ a try in the context of geometry optimisation.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.48\textwidth]{h2o_density.png}
-	\caption{Density plot of the final optimised \ce{H2O}
+	\caption[Density plot of an optimised \ce{H2O} molecule at Hartree-Fock level]
+	{Density plot of the final optimised \ce{H2O}
 	Hartree-Fock geometry with a
 	\ce{O-H} bond length of \unit[0.95046]{\AA} and
 	a \ce{H-O-H} bond angle of $106.35^\circ$.
@@ -319,8 +315,3 @@ a try in the context of geometry optimisation.
 	}
 	\label{fig:OptimalGeometryWater}
 \end{figure}
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "paper"
-%%% End:
