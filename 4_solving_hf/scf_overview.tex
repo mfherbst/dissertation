@@ -9,10 +9,11 @@ and repetitively construct occupied coefficient
 matrices $\mat{C}^{(1)}, \mat{C}^{(2)}, \ldots, \mat{C}^{(n-1)} \in \mathcal{C}$
 by solving the discretised \HF equations \eqref{eqn:HFiterated}
 and considering the Aufbau principle.
-Since the minimiser%
-\footnote{in the discrete setting}
+Since the minimiser
 of the discretised \HF problem \eqref{eqn:HFOptCoeff}
-is unique, there is no need to diagonalise exactly $\matFnfull$ in each iteration.
+is unique%
+\footnote{This is only true in the discrete setting.},
+there is no need to diagonalise exactly $\matFnfull$ in each iteration.
 Instead we could well diagonalise an arbitrary matrix $\matFnt$
 for obtaining the new coefficients $\mat{C}^{(n)}$.
 It is important, however, to ensure that the final coefficients,

@@ -11,3 +11,6 @@ add_inputs(dft.tex)
 #
 tikz_image(fci_matrix.tikz TMP)
 add_depends(${TMP})
+
+tikz_image(planetary_systems.tikz TMP)
+add_depends(${TMP})
