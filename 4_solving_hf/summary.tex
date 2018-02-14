@@ -1,15 +1,16 @@
 \section{Takeaway}
 \label{sec:SCFtakeaway}
 The \SCF algorithms we discussed in this section all follow the general scheme,
-where a \textbf{Fock update} step and
-a \textbf{coefficient update} or \textbf{density matrix update}
+where a \textbf{Fock-update} step and
+a \textbf{coefficient-update} or \textbf{density-matrix-update}
 step are repetitively executed.
 In the former step a new Fock matrix $\mat{F}^{(n)}$ is constructed from
 the present set of \SCF coefficients $\mat{C}^{(n)}$
 or the present density matrix $\mat{D}^{(n)}$.
 In the latter step this Fock matrix $\mat{F}^{(n)}$,
 perhaps with additional insight gained in previous iterations,
-is used in order to generate a new set of coefficients $\mat{C}^{(n+1)}$.
+is used in order to generate a new set of coefficients $\mat{C}^{(n+1)}$
+and perhaps from this a new density $\mat{D}^{(n+1)}$.
 For Roothaan's repeated diagonalisation,
 the optimal damping algorithm and the geometric direct minimisation algorithm
 this sequence of steps is emphasised in figures
@@ -52,11 +53,11 @@ As mentioned before this implies to formulate the \SCF in terms of coefficients
 to exploit the favourable computational scaling
 for some basis function types like the \FE or the \CS functions.
 We indicated for the \ODA algorithm
-how approximations allow to transform this density-based
+how approximations allow to transform this density-matrix-based
 \SCF into the \tODA scheme,
 which can be formulated as a \contraction-based \SCF.
 In section \vref{sec:OverviewSCF} we furthermore gave more general suggestions,
-which allow to transform every density-based \SCF
+which allow to transform every density-matrix-based \SCF
 into a coefficient-based \SCF in theory.
 We therefore believe it to be possible
 to construct an efficient \contraction-based \SCF,

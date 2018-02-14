@@ -10,6 +10,34 @@
 	\end{itemize}
 }
 % ----
+In chapter \vref{ch:NumSolveHF} we looked at various ways to solve the
+\HF equations both with respect to different types of basis functions
+for the discretisation as well as different \SCF algorithms.
+Our conclusion was firstly that all \SCF schemes can be
+condensed into the similar structure of a two-step process,
+where a Fock-update step and a coefficient-update or a density-update step
+repeat each other until convergence.
+Secondly we mentioned that a \contraction-based ansatz could result in \SCF schemes,
+which are agnostic to the type of basis function used.
+The lazy matrix formalism and the corresponding \lazyten library,
+introduced in the previous chapter,
+provided ways to express \contraction-based algorithms at a high level.
+Overall this means that the details of the \contraction implementation,
+\ie the part deviating between different types of basis functions,
+could be abstracted from the implementation of the \SCF algorithm
+and vice versa.
+We already briefly mentioned this in a concluding example
+in section \vref{sec:LazytenExamples}.
+% ----
+
+% ----
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method,
+can be formulated entirely in the \SCF orbital basis
+and without any reference to the underlying basis functions.
+Therefore a basis-function independent SCF scheme automatically
+leads to basis-function independent Post-HF methods as well.
+% ----
 
 lazyten layer
 An additional advantage of such a layer would be that

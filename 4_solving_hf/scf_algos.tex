@@ -55,7 +55,7 @@ see equation \eqref{eqn:ApplicationKcs} for details.
 It was already pointed out in section \vref{sec:OverviewSCF}
 that focusing on coefficient-based schemes
 is hardly a restriction in terms of the number of possible approaches,
-since coefficient-based and density-based schemes can be interconverted,
+since coefficient-based and density-matrix-based schemes can be interconverted,
 at least approximately.
 We will suggest modifications of the
 optimal damping algorithm~(ODA)~\cite{Cances2000a} in section \ref{sec:tODA}
@@ -191,7 +191,7 @@ The optimal damping algorithm~(\ODA) was proposed by \citet{Cances2000a}
 based on their analysis of the Roothaan algorithm
 including the level-shifting modification.
 
-In unmodified form~\cite{Cances2000,Cances2000a} it is a density-based \SCF algorithm.
+In unmodified form~\cite{Cances2000,Cances2000a} it is a density-matrix-based \SCF algorithm.
 Starting from an initial density $\tilde{\mat{D}}^{(0)} = \mat{D}^{(0)}$,
 the procedure is roughly~(compare figure \ref{fig:RoothaanODA}a)
 for $n=1, 2, 3, \ldots$
@@ -366,7 +366,7 @@ Since $\la{n+1} \in [0,1]$ the minimiser is
 \end{equation}
 where the cases $c=0$ and $s=0$ have been ignored, since they only occur at convergence.
 This closes the missing link and allows to implement a \ODA
-in as a density-based \SCF.
+in as a density-matrix-based \SCF.
 
 Let $\alpha, \beta \in \R$ and $\mat{D}_1, \mat{D}_2 \in \tilde{\mathcal{P}}$.
 Since $\matFfullD = \mat{T} + \mat{V}_0 + \matJfullD + \matKfullD$
@@ -399,7 +399,7 @@ Notice that its construction guarantees that the \SCF energy will always decreas
 It is hence guaranteed to converge to a local minimum of the \HF problem
 \eqref{eqn:HFOptDens}~\cite{Cances2000,Cances2000a}.
 The \ODA is only a particularly simple example from a whole family
-of density-based \SCF algorithms called relaxed constraints algorithms,
+of density-matrix-based \SCF algorithms called relaxed constraints algorithms,
 which are discussed in detail in \cite{Cances2000a}.
 
 \noindent
@@ -438,7 +438,7 @@ the increasing number of times they need to be invoked
 should make this ansatz rather expensive.
 
 Overall the \ODA is very suitable for {\cGTO} and \CS-based discretisations,
-since for these density-based \SCF schemes are fine,
+since for these density-matrix-based \SCF schemes are fine,
 but this algorithm is not suitable for solving the \HF problem
 with a \FE-based discretisation without further modifications.
 
@@ -674,7 +674,7 @@ procedure to eventually diverge.
 
 Since there is no reason to build the density matrix
 in Pulay's \DIIS procedure
-it is suitable for both density-based as well as coefficent-based \SCF settings.
+it is suitable for both density-matrix-based as well as coefficent-based \SCF settings.
 Moreover given that the $m$ coefficients $\{ \mat{C}^{(n-i)} \}_{i=0,\ldots,m-1}$
 are stored,
 the Fock matrix terms of \eqref{eqn:DIISfock}

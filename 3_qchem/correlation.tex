@@ -120,7 +120,7 @@ Detailed discussions of so-called multi-reference
 or multi-configurational methods tackling static correlation
 can be found for example in \cite{McWeeny1985,Fischer1986,Jensen2007book,Helgaker2013}.
 
-\subsection{Truncated configuration interaction expansion}
+\subsection{Truncated configuration interaction}
 In section \vref{sec:FCI} about the \FCI method we already
 mentioned that the exact ground state $\Psi_0$ to the electronic Schrödinger equation
 can be expressed as a CI expansion \eqref{eqn:CIExpansion}%
@@ -236,7 +236,7 @@ In other words up to zeroth order we obtain the sum of the orbital energies.
 The first order correction accounts for the double counting
 of the electron-electron interactions and recovers the \HF energy expression.
 The first real improvement to \HF results
-at \newterm{second-order Møller-Plesset perturbation theory}~({\MP}2).
+at \newterm{second order Møller-Plesset perturbation theory}~({\MP}2).
 For reasons, which will become clear in the next section
 one often introduces the so-called \newterm{$T_2$ amplitude}
 \begin{equation}
@@ -258,6 +258,8 @@ mainly because it gives a decent guess
 towards the exact energy of the electronic ground state
 at manageable computational cost%
 \footnote{Using sensible approximations linear-scaling {\MP}2 is possible.}.
+The other \MP methods on the other hands
+are nowadays used only rarely.
 
 One should mention that due to its perturbative nature,
 there is no guarantee that $E_0^\text{MP2} \geq E_0$,
