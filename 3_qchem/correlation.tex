@@ -125,16 +125,19 @@ In section \vref{sec:FCI} about the \FCI method we already
 mentioned that the exact ground state $\Psi_0$ to the electronic Schrödinger equation
 can be expressed as a CI expansion \eqref{eqn:CIExpansion}%
 \footnote{
-	In this section about correlation methods,
+	In this section about correlation methods
 	we will adhere to the usual index conventions
-	of equations \eqref{eqn:CondOccIndex} and \eqref{eqn:CondVirtIndex}
-	throughout.
+	where occupied indices are denoted with letters
+	$i,j,k,l \in \Iocc$ and virtual indices with letters $a,b,c,d \in \Ivirt$,
+	see remark \vref{rem:FCI} for details.
+	To avoid clutter we will usually not indicate the index set in sums explicitly,
+	\eg write $\sum_a$ instead of $\sum_{a \in \Ivirt}$.
 }
 \[
-	\Psi_0
+	\Psi
 	= c_0 \Phi_0 + \sum_{ia} c_i^a \Phi_i^a
-	+ \sum_{ij\,ab} c_{ij}^{ab} \Phi_{ij}^{ab}
-	+ \sum_{\substack{ijk \\ abc}} c_{ijk}^{abc} \Phi_{ijk}^{abc}
+	+ \sum_{\substack{i<j \\a<b}} c_{ij}^{ab} \Phi_{ij}^{ab}
+	+ \sum_{\substack{i<j<k \\ a<b<c}} c_{ijk}^{abc} \Phi_{ijk}^{abc}
 	 + \cdots,
 \]
 starting from an arbitrary reference determinant $\Phi_0$.
@@ -157,7 +160,7 @@ This would lead to the ansatz wave function
 \[
 	\Psi_0^\text{CISD}
 	= \Phi_0 + \sum_{ia} c_i^a \Phi_i^a
-	+ \sum_{ij\,ab} c_{ij}^{ab} \Phi_{ij}^{ab},
+	+ \sum_{\substack{i<j \\a<b}} c_{ij}^{ab} \Phi_{ij}^{ab}
 \]
 where one assumes the individual determinants
 are normalised in a way that $c_0 = 1$.
@@ -218,7 +221,7 @@ and the perturbation is}
 	\Op{H}^1 &= \Op{V}_{ee} - \bigoplus_{i=1}^{\Nelec} \left( \Op{J}_{\Theta^0} + \Op{K}_{\Theta^0} \right),
 \end{align*}
 \ie whatever the \HF operator misses.
-In the discretised setting of a finite-dimensional basis set
+In the discretised setting of a finite-dimensional one-particle basis
 $\{\varphi_\mu\}_{\mu\in\Nbas}$
 one may easily derive the zeroth to second order
 energy contributions~\cite{Szabo1996}
@@ -232,15 +235,20 @@ to the ground state energy.
 In other words up to zeroth order we obtain the sum of the orbital energies.
 The first order correction accounts for the double counting
 of the electron-electron interactions and recovers the \HF energy expression.
-The first real improvement to \HF is obtained
+The first real improvement to \HF results
 at \newterm{second-order Møller-Plesset perturbation theory}~({\MP}2).
 For reasons, which will become clear in the next section
 one often introduces the so-called \newterm{$T_2$ amplitude}
-\[ t_{ij}^{ab} \equiv \frac{\eriAsym{ij}{ab}}
+\begin{equation}
+	t_{ij}^{ab} \equiv \frac{\eriAsym{ij}{ab}}
 		{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
-\]
+	\label{eqn:amplitudesMPtwo}
+\end{equation}
 and writes the {\MP}2 energy as
-\[ E_0^\text{MP2} = E_0^\text{HF} + \frac14 \sum_{ijab} \cc{\eriAsym{ij}{ab}} t_{ij}^{ab}. \]
+\begin{equation}
+	E_0^\text{MP2} = E_0^\text{HF} + \frac14 \sum_{ijab} \cc{\eriAsym{ij}{ab}} t_{ij}^{ab}.
+	\label{eqn:energyMPtwo}
+\end{equation}
 The \MP methods do in general have some issues as well.
 Most notably the perturbation expansion of energies does in general
 not converge~\cite{Helgaker2013},
@@ -252,20 +260,21 @@ at manageable computational cost%
 \footnote{Using sensible approximations linear-scaling {\MP}2 is possible.}.
 
 One should mention that due to its perturbative nature,
-there is no guarantee that $E_0^\text{MP2} \geq E_0^\text{exact}$,
+there is no guarantee that $E_0^\text{MP2} \geq E_0$,
 the exact ground state energy of the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}.
 In the community of quantum chemistry one often refers
 to this fact as {\MP}2 being non-variational.
 This saying is, however, a bit inaccurate,
 since the method {\MP}2 is indeed variational
-in the sense that larger basis sets will always lead a lower-energy {\MP}2 ground state,
+in the sense of the Courant-Fischer theorem \eqref{eqn:CourantFischer},
+namely that larger basis sets will always lead a lower-energy {\MP}2 ground state,
 which is furthermore closer to the exact {\MP}2 ground state wave function.
 This is not that much apparent in the outlined derivation,
 but can be seen from an alternative route
 employing the Hylleraas functional~\cite{Helgaker2013}.
 In contrast it is not variational in the sense that
 a larger basis yields an {\MP}2 energy
-which approaches $E_0^\text{exact}$ from above.
+which approaches $E_0$ from above.
 
 \subsection{Coupled-cluster theory}
 \defineabbr{CC}{CC\xspace}{Coupled cluster}
@@ -283,71 +292,140 @@ to the excellent review by \citet{Crawford2007}
 as well as numerous other works~\cite{Helgaker2013,Hodecker2016}
 dealing with the topic.
 
-In coupled-cluster theory one employs the so-called exponential ansatz
+\noindent
+In coupled-cluster theory one starts from the so-called exponential ansatz
 \begin{equation}
 	\Psi^\text{CC} = \exp(\op{T}) \Phi_0
 	\label{eqn:AnsatzCC}
 \end{equation}
 to generate the coupled-cluster wave function $\Psi^\text{CC}$
-from a \HF reference determinant $\Phi_0$.
+from a \HF ground state reference determinant $\Phi_0$.
 In this equation
-\[ \op{T} = \op{T}_1 + \op{T}_2 + \cdots + \op{T}_{\Nelec} \]
+\begin{equation}
+	\op{T} = \op{T}_1 + \op{T}_2 + \cdots + \op{T}_{\Nelec}
+	\label{eqn:ExcitationCC}
+\end{equation}
 is the \newterm{excitation operator}
 consisting of all singles excitations
 \begin{align*}
 	\op{T}_1 &= \sum_{ia} t_i^a \op{\tau}_i^a
-	&&\text{with $\op{\tau}_i^a$ defined, such that}& \Phi_i^a &= \op{\tau}_i^a \Phi_0, \\
-\intertext{all doubles excitations}
-	\op{T}_2 &= \sum_{ijab} t_{ij}^{ab} \op{\tau}_{ij}^{ab}
+\intertext{with $\op{\tau}_i^a$ defined, such that $\Phi_i^a = \op{\tau}_i^a \Phi_0$,
+all doubles excitations}
+	\op{T}_2 &= \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab}
 		&&\text{with}& \Phi_{ij}^{ab} &= \op{\tau}_{ij}^{ab} \Phi_0, \\
 \intertext{all triples}
-	\op{T}_3 &= \sum_{\substack{ijk \\ abc}} t_{ijk}^{abc} \op{\tau}_{ijk}^{abc}
+	\op{T}_3 &= \sum_{\substack{i<j<k \\ a<b<c}} t_{ijk}^{abc} \op{\tau}_{ijk}^{abc}
 		&&\text{with}& \Phi_{ijk}^{abc} &= \op{\tau}_{ijk}^{abc} \Phi_0, \\
 \end{align*}
 and so forth.
+In these sums the
+coefficients $t_i^a$, $t_{ij}^{ab}$, $t_{ijk}^{abc}$ and so forth
+are called \newterm{cluster amplitudes}.
 In a similar notation to \eqref{eqn:ExpansionSlaterDeterminant}
-the excitation operator is often directly written as a sum of excitations
-$\op{\tau}_i^a$, $\op{\tau}_{ij}^{ab}$, $\op{\tau}_{ijk}^{abc}$ \ldots as
-\[ \op{T} = \sum_\mu t_\mu \op{\tau}_\mu, \]
-where $\mu$ is an appropriately chosen multi-index.
+the excitation operator is often directly written as a sum of the operators
+$\op{\tau}_i^a$, $\op{\tau}_{ij}^{ab}$, $\op{\tau}_{ijk}^{abc}$ \ldots, namely as
+\begin{equation}
+	\op{T} = \sum_\mu t_\mu \op{\tau}_\mu,
+	\label{eqn:ExcitationCCsum}
+\end{equation}
+where $\mu$ is an appropriately chosen multi-index and the sum
+is implicitly taken to have sensible limits.
 
-Plugging \eqref{eqn:AnsatzCC} into the variational expression
-for the ground state energy
-\[ E_0^\text{CC} = \inf_{t_\mu} \frac{\braket{\Psi^\text{CC}}{\Op{H}_{\Nelec} \Psi^\text{CC}}_{\Nelec}}
-	{\braket{\Psi^\text{CC}}{\Psi^\text{CC}}_{\Nelec}}
-\]
-is hard to solve
-even for truncated cases where $\op{T} = \op{T}_1 + \op{T}_2$ only, say,
-due to the non-linearities in the $t_\mu$
-so this is usually not done
+If we allow all possible excitations in \eqref{eqn:ExcitationCC},
+\ie do not truncate the sum,
+the set of all possible coupled-cluster wave functions $\Psi^\text{CC}$
+is exactly equivalent to the space of all Slater determinants
+$\tilde{Q}(\Op{H}_{\Nelec})$,
+which was defined in \eqref{eqn:FormDomainAllFunctions}.
+Without truncation \CC is thus equivalent to \FCI,
+moreover the exponential ansatz in this case just provides
+an alternative to the standard parametrisation of $\tilde{Q}(\Op{H}_{\Nelec})$
+in terms of the CI expansion~(see remark \vref{rem:Determinants}).
 
-Instead insert ansatz into electronic Schrödinger equation
-\[ \Op{H}_{\Nelec} \exp(\op{T}) \Phi_0 = E_0 \exp(\op{T}) \Phi_0 \]
-Introduce similarity-transformed Hamiltonian
-\[ \Op{H}_T = \exp(-\op{T}) \Op{H}_{\Nelec} \exp(\op{T}) \]
-to write
-\begin{align*}
-	\mbra{\Phi_0} \Op{H}_T \mket{\Phi_0} &= E \\
-	\mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0} &= 0
-\end{align*}
-where
-\[ \Phi_\mu = \op{\tau}_\mu \Phi_0, \]
-Projection ansatz not exact.
-Number of projections equals number of excitations to consider.
+In the corresponding discretised setting
+$\Phi_0$ is the solution to the discretised
+\HF problem~(section \vref{sec:DiscreteHF}).
+In a similar fashion to full CI one would expect
+a good ansatz for obtaining a \CC approximation to
+the ground state of the electronic Schrödinger equation
+to use the Ritz-Galerkin ansatz of remark \vref{rem:DiscreteFormulation}.
+In other words one would attempt to solve the variational minimisation problem
+\begin{equation}
+E_0 \leq E_0^\text{CC} = \inf_{\{t_\mu\}_{\mu}} \frac{\braket{\exp(\op{T}) \Phi_0}{\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0}_{\Nelec}}
+	{\braket{\exp(\op{T}) \Phi_0}{\exp(\op{T}) \Phi_0}_{\Nelec}},
+	\label{eqn:VariationalCC}
+\end{equation}
+where there resulting minimising amplitudes give the \CC ground state
+wave function corresponding to the minimal ground state energy $E_0^\text{CC}$.
+Without truncation of \eqref{eqn:ExcitationCC}
+this is again equivalent to discretised full CI.
+Even with truncation to, for example, $\op{T} = \op{T}_1 + \op{T}_2$,
+equation \eqref{eqn:VariationalCC} is intractable to solve.
+The reason for this is the strong non-linearity of the problem,
+where products of the individual amplitudes $\{t_\mu\}_{\mu}$ often occur
+in the resulting system of equations.
 
-size-consistent treatment
-
-Consider special case of CCD
-where $\op{T} = \op{T}_2 = $ doubles only.
-
-
-
-$T_2$ amplitudes $t_{ij}^{ab}$
-% adapt ccd example of molsturm to this
+For this reason one usually employs a different projection approach,
+which shall only be sketched here%
+\footnote{Notice, that we drop some mathematical rigour here,
+	since $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$ is only defined properly
+	if $\Phi_0 \in H^2(\C^{3\Nelec}, \C^{2\Nelec})$,
+	which is not true in general.
+	Even in the discretised case one may choose a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$,
+	where some functions are not members of $H^2(\C^{3\Nelec}, \C)$,
+	such that $\Phi_0 \not\in H^2(\C^{3\Nelec}, \C^{2\Nelec})$ is possible.
+}
+If one plugs the exponential ansatz directly into the electronic Schrödinger equation
+\eqref{eqn:ElectronicSchrödinger} for the ground state one obtains
+\begin{equation}
+	\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0 = E_0^\text{CC} \exp(\op{T}) \Phi_0,
+	\label{eqn:CCschrödinger}
+\end{equation}
+where $E_0^\text{CC}$ is the coupled-cluster ground state energy.
+By a simple rearrangement this can be written as
+\begin{equation}
+	E_0^\text{CC} = \mbra{\Phi_0} \Op{H}_T \mket{\Phi_0}_{\Nelec}
+	\label{eqn:CCenergy}
+\end{equation}
+where we introduced the similarity-transformed Hamiltonian
+\[ \Op{H}_T = \exp(-\op{T}) \Op{H}_{\Nelec} \exp(\op{T}). \]
+For making use of equation \eqref{eqn:CCenergy}
+at all the unknown amplitudes $\{t_\mu\}_{\mu}$ still need to be found.
+This is done by projecting \eqref{eqn:CCschrödinger}
+onto determinants $\exp(-\op{T}) \Phi_\mu = \exp(-\op{T}) \op{\tau}_\mu \Phi_0$,
+which yields equations
+\begin{equation}
+	\mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0}_{\Nelec} = 0
+	\label{eqn:CCamplitudes}
+\end{equation}
+one for each $\mu$.
+In truncated \CC methods, where only some of the terms of \eqref{eqn:ExcitationCC} are kept,
+we can use \eqref{eqn:ExcitationCCsum} to generate exactly one equation
+for each amplitude $\mu$.
+In other words the $\mu$ in \eqref{eqn:CCamplitudes} is just taken to run over the same
+index range as in the expansion \eqref{eqn:ExcitationCCsum} for the truncated
+excitation operator $\op{T}$.
 
 \defineabbr{CCD}{CCD\xspace}{Coupled cluster doubles}
-
-Working equations
+Numerically solving for the \CC amplitudes in \eqref{eqn:CCamplitudes}
+amounts to a root-finding problem,
+where the parameters is the set of all amplitudes $\{t_\mu\}_{\mu}$.
+This is typically approached by minimising the residuals
+\begin{equation}
+	r_\mu = \mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0}_{\Nelec}
+	\label{eqn:CCresidual}
+\end{equation}
+iteratively until numerically $r_\mu = 0$ for all $\mu$.
+Even though this problem is easier compared to the
+variational \CC ansatz,
+the working equations resulting from the expressions \eqref{eqn:CCresidual}
+are typically all but simple.
+For example let us consider the simplest coupled-cluster ansatz, where
+\[ \op{T} = \op{T}_2 = \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab} \]
+called coupled-cluster doubles~(\CCD).
+A proper derivation~\cite{Bartlett1978,Crawford2007,Hodecker2016}
+starting from \eqref{eqn:CCamplitudes}
+yields the equations
 \begin{equation}
 \begin{aligned}
 	r_{ij}^{ab}
@@ -375,24 +453,66 @@ Working equations
 		&- \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{jm}^{ae} \, t_{in}^{bf}
 		 - \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{im}^{be} \, t_{jn}^{af} \\
 		&+ \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{jm}^{be} \, t_{in}^{af}
-\end{aligned}
+\end{aligned}.
 	\label{eqn:CCDworking}
 \end{equation}
-expain terms
-
-see original paper \cite{Bartlett1978}
-or detailed derivation \cite{Hodecker2016}
-
-
+for the \CCD residual $r_{ij}^{ab}$.
+They involve multiple contractions over the
+antisymmetrised \ERI tensor from remark \vref{rem:ERI},
+the amplitudes $t_{ij}^{eb}$ and elements of the Fock matrix $\mat{f}$ in the \SCF orbital basis.
+This latter matrix is defined as
+\[ \mat{f} = \tp{\mat{C}_F} \mat{F} \mat{C}_F \in \C^{\Norb\times\Norb}.\]
+If the canonical \HF ansatz of \eqref{eqn:HFequations} is used $\mat{f}$ will be diagonal
+and equivalent to $\diag(\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_{\Norb})$.
+The corresponding \CCD energy expression
 \begin{equation}
-	E_\text{CCD} = \frac14 \sum_{ijab} \eriAsym{ij}{ab} t_{ij}^{ab}
+	E_\text{CCD} = \frac14 \sum_{ijab} \eriAsym{ij}{ab} t_{ij}^{ab}.
 	\label{eqn:CCDenergy}
 \end{equation}
+can be computed by simplifying \eqref{eqn:CCenergy}.
+Since the rank-4 tensor $t_{ij}^{ab}$ occurs in the expression for the
+$\op{T}_2$ excitation operator,
+this tensor is usually called the $T_2$-amplitudes tensor as well.
+Comparing the structure of \eqref{eqn:energyMPtwo} and \eqref{eqn:CCDenergy},
+the name of the expression \eqref{eqn:amplitudesMPtwo} in {\MP}2 finally becomes apparent.
 
+For higher-order methods like CCSD, where $\op{T} = \op{T}_1 + \op{T}_2$,
+or CCSDT, were $\op{T}_3$ is considered on top,
+the expressions for the working equations \eqref{eqn:CCresidual}
+are even more involved.
+In turn these methods become rather expensive as well,
+\eg CCSD scales as $\bigO(\Nbas^6)$ and CCSDT as $\bigO(\Nbas^8)$.
+Nevertheless \CC methods are very popular and widely adopted in quantum-chemistry.
+Firstly because they converge systematically towards the \FCI energy
+as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
+and secondly because \emph{all} \CC methods are size-consistent
+--- unlike the truncated CI methods we mentioned above.
 
-\defineabbr{ADC}{ADC\xspace}{Algebraic-diagramatic construction}
+\defineabbr{ADC}{ADC\xspace}{Algebraic-diagrammatic construction}
 \subsection{Excited states methods}
-Drop names no details
-eom-CC
-lr-CC
-adc
+In most of our discussion up to this point we have only focused
+on obtaining an approximation to the ground state of the electronic Schrödinger
+equation.
+In some applications of electronic structure theory, however,
+electronic excitations play a role.
+Examples include the interaction of UV photons or photons of visible light
+with the electronic structure in a dye or a solar cell
+or more generally any photo-activated chemical reaction.
+Whenever this is the case the modelling of multiple electronic states at an equal footing
+is required.
+
+\todoil{Find one citation for each method}
+From the methods discussed so far only \FCI and the truncated CI methods
+amount to describe excited states without additional modification,
+because in these methods one may simply solve the full or truncate CI matrix
+for more than one eigenpair.
+These are not the only excited states methods in existence.
+In fact to each of the other methods we have discussed
+so far one is able to appoint at least one analogue~\cite{Dreuw2005}.
+For example for Hartree-Fock, there is configuration-interaction singles
+or time-dependent \HF and
+for coupled-cluster there are the equation-of-motion and linear-response coupled-cluster theories.
+Last but not least the algebraic-diagrammatic construction scheme~(\ADC)
+of the polarisation propagator at various orders is formulated
+on top of a Møller-Plesset ground state
+and can thus be thought of as an \MP for excited states.
