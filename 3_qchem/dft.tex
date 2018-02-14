@@ -1,5 +1,31 @@
 \section{Density-functional theory}
 \defineabbr{DFT}{DFT\xspace}{Density-functional theory}
+In this section we want to briefly look at a slightly different
+approach towards modelling the electronic structure.
+Instead of solving for the wave function $\Psi_I$ associated to the
+$I$-th eigenstate of the electronic Hamiltonian $\Op{H}_{\Nelec}$,
+we will solve for the state's electronic density $\rho_I$ directly instead.
+
+The rationale for this is twofold.
+Firstly the density contains all information about the chemical system.
+The integral
+\[ \int_{\R^3} \rho(\vec{r}) \D\vec{r} \]
+evaluates to the number of electrons $\Nelec$
+and via Kato's cusp condition~\cite{Kato1951} one may obtain the nuclear
+charges $Z_A$ via the derivatives of the electron density at the cusp points.
+Secondly the Hohnberg-Kohn theorems~\cite{Hohenberg1964}
+provide a unique identification between a particular electron density
+and the potential, which generates this density.
+
+% See C6 notes about this matter
+
+
+Generalised proof by Levy~\cite{Levy1979}
+
+Kohn-Sham equations~\cite{Kohn1965}
+
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Brief rationale
