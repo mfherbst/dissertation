@@ -35,12 +35,12 @@ for solving partial differential equations in a finite-element discretisation
 without building the system matrix in memory at all.
 
 From the algorithmic point of view one should notice,
-that some methods, like the dense eigensolvers and linear solvers
-implemented in LAPACK\todo{cite}
+that especially the direct eigensolvers and linear solvers algorithms
+as they are implemented in LAPACK\todo{cite}
 do require random access into the matrix,
 are thus not available for a \contraction-based ansatz.
 In practice this an acceptable restriction.
-Firstly because for large matrices dense methods become
+Firstly because for large matrices direct methods become
 unfavourably expensive anyway%
 \footnote{Usually exactly because they necessarily keep everything in memory.}.
 Secondly because many diagonalisation methods and methods for solving linear systems

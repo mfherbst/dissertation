@@ -196,7 +196,7 @@ for Arnoldi diagonalisation methods is available from \lazyten.
 The selection mechanism between the different algorithms
 for one particular task is not yet extremely sophisticated.
 Generally it will for example favour
-dense diagonalisation methods from LAPACK~\todo{cite}
+direct diagonalisation methods from LAPACK~\todo{cite}
 if many eigenpairs are requested
 or if the supplied system matrix is already dense.
 On the other hand Arnoldi methods are selected for lazy matrices
@@ -253,7 +253,7 @@ auto b = invA * b;
 \ie quite literally coding the application of the inverse.
 In both cases the last line will cause the problem to be passed
 to a linear solver algorithm in order to solve it iteratively
-or by dense methods.
+or by direct methods.
 The user may provide extra parameters to the calls of \texttt{solve}
 or \texttt{inverse} in order to influence
 the selected eigensolver algorithm
@@ -343,7 +343,7 @@ not the code depicted in figure \vref{fig:LazytenRhfCode}
 which decides, which eigensolver algorithms are chosen.
 Given that the basic heuristics currently implemented,
 the depicted code would for example perform a \contraction-based \SCF
-for a \CS-based discretisation and use dense eigensolves for a \cGTO-based
+for a \CS-based discretisation and use direct eigensolves for a \cGTO-based
 discretisation.
 In the light of this \lazyten becomes a very effective
 abstraction layer between the details of the lazy matrix implementation,

@@ -771,7 +771,7 @@ Similarly the eigensolvers can be accessed from \gscf via a common interface,
 which abstracts the precise algorithm and allows \lazyten to make an automatic
 choice by looking at the precise structure of the Fock matrix at hand.
 If all eigenpairs are desired or the matrix is stored in memory anyway,
-\lazyten will favour the dense eigensolver algorithms from LAPACK,
+\lazyten will favour the direct eigensolver algorithms from LAPACK,
 whereas if only few eigenpairs are desired,
 Arnoldi methods from ARPACK~\cite{Lehoucq1998} are used.
 In either case the precise algorithm can also me chosen from the \python interface
