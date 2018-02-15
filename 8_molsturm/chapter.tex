@@ -1,5 +1,4 @@
-\chapter{\molsturm: Flexible and modular quantum-chemistry package}
-\chaptermark{\molsturm quantum-chemistry package}
+\chapter{\molsturm method-development framework}
 \label{ch:Molsturm}
 \chapquote{[C has] the power of assembly language and the convenience of \ldots assembly language.}{Dennis Ritchie~(1941--2011)} \\
 \chapquote{Keep it simple, make it general, and make it intelligible.}{Doug McIlroy~(1932--present)}
@@ -7,48 +6,34 @@
 % 1. Design
 % 2. Adapt Examples
 % 3. Shorten State
-% 4. DFT part in 3_qchem
 
 \noindent
-This chapter introduces the \molsturm program package~\cite{molsturmWeb}
-following closely our publication~\cite{molsturmDesign}.
-Many design aspects of \molsturm build and expand on the ideas
-developed in the previous two chapters about \SCF methods
-and \contraction-based algorithms
-to overall
-yield a highly flexible quantum-chemical method development framework.
+When the \molsturm project~\cite{molsturmWeb} was initiated a couple of years back,
+the original idea was to support \textbf{mol}ecular calculations
+with \textbf{Sturm}ian-type basis functions
+in the \contraction-based formulation we mentioned in section \vref{sec:BasisCS}.
+Following my unsuccessful attempts on a finite-element-based Hartree-Fock scheme,
+where I mostly used the approaches known to me from a \cGTO setting,
+we expanded the goals of \molsturm.
+Now the primary project goal has become to yield a quantum-chemistry
+method development framework,
+which supports the implementation and evaluation
+of discretisations based on novel types of basis functions.
+We have managed to achieve this
+building largely on the conclusions
+about the structure of \SCF algorithms
+and the generality of the lazy matrix syntax of \lazyten,
+which we discussed in the previous chapters.
+Additionally \molsturm has been equipped with a powerful \python interface,
+where it is easy to obtain, archive and analyse results.
+Even implementing completely new features on top of \molsturm's \SCF procedure
+often takes comparatively little development time as will be demonstrated.
+The arguments and examples of this chapter follow
+closely our publication~\cite{molsturmDesign}.
 
-One of the goals of \molsturm is to support the numerical requirements
-of many types of basis functions and to provide a common ground
-for experimentation.
-A key ingredient to achieve this
-is a \contraction-based \SCF procedure in the lazy matrix language of \lazyten.
-As will be described in more detail in section \vref{sec:MolsturmDesign},
-this allows to separate the \SCF implementation very well
-from the details of the \contraction expression of the Fock matrix.
-This in turn can be freely varied as needed from basis function type
-to basis function type.
-As a result the \SCF code is fully agnostic to the type of basis function used.
-
-On top of this \molsturm provides a powerful \python interface
-which allows to easily obtain, archive and analyse results,
-implement new features or automatise repetitive processes.
-Examples for this will be given in section \ref{sec:MolsturmExamples} below.
-Additionally this interface makes it
-convenient to re-use existing software modules
-together with \molsturm's \SCF.
-In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
-for performing full configuration interaction~(FCI) calculations
-and recently \adcman~\cite{Wormit2014}
-for computing excited state energies at \ADC(2),
-\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level.
-
-\molsturm is open-source software, licensed under the
-GNU General Public License, and can be obtained from \url{https://molsturm.org}.
-One should mention that the name ``\molsturm'' is somewhat misleading,
-since the package has now outgrown its original purpose to support
-\textbf{mol}ecular calculations with so-called \textbf{Sturm}ian-type
-basis functions.
+All components of the \molsturm program package
+are open-source software, licensed under the GNU General Public License.
+To obtain a copy of the code go to \url{https://molsturm.org}.
 
 \input{related.tex}
 \input{design.tex}

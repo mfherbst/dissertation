@@ -1,7 +1,31 @@
 \section{\molsturm program design}
 \label{sec:MolsturmDesign}
 
-% TODO here what we want
+As mentioned above the main target for the current design of \molsturm
+is to yield a framework,
+which supports notions towards novel quantum-chemical methods,
+including methods where unusual discretisation approaches
+or new types of basis functions are employed.
+Ideally for this the design supports adding
+new basis functions 
+in a plug-and-play kind of fashion,
+such that the potential user implements a minimal interface
+towards his integral library and the rest of \molsturm,
+\ie the \SCF and the Post-HF methods would just work.
+Naturally many aspects regarding the numerical and algorithmic
+details will still need to be optimised thereafter,
+such that overall flexibility and high-level access towards
+all kinds of parameters of the \SCF scheme or the
+diagonalisation algorithms are absolutely key.
+Additionally such a new method would need to be tested and evaluated
+towards their overall usefulness towards standard problem
+of quantum-chemical modelling.
+Such tasks are both highly repetitive and often requires
+access into many layers of a quantum-chemistry program
+to obtain the quantities to compare.
+Aspects such as these motivate
+the following overall design goals for the \molsturm project.
+
 \begin{itemize}
 \item \textbf{Enable rapid development:}
 In the early stages of developing a new quantum-chemical algorithms
@@ -22,6 +46,18 @@ code should be easy and close to the physical formulae
 Common ground for experimentation
 Implies that simple switching between solver algorithms
 separation of algorithm and numerics
+
+One of the goals of molsturm is to support the numerical requirements of many
+types of basis functions and to provide a common ground for experimentation. A key
+ingredient to achieve this is a contraction-based SCF procedure in the lazy matrix
+language of lazyten. 
+As will be described in more detail further down
+allows to separate the SCF implementation very well from the details of the contraction
+expression of the Fock matrix. This in turn can be freely varied as needed from basis
+function type to basis function type. As a result the SCF code is fully agnostic to the
+type of basis function used.
+On top of this molsturm provides a powerful python interface which allows to easily
+
 %
 %
 \item \textbf{Easy interfacing with existing code:}
@@ -37,6 +73,17 @@ which was intended in the first place.
 Only took order of days to interface with \pyscf and \adcman
 high level interfaces.
 
+
+Additionally this interface makes it
+convenient to re-use existing software modules
+together with \molsturm's \SCF.
+In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
+for performing full configuration interaction~(FCI) calculations
+and recently \adcman~\cite{Wormit2014}
+for computing excited state energies at \ADC(2),
+\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level.
+
+
 The careful reader might have noticed that a well-designed interface
 might not only facilitate rapid development of new algorithms
 but also prevent one from the need to re-implement the wheel
@@ -48,7 +95,7 @@ Support iterative approach to problems by archival
 and storage of computational parameters
 %
 %
-\item \textbf{Iterative approach to quantum-chemical modelling:}
+\item \textbf{Support iterative approach to quantum-chemical modelling:}
 Iterative process
 
 Especially the ability to archive a large portion of the calculation
@@ -109,6 +156,7 @@ the advantages of both implementations best.
 \subsection{Program structure}
 % TODO here focus on the how
 \begin{figure}
+	\centering
 	\includeimage{8_molsturm/molsturm_structure}
 	\caption{Structure of the \molsturm package: Shown are the five modules of the package,
 	along with the set of integrals accessible from \gint and the set of post-HF method,
@@ -181,7 +229,7 @@ which allows lazy-matrix based algorithms like the ones in \gscf to
 call standard iterative solver implementations.
 
 
-\subsection{The interplay of \SCF and integral library}
+\subsection{The interplay of self-consistent field algorithm and integral library}
 About interplay between \gint and \gscf
 
 Conceptionally an SCF algorithm is entirely independent of the type of basis function.

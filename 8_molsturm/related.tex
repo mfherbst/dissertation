@@ -7,16 +7,15 @@
 \newcommand{\ASE}{\texttt{ASE}\xspace}
 \newcommand{\CPtK}{\texttt{CP2K}\xspace}
 
-Apart from \molsturm we are unaware of another quantum-chemistry package,
-which has achieved a \contraction-based \SCF enabling
-a similar flexibility with respect to the type of basis functions.
-To give this statement more support,
-this section will briefly review the efforts
-of other program packages,
-which either focus on flexibility or generality of their codes.
-Our discussion here is not intended to be exhaustive,
-much rather we only want to present an overview of the status
-in current quantum-chemistry softwares with respect to these aspects.
+Apart from \molsturm I am unaware of another quantum-chemistry package,
+which has achieved
+a similar flexibility with respect to the type of basis functions
+in their \SCF procedure.
+Many packages still have related goals towards flexibility or generality of their codes
+and should therefore not go completely unmentioned here.
+The presented review is not intended to be exhaustive,
+but it should provide an idea of the current status
+of quantum-chemistry softwares with respect to these aspects.
 
 When it comes to flexibility of a program package
 a key ingredient is a versatile interface.
@@ -79,7 +78,7 @@ into their framework.
 This includes three completely different back ends for the computation of the
 required integrals.
 In the case of \pyscf it only took us about a day to link
-our \molsturm to the FCI algorithms of \pyscf
+our \molsturm to the \FCI algorithms of \pyscf
 via an interface based on \numpy.
 Nevertheless the numerical requirements of Gaussian-type orbitals
 are currently hard-coded inside the optimised
@@ -90,8 +89,8 @@ With respect to supporting a large range of basis function types,
 especially the quantum Monte Carlo packages CASINO~\cite{Needs2010}
 and QMCPACK~\cite{Kim2012} should be mentioned.
 They both allow to start a quantum Monte Carlo calculation
-from discretisations of the trial wavefunction
-in terms of GTOs, STOs, plane-waves or numerical orbitals like splines.
+from discretisations of the trial wave function
+in terms of {\cGTO}s, {\STO}s, plane-waves or numerical orbitals like splines.
 Similarly the packages \CPtK~\cite{Hutter2014}, \ASE~\cite{Larsen2017}
 and \gpaw can be employed to perform and post-process computations
 using more than one type of basis function.

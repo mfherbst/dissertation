@@ -4,7 +4,7 @@
 	mostbox/.style={rectangle,draw,fill=white,minimum width=4.7cm,align=center,
 		font=\smaller},
 	box/.style={mostbox,draw=blue!50,fill=blue!20,thick,
-		node distance=0.1cm and 1.0cm,minimum width=2.5cm,minimum height=1.4em,
+		node distance=0.1cm and 1.0cm,minimum width=2.6cm,minimum height=1.4em,
 		font=\smaller[2]},
 	pbox/.style={box,font=\itshape\smaller[2]\color{black!70},
 		draw=blue!30,fill=blue!10},
@@ -39,9 +39,9 @@
 \node [box, above=of isturm] (sturm) {Sturmians};
 \node [box, above=of sturm] (gauss) {Gaussians};
 
-\node [pbox, below=of isturm] (fe) {Finite elements};
-\node [pbox, below=of fe] (fd) {\smaller Finite differences};
-\node [pbox, below=of fd] (wave) {Wavelets};
+\node [pbox, below=of isturm] (msturm) {\smaller Molecular sturmians};
+\node [pbox, below=of msturm] (fe) {Finite elements};
+\node [pbox, below=of fe] (wave) {Wavelets};
 \node [pbox, below=of wave] (other) {\ldots};
 \draw let \p1 = (phflabel), \p2=(gauss) in node (bla) at (\x2, \y1) {\smaller[2] Integral backends};
 
@@ -49,7 +49,7 @@
 \draw [line] (sturm.east) -- +(0.4,0);
 \draw [line] (fe.east) -- +(0.4,0);
 \draw [line] (gauss.east) -- +(0.4,0);
-\draw [line] (fd.east) -- +(0.4,0);
+\draw [line] (msturm.east) -- +(0.4,0);
 \draw [line] (wave.east) -- +(0.4,0);
 \draw [line] (other.east) -- +(0.4,0);
 \draw [line] ($ (gauss.east)+(0.4,0) $) -- ($ (other.east)+(0.4,0) $);
