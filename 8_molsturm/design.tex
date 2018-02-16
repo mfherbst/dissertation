@@ -6,231 +6,191 @@ is to yield a framework,
 which supports notions towards novel quantum-chemical methods,
 including methods where unusual discretisation approaches
 or new types of basis functions are employed.
-Ideally for this the design supports adding
-new basis functions 
-in a plug-and-play kind of fashion,
-such that the potential user implements a minimal interface
-towards his integral library and the rest of \molsturm,
-\ie the \SCF and the Post-HF methods would just work.
-Naturally many aspects regarding the numerical and algorithmic
-details will still need to be optimised thereafter,
-such that overall flexibility and high-level access towards
+Ideally for this adding
+new basis functions becomes kind of plug-and-play,
+such that one only implements a minimal interface
+towards an integral library and the rest of \molsturm,
+\ie the \SCF and the Post-HF methods would just work
+in a preliminary manner.
+Many details regarding the numerical and algorithmic treatment
+will most likely still need to be optimised thereafter,
+such that high-level access to influence
 all kinds of parameters of the \SCF scheme or the
 diagonalisation algorithms are absolutely key.
 Additionally such a new method would need to be tested and evaluated
 towards their overall usefulness towards standard problem
 of quantum-chemical modelling.
-Such tasks are both highly repetitive and often requires
-access into many layers of a quantum-chemistry program
+These tasks are usually both highly repetitive and again
+require access into many layers of a quantum-chemistry program
 to obtain the quantities to compare.
 Aspects such as these motivate
 the following overall design goals for the \molsturm project.
 
-\begin{itemize}
-\item \textbf{Enable rapid development:}
-In the early stages of developing a new quantum-chemical algorithms
+\paragraph{Enable rapid development:}
+In the early stages of developing new quantum-chemical algorithms
 it is often not clear how well these algorithms perform
 or if they even meet the expected requirements.
 Before worrying about making the algorithm fast,
-one first wants to know whether it even works.
-For this a light-weight framework which possesses the flexibility
-to quickly combine or amend the already implemented
-functionality is very important.
-
-phd should not spend a year to implement something which might not work
-need flexiblity to try things
-code should be easy and close to the physical formulae
+one therefore first wants to know whether it even works.
+A light-weight framework, which possesses the flexibility
+to quickly combine or amend what is already implemented is very important for this.
+The syntax of the resulting code should be high-level and intuitive,
+resembling the physical formulae as much as possible.
+To make the initial implementation easy for people
+not entirely familiar with all tricks of the trade,
+the details regarding the numerics and the linear algebra
+should be mostly hidden in the code.
+Especially in highly interdisciplinary subjects such as quantum chemistry
+too often PhD students are rather unfamiliar to coding and numerics
+and thus spend half a year to understand the clunky programs,
+a year to implement the method,
+just to find that it did not quite work that well.
+Still influencing the algorithmic details
+will in many cases be required at a later step.
+Ideally this can be done by the means of changing mere parameters
+directly from the user interface and
+without changing the code very much,
+such that it stays nice and clean for the next feature to be implemented.
+A careful reader should have noticed that the \lazyten lazy matrix library,
+described in the previous chapter,
+covers many of the aspects mentioned here.
+This is of course no surprise and explains why \lazyten has
+become one of the key ingredients to \molsturm.
+For some more details see \vref{sec:MolsturmPython}.
 %
 %
-\item \textbf{Simplify switching between discretisations:}
-Common ground for experimentation
-Implies that simple switching between solver algorithms
-separation of algorithm and numerics
-
-One of the goals of molsturm is to support the numerical requirements of many
-types of basis functions and to provide a common ground for experimentation. A key
-ingredient to achieve this is a contraction-based SCF procedure in the lazy matrix
-language of lazyten. 
-As will be described in more detail further down
-allows to separate the SCF implementation very well from the details of the contraction
-expression of the Fock matrix. This in turn can be freely varied as needed from basis
-function type to basis function type. As a result the SCF code is fully agnostic to the
-type of basis function used.
-On top of this molsturm provides a powerful python interface which allows to easily
-
-%
-%
-\item \textbf{Easy interfacing with existing code:}
-Use what already exists in other python packages or in other quantum-chemistry packages
-No full-fletched program intended
-quickly get what is needed
-
-Furthermore well-documented and open interfaces
-as well as compliance with the available standards
-allow easy integration of other frameworks to extend
-the functionality of a package even beyond the scope
-which was intended in the first place.
-Only took order of days to interface with \pyscf and \adcman
-high level interfaces.
-
-
-Additionally this interface makes it
-convenient to re-use existing software modules
-together with \molsturm's \SCF.
-In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
-for performing full configuration interaction~(FCI) calculations
-and recently \adcman~\cite{Wormit2014}
-for computing excited state energies at \ADC(2),
-\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level.
-
-
-The careful reader might have noticed that a well-designed interface
-might not only facilitate rapid development of new algorithms
-but also prevent one from the need to re-implement the wheel
-and much rather exploit the code which has already has been written
-for one's purposes.
-
-Easy data retrieval and post processing (see examples)
-Support iterative approach to problems by archival
-and storage of computational parameters
-%
-%
-\item \textbf{Support iterative approach to quantum-chemical modelling:}
-Iterative process
-
-Especially the ability to archive a large portion of the calculation
-furthermore allows to exploit previous results when performing
-further calculations as well as delaying the analysis
-to a later point when \eg more knowledge about the
-problem has been obtained to decide what exactly to look at.
-%
-feedback loop
-Firstly it makes it easy to interactively work with \molsturm
-from a shell. This reduces the feedback loop for small calculations
-or during debugging.  If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
-one can even perform calculations and view plots interactively from within a web browser.
-\end{itemize}
-
-
-
-%----
-Conceptionally an SCF algorithm is entirely independent of the type of basis function.
-One could think of it very much as a numerical technique to solve
-an non-linear eigenvalue problem by linearisation.
-Once the SCF orbitals have been obtained,
-the remainder of a calculation (\eg a Post-HF method)
-can be formulated entirely in the SCF orbital basis
-and without any reference to the underlying type of basis functions.
-As such it should be possible to design a quantum chemistry package,
-which apart from the integral backend itself is entirely independent
-of the basis function types which are implemented.
-
-Once the \SCF orbitals have been obtained,
-the remainder of a calculation, \eg a Post-\HF method,
-can be formulated entirely in the \SCF orbital basis
-and without any reference to the underlying basis functions.
-Therefore a basis-function independent SCF scheme automatically
-leads to basis-function independent Post-HF methods as well.
-%----
-
-Achieving this has several advantages.
-First of all it naturally implies that trying out some new basis functions is very easy,
-since most of the code already exists and can be reused.
-Just the integral computation by itself needs to be adapted.
-Secondly comparing different basis function types can occur in a fair setting,
-since for all types of basis functions the algorithms are optimised to a similar level.
-Thirdly it even allows for a fair comparison between different integral backends,
-\eg different GTO libraries.
-
-Last but not least the ability to treat different kinds of basis functions
-in the same framework simplifies the construction of hybrid basis sets,
-where possibly numerical basis functions and GTOs or STOs are combined.
-Similarly one could employ the strengths of multiple backends for the same type of basis function
-in the sense that one mixes and matches different backends such that one can exploit
-the advantages of both implementations best.
-
-
-
-
-
-\subsection{Program structure}
-% TODO here focus on the how
 \begin{figure}
 	\centering
 	\includeimage{8_molsturm/molsturm_structure}
-	\caption{Structure of the \molsturm package: Shown are the five modules of the package,
+	\caption[Structure of the \molsturm package]
+	{Structure of the \molsturm package. Shown are the five major
+	modules of the package,
 	along with the set of integrals accessible from \gint and the set of post-HF method,
-	which can be used from \molsturm. The greyed-out parts are not yet implemented.
-	Only the modules inside the red box are part of \molsturm. The blue boxes are all external packages.}
+	which can be used together with \molsturm.
+	Only the modules inside the red box are part of \molsturm.
+	The blue boxes are all external packages.
+	The greyed-out boxes are planned, but not yet implemented.
+	}
 	\label{fig:structureMolsturm}
 \end{figure}
+\paragraph{Modular design with low code-complexity:}
+The aspired flexibility of \molsturm as well as the intended
+strong separation between high-level code describing algorithms
+and low-level code dealing with the numerics,
+necessarily calls for proper modularisation.
+Even though our current design takes our experiences with many types
+of basis functions into account,
+it is very likely that we missed certain aspects,
+which will make major restructuring unavoidable in the future.
+To proactively account for this \molsturm consists of five small modules,
+which are designed as layers, see figure \vref{fig:structureMolsturm}.
+The top layer, ``\molsturm'', defines the application programming interface~(API),
+by which other programs may control the flow of \molsturm or exchange data.
+Unlike the other layers, which are mostly implemented in \cpp,
+the \molsturm layer is mainly \python.
+\gint, the \textit{general integral library},
+provides a single link to multiplex between the supported integral calculation back ends.
+\gscf implements a couple of \contraction-based \SCF schemes
+following the general two-step Fock-update, coefficient/density-matrix-update structure,
+we mentioned in section \ref{sec:SCFtakeaway}.
+\gscf is written on top of \lazyten,
+both to make use of its linear algebra abstraction
+as well as the generality of the lazy matrix formalism
+to work on dense, sparse and \contraction-based Fock matrices
+under the same syntax.
+Finally \krims is the library for common utility \textit{Krims}krams%
+\footnote{German for ``odds and ends''}.
+In our design we made sure
+that dependencies are only downwards, never sideways or upwards,
+to make it easy to replace libraries at a later point.
+%
+%
+\paragraph{Plug-and-play implementation of new discretisations:}
+When attempting to implement a new basis function type or an unusual discretisation technique
+in existing quantum-chemistry packages,
+there is one rather significant obstacle:
+Implicit assumptions about the numerical properties of the employed basis
+are scattered around the sometimes rather large codes.
+Using the lazy matrix language of \lazyten,
+we have achieved to centralise the basis function specifics as much as possible
+at a single place,
+namely the implementation of the \contraction expressions
+of the integral lazy matrices.
+This takes place in our integral interface \gint,
+where all properties of the basis function type
+as well as the precise back end implementation
+regarding symmetries, selection rules, sparsity properties
+or evaluation schemes are known and can be fully exploited.
+In line with the final example presented in section \vref{sec:LazytenExamples},
+the \SCF and post-\HF methods only need to care about the
+integral lazy matrix objects,
+being completely agnostic to the precise nature of the \contraction expression.
+The result of these efforts is that switching from one implemented
+basis function type to another can be achieved by merely passing
+an appropriate string parameter.
+All that effectively changes is the collection of lazy matrices,
+which is exposed to the \SCF and all methods building on top
+of the \SCF results.
+Trying a new basis function type
+or a new computational back end for the integral values
+thus becomes really plug and play:
+One implements the respective collection of lazy matrices and selects
+it using the appropriate parameter.
+For more details regarding this aspect see section \vref{sec:GscfGint}.
+%
+%
+\paragraph{Easy interfacing with existing code:}
+The evaluation and assessment of new quantum-chemical methods
+necessarily implies that one needs to test their performance
+towards standard problems of quantum chemistry.
+This is especially true for new discretisation methods.
+Implementing everything from scratch,
+however, is a rather daunting task.
+For this reason it is explicitly \emph{not} our goal
+to create yet another fully-fledged quantum chemistry package
+as well as the surrounding ecosystem around it.
+Instead \molsturm is designed as a small package,
+where both the full package as well as the individual modules
+can be readily incorporated into other infrastructures
+or used on their own for teaching and experimentation.
+Overall our goal here is not to force a particular ``\molsturm-way'' upon
+our users,
+much rather provide well-documented and open interfaces,
+with which it is easy to for them to interact with \molsturm
+exactly how it fits there workflow best.
+In this notion we want our \molsturm interface 
+to be flexible enough such that interacting
+with third-party packages can be easily achieved,
+thus building on the hundreds of man-years,
+which went into the development of already existing quantum-chemistry codes,
+and extend \molsturm beyond the scope originally intended.
+For details see section \vref{sec:MolsturmPython}
+as well as the examples in section \vref{sec:MolsturmExamples}.
 
-Due to goals flexibility is key.
-Very likely parts of the code will need to be adapted later
+\todoil{Move the next paragraph somewhere else?}
+\paragraph*{}
+Within the setting of the above goals not only the \SCF of \molsturm
+has become agnostic to the type of basis function used for the discretisation.
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method in an external library,
+can be formulated entirely in the \SCF orbital basis
+and without any reference to the underlying basis functions.
+Because of this \molsturm is essentially a mediator
+to produce \SCF results employing arbitrary discretisations
+on which one can stick any Post-\HF method we have interfaces for.
+Experimenting between different discretisations
+and comparing the results obtained can happen on a common ground,
+yet still with access to a large range of quantum-chemical methods.
+Even different integral back ends
+could be compared against another using the identical \SCF of \molsturm.
 
-
-
-As can be seen in fig. \ref{fig:structureMolsturm} this is realised
-by a modular design,
-where each of the five major modules has a very
-distinct responsibility.
-Most importantly only the integral module \gint
-exploits the properties of the type of basis functions.
-\gint for example decides the sparsity structure of the
-repulsion integrals or the Fock matrix.
-This structure is encoded inside the lazy matrices,
-which \gint exposes to the SCF algorithms inside \gscf.
-
-
-
-
-General overview the importance of \lazyten
-
-%----
-\lazyten is the linear algebra interface of \molsturm.
-It not only implements the lazy matrix datastructures,
-which define the common interface of \gint and \gscf,
-but further contains code to make standard external
-iterative or direct solver implementations available
-from a lazy matrices-based setting.
-
-Similarly the eigensolvers can be accessed from \gscf via a common interface,
-which abstracts the precise algorithm and allows \lazyten to make an automatic
-choice by looking at the precise structure of the Fock matrix at hand.
-%----
-
-
-Typically one first performs a self-consistent field calculation,
-either by solving the Hartree-Fock or the Kohn-Sham equations.
-The obtained self-consistent solution is then used for example in
-linear response calculations or Post-HF methods.
-It is important to note that these steps
-typically do not need any knowledge of the underlying basis function type
-at all, since they are formulated in terms of SCF orbitals only.
-The \molsturm program package therefore concentrates
-on a basis-function independent SCF code
-with interfaces to simplify using the resulting SCF solution
-in third-party code for further processing.
-
-From the point of view of \gscf,
-on the other hand,
-the lazy matrices for all types of basis functions look alike.
-In other words by the means of the lazy matrices
-the algorithms in \gscf
-can be written in such a high-level manor,
-that they are entirely independent of the precise matrix structure.
-Consequently they are independent of the choice of basis function type as well.
-
-The lower layers \lazyten and \krims provide
-the lazy matrix implementation as well as other utilities,
-which are needed to pass information between the individual modules.
-\lazyten furthermore contains an interface,
-which allows lazy-matrix based algorithms like the ones in \gscf to
-call standard iterative solver implementations.
-
+In the following sections we will discuss some of the
+aforementioned design aspects in more detail.
 
 \subsection{The interplay of self-consistent field algorithm and integral library}
+\label{sec:GscfGint}
 About interplay between \gint and \gscf
+separation of \SCF algorithm and discretisation numerics
 
 Conceptionally an SCF algorithm is entirely independent of the type of basis function.
 One could think of it very much as a numerical technique to solve
@@ -274,6 +234,17 @@ polarisable embedding, fragment approaches, and so on)
 non-linearity of Coulomb and Exchange
 would be nice to transparently express this
 % ----
+
+From the point of view of \gscf,
+on the other hand,
+the lazy matrices for all types of basis functions look alike.
+In other words by the means of the lazy matrices
+the algorithms in \gscf
+can be written in such a high-level manor,
+that they are entirely independent of the precise matrix structure.
+Consequently they are independent of the choice of basis function type as well.
+
+
 
 \todoil{Fock matrix $\Leftrightarrow$ Kohn-Sham matrix $\Leftrightarrow$ Problem matrix
 to make clear that \gscf is not only for HF problems }
@@ -366,9 +337,68 @@ point out that parameters for \lazyten, eg with respect to the solvers
 can actually be passed easily from the high-level \python interface of \molsturm
 
 \subsection{\molsturm \python interface}
+\label{sec:MolsturmPython}
+
+%----
+During development or debugging of a new method,
+one often wants to interfere with the progress of a calculation
+or be able to quickly access intermediate results graphically.
+\molsturm aids such efforts by strongly integrating
+with kk
+
+
+Assessing a quantum-chemical method towards its usefulness
+regarding standard problems typically implies repetitive
+benchmark calculations of new and old approaches
+as well as comparison of the results.
+Often this task is highly repetitive and
+a high degree of automatisation is required.
+\molsturm aids such efforts by allowing for easy
+data retrieval and post-processing 
+
+Easy data retrieval and post processing (see examples)
+Support iterative approach to problems by archival
+and storage of computational parameters
+
+Support iterative approach to quantum-chemical modelling:
+Iterative process
+
+Especially the ability to archive a large portion of the calculation
+furthermore allows to exploit previous results when performing
+further calculations as well as delaying the analysis
+to a later point when \eg more knowledge about the
+problem has been obtained to decide what exactly to look at.
+%
+feedback loop
+Firstly it makes it easy to interactively work with \molsturm
+from a shell. This reduces the feedback loop for small calculations
+or during debugging.  If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
+one can even perform calculations and view plots interactively from within a web browser.
+%----
 
 Right now very simple and not efficient
 Refer to examples as needed
+
+
+
+Furthermore well-documented and open interfaces
+as well as compliance with the available standards
+allow easy integration of other frameworks to extend
+the functionality of a package even beyond the scope
+which was intended in the first place.
+Only took order of days to interface with \pyscf and \adcman
+high level interfaces.
+
+
+Additionally this interface makes it
+convenient to re-use existing software modules
+together with \molsturm's \SCF.
+In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
+for performing full configuration interaction~(FCI) calculations
+and recently \adcman~\cite{Wormit2014}
+for computing excited state energies at \ADC(2),
+\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level.
+
 
 For example the Full-CI interface to \pyscf was realised in only two days,
 but still is general enough to work for Sturmians GTOs and theoretically
@@ -427,6 +457,7 @@ from \numpy arrays.
 
 
 \subsection{Programming guidelines and paradigms}
+\label{sec:ProgrammingGuidelines}
 
 
 

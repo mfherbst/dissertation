@@ -18,7 +18,7 @@
 	{\snode{\gscf}{\smaller SCF algorithms}};
 \node [mostbox, minimum width=2.3cm, below=of molsturm,xshift=-1.2cm] (gint)
 	{\snode{\gint}{\smaller Integral interface}};
-\node [mostbox, below=of gint,xshift=1.2cm] (law) {\snode{\lazyten}{Linear algebra interface}};
+\node [mostbox, below=of gint,xshift=1.2cm] (law) {\snode{\lazyten}{Lazy matrix library}};
 \node [mostbox, below=of law] (krims) {\snode{\krims}{Common utilities}};
 
 % Post-HF
