@@ -274,215 +274,208 @@ and hands it over to \gscf to get the \SCF problem solved.
 \subsection{\molsturm \python interface}
 \label{sec:MolsturmPython}
 
+The topmost layer of the \molsturm quantum-chemistry
+package is our interface layer.
+It provides helper functionality to
+define the calculation parameters like the chemical system
+or the basis type and basis set choices
+and finally receives those from the user
+to setup the calculation.
+That is it obtains the integral lazy matrices
+from \gint, builds the Fock matrix
+as described above and starts the actual \SCF calculation.
+The converged results from \gscf are afterwards
+returned in a convenient data structure.
 
-All parameters for \gint, the \SCF algorithms of \gscf
+We chose to implement most of this interface layer
+and especially the interface itself
+in the scripting language \python.
+Our reasoning for this is similar to the arguments
+of the \pyscf authors already outlined in section \ref{sec:MolsturmRelated}.
+By providing the required functionality to setup and drive
+a \molsturm calculation from \python,
+we avoid to define yet another ``input format'' and ``output format''
+for quantum-chemical calculations.
+Instead calculations can be initiated cleanly and flexibly
+directly from a host script.
+This can afterwards be used to post-process the results as well,
+such that any kind of output parsing is not needed.
+The whole calculation can be performed in a single script
+from setup to analysis,
+which makes the complete procedure much more transparent.
+Moreover rather repetitive processes like
+benchmarking a new method
+can be easily automatised in this way.
+
+To give the user full control over the complete \molsturm ecosystem
+\emph{all} parameters for \gint, the \SCF algorithms of \gscf
 as well as the employed linear solvers from \lazyten are forwarded
-to the high-level interface of \molsturm,
-where they all can be directly manipulated.
-
-
-%----
-During development or debugging of a new method,
-one often wants to interfere with the progress of a calculation
-or be able to quickly access intermediate results graphically.
-\molsturm aids such efforts by strongly integrating
-with kk
-
-
-Assessing a quantum-chemical method towards its usefulness
-regarding standard problems typically implies repetitive
-benchmark calculations of new and old approaches
-as well as comparison of the results.
-Often this task is highly repetitive and
-a high degree of automatisation is required.
-\molsturm aids such efforts by allowing for easy
-data retrieval and post-processing 
-
-Easy data retrieval and post processing (see examples)
-Support iterative approach to problems by archival
-and storage of computational parameters
-
-Support iterative approach to quantum-chemical modelling:
-Iterative process
-
-Especially the ability to archive a large portion of the calculation
-furthermore allows to exploit previous results when performing
-further calculations as well as delaying the analysis
-to a later point when \eg more knowledge about the
-problem has been obtained to decide what exactly to look at.
-%
-feedback loop
-Firstly it makes it easy to interactively work with \molsturm
-from a shell. This reduces the feedback loop for small calculations
-or during debugging.  If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
-one can even perform calculations and view plots interactively from within a web browser.
-%----
-
-Right now very simple and not efficient
-Refer to examples as needed
-
-
-
-Furthermore well-documented and open interfaces
-as well as compliance with the available standards
-allow easy integration of other frameworks to extend
-the functionality of a package even beyond the scope
-which was intended in the first place.
-Only took order of days to interface with \pyscf and \adcman
-high level interfaces.
-
-
-Additionally this interface makes it
-convenient to re-use existing software modules
-together with \molsturm's \SCF.
-In this manner we have already managed to link \molsturm to \pyscf~\cite{Sun2017}
-for performing full configuration interaction~(FCI) calculations
-and recently \adcman~\cite{Wormit2014}
-for computing excited state energies at \ADC(2),
-\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level.
-
-
-For example the Full-CI interface to \pyscf was realised in only two days,
-but still is general enough to work for Sturmians GTOs and theoretically
-all basis function types which are implemented in our integral backend.
-\todoil{Change to also mention CC if we get there}
-In another proof-of-concept project of ours we just managed to
-implement ADC(2)-x on top of \molsturm in less than 10 days in \python.
-
-
-The topmost \molsturm layer handles calculation set-up 
-(e.g., definition of molecules, basis set choice, choice 
-of SCF-calculation scheme, et cetera), as well as interfacing 
-to the outside world. \molsturm can be controlled in two ways: 
-directly as a \cpp library, which is most convenient if it is to 
-be called from within a quantum chemistry code written in \cee, \cpp, 
-or \fortran; or it can be controlled through a \python interface.
-
-We purposefully do not define a new ``input format'': calculations are 
-controlled more cleanly and flexible by simply using
-\python scripts (or calling it directly from a host quantum 
-chemistry package) to drive calculation.
-By calling simple interface functions, an SCF calculation can be set
-up, and the appropriate integrals passed on to Post-HF calculations
-if desired. The next section shows examples of how this is done.
-
-Refer to the ideas of \pyscf
-(input format)
-
-Secondly this gives the user full flexibility
-of how to embed \molsturm in his or her workflow.
-From the \python interface, all data from \molsturm is available
-in plain \numpy arrays, so the user can easily do
-any kind of standard processing from \python
-after or during a calculation.
-
-python packages and for example jupyter
-
-
-Furthermore \numpy arrays have become the \textit{de facto} standard
+to the \python interface of \molsturm,
+where they all can be directly accessed and changed.
+These parameters include ways to influence which algorithms are
+chosen by \lazyten for diagonalisation
+or how \gint switches between the implemented \SCF solvers.
+For returning the \SCF results back to the host environment \molsturm
+heavily relies on \numpy arrays,
+which have become the \textit{de facto} standard
 for storing and manipulating matrices or tensors in \python.
-All third-party quantum chemistry codes which
-offer a \python interface
-either use \numpy arrays themselves or
-provide utility functions to convert to and
-from \numpy arrays.
-\todoil{check if this is true and cite them}
-The same is true for typical \python packages used for plotting or
-data manipulation (matplotlib, scipy, pandas).
+A large range of standard \python packages,
+which are commonly used for plotting or data analysis,
+like matplotlib~\todo{cite}, scipy~\cite{Walt2011,scipyWeb}, pandas~\todo{cite}
+similarly employ \numpy arrays as their primary interface.
+Additionally by the means of interface generators like SWIG~\todo{cite}
+\numpy arrays can be automatically converted to plain
+\ccc arrays for calling more low-level \cpp, \ccc or \fortran code as well.
 
-Thirdly by the means of interface generators
-like SWIG \todo{cite} \numpy arrays can be converted to plain
-\cee arrays for calling \cpp, \cee or \fortran code,
-such that even low-level libraries can be employed
-from \numpy arrays.
+A \python interface comes in handy in the context of method development as well.
+For example we explicitly support running \molsturm from an interactive
+IPython~\todo{cite} shell,
+such that one can immediately interfere with the progress of a calculation,
+check assertions about intermediate results
+or visualise these graphically with matplotlib~\todo{cite}.
+This greatly reduces the feedback loop for small calculations
+like during debugging.
+If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
+one can even perform calculations and view plots
+interactively from within a web browser.
 
-\todoil{Have this paragraph here or in the state section}
-Within the setting of the above goals not only the \SCF of \molsturm
-has become agnostic to the type of basis function used for the discretisation.
-Once the \SCF orbitals have been obtained,
-the remainder of a calculation, \eg a Post-\HF method in an external library,
-can be formulated entirely in the \SCF orbital basis
-and without any reference to the underlying basis functions.
-Because of this \molsturm is essentially a mediator
-to produce \SCF results employing arbitrary discretisations
-on which one can stick any Post-\HF method we have interfaces for.
-Experimenting between different discretisations
-and comparing the results obtained can happen on a common ground,
-yet still with access to a large range of quantum-chemical methods.
-Even different integral back ends
-could be compared against another using the identical \SCF of \molsturm.
+For larger calculations \molsturm is able to archive the complete
+calculation,
+including \emph{all} \SCF results in
+the widely adopted YAML~\cite{Ben-Kiki2009} or HDF5~\cite{HDF5Manual} formats.
+In this way large calculations can be performed in advance
+on a cluster or bigger computer,
+then archived and transferred to a workstation machine
+for analysis.
+This can be again done in an interactive shell
+with full access to the state of the calculation
+as if it would have been performed locally.
+Additionally this allows to restore an archived state
+and continue in a different direction at a later point
+building on results obtained previously
+and without redoing everything from scratch.
+On top of that \molsturm's archived state contains
+the precise set%
+\footnote{That is \emph{not} the parameters provided by the user,
+but the post-processed parameters which were actually used
+by the lower layers, amended for example by default values.}
+of input parameters which were used to obtain the stored results.
+This not only makes the archive self-documenting,
+but additionally makes restarting the identical calculation
+or a slightly amended calculation very easy.
 
+Our aforementioned \numpy interface has already proven to be very helpful
+to link to other third-party quantum chemistry codes to \molsturm.
+For example \molsturm's \SCF can be used to start a
+full configuration interaction~(FCI) calculation
+in \pyscf~\cite{Sun2017}.
+Recently support for computing excited state energies at \ADC(2),
+\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level
+with \adcman~\cite{Wormit2014} was added.
+Both these links make use of the \python-\numpy interfaces
+these third-party packages already offer and were realised in only a couple of days.
+Notice, that these interfaces
+are general enough to work both for \CS and \cGTO discretisations
+and theoretically all basis function types which are implemented in \gint.
+\todoil{Would be awesome if I could fix this and cross the next paragraph}
+Running \adcman on top of \CS discretisations
+is currently experimental and we are aware of some issues,
+which effectively only allow to produce the correct results
+for some \CS basis sets and some \ADC methods, unfortunately.
 
+The aforementioned aspects will be demonstrated
+in the context of practical examples in section \vref{sec:MolsturmExamples}.
 
-\subsection{Programming guidelines and paradigms}
-\label{sec:ProgrammingGuidelines}
+\subsection{\molsturm test suite}
+\label{sec:MolsturmTestSuite}
 
-
-
-Testing
-modularisation
-combination of high-level and low-level code
-
-A very important subsidiary to good software design is a flexible testing framework.
-A test suite which is simple to execute, fast and easy to expand not only allows to verify
+A very important subsidiary to a good software design is a good testing framework.
+A test suite which is simple to execute,
+fast and easy to expand not only allows to verify
 that the current status of a piece of software is correct,
 but it also allows to verify that all future changes do not break anything.
-This includes of cause the potential adaption of the design in the future,
-which might involve changing any of the already existing interfaces.
-A strong test suite aids with this procedure,
-since one can perform these changes in a sequence of many small steps,
+This naturally includes a potential adoption of the design towards future requirements.
+A good test suite generally aids with any code refactoring,
+since all changes can be performed in a sequence of many small steps,
 verifying the correctness of the software on the way.
 
 For this reason \molsturm comes with an extensive test framework
 with roughly four types of tests.
-Firstly there are \term{unit tests},
-which test the functionality of a single function or code unit in a couple of hard-coded examples.
-Further we have \term{functionality tests},
+Firstly there are \newterm{unit tests},
+which test the functionality of a single function
+or code unit in a couple of hard-coded examples.
+Further we have \newterm{functionality tests},
 which test a larger portion of code and are meant to ensure that
 the results of \molsturm agree between different versions.
-Thirdly the \term{reference tests} compare
+Thirdly the \newterm{reference tests} compare
 the results of \molsturm to other quantum-chemistry packages.
 Especially in \lazyten we furthermore make use of yet another type of tests,
-namely so-called \term{property-based tests}.
+namely so-called \newterm{property-based tests}.
 This testing technique uses the expected properties of a code unit
-to randomly generate test cases and to verify the result.
+to randomly generate test cases and to verify the result as well.
 On failure the generated test cases are simplified until the most simple,
 failing test case is found.
-This is really helpful for debugging and in order to reduce the human aspect in testing.
+This is very helpful
+to reduce the human aspect in testing
+and finding the actual issue during debugging.
 
-Next to combining various different types of tests
-other key principles in the design of our test suite were that our tests should be simple
-to execute and take only a couple of minutes.
-This not only makes it easier to motivate others to use the tests, too,
-but it also allows to fully automate the whole testing process as well.
-\todoil{I feel we should explicitly mention github and Travis-CI to show them some credit for this awesome work.}
-In our case any commit to our repositories starts up a couple of virtual machines,
-which build \molsturm and run the test suite for a couple of common compilers and
-build configurations.
-A commit into the stable source code branch is only accepted if the test suite passes.
+Next to combining various different types of tests,
+it is very important that running the tests by itself is hassle-free.
+Only in this way they are actually used.
+In \molsturm we therefore employ the \newterm{continuous integration}
+service offered free of charge by Travis CI GmbH for open source projects:
+Whenever a new commit is made to our github repository,
+a set of virtual machines start automatically
+in order to checkout and build \molsturm completely from scratch
+in a few typical build configurations.
+Afterwards the test suite is automatically executed and
+all output generated by the test suite displayed.
+In this way even people, who are unfamiliar with all details of \molsturm
+can test their changes thoroughly,
+which encourages code contributions.
+Additionally this gives us \molsturm developers
+the chance to easily make sure that no untested code enters the stable source branch,
+since only if the continuous integration testing passes,
+a commit to the stable branch is allowed.
 
-In our test suite even the work of adding a new test is somewhat automated.
+One might argue that such a continuous integration system only
+achieves its purpose if users committing new code
+furthermore write the accompanying tests to check its validity.
+For this reason we try to make it simple to add new tests
+by providing tooling to automate this process as well.
 For example in order to add a new reference test for a new feature
-or a case where a bug was discovered,
-one simply adds a small configuration file to a special directory,
-which defines the testing parameters.
-A \python script, which is part of the test suite,
-then automatically executes the third party program and extracts the reference results in a format,
-which is understood by the \molsturm test suite.
-When the test suite is executed all such reference results are read and
-\molsturm is executed and tested for each of them.
+or a corner case, where a bug was discovered,
+one only needs to add a small configuration file to a special directory.
+Afterwards one only needs to call a \python script,
+which picks up the configuration file,
+reads the desired test case and calls the external third-party reference
+quantum-chemistry program (currently ORCA~\cite{ORCA})
+to compute the required data.
+From the next time the \molsturm test suite is executed,
+this additional reference test will be part of the test suite as well.
 
-\todoil{Mention test coverage ???}
-
-\todoil{We probably should not keep this next paragraphs here}
-On the side of the \molsturm code we employ \term{assertive programming} to assure that
-\molsturm crashes with a very detailed backlog whenever an unexpected behaviour happened.
-By the means of a dual build system setup, we achieve that a Debug version
-(including heavy assertive checks) and a Release version
-(without heavy assertive checks) are compiled side-by-side.
-This allows to use the Debug version with a lot of assertions,
-potentially even in the inner loops,
-to be used for trial runs and the Release version with less assertions for productive runs.
-Switching between Debug and Release from \molsturm's python interface is very simple and
-only requires to recompile a few files,
-since in normal build conditions Release and Debug have already been built.
+Another way we employ to make sure that most of \molsturm's code
+is indeed tested
+is a measure called \newterm{coverage analysis}.
+Roughly speaking this method inserts special checkpoints during the compilation
+of a program,
+which allow to retrace which code paths have been executed
+and which have not.
+In combination with our automatic continuous integration builds,
+we use this to check automatically which parts of the code have been touched
+when the test suite was executed,
+\ie which parts of \molsturm are covered by the test suite.
+Ideally one would keep test coverage close to $100\%$,
+implying that literally every line of \molsturm was tested.
+In practice in most modules of \molsturm we currently achieve
+between $80\%$ and $90\%$ coverage.
+Notice that coverage analysis is more powerful than just detecting
+untested code paths.
+For example it allows to find hot spots,
+\ie parts of the code executed very often,
+or dead code, which is never executed.
+Similar to a pass of the continuous integration builds,
+we currently enforce that \molsturm's coverage may not decrease
+by more that $0.5\%$ each time code is merged into the stable branch.
+This makes sure that most of \molsturm's code really gets tested
+each time new features are added.

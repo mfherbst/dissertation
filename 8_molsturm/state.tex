@@ -2,6 +2,24 @@
 \label{sec:MolsturmState}
 \todoil{Maybe shorten this further once its clear what the design section says}
 
+\todoil{Work into the presented text}
+Within the setting of the above goals not only the \SCF of \molsturm
+has become agnostic to the type of basis function used for the discretisation.
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method in an external library,
+can be formulated entirely in the \SCF orbital basis
+and without any reference to the underlying basis functions.
+Because of this \molsturm is essentially a mediator
+to produce \SCF results employing arbitrary discretisations
+on which one can stick any Post-\HF method we have interfaces for.
+Experimenting between different discretisations
+and comparing the results obtained can happen on a common ground,
+yet still with access to a large range of quantum-chemical methods.
+Even different integral back ends
+could be compared against another using the identical \SCF of \molsturm.
+
+
+
 After about two years of development
 \molsturm has become a light-weight quantum-chemistry package of about 45000
 lines of \cpp and \python code%
