@@ -93,7 +93,7 @@ by the means of solving the time-independent Schrödinger equation
 Solving this equation analytically is not possible in general.
 Already for the Helium atom, a 3-body problem, clever approximations are needed
 to get anywhere~\cite{Hylleraas1929}.
-But even numerically \eqref{eqn:TISEManyBody} is in general impossible to solve
+But even numerically \eqref{eqn:TISEManyBody} is intractable to solve
 without further approximations.
 
 Let us illustrate this claim by an example.
@@ -134,10 +134,10 @@ one needs to develop approximate methodologies.
 \section{Born-Oppenheimer approximation}
 \label{sec:BO}
 The masses of electrons and nuclei differ by orders of magnitude.
-The ratio between the mass of a proton and the electron massi
+The ratio between the mass of a proton and the electron masses
 is already around $1836$ and this ratio increases
 further across the table.
-Already for the elements oft he first period,
+Already for the elements of the first period,
 this value is at least of the order of $10^4$.
 This justifies an approximative treatment,
 where we assume the motion of the electrons
@@ -197,9 +197,9 @@ Originating from the dependence of $\Op{H}^\text{elec}(\vec{X})$
 towards the nuclear coordinates,
 we can think of the resulting \newterm{electronic energies}
 $E^\text{elec}_{\Iel}(\vec{X})$
-and \newterm{electronic wavefunction}s $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
+and \newterm{electronic wave function}s $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$
 to be dependent on $\vec{X}$ as well.
-Sometimes one uses the term \newterm{electronic state}
+Typically one uses the term \newterm{electronic state}
 to refer to $\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$.
 
 With the electronic states at hand we are able to formulate
@@ -217,7 +217,7 @@ which consists of the following two assumptions:
 	where the multi-indices are related by $I \equiv (\Iel, \Inu)$.
 	$\Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})$ is a solution
 	to the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}
-	and the \newterm{nuclear wavefunction}
+	and the \newterm{nuclear wave function}
 	$\Psi^\text{nuc}_{\Inu}(\vec{x})$ is yet to be determined.
 	%
 	\item The factorisation \eqref{eqn:BOFactorisation} satisfies the property%
@@ -257,7 +257,7 @@ we can simplify
 	+ \Op{T}_n \Psi^\text{nuc}_{\Inu}(\vec{X})
 	- E^\text{MB}_I \Psi^\text{nuc}_{\Inu}(\vec{X}) \right).
 \end{align*}
-This statement is thus satisfied provided that the nuclear wavefunction
+This statement is satisfied provided that the nuclear wave function
 $\Psi^\text{nuc}_{\Inu}(\vec{X})$
 follows the \newterm{nuclear Schrödinger equation}
 \begin{equation}
@@ -304,7 +304,7 @@ Within the Born-Oppenheimer approximation
 this is replaced by solving two equations,
 the electronic one \eqref{eqn:ElectronicSchrödinger} of dimensionality $3 \Nelec = 30$
 and the nuclear TISE \eqref{eqn:NuclearSchrödinger} of dimensionality $3 M = 9$.
-In the rough estimate we presented in section \vref{sec:ManyBodyTISE}
+In the estimate we presented in section \vref{sec:ManyBodyTISE}
 for the $L^2$ inner products,
 this would roughly provide a speed-up factor of $10^9$.
 
@@ -489,7 +489,7 @@ and employ the domain
 	\label{eqn:ElectronicHamiltonianDomain}
 \end{equation}
 for the electronic Hamiltonian $\Op{H}_{\Nelec}$.
-This makes both the operator self-adjoint and the electronic wavefunction
+This makes both the operator self-adjoint and the electronic wave function
 comply with the spin statistics theorem.
 The analogous form domain in this case would be
 \[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
