@@ -10,7 +10,7 @@ in order to analyse results or to extend the capabilities of \molsturm.
 In all cases shown the computations are done using contracted
 Gaussian basis sets.
 It should be noted, however,
-that due to the basis-function independent nature of \molsturm
+that due to the basis-function-agnostic nature of \molsturm
 the procedures outlined in the scripts could be easily used
 with other types of basis functions as well.
 
@@ -24,13 +24,11 @@ with other types of basis functions as well.
 \begin{figure}
 	\centering
 	\begin{minipage}{0.58\textwidth}
-	\lstinputlisting[firstline=8,firstnumber=8,lastline=67]{examples/dissociation/h2_dissociation.py}
+	\lstinputlisting{examples/dissociation/h2_dissociation.py}
 	\end{minipage}
 	\caption[\python script computing a \ce{H2} dissociation curve]{
 		Script for computing a \ce{H2} dissociation curve
 		and fitting a Morse potential to it.
-		The \texttt{import} statements and the explicit call to \texttt{main}
-		are stripped off.
 		The decision about the basis function type, the integral back end
 		as well as the basis set are only made in line \lcall,
 		where the \texttt{compute\_curve} is called with the chosen
@@ -81,7 +79,7 @@ producing wrong results without any notice.
 This is a common problem in the practice of computational chemistry.
 
 Contrast this with the approach taken by packages like \molsturm,
-which are controlled solely by a scripting language interface.
+which can be controlled solely by a scripting language interface.
 The \python script shown in figure \ref{fig:codeDissociation} performs
 exactly what has been discussed above:
 First, in the function \texttt{compute\_curve},
@@ -140,6 +138,8 @@ in order to employ it for the UMP2 calculations instead.
 		The remaining lines compute the residual for
 		a particular $T_2$ amplitude stored in the tensor object
 		\texttt{t2}.
+		We follow the same index convention
+		used in section \vref{sec:Correlation}.
 	}
 	\label{fig:codeCCD}
 \end{sidewaysfigure}
@@ -154,7 +154,7 @@ Even though \molsturm right now neither offers
 any coupled-cluster method nor
 an interface to any third-party coupled-cluster code,
 we managed to implement a simple, working
-coupled-cluster doubles~(\CCD)~\cite{Hurley1976,Bartlett1978} algorithm
+coupled-cluster doubles~(\CCD)~(see section \vref{sec:CC}) algorithm
 in only about 100 lines of code and about two days of work.
 The most relevant part of the implementation,
 namely computing the \CCD residual for the current guess
@@ -172,18 +172,10 @@ using the orbital energy differences as an approximate Jacobian%
 The guess for the $T_2$ amplitudes is taken
 from second order Møller-Plesset perturbation theory.
 
-The expression of the \CCD residual $r_{ij}^{ab}$
-requires the evaluation of a sequence of tensor contractions
-involving the Fock matrix in the molecular orbital basis, $f_{pq}$,
-the antisymmetrised electron-repulsion integrals, $\langle pq||rs \rangle$,
-as well as the current guess for the $T_2$ amplitudes, $t_{ij}^{ab}$.
-As usual we employ the convention that indices $i,j,m,n$ refer
-to occupied orbitals and indices $a,b,e,f$
-refer to virtual, \ie unoccupied, orbitals.
-
-The \python implementation we show towards the right-hand side
+The \python implementation (right-hand side
 of figure \ref{fig:codeCCD})
-computes those contractions.
+computes the \CCD residual following equation \eqref{eqn:CCDworking},
+which was introduced in section \ref{sec:CC}.
 For this it employs the data structures \molsturm provides
 in the \texttt{state} object, which is returned by the \SCF procedure.
 Since our code uses chemists' indexing convention
@@ -192,7 +184,7 @@ and we do not store the antisymmetrised tensor,
 the first two lines of the code of figure \ref{fig:codeCCD}
 need to be executed once to generate
 the antisymmetrised electron-repulsion integrals $\langle mn||ef \rangle$
-in the required physicists' indexing convention
+in physicists' indexing convention
 inside the \texttt{eri} tensor object.
 All subsequent lines compute the residual tensor \texttt{res}
 by contracting the relevant blocks of the Fock matrix \texttt{state.fock},
@@ -239,13 +231,11 @@ such scripts are therefore still well-suited.
 \begin{figure}
 	\centering
 	\begin{minipage}{0.58\textwidth}
-	\lstinputlisting[firstline=6,firstnumber=6,lastline=44]{examples/geo_opt.py}
+	\lstinputlisting{examples/geo_opt.py}
 	\end{minipage}
 	\caption[\python script for performing gradient-free optimisation]{
-		Example for performing a gradient-free optimisation
+		Example \python script for performing a gradient-free optimisation
 		using Powell's method~\cite{Powell1964,Press1992} and \molsturm.
-		\python \texttt{import} statements at the top of the script
-		and the explicit call to \texttt{main} are skipped.
 	}
 	\label{fig:codeGeoOpt}
 \end{figure}
@@ -262,7 +252,7 @@ as many problems as possible.
 Undoubtedly a very important application of computational chemistry
 is structure prediction, \ie geometry optimisation.
 For performing such calculations,
-the implementation of of appropriate integral derivatives
+the implementation of appropriate integral derivatives
 inside the integral library is required.
 Since doing so can become as difficult as implementing the integrals
 required for the \SCF scheme itself,
@@ -290,7 +280,7 @@ by minimising to a lower convergence threshold in the more costly
 \mbox{def2-SV(P)}~\cite{Weigend2005} basis.
 
 Similar to the \CCD example the time required to code the script
-was very little, about 30 minutes.
+was rather little, about 30 minutes.
 Nevertheless the script is able to converge
 in a couple of minutes to the equilibrium geometry shown
 in figure \ref{fig:OptimalGeometryWater}.
