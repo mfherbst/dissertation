@@ -1,54 +1,40 @@
 \section{Current state of \molsturm}
 \label{sec:MolsturmState}
-\todoil{Maybe shorten this further once its clear what the design section says}
-
-\todoil{Work into the presented text}
-Within the setting of the above goals not only the \SCF of \molsturm
-has become agnostic to the type of basis function used for the discretisation.
-Once the \SCF orbitals have been obtained,
-the remainder of a calculation, \eg a Post-\HF method in an external library,
-can be formulated entirely in the \SCF orbital basis
-and without any reference to the underlying basis functions.
-Because of this \molsturm is essentially a mediator
-to produce \SCF results employing arbitrary discretisations
-on which one can stick any Post-\HF method we have interfaces for.
-Experimenting between different discretisations
-and comparing the results obtained can happen on a common ground,
-yet still with access to a large range of quantum-chemical methods.
-Even different integral back ends
-could be compared against another using the identical \SCF of \molsturm.
-
-
 
 After about two years of development
 \molsturm has become a light-weight quantum-chemistry package of about 45000
 lines of \cpp and \python code%
 \footnote{The number includes the code from the dependencies
 \gint, \gscf, \lazyten, \krims as well as
-all examples and tests, but excludes comment lines and blanks.}.
-As mentioned above the design explicitly keeps the requirements of a range of
-different basis functions in mind.
+all examples and tests, but excludes comment lines and blanks.},
+which tries to explicitly keep the requirements of more than
+one basis function in mind.
 The key ingredient to reach the necessary flexibility
 is a \contraction-based self-consistent field scheme,
 where the details of the Fock matrix \contraction expression
-are varied flexibly according to the numerical properties of the basis function type
+are varied according to the numerical properties of the basis function type
 by our integral back end library \gint.
-In contrast
-the code describing the \SCF algorithm
+In contrast the code describing the \SCF algorithm
 is well-separated from the details of the \contraction expression
-using the high-level lazy matrix language of \lazyten,
-such that it becomes agnostic to the type of basis function used for the computation.
+using the high-level lazy matrix language of \lazyten.
+As such it becomes agnostic to the type of basis function used for the discretisation.
 Even if changes to the \SCF scheme or some back end
 library are needed in the future our modular design
 will assure that the other parts of the \molsturm package will stay unaffected.
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method,
+can be typically be formulated entirely in the \SCF orbital basis
+and without any reference to the underlying basis functions.
+Because of this \molsturm can be thought of as a mediator
+to produce \SCF results in a very general fashion
+on top of which one may stick any Post-\HF method.
 
-\todoil{Make more clear which \SCF schemes are implemented}
-The \SCF procedure can be started from either a core Hamiltonian guess,
+In \molsturm the \SCF procedure can be started from either a core Hamiltonian guess,
 a completely random guess or any other arbitrary set of initial
 coefficients supplied by the user via a \numpy array.
 For some cases, \eg if Coulomb-Sturmians are employed,
-\molsturm offers means to interpolate a guess from a previous result
-in a different basis.
+\molsturm offers means to interpolate a guess
+from the converged state of a previous calculation.
 During the \SCF \molsturm automatically switches between
 the implemented \SCF schemes.
 This is necessary since the plain Roothaan
@@ -58,10 +44,11 @@ are cheaper, but typically do not converge as efficiently
 as a coefficient-based Pulay DIIS.
 Switching the algorithms allows us to balance this.
 As demonstrated in the examples in section \ref{sec:MolsturmExamples},
-these details can be fully controlled from \python,
-such that it often takes only changing a single keyword
-in order to switch to a different solver algorithm or to a different
-basis function type.
+the algorithmic details of the \SCF procedure can be fully controlled
+from \python,
+such that one often only needs to change a single keyword
+in order to switch to a different solver algorithm
+or to employ a different basis function type.
 
 Once an \SCF computation has finished the obtained results can be archived
 in either in YAML~\cite{Ben-Kiki2009} plain text or in HDF5~\cite{HDF5Manual}
@@ -78,7 +65,7 @@ On top the \SCF a range of interfaces for
 performing Post-HF calculations or further analysis are available.
 Right now \molsturm only implements second order Møller-Plesset perturbation theory%
 ~(see section \ref{sec:MP})
-and some utility functions for plotting,
+and some utility functions for plotting.
 Some selected methods from third-party libraries can be easily
 invoked on any \SCF result using third party libraries.
 For example full configuration interaction is available via \pyscf~\cite{Sun2017}
@@ -101,19 +88,18 @@ including the Post-HF methods
 provided by the third-party libraries mentioned above.
 
 In section \ref{sec:MolsturmExamples} the abilities of \molsturm
-have been demonstrated
-by three practical examples with particular emphasis
-on the way our \python interface integrates with existing
-\python packages.
-In this way additional functionality of third-party packages can be quickly combined
-with \molsturm in order to extend \molsturm in ways we as the authors
+have been demonstrated by three practical examples.
+We put particular emphasis on how
+our \python interface integrates with existing third-party \python packages
+such that additional functionality can be quickly
+combined with \molsturm,
+potentially to extend \molsturm in ways we as the authors
 would have never thought of.
 In the examples it was further shown how to aid repetitive calculations,
 implement novel quantum-chemical methods
 or rapidly amend functionality in a preliminary way,
 where a proper implementation would be much more involved.
-We hinted how
-systematic comparisons with established basis functions
+We hinted how systematic comparisons with established basis functions
 as well as subsequent graphical analysis
 is convenient to perform by the means of our
 readily scriptable interface.
