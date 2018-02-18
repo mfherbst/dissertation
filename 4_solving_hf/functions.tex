@@ -215,28 +215,32 @@ is the only methodology where guaranteed precision in the solution to the
 respective problems can be achieved.
 
 \subsection{Mixed bases}
-\todoil{Do later if time}
-Already done in some or another sense in practice.
-For example the SIESTA method~\cite{Soler2002} uses
-a dual representation on a real-space grid as well as
-an atomic orbital basis
+In theory nothing stops us from using more than a single type of basis function
+in a discretisation.
+In fact some of the methods mentioned before like
+the SIESTA method~\cite{Soler2002} or the projector-augmented
+plane-wave approaches~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010}
+are in fact cases, where more than one type of basis function is employed.
+For example SIESTA uses two discretisations at once
+--- one in terms of {\cGTO}s and a numerical grid ---
+and projects back and force between them,
+whilst projector-augmented plane-wave methods use a plane-wave basis
+augmented with other types of basis functions close to the atom cores.
 
-
-Suggest an ansatz basis $\{\varphi_i + \chi_i\}_{i\in\Ibas}$
-where $\chi_i$ is a fixed, predetermined Sturmian solution
-and $\varphi_i$ are corrections to be found from FE.
-Derive the HF energy functional expression for such an ansatz
-where $\chi_i$ are fixed and only $\varphi_i$ are the parameters.
-(Maybe do this in outlook?)
-
-
-
-
-Guess methods:
-Do a calculation in Coulomb-Sturmians for atoms.
-Use the result for EHT and project overall orbitals onto FE grid
-for fine structure.
-
+In practice not all combinations of basis functions are feasible or sensible.
+This can be rationalised by looking at the {\cGTO} or the \CS discretisations,
+which both heavily rely on basis-specific properties for efficiently
+computing the electron-repulsion integrals
+in order to make the computation of the Fock matrix $\mat{F}$
+or its matrix-vector product fast.
+In a fully mixed basis one not only needs to compute \ERI integrals
+between the same type of basis functions,
+but also between all combinations of four basis functions involving different types.
+In a combination of the two aforementioned basis function types,
+this would destroy their advantageous properties.
+This is not meant to say that mixture basis sets involving
+{\cGTO}s or {\CS} basis functions are not possible or helpful,
+but that getting the integrals fast requires some clever schemes.
 
 \subsection{Takeaway}
 In the previous sections we saw that different basis function types
