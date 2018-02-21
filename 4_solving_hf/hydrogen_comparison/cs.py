@@ -108,7 +108,7 @@ def plot_relative_error(log=False):
             extra = ""
 
     plt.xlabel(common.XLABEL)
-    plt.ylabel(extra + common.ELLABEL)
+    plt.ylabel(extra + common.RELABEL)
     plt.ylim(-0.2, 0.2)
 
     plt.legend()

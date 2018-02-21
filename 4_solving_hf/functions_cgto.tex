@@ -8,8 +8,8 @@ resulting in the so-called Gaussian-type orbitals~({\GTO}s).
 Such \GTO basis functions still follow the ansatz radial part times real-valued spherical harmonic
 \eqref{eqn:ACproduct}
 \begin{equation}
-	\varphi^\text{GTO}_\mu(\vec{r}) = R^\text{GTO}_\mu\!\left(\norm{\vec{r} - \vec{R}_\mu}\right)
-	\, Y_{l_\mu}^{m_\mu}(\theta, \phi),
+	\varphi^\text{GTO}_\mu(\vec{r}) =
+	R^\text{GTO}_\mu(r_\mu) \, Y_{l_\mu}^{m_\mu}(\theta_\mu, \phi_\mu)
 	\label{eqn:ACproduct}
 \end{equation}
 but their radial part is now given as
@@ -292,7 +292,7 @@ In this sense {\cGTO}s are not fully black-box and
 picking a reasonable basis set for a particular problem
 usually requires some idea of the electronic structure already.
 On the other hand if such special basis sets are employed,
-one may encounter numerical issues
+one may encounter numerical instabilities
 due to rather large overlap matrix elements $\braket{\varphi_\mu}{\varphi_\nu}_1$
 and almost linearly dependent basis functions $\varphi_\mu$.
 This problem arises

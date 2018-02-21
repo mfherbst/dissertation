@@ -85,11 +85,10 @@ Motivated from the solution to the Schrödinger equation of the Hydrogen atom,
 his ansatz was to write each basis function as
 \begin{equation}
 	\varphi^\text{STO}_\mu(\vec{r})
-	= R^\text{STO}_\mu\!\left(\norm{\vec{r} - \vec{R}_\mu}\right)\, Y_{l_\mu}^{m_\mu}(\theta, \phi),
+	= R^\text{STO}_\mu(r_\mu) \, Y_{l_\mu}^{m_\mu}(\theta_\mu, \phi_\mu)
 	\label{eqn:ACproduct}
 \end{equation}
-\ie as a product of radial part $R^\text{STO}_\mu$ centred at the nuclear
-coordinate $\vec{R}_\mu$
+\ie as a product of radial part $R^\text{STO}_\mu$
 and real-valued%
 \footnote{Keeping in mind that all $2l+1$ spherical harmonics
 	$Y_l^m$ with the same value for $l$ correspond to the same eigenspace
@@ -97,7 +96,9 @@ and real-valued%
 	form given in \eqref{eqn:SphericaHarmonics},
 	where all spherical harmonics are real-valued functions.
 	See \cite{Avery2018} for details.
-} spherical harmonic $Y_{l_\mu}^{m_\mu}$.
+} spherical harmonic $Y_{l_\mu}^{m_\mu}$, where
+\[ \left(r_\mu, \theta_\mu, \phi_\mu\right) \equiv \vec{r}_\mu = \vec{r} - \vec{R}_\mu \]
+is the distance vector to the nucleus located at $\vec{R}_\mu$.
 For the radial part he used a polynomial times exponential form
 \begin{equation}
 	R_\mu(r) = N_\mu r^{n_{\mu}-1} \exp(-\zeta_\mu r),
