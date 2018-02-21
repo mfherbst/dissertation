@@ -6,7 +6,7 @@ which makes it feel as if one was dealing with actual matrices
 instead of \contraction expressions.
 Even though not all complications can be hidden,
 the resulting syntax allows to write algorithms in a high-level manner
-being agnostic to the underlying implementation of the \contraction expression.
+being independent from the underlying implementation of the \contraction expression.
 This will turn out to be the key aspect
 leading to the basis-type of the quantum-chemistry package \molsturm.
 
@@ -140,7 +140,7 @@ given that the cost function is sensibly chosen.
 		Structure of the \lazyten lazy matrix library~\cite{lazytenWeb}
 		and its interfaces to the 3rd party codes
 		armadillo~\cite{Armadillo}, Bohrium~\cite{Kristensen2016array,Kristensen2016streaming},
-		LAPACK~\cite{LAPACK} and ARPACK~\cite{Lehoucq1998}.
+		LAPACK~\cite{LAPACK} and ARPACK~\cite{ARPACK}.
 		Support for Eigen~\cite{Eigen} and Anasazi~\cite{Anasazi} is planned.
 	}
 	\label{fig:structureLazyten}
@@ -191,7 +191,7 @@ function a user of the implemented code may still overwrite
 which solver implementation
 is chosen and what precise setup parameters are passed to it.
 Currently a selection of methods from the LAPACK~\todo{cite}
-linear algebra library as well as the ARPACK~\cite{Lehoucq1998} package
+linear algebra library as well as the ARPACK~\cite{ARPACK} package
 for Arnoldi diagonalisation methods is available from \lazyten.
 The selection mechanism between the different algorithms
 for one particular task is not yet extremely sophisticated.
@@ -264,7 +264,7 @@ The second example is more relevant to the scope of this
 work and brings us back to the end of section \vref{sec:SCFtakeaway},
 where we discussed the possibility of
 an \SCF routine,
-which is agnostic to the type of basis function used.
+which is independent from the type of basis function used.
 Figure \vref{fig:LazytenRhfCode} shows a code fragment
 from a very simple Roothaan repeated diagonalisation \SCF routine%
 ~(see section \vref{sec:RoothaanRepeatedDiag})
