@@ -120,7 +120,7 @@ def plot_states(states):
         props.append(mtx_properties(fa_bb))
         props[-1]["final_error_norm"] = state["final_error_norm"]
         props[-1]["order"] = order
-    plot_mtcs(mtcs)
+    plot_mtcs(mtcs, middle_labels=False)
     return props
 
 

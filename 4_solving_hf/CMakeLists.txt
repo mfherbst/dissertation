@@ -86,6 +86,16 @@ add_custom_command(
 	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/plot_shape_functions.py
 )
 
+set(PDF_OUTPUTS ${PDF_OUTPUTS} fock_fe_gauss_sturm.pdf}
+add_custom_command(
+	OUTPUT fock_fe_gauss_sturm.pdf
+	COMMAND ${CMAKE_COMMAND} -E copy
+	${CMAKE_CURRENT_LIST_DIR}/fock_matrices/fock_fe_gauss_sturm.pdf
+	${CMAKE_CURRENT_BINARY_DIR}
+	COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
+	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/fock_matrices/fock_fe_gauss_sturm.pdf
+)
+
 foreach(out ${PDF_OUTPUTS})
         pdf_image(${CMAKE_CURRENT_BINARY_DIR}/${out} TMP)
         add_depends(${TMP})
