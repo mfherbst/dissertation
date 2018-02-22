@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import gint
 import matplotlib
+import matplotlib.gridspec as gridspec
 from matplotlib.colors import LogNorm
 import numpy as np
 
@@ -36,8 +37,13 @@ def plot_mtcs(mtcs, middle_labels=True, vrange=(-8, 2)):
         cbar_axis = [0.93, 0.23, 0.01, 0.55]
 
     fig = plt.figure(figsize=((size + 0.1) * n_mtx, size))
+    gs = gridspec.GridSpec(1, n_mtx)
+
+    if not middle_labels:
+        gs.update(wspace=0.1)
+
     for i, mtx in enumerate(mtcs):
-        ax = fig.add_subplot(1, n_mtx, i+1)
+        ax = fig.add_subplot(gs[i])
         img = ax.matshow(np.abs(mtx), cmap=cmap, norm=norm)
 
         # Adjust ticks if requested
