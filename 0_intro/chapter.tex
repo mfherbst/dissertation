@@ -11,43 +11,64 @@ their care to their own material profit.}
 {Marie Skłodowska Curie~(1867--1934)}
 
 \noindent
-Compared to experimental chemistry,
-which has been performed for thousands of years,
+Compared to experimental chemistry, which has been
+performed for thousands of years in the form of alchemy
+and as a science at least since the 18th century,
 quantum chemistry is a relatively new field.
-It emerged only about 100 years ago from the development of modern physics
-at the turn of the 20th century.
-From a physical point of view the fundamental equations of quantum-chemistry,
-namely the mathematical formulation of quantum mechanics,
-have been known since the late 1920s
---- as noted famously by \citet{Dirac1929} in \citeyear{Dirac1929}.
-Since solving these equations exactly is impossible except for model systems
-and one thus has to live with a hierarchy of approximate treatments in practice.
-Over the years sufficiently good numerical methods have been developed,
-such that theoretical modelling and simulations
+It emerged only about 100 years ago from the development of modern physics.
+Still, as \citet{Dirac1929} already noted famously in \citeyear{Dirac1929},
+all fundamental equations of quantum chemistry,
+in the form of the mathematical formulation of quantum mechanics,
+are known.
+Whist solving these equations exactly is possible for model systems,
+solving them for the general case of arbitrary
+chemical systems can only be done using approximate methods.
+Which are best to be employed depends very much on
+the intended application,
+\ie the complexity of the chemical system
+or the properties and behaviour to be simulated.
+Over the years a hierarchy of approximations has been developed
+for this reason,
+ranging from fast and crude on the one hand to slow and numerically exact on the other.
+Nowadays the modelling of chemical processes
 based on quantum-chemical arguments
-are nowadays well-established both in industry as well as research.
+is well-established both in industry as well as research.
 
-This thesis will focus on a subfield of quantum chemistry,
-namely electronic structure theory,
-where the aim is to approximately solve the
-electronic Schrödinger equation in order to study
-the quantum-mechanical behaviour of electrons in matter.
-One way to tackle this is to first solve
-a very basic approximation to the Schrödinger equation,
-namely the Hartree-Fock problem,
-and afterwards build improved solutions on top.
-The underlying spaces in which this procedure in principle
-has to take place is infinite dimensional,
-which is an insurmountable obstacle
-if this tasks should be done numerically,
-\ie in a computer with only finite amounts of memory.
-In practice one therefore restricts the problem size
-by only performing the aforementioned procedure
-in a subspace spanned by a finite number of basis functions.
+A chemical system is typically modelled at various levels,
+each improving the accuracy on top of the previous,
+thus building gradually towards the full picture.
+In electronic structure theory, for example,
+one neglects the motion of the nuclei
+in order to yield a simplified equation --- the electronic Schrödinger equation.
+In turn a usual approach to this equation is to first
+solve the approximate Hartree-Fock problem
+as a starting point and amend this solution in a second step.
+Often not every level can be reached due to the increasing
+difficulty of the equations,
+but as mentioned before,
+one may not need the highest level of theory in order to gain
+insight into a particular research question.
+For example electronic structure theory already allows to model
+many aspects of chemical reactivity or spectroscopy
+even though the nuclei are assumed to be motionless.
+
+Since the underlying spaces of quantum mechanics are infinite dimensional
+any of the aforementioned steps
+involve infinite-dimensional spaces as well.
+For a numerical treatment in a computer with finite amounts of memory,
+this is of course an insurmountable obstacle.
+The remedy in practice is yet another approximation,
+where one restricts the problem spaces
+to a finite number of dimensions by only considering
+those subspaces
+spanned by a finite number of basis functions.
 This restriction is called discretisation
-and has the pleasant side effect that the physical equations
-reduce to standard problems of linear algebra,
-usually diagonalisation or linear systems.
+and has the pleasant side effect that the partial differential equations
+dictated by quantum mechanics
+reduce to standard problems of linear algebra.
+In the case of Hartree-Fock, for example,
+the discretised problem may be solved by repetitively diagonalising
+the so-called Fock matrix.
 
 This naturally leads to the question,
 which type of basis functions should be used to span the subspace.
@@ -66,7 +87,7 @@ This idea was picked up and refined later~\cite{Hehre1969}
 and eventually set off many developments
 both in terms of efficient algorithms as well as methodologies
 centred around Gaussian basis functions,
-making them widely applicable for simulating electronic structures.
+spreading their use for simulating electronic structures.
 
 Unfortunately Gaussian-type orbitals have a major downside
 caused by their unphysical shape:
@@ -80,7 +101,8 @@ there are strong hints that the accurate computation of some physical properties
 like NMR shielding tensors~\cite{Guell2008,Hoggan2009}
 requires a correct description of both aforementioned features.
 Additionally those specialised basis sets can lead to
-numerical instabilities in the resulting linear algebra.
+numerical instabilities in the resulting linear algebra,
+making the results less reliable.
 
 Multiple research groups have therefore looked into alternative types of basis functions.
 Examples are plane-waves or projector-augmented wave methods%
@@ -90,27 +112,12 @@ like wavelets%
 ~\cite{Bischoff2011,Bischoff2012,Bischoff2013,Bischoff2014,Bischoff2014a,Bischoff2017}
 or finite elements%
 ~\cite{Tsuchida1995,Soler2002,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
-Furthermore there are Sturmian-type functions
+Rather promising are Sturmian-type functions
 like Coulomb-Sturmians~\cite{Shull1959,Rotenberg1962,Rotenberg1970,Gruzdev1990,Hoggan2009,Randazzo2010}
 or generalised Sturmians~\cite{Avery2006,Avery2011PhD,Avery2011,Morales2016,Avery2017,Randazzo2015,Granados2016},
-which are related to Slater-type orbitals and amount to correctly represent
-the physical electron density,
-making them a promising alternative.
-
-\todoil{From here}
-
-The implementation of quantum-chemical methods
-employing novel types of basis functions often necessitates
-unusual numerical techniques as well.
-
-
-testing and evaluation of novel basis function types
-Implementing these into existing quantum chemistry packages
-can be rather challenging,
-since these are on the one hand highly optimised towards the methods
-they already accommodate,
-but on the other hand typically not flexible enough
-to meet the differing requirements.
+since they on the one hand amount to correctly represent
+the physical features of the electron density,
+but on the other hand lead to more feasible integrals than Slater-type orbitals.
 
 \begin{figure}
 	\centering
@@ -120,115 +127,116 @@ to meet the differing requirements.
 		\hspace{0.017\textwidth} &
 		\hspace{0.25\textwidth} & \hspace{0.27\textwidth} & \hspace{0.25\textwidth} &
 		\hspace{0.1\textwidth} \\
-		&$Q_2$ finite elements,     & contracted Gaussians, & Coulomb-Sturmians \\
-		&adaptively refined 3D grid & pc-2~\cite{Jensen2007} basis set 
-		& $(5,1,1)$ basis with $k=2.0$
+		&Finite elements     & Gaussians & Coulomb-Sturmians \\
 	\end{tabular}
 	} \\[-0.3em]
-	\caption[Structure of the Fock matrix varying for different discretisations.]{
-		Varying structure of the Fock matrix
-		in an early stage of a Hartree-Fock self-consistent field
-		calculation for beryllium
-		when discretisations using
-		finite elements, contracted Gaussians
-		or Coulomb-Sturmians are employed.
+	\caption[Selection of Fock matrices for different discretisations]{
+		Selection of Fock matrices taken from a Hartree-Fock
+		calculation for beryllium when the indicated basis function types
+		were used for the discretisation.
+		Elements smaller than $10^{-10}$ are coloured in white.
 	}
 	\label{fig:IntroFockStructure}
 \end{figure}
-
-
-To illustrate this latter point let us consider
-the usual ansatz of solving the Hartree-Fock~(HF) equations
-in a self-consistent field~(SCF) procedure.
-Fig.~\ref{fig:FockStructure} shows the structure of the Fock matrix
-arising if various basis function types are employed for the discretisation.
-% write about different structure
-
-One should mention that the finite-element discretisation depicted here
-is still far too inaccurate to yield a sensible description
-of the Beryllium atom density.
+One of the challenging aspects when considering novel basis function types
+are the deviating mathematical properties
+compared to conventional Gaussian-type orbitals.
+As an example figure~\ref{fig:IntroFockStructure} shows the structure of the
+Fock matrix when discretisations
+using finite elements, contracted Gaussians
+or Coulomb-Sturmians are employed.
+The most drastic difference can be seen for a finite-element discretisation,
+where the matrix is both much larger as well as sparser 
+compared to the other two cases.
+In fact the discretisation which gave rise to the
+Fock matrix depicted in figure~\ref{fig:IntroFockStructure}
+is still too small to yield a
+sensible description of the Beryllium atom density.
 A realistic description would need in the order of $10^5$ to $10^6$ basis
-functions, see \eg reference \cite{Davydov2015}.
+functions~\cite{Davydov2015}.
+For this reason it is not possible to keep the finite-element discretised
+Fock matrix completely in memory and diagonalise it at once,
+which is the standard approach when employing contracted Gaussians.
+Instead iterative diagonalisation methods need to be used for finite elements.
+Coulomb-Sturmians are some kind of a middle ground,
+where iterative methods are not necessarily required,
+but open up the possibility for more efficient algorithms
+as we will discuss in more detail in this work.
+The implementation of alternative basis function types
+therefore requires in many cases numerical techniques,
+which are unusual compared to discretisations based on Gaussians.
 
-a good program supports all of these structures
-aim of \molsturm
-\contraction-based ansatz helps by providing generality
-thus implement \lazyten
+As mentioned before existing packages for quantum-chemical calculations
+predominantly rely on Gaussian-type orbitals
+and as a consequence are highly optimised towards their properties.
+Implicit assumptions
+about the structure of the discretised quantities,
+like the Fock matrix shown above,
+are thus typically scattered throughout these large codes
+making the implementation of alternative types of basis functions
+rather challenging and time consuming.
+Especially for the initial testing of novel methods
+towards their range of applicability
+in standard problems of electronic structure theory
+this is an obstacle.
+On the other hand starting from scratch for each new basis function type
+is not an ideal option either,
+since one is faced with the task to reprogram all the algorithms for which
+already hundreds of man-years of development have been spent in existing programs.
 
+In this thesis I present a different approach,
+which is followed by the \molsturm program package I co-develop.
+Motivated from the mathematical structure of the Hartree-Fock problem
+as well as a typical algorithmic approaches to solve it,
+\molsturm is designed to be a quantum-chemical method development framework,
+which supports experimentation of all levels as much as possible.
+This includes trying new types of basis functions as well as new algorithms.
+It is explicitly \emph{not} the goal of \molsturm to again recode
+every aspect of quantum-chemical modelling,
+but instead to facilitate integration with existing software
+by simple and easy-to-use interfaces.
+In this sense \molsturm is only as small contribution building on top
+of the work of uncountably many other people of the field,
+where the hope is to be useful and allow for
+further developments of quantum-chemical modelling to take place in the future.
 
+Following along these lines the following chapters
+\ref{ch:QM} and chapter \ref{ch:numeigen}
+provide the background for treating the problems of quantum mechanics
+as well as quantum chemistry numerically.
+Starting from the similarities of classical and quantum physics
+the reader will be introduced to functional analysis
+and spectral theory, always motivated from a chemical perspective.
+In chapter \ref{ch:numeigen} I introduce standard projection techniques
+for transforming from the beautiful picture of exact mathematics
+into the field of numerical linear algebra,
+which allows to solve quantum-chemical problems on a computer.
 
-In many cases \contraction-based approaches
-have more advantages than saving memory.
-For both finite elements as well as for Coulomb-Sturmians
-for example a \contraction-based ansatz
-allows to reformulate the matrix-vector product in a way
-that the computational complexity is reduced.
-An important point to note is that
-a \contraction-based diagonalisation algorithm
-does not prevent one from building the matrix in memory still.
-As such it is not only favourable for the aforementioned
-types of functions,
-but it furthermore leads to no disadvantages
-for diagonalising a Fock matrix originating from
-a contracted Gaussian basis set.
+Thereafter chapter \ref{ch:qchem}
+deals with the mathematical and numerical structure of quantum chemistry
+with a strong focus on the Hartree-Fock problem
+as a first step of computational electronic structure theory.
+Chapter \ref{ch:NumSolveHF}
+follows with a detailed review of numerical techniques and algorithms
+for solving Hartree-Fock.
 
-Considering the flexibility which results from such approaches,
-they are a perfect ingredient for
-a quantum-chemical method development framework
-supporting the numerical requirements of various types of basis functions.
-Such a framework has been missing up to today to the best of our knowledge.
+Chapter \ref{ch:LazyMatrices}
+picks up on the lessons learned about the numerical structure
+of Hartree-Fock and discusses
+\contraction-based methods and lazy matrices
+in order to program algorithms
+in a basis-function independent way.
+In chapter \ref{ch:Molsturm} the design of the quantum-chemistry
+package \molsturm is presented,
+emphasising its usefulness for investigating novel methods
+for quantum-chemical calculations
+and computational electronic structure theory.
 
-The main aim of this thesis was to develop a quantum-chemistry
-package, which supports such research directions
-by offering a common platform for developing, testing and analysing
-quantum-chemical methods irrespective of the basis function type employed for
-the discretisation.
-This is the package \molsturm,
-which will be presented in chapter \vref{ch:Molsturm}.
-
-
-
-
-cs as test canidate
-we only deal with tiny subaspect:
-- single-molecule or single-atom setting.
-- treatment in vacuum and computation of the ground state and a few excited states
-- just small building block, which hopefully moves field forward 
-
-
-% ---------------------------------------
-
-A fascinating aspect of quantum chemistry is the interdisciplinarity of the field.
-Developing a good quantum-chemical model for a particular aspect of chemistry
-firstly requires both chemical as well as physical intuition.
-But in many cases the arising problems are numerically challenging
-and for solving them in an efficient and reliable manner
-one cannot avoid taking a deeper look into the mathematical structures
-as well as modern concepts from high-performance computing,
-hardware and operating systems design.
-Embedded in this interdisciplinary setting,
-this thesis will develop the mathematical language of quantum mechanics
-and apply it to a subfield of quantum chemistry,
-namely electronic structure theory.
-The overall aim is the development of novel computational methods
-for the modelling of electronic properties of matter.
-
-% ---------------------------------------
-
-
-
-
-The reader is assumed to have some background in classical physics
-and a solid idea about basic analysis and algebraic structures.
-The other concepts will be revised and developed in the first chapter.
-
-The thesis consists roughly of three parts
-chapter 1 and chapter 2 mathematical and numerical background
-Beauty of maths in science
-
-chapter 3 quantum-chemical methods
-chapter 4 numerical approaches for HF, discretisations and basis function types
-chapter 5 contraction-based methods
-chapter 6 design of the basis-function independent program molsturm
-chapter 7 provides convergence results for Coulomb-Sturmians
-chapter 8 concludes and gives an outlook
+In chapter \ref{ch:CSQChem} we employ \molsturm
+to perform a systematic assessment of
+the convergence properties of Coulomb-Sturmians
+for the quantum-chemical modelling of atoms
+and give some suggestions for suitable Coulomb-Sturmian basis sets
+in ground state calculations.
+Finally chapter \ref{ch:Conclusion} concludes the work and gives
+an outlook into further directions of research.
