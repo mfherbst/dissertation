@@ -1,135 +1,318 @@
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
+Coulomb Sturmians~(CS) are another type of atom-centred basis functions,
+which so far have seen little attention in electronic structure theory.
+Similar to Slater-type orbitals
+they were introduced by \citet{Shull1959} in \citeyear{Shull1959}
+as a generalisation to the solutions of the Schrödinger equation for hydrogen-like atoms.
+CS functions cannot be used for molecules, only for atoms,
+but related functions exist,
+which are more generally applicable
+justifying our detailed treatment in this work.
+The main motivation for \citet{Shull1959} to look into alternative
+exponential functions was that they wanted to construct one-electron basis functions,
+which could be used to compute the spectra of many-electron atoms.
+From previous approaches based only on hydrogen-like orbital functions it was known,
+that a proper representation of the cusps of the wave function
+required the inclusion of the continuum,
+which was exceedingly difficult in practice~\cite{Avery2006}.
+Therefore they artificially modified the Schrödinger equation \eqref{eqn:HydrogenComplete}
+for hydrogenic atoms and used the resulting analytical solutions
+to model the spectrum of Helium up to a decent level of accuracy
+without explicit inclusion of the continuum.
+Effectively their trick was to multiply the Coulomb term
+in \eqref{eqn:HydrogenComplete} by a prefactor
+\begin{equation}
+	\beta_n = \frac{\kexp n}{Z}
+	\label{eqn:CSbeta}
+\end{equation}
+with $k \in \R$ arbitrary to yield
+\begin{equation}
+	\left( \Delta - \beta_n \frac{Z}{r} - E \right) \varphi^\text{CS}_\mu(\vec{r}) = 0.
+	\label{eqn:CS}
+\end{equation}
+This equation has a countably infinite number of solutions
+$\varphi^\text{CS}_\mu \in H^1(\R^3, \C)$,
+which are the so-called \newterm{Coulomb Sturmians}.
+They are \newterm{isoenergetic},
+\ie all have the identical energy eigenvalue
+\begin{equation}
+	E = -\frac{\kexp^2}{2},
+	\label{eqn:CSenergy}
+\end{equation}
+such that the underlying self-adjoint operator
+\[ \Op{H}^\text{CS} = - \frac12 \Delta - \frac{n\kexp}{r} \]
+has the very simple point spectrum
+\[ \sigma_P(\Op{H}^\text{CS}) = \left\{ -\frac{\kexp^2}{2} \right\}, \]
+but an empty discrete spectrum,
+thus $\sigma_P(\Op{H}^\text{CS}) \subset \sigma_\text{ess}(\Op{H}^\text{CS})$.
 
-\todoil{TODO}
+Since \eqref{eqn:CS} and the hydrogen-like Schrödinger equation
+\eqref{eqn:HydrogenComplete} are very similar,
+we can follow the solution approach discussed in section \vref{sec:HydrogenAtom}
+for \eqref{eqn:CS} as well.
+Inserting a product ansatz of radial part and spherical harmonic
+\begin{equation}
+	\varphi^\text{CS}_\mu(\vec{r}) \equiv
+	\varphi^\text{CS}_{nlm}(\vec{r}) = R^{\text{CS}}_{nl}(r) Y_l^m(\theta, \phi)
+	\label{eqn:CSproduct}
+\end{equation}
+into \eqref{eqn:CS} allows to obtain the Coulomb Sturmian radial equation
+\begin{equation}
+	\left( - \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2}
+	- \frac{n\kexp}{r} - E \right) R_{nl}(r) = 0.
+	\label{eqn:CSRadial}
+\end{equation}
+Its solutions have the form
+\begin{equation}
+	R^\text{CS}_{nl}(r) = N_{nl} (2\kexp r)^l e^{-\kexp r}
+	\;_1F_1\left(l+1-n \middle| 2l+2 \middle|2\kexp r\right)
+	\label{eqn:CSradialSolution}
+\end{equation}
+with normalisation constant
+\[ N_{nl} = \frac{2 \kexp^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}}. \]
+Unsurprisingly this solution is closely related to the radial part of the
+hydrogen-like orbitals \eqref{eqn:HydrogenRadialSolution} as well.
+In fact the Coulomb Sturmians can be constructed
+from the functional form of the equivalent hydrogen-like orbitals
+just by replacing the factors $Z/r$ by $\kexp$.
+In analogy one therefore commonly uses the spectroscopic terminology
+$1s$, $2s$, $2p$, $\ldots$
+on Coulomb Sturmians as well to describe the respective triples
+of quantum numbers $(n, l, m)$.
+Given that both {\STO}s as well as \CS functions are exponential type orbitals
+of the form radial part times spherical harmonic,
+their radial parts are \eqref{eqn:CSradialSolution} and \eqref{eqn:STOradial}
+are naturally very much related.
+The important difference between both types of orbitals is
+that{\STO} basis sets may use a different Slater exponent $\zeta_\mu$ for each
+\STO basis function,
+whereas all \CS functions share the same exponent $\kexp$
+as a commonly modified parameter.
+As we will discuss in more detail towards the end of this section,
+this allows to rewrite the \ERI tensor in a computationally
+much more feasible manner compared to the {\STO}s.
 
-The last type of basis function
-we want to consider here is again
-an atom-centered basis function,
-which is closely related to {\STO}s.
+In their original work \citet{Shull1959} did not yet use the term ``Coulomb Sturmians''
+to refer to the functions $\varphi^\text{CS}_\mu$.
+It was only introduced a few years later
+by Rotenberg~\cite{Rotenberg1962,Rotenberg1970},
+who managed to find a link between the \CS radial equation \eqref{eqn:CSRadial}
+and the special class of Sturm-Liouville differential equations.
+These are second order differential equation of the form
+\begin{equation}
+	\left(
+	\frac{\D}{\D r} \left( p(r) \frac{\D}{\D r} \right) + q(r) + \lambda_n w(r) \right) u_n(r) = 0,
+	\label{eqn:SturmLiouville}
+\end{equation}
+where $p(r) \in C^1(\Omega, \R)$ and $q(r), w(r) \in C^0(\Omega, \R)$ are all positive
+functions and $\Omega = (a,b) \subset \R$ is an open interval.
+Provided that on $a$ and $b$ suitable boundary conditions
+\begin{align*}
+	u_i(a) \cos \alpha - p(a) u_i'(a) \sin \alpha &= 0 & 0 &< \alpha < \pi \\
+	u_i(b) \cos \beta - p(b) u_i'(b) \sin \beta &= 0 & 0 &< \beta < \pi
+\end{align*}
+are chosen,
+the eigenvalues $\lambda_i$ are real and non-degenerate
+\[ \lambda_1 < \lambda_2 < \lambda_3 < \cdots < \lambda_n < \cdots \to \infty \]
+and the eigenfunctions $u_i$ can be normalised
+to satisfy the weighted orthonormality condition
+\begin{equation}
+	\int_a^b u_i^\ast(r) w(r) u_j(r) \D r = \delta_{ij}.
+	\label{eqn:SturmLiouvilleWeightedOrtho}
+\end{equation}
+Following Rotenberg~\cite{Rotenberg1962,Rotenberg1970} we can use the ansatz
+\[ R_{nl}(r) = \frac{u_{nl}(r)}{r} \]
+as well as \eqref{eqn:CSenergy} to rewrite the Coulomb-Sturmian radial equation
+\eqref{eqn:CSRadial} as
+\[ \left(\frac{\partial^2}{\partial r^2} - \frac{l (l+1)}{r^2} - \frac{k^2}{2} + \frac{kn}{r} \right)
+u_{nl} = 0, \]
+which is of Sturm-Liouville form if one sets
+\begin{align*}
+	p(r) &= 1 & q(r) &= \frac{\kexp^2}{2} + \frac{l (l+1)}{r^2} & \lambda_n w(r) = \frac{n\kexp}{r}
+\end{align*}
+A consequence of this is that Coulomb Sturmians satisfy
+the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
+\begin{equation}
+	\int_{\R^3} \cc{\left(\varphi^\text{CS}_{nlm}(\vec{r})\right)}
+		\frac{n}{r\kexp}  \varphi^\text{CS}_{n'l'm'}(\vec{r})
+		\D \vec{r} = \delta_{n n'} \delta_{l l'} \delta_{m m'}.
+	\label{eqn:CoulombSturmianWeightedOrtho}
+\end{equation}
+Most importantly, however, one is able to show
+that the countably infinite set of all Coulomb Sturmians $\{\varphi^\text{CS}_\mu\}_{\mu}$
+is a complete basis for $H^1(\R^3, \R)$~\cite[Theorem 2.3.4]{Avery2008}.
+In the original context of Shull and Löwdin this implies that Coulomb Sturmians
+are not only able to represent the bound states
+of any atomic Schrödinger operator $\Op{H}_{\Nelec}$,
+but the continuum as well.
+In the more context of the discretised \HF problem~(see section \ref{sec:DiscreteHF})
+or the \FCI problem~(see remark \ref{rem:FCI}),
+this makes \CS basis functions rather promising since
+they are mathematically guaranteed to yield the exact solution if one includes
+more and more \CS functions in the basis.
 
-
-% https://www.math.tu-berlin.de/fachgebiete_ag_modnumdiff/fg_modellierung_simulation_und_optimierung_in_natur_und_ingenieurswissenschaften/v_menue/mitarbeiter/prof_dr_reinhold_schneider/publikationen/
-
-
-
-\begin{figure}
+\begin{figure}[t]
 	\centering
 	\includeimage{4_solving_hf/relative_error_cs}
-	\caption{Relative error for Coulomb-Sturmian basis sets for hydrogen.}
-	\label{fig:LocalEnergyCS}
+	\caption[
+		Relative error in the hydrogen \HF ground state
+		for selected \CS basis sets.
+	]
+	{Relative error in the hydrogen \HF ground state
+		for selected \CS basis sets.
+		The error is plotted against
+		the relative distance of electron and proton.
+		The optimal value for $\kexp$ for hydrogen is $1.0$.
+	}
+	\label{fig:RelativeErrorCS}
 \end{figure}
 
+\noindent
+Since \CS functions contain the term
+\[ \exp(-\kexp r) = \exp\left( - \sqrt{-2E}r \right), \]
+which both gives rise to a cusp at $r=0$ as well as
+an energy-dependent exponential decay at $r\to\infty$,
+they reflect the physical properties summarised in remark \vref{rem:PhysicalProperties}
+already at the level of basis functions.
+In general both the slope at the cusp as well as the decay at infinity
+of the individual basis functions will \emph{not} be exactly the physically
+required values, however.
+Due to the completeness property of the \CS basis
+this is not an issue, since a large enough basis will recover the error
+for each $\kexp$.%
+%
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs}
-	\caption{Local energy of a Coulomb-Sturmian basis sets for hydrogen.}
+	\caption[Local energy of the hydrogen \HF ground state for {\CS} bases]{
+		Local energy $E_L(r)$ of the hydrogen atom \HF ground state
+		of selected Coulomb-Sturmian basis sets.
+		$E_L(r)$ is plotted against the relative distance
+		of electron and nucleus.
+		The optimal value for $\kexp$ for hydrogen is $1.0$.
+	}
 	\label{fig:LocalEnergyCS}
 \end{figure}
-
+%
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs_zoom}
-	\caption{Zoom-in for local energy of Coulomb-Sturmian basis sets for hydrogen.}
+	\caption[Local energy of the hydrogen \HF ground state for {\cGTO}s (magnified)]{
+		Magnified version of figure \vref{fig:LocalEnergyCS}
+		around the origin.
+		The orange curve theoretically goes to $-\infty$ as well,
+		but the slope is so large that this is not visible
+		at the resolution level of the plot.
+	}
 	\label{fig:LocalEnergyCSZoom}
 \end{figure}
-
-
-
-% A few historic words and references
-\cite{Rotenberg1970}
-\cite{Gruzdev1990}
-\cite{Avery2006} % Blue book
-\cite{Avery2011} % Purple book
-\cite{Morales2016}
-\cite{Avery2017} % Fast evaluation of STOs
-
-The simplest representative of the latter type of functions
-are the Coulomb-Sturmians~(CS)~\cite{Shull1959,Rotenberg1962,Rotenberg1970}.
-These can be formally obtained as the isoenergetic solutions
-$\varphi^\text{CS}_{nlm}$ to a hydrogenic Schrödinger-like equation
-\begin{equation}
-	\left( \Delta + \frac{k n}{r} - E \right) \varphi^\text{CS}_{nlm}(\vec{r}) = 0.
-	\label{eqn:CS}
-\end{equation}
-Their functional form is
-\begin{equation}
-	\varphi^\text{CS}_{nlm}(\vec{r}) = P_{nl}(r) \exp(- k r) Y_{lm}\left(\vec{r} / r \right),
-	\label{eqn:CSProduct}
-\end{equation}
-\ie a product of a particular polynomial $P_{nl}$,
-an exponential and a spherical harmonic.
-The structure of these functions is very similar compared to STOs
-with the important difference that the parameter $k$ is identical for
-all functions of the basis set.
-On the one hand this allows to reformulate the computation
-of the electron-repulsion integrals in a rather efficient way%
-~\cite{Avery2011PhD,Avery2011}.
-On the other hand this similarity permits such a basis to simultaneously
-represent the long-range tail and the nuclear cusp physically
-if the $k$ is chosen appropriately,
-which makes them rather promising.
-While Coulomb-Sturmians are only applicable for simulating atoms,
-a range of more generalised Sturmian-type basis functions exist%
-~\cite{Avery2011},
-where efficient algorithms for evaluating the repulsion integrals
-have been published recently~\cite{Avery2006,Avery2015,Morales2016,Avery2017}.
-\todo[inline]{James: Add citations for the ionising Sturmians.}
-
-
-\begin{equation}
-	bla
-	\label{eqn:CSEquation}
-\end{equation}
-
-% Sturmians form a complete basis for H^2(R^3) and for H^1(R^1) (only the radial part)
-
-% complete but not over-complete
-
-In previous work we have investigated the use of so-called generalised Sturmians as basis functions
-in electronic structure theory.
 %
-\newcommand{\rpack}{\vec{r}_1, \ldots, \vec{r}_N}
-Generalised Sturmians $\Phi_\nu(\rpack)$ are the solutions to $N$-body Schrödinger-like equation
-\begin{equation}
-	\left( -\frac12 \sum_{j=1}^N \Delta_j + \beta_\nu V_0(\rpack) - E \right) \Phi_\nu(\rpack) = 0
-	\label{eqn:GenSturm}
-\end{equation}
-where $V_0(\rpack)$ is
-a zero-th order potential.
+To illustrate this consider figure \vref{fig:RelativeErrorCS},
+which shows the relative error in the hydrogen ground state
+versus the relative electron-nucleus distance
+for a few selected Coulomb-Sturmian basis sets.
+The labels of the plots both indicate the $\kexp$ value as well as the
+triple  $(\nmax, \lmax, \mmax)$, which is short for indicating
+the set
+\[ \left\{ \varphi^\text{CS}_{nlm} \middle| n \leq \nmax, l \leq \lmax, m \leq \mmax \right\} \]
+of \CS functions.
+The best value for $\kexp$ for hydrogen is $1.0$,
+which would in fact reproduce the exact solution in the $\varphi^\text{CS}_{1s}$ function.
+Figure \vref{fig:RelativeErrorCS} shows in agreement with our previous discussion
+that both the size of the basis as well as the value for $\kexp$ has an influence
+on the relative error.
+Since the slope at which the \CS functions decay
+at infinity depends on $\kexp$ ---
+with larger values leading to faster decay ---
+it is not surprising to find that
+a too large value for $\kexp$ leads to a negative relative error at $\infty$,
+whilst a too small value for $\kexp$ leads to a positive error.
+Similarly larger deviations of $\kexp$ from $1.0$
+in general cause the relative error to become larger in magnitude
+throughout the curve.
+Compare the blue and the orange curve with $\kexp = 1.4$ and $\kexp = 1.2$
+for example.
+Notice that the error values do not scale linearly with $\kexp$
+and furthermore
+that overestimating $\kexp$ is less problematic than underestimating $\kexp$.
+Even though $\kexp = 0.8$ and $\kexp = 1.2$ each miss the exact exponent
+by $0.2$ the orange curve is less steep as $r\to\infty$ and has a lower value
+at the cusp than the green one.
+This is a feature, which can be found in other systems as
+well~(see chapter \vref{ch:CSQChem}).
+Compared to the effect which $\kexp$ has on the error,
+the effect of increasing the basis is much more pronounced.
+Even though the green and the red curve both use a $\kexp$,
+which is off by $0.2$,
+the red curve stays below a relative error of $0.05$
+over the full depicted range of distances,
+whilst the green one starts to become rather inaccurate from distances
+of $7.5$ Bohr and larger.
+Very similar conclusions can be drawn
+from figure \vref{fig:LocalEnergyCS},
+which shows the local energy versus relative distance.
+Comparing this plot to the local energy obtained for the \cGTO
+discretisations in figure \vref{fig:LocalEnergyCgto}
+one notices how the \cGTO local energy has much more wiggles
+and overall deviations from the exact value of $0.5$.
+Even though the \CS discretisations depicted
+in figure \ref{fig:LocalEnergyCS} are not everywhere perfect eigenfunctions
+of the hydrogen atom,
+the still largely encode most of the physics.
+At the level of a $(5,1,1)$ basis even with a too small value $\kexp = 0.8$,
+the eigenfunction is acceptable over the full depicted range
+except the nucleus.
+Figure \ref{fig:LocalEnergyCSZoom} shows a detailed plot
+of the local energies of a $(3,1,1)$, a $(5,1,1)$
+and a $(7,1,1)$ discretisation for $\kexp = 0.8$
+around the nucleus.
+The $(5,1,1)$ discretisation already is very close to the $0.5$ everywhere,
+but still decays visibly to $-\infty$ at the origin.
+The $(7,1,1$ discretisation already corrects for this
+up to the point, where the resolution of the plot is no longer
+enough to fully show the divergence to $-\infty$.
+For more examples discussing the convergence behaviour of
+\CS discretisations consider chapter \vref{ch:CSQChem}.
 
-In case of atoms a good choice is the nuclear attraction:
-The electrostatic electron-nucleus interaction
-\[
-	V_0(\rpack) = - \sum_{j=1}^N \frac{Z}{r_j}.
-\]
-\todo[inline]{Is many nuclei also possible here?}
-Note that the electron-nucleus interaction is scaled by the factor $\beta_\nu$ in \eqref{eqn:GenSturm}
-such that the solutions $\Phi_\nu(\rpack)$ all become isoenergetic.
-This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
-as well as properly represent the nuclear cusp at the core.
-As such the functional form of generalised Sturmians is very much related to STOs.
-Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
-to make computing them less demanding.
-This requires, however, that the mathematical properties of the Sturmians
-can be fully exploited during the computation,
-which in turn requires the Fock matrix to be arranged in a specific way.
-Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
-but much rather only use these matrices in the form of matrix-vector products,
-since this overall saves an order of magnitude in the computational scaling.
+
+\todoil{TODO evaluation of Fock matrix terms}
 
 
-Coulomb-Sturmian basis function is composed of
-\[ \varphi_\mu(\vec{r}) = \]
+For evaluating the Fock matrix $\matFnfull$,
+let us first consider the terms
 
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item What are Coulomb-Sturmians and where do they come from
-		\item Show what needs to be done
-		\item Show problems $\Rightarrow$ Lazy matrices
-	\end{itemize}
+Let us now consider the evaluation of the 
+
+
+integrals of the \HF procedure
+
+%---
+The individual terms of the Fock matrix and the overlap matrix
+are given by expressions \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
+
+For evaluating the Fock matrix $\matFnfull$,
+let us first consider the terms
+$\mat{T}$ and $\mat{V}_0$ as well as the overlap matrix $\mat{S}$.
+This amounts to evaluating integrals
+\begin{align*}
+O_{\mu\nu} &=  \int_\Omega \varphi_\mu(\vec{r}) \, \Op{O} \, \varphi_\nu(\vec{r}) \D\vec{r}
+&&\text{where} \quad \Op{O} = \Op{T}, \Op{V}_0 \text{ or } \id_{H^1(\Omega,\R)}.
+\intertext{
+With reference to the grid $\mathcal{M}_h$ we can write this as a
+sum of cell contributions $O^c_{\mu\nu}$
 }
+O_{\mu\nu} &= \sum_{c\in\mathcal{M}_h} O^c_{\mu\nu}
+&&\text{where} \quad O^c_{\mu\nu} = \int_c \varphi_\mu(\vec{r})\, \Op{O}\, \varphi_\nu(\vec{r}) \D\vec{r}.
+\end{align*}
+%---
 
+
+
+
+% evaluation of the integrals
+% one-electron integrals super easy
+% two-electron integrals methods, contraction approach
 
 \begin{equation}
 	todo
@@ -140,12 +323,8 @@ and not contracted as a density matrix
 another example of contraction-based approach
 
 
-% TODO Things to show:
-%    - The larger n, the larger the energy under the action of the fock operator
-%    - HF Kinetic energy scales with k: Lower if k lower
-%    - HF Nuclear attraction energy scales with k: Higher if k lower
-%    - HF electron-electron interaction scales with k: Lower if k lower
-% Refer to these results in the chapter about Sturmian calculations
+% structure of the fock matrix diagonal dominance
+% Fock matirx similar to gaussians
 
 \begin{figure}
 	\centering
@@ -169,3 +348,56 @@ another example of contraction-based approach
 
 
 
+\todoil{A few lines summarising why they are useful alternatives}
+% Include solution approaches: Direct and iterative, both possible
+
+
+This requires, however, that the mathematical properties of the Sturmians
+can be fully exploited during the computation,
+which in turn requires the Fock matrix to be arranged in a specific way.
+Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
+but much rather only use these matrices in the form of matrix-vector products,
+since this overall saves an order of magnitude in the computational scaling.
+
+\todoil{From here overview of other types of Sturmian functions}
+
+While Coulomb Sturmians are only applicable for simulating atoms,
+a range of more generalised Sturmian-type basis functions exist
+~\cite{Avery2011}
+which share some of the properties~\cite{Avery2011},
+such that Coulomb Sturmians can be seen as a simple test case.
+In the most general sense Sturmian-type orbitals are the solution
+to the $\Nelec$-body Schrödinger-like equation
+\begin{equation}
+	\left( -\frac12 \Delta + \beta_{\mu} V_0(\vec{x}) - E \right) \Phi^\text{St}_\mu(\vec{x}) = 0
+	\label{eqn:SturmianGeneral}
+\end{equation}
+where
+\[ V_0(\vec{x}) = V_0(\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_{\Nelec}) \]
+is a good zeroth order approximation to the actual potential
+\[ V(\vec{x}) = \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}}
++ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \]
+such that \eqref{eqn:SturmianGeneral} can be analytically solved
+and $\beta_{\mu}$ is chosen to make the solutions isoenergetic.
+For many-electron atoms Goscinski for example suggested
+$V_0(\vec{x}) = \sum_i \frac{Z}{r_i}$.
+Many-centre Sturmians are possible, too~\cite{Avery2003,Avery2013}.
+In this broad sense Sturmian-type orbitals are an active
+field of research%
+~\cite{%
+	Gruzdev1990,Avery2006,Hoggan2009,%
+	Randazzo2010,Mitnik2011,%
+	Avery2011,Avery2011PhD,%
+	Avery2013,Avery2015,Randazzo2015,Granados2016,Abdouraman2016,%
+	Morales2016,Avery2017,Avery2018%
+}
+with many efforts to yield fast evaluation schemes
+for the \ERI tensor~\cite{Avery2013,Avery2017,Avery2018}
+for generalised Sturmians as well.
+
+Methods to use generalised Sturmians or Coulomb Sturmians
+for \STO integral evaluation~\cite{Morales2016,Avery2017}.
+
+Methods to combine numerical methods and Sturmians
+to yield Sturmians including modelling of continuum%
+~\cite{Randazzo2010,Mitnik2011,Randazzo2015,Granados2016,Abdouraman2016}

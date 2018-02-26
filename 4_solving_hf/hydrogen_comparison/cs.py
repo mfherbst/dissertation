@@ -56,8 +56,9 @@ def plot_local_energy_closeup():
         molsturm.construct_basis("sturmian/atomic", sys, n_max=7, l_max=LMAX,
                                  m_max=LMAX, k_exp=0.8),
     ]
+    colors = ["tab:green", "tab:red", "tab:orange"]
 
-    for bas in bases:
+    for i, bas in enumerate(bases):
         coeff = common.do_hydrogen_scf(bas)
 
         rab = np.linspace(0, 0.05, 5000), np.linspace(0.05, 0.5, 5000)
@@ -66,7 +67,7 @@ def plot_local_energy_closeup():
 
         label = "({},{},{})".format(*np.max(bas.functions, axis=0))
         label += r" $k_\text{exp}=" + "{:.1f}$".format(bas.k_exp)
-        plt.plot(r, locen, label=label)
+        plt.plot(r, locen, colors[i], label=label)
 
     plt.xlabel(common.XLABEL)
     plt.ylabel(common.ELLABEL)
