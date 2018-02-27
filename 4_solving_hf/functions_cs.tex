@@ -3,32 +3,35 @@
 Coulomb Sturmians~(CS) are another type of atom-centred basis functions,
 which so far have seen little attention in electronic structure theory.
 Similar to Slater-type orbitals
-they were introduced by \citet{Shull1959} in \citeyear{Shull1959}
+they were introduced~\cite{Shull1959}
 as a generalisation to the solutions of the Schrödinger equation for hydrogen-like atoms.
-CS functions cannot be used for molecules, only for atoms,
-but related functions exist,
-which are more generally applicable
-justifying our detailed treatment in this work.
+\CS functions cannot be used for molecules, only for atoms,
+but closely related functions exist,
+which are more generally applicable.
 The main motivation for \citet{Shull1959} to look into alternative
 exponential functions was that they wanted to construct one-electron basis functions,
 which could be used to compute the spectra of many-electron atoms.
-From previous approaches based only on hydrogen-like orbital functions it was known,
-that a proper representation of the cusps of the wave function
-required the inclusion of the continuum,
-which was exceedingly difficult in practice~\cite{Avery2006}.
-Therefore they artificially modified the Schrödinger equation \eqref{eqn:HydrogenComplete}
-for hydrogenic atoms and used the resulting analytical solutions
-to model the spectrum of Helium up to a decent level of accuracy
-without explicit inclusion of the continuum.
+From previous approaches it was known that a
+proper representation of the cusps of the wave function
+required the inclusion of the continuum
+if hydrogen-like orbital functions were used.
+This was, however, exceedingly difficult in practice~\cite{Avery2006}.
+To avoid this dilemma \citet{Shull1959} artificially modified
+the Schrödinger equation \eqref{eqn:HydrogenComplete}
+for hydrogen-like atoms,
+such that it was on the one hand still analytically solvable,
+but on the other hand the spectrum of Helium could be modelled
+up to a rather good level of accuracy,
+even without explicit inclusion of the continuum.
 Effectively their trick was to multiply the Coulomb term
 in \eqref{eqn:HydrogenComplete} by a prefactor
 \begin{equation}
 	\beta_n = \frac{\kexp n}{Z}
 	\label{eqn:CSbeta}
 \end{equation}
-with $k \in \R$ arbitrary to yield
+with $\kexp \in \R$ arbitrary to yield
 \begin{equation}
-	\left( \Delta - \beta_n \frac{Z}{r} - E \right) \varphi^\text{CS}_\mu(\vec{r}) = 0.
+	\left( - \frac12 \Delta - \beta_n \frac{Z}{r} - E \right) \varphi^\text{CS}_\mu(\vec{r}) = 0.
 	\label{eqn:CS}
 \end{equation}
 This equation has a countably infinite number of solutions
@@ -45,19 +48,22 @@ such that the underlying self-adjoint operator
 has the very simple point spectrum
 \[ \sigma_P(\Op{H}^\text{CS}) = \left\{ -\frac{\kexp^2}{2} \right\}, \]
 but an empty discrete spectrum,
-thus $\sigma_P(\Op{H}^\text{CS}) \subset \sigma_\text{ess}(\Op{H}^\text{CS})$.
+thus $\sigma_P(\Op{H}^\text{CS}) \subset \sigma_\text{ess}(\Op{H}^\text{CS})$,
+which allows to capture continuum effects in a truncated basis.
 
 Since \eqref{eqn:CS} and the hydrogen-like Schrödinger equation
 \eqref{eqn:HydrogenComplete} are very similar,
-we can follow the solution approach discussed in section \vref{sec:HydrogenAtom}
-for \eqref{eqn:CS} as well.
+we can apply the solution approach discussed in section \vref{sec:HydrogenAtom}
+to equation \eqref{eqn:CS} as well.
 Inserting a product ansatz of radial part and spherical harmonic
 \begin{equation}
 	\varphi^\text{CS}_\mu(\vec{r}) \equiv
-	\varphi^\text{CS}_{nlm}(\vec{r}) = R^{\text{CS}}_{nl}(r) Y_l^m(\theta, \phi)
+	\varphi^\text{CS}_{nlm}(\vec{r}) = R^{\text{CS}}_{nl}(r) Y_l^m(\uvec{r})
+	\equiv
+	R^{\text{CS}}_{nl}(r) Y_l^m(\theta, \phi)
 	\label{eqn:CSproduct}
 \end{equation}
-into \eqref{eqn:CS} allows to obtain the Coulomb Sturmian radial equation
+into \eqref{eqn:CS} allows to obtain the Coulomb-Sturmian radial equation
 \begin{equation}
 	\left( - \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2}
 	- \frac{n\kexp}{r} - E \right) R_{nl}(r) = 0.
@@ -71,35 +77,37 @@ Its solutions have the form
 \end{equation}
 with normalisation constant
 \[ N_{nl} = \frac{2 \kexp^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}}. \]
-Unsurprisingly this solution is closely related to the radial part of the
-hydrogen-like orbitals \eqref{eqn:HydrogenRadialSolution} as well.
+Unsurprisingly this functional form is closely related to the radial part of the
+hydrogen-like orbitals \eqref{eqn:HydrogenRadialSolution}.
 In fact the Coulomb Sturmians can be constructed
-from the functional form of the equivalent hydrogen-like orbitals
+from the equivalent hydrogen-like orbitals
 just by replacing the factors $Z/r$ by $\kexp$.
 In analogy one therefore commonly uses the spectroscopic terminology
 $1s$, $2s$, $2p$, $\ldots$
-on Coulomb Sturmians as well to describe the respective triples
-of quantum numbers $(n, l, m)$.
+to describe the respective triples
+of quantum numbers $(n, l, m)$ for Coulomb Sturmians as well.
 Given that both {\STO}s as well as \CS functions are exponential type orbitals
 of the form radial part times spherical harmonic,
-their radial parts are \eqref{eqn:CSradialSolution} and \eqref{eqn:STOradial}
-are naturally very much related.
+their radial parts \eqref{eqn:CSradialSolution} and \eqref{eqn:STOradial}
+are related as well%
+\footnote{In fact some recent work~\cite{Avery2017} exploits this to evaluate
+\STO \ERI integrals with Coulomb-Sturmians.}.
 The important difference between both types of orbitals is
 that{\STO} basis sets may use a different Slater exponent $\zeta_\mu$ for each
 \STO basis function,
 whereas all \CS functions share the same exponent $\kexp$
 as a commonly modified parameter.
-As we will discuss in more detail towards the end of this section,
-this allows to rewrite the \ERI tensor in a computationally
-much more feasible manner compared to the {\STO}s.
+Even though this difference is subtle,
+it is the key ingredient to derive the efficient evaluation schemes
+of the \CS-\ERI tensor discussed further down this section.
 
 In their original work \citet{Shull1959} did not yet use the term ``Coulomb Sturmians''
 to refer to the functions $\varphi^\text{CS}_\mu$.
-It was only introduced a few years later
+This name was only introduced a few years later
 by Rotenberg~\cite{Rotenberg1962,Rotenberg1970},
 who managed to find a link between the \CS radial equation \eqref{eqn:CSRadial}
 and the special class of Sturm-Liouville differential equations.
-These are second order differential equation of the form
+Sturm-Liouville equations are second order differential equation of the form
 \begin{equation}
 	\left(
 	\frac{\D}{\D r} \left( p(r) \frac{\D}{\D r} \right) + q(r) + \lambda_n w(r) \right) u_n(r) = 0,
@@ -127,11 +135,11 @@ as well as \eqref{eqn:CSenergy} to rewrite the Coulomb-Sturmian radial equation
 \eqref{eqn:CSRadial} as
 \[ \left(\frac{\partial^2}{\partial r^2} - \frac{l (l+1)}{r^2} - \frac{k^2}{2} + \frac{kn}{r} \right)
 u_{nl} = 0, \]
-which is of Sturm-Liouville form if one sets
+which is of Sturm-Liouville form with
 \begin{align*}
 	p(r) &= 1 & q(r) &= \frac{\kexp^2}{2} + \frac{l (l+1)}{r^2} & \lambda_n w(r) = \frac{n\kexp}{r}
 \end{align*}
-A consequence of this is that Coulomb Sturmians satisfy
+One consequence of this is that Coulomb Sturmians satisfy
 the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
 \begin{equation}
 	\int_{\R^3} \cc{\left(\varphi^\text{CS}_{nlm}(\vec{r})\right)}
@@ -146,11 +154,13 @@ In the original context of Shull and Löwdin this implies that Coulomb Sturmians
 are not only able to represent the bound states
 of any atomic Schrödinger operator $\Op{H}_{\Nelec}$,
 but the continuum as well.
-In the more context of the discretised \HF problem~(see section \ref{sec:DiscreteHF})
+When it comes to the discretised \HF problem~(see section \ref{sec:DiscreteHF})
 or the \FCI problem~(see remark \ref{rem:FCI}),
-this makes \CS basis functions rather promising since
-they are mathematically guaranteed to yield the exact solution if one includes
-more and more \CS functions in the basis.
+this makes \CS basis functions rather promising as well,
+since the completeness property
+provides a mathematical guarantee that the exact solution can be approximated
+arbitrarily closely
+if more and more \CS functions are included.
 
 \begin{figure}[t]
 	\centering
@@ -178,7 +188,7 @@ already at the level of basis functions.
 In general both the slope at the cusp as well as the decay at infinity
 of the individual basis functions will \emph{not} be exactly the physically
 required values, however.
-Due to the completeness property of the \CS basis
+Due to the completeness of the \CS basis
 this is not an issue, since a large enough basis will recover the error
 for each $\kexp$.%
 %
@@ -208,17 +218,17 @@ for each $\kexp$.%
 	\label{fig:LocalEnergyCSZoom}
 \end{figure}
 %
-To illustrate this consider figure \vref{fig:RelativeErrorCS},
+To illustrate this for an example consider figure \vref{fig:RelativeErrorCS},
 which shows the relative error in the hydrogen ground state
 versus the relative electron-nucleus distance
 for a few selected Coulomb-Sturmian basis sets.
 The labels of the plots both indicate the $\kexp$ value as well as the
-triple  $(\nmax, \lmax, \mmax)$, which is short for indicating
-the set
-\[ \left\{ \varphi^\text{CS}_{nlm} \middle| n \leq \nmax, l \leq \lmax, m \leq \mmax \right\} \]
+triple  $(\nmax, \lmax, \mmax)$, which is a short hand for indicating
+the finite basis set
+\[ \left\{ \varphi^\text{CS}_{nlm} \, \middle| \, n \leq \nmax, l \leq \lmax, m \leq \mmax \right\} \]
 of \CS functions.
-The best value for $\kexp$ for hydrogen is $1.0$,
-which would in fact reproduce the exact solution in the $\varphi^\text{CS}_{1s}$ function.
+The best $\kexp$ value for hydrogen is $1.0$,
+which would in fact give the exact ground state in the $\varphi^\text{CS}_{1s}$ function.
 Figure \vref{fig:RelativeErrorCS} shows in agreement with our previous discussion
 that both the size of the basis as well as the value for $\kexp$ has an influence
 on the relative error.
@@ -226,29 +236,32 @@ Since the slope at which the \CS functions decay
 at infinity depends on $\kexp$ ---
 with larger values leading to faster decay ---
 it is not surprising to find that
-a too large value for $\kexp$ leads to a negative relative error at $\infty$,
+a too large value for $\kexp$ leads to a negative relative error at $r = \pm \infty$,
 whilst a too small value for $\kexp$ leads to a positive error.
 Similarly larger deviations of $\kexp$ from $1.0$
-in general cause the relative error to become larger in magnitude
-throughout the curve.
+cause the relative error to become larger in magnitude throughout the curve:
 Compare the blue and the orange curve with $\kexp = 1.4$ and $\kexp = 1.2$
 for example.
-Notice that the error values do not scale linearly with $\kexp$
-and furthermore
-that overestimating $\kexp$ is less problematic than underestimating $\kexp$.
-Even though $\kexp = 0.8$ and $\kexp = 1.2$ each miss the exact exponent
-by $0.2$ the orange curve is less steep as $r\to\infty$ and has a lower value
-at the cusp than the green one.
-This is a feature, which can be found in other systems as
-well~(see chapter \vref{ch:CSQChem}).
-Compared to the effect which $\kexp$ has on the error,
-the effect of increasing the basis is much more pronounced.
+The relative error does, however, not scale linearly with $\kexp$.
+Yet furthermore it is not even symmetric with respect to the direction
+into which $\kexp$ deviates from the optimal value.
+In this case the orange curve is less steep as $r\to\infty$ and has a lower value
+at the cusp than the green one,
+even though both miss the best exponent by $0.2$.
+In all systems I investigated so far,
+I made the similar observation that the error is more pronounced if the optimal
+value for $\kexp$ is underestimated rather than overestimated.
+Compared to the effect which $\kexp$ has on the error
+the effect of increasing the basis is much more significant.
 Even though the green and the red curve both use a $\kexp$,
 which is off by $0.2$,
-the red curve stays below a relative error of $0.05$
-over the full depicted range of distances,
-whilst the green one starts to become rather inaccurate from distances
+the red curve following a $(5,1,1)$-basis
+stays below a relative error of $0.05$
+over the full depicted range of distances.
+On the other hand the green one, a $(3,1,1)$-basis,
+starts to become rather inaccurate from distances
 of $7.5$ Bohr and larger.
+
 Very similar conclusions can be drawn
 from figure \vref{fig:LocalEnergyCS},
 which shows the local energy versus relative distance.
@@ -257,79 +270,350 @@ discretisations in figure \vref{fig:LocalEnergyCgto}
 one notices how the \cGTO local energy has much more wiggles
 and overall deviations from the exact value of $0.5$.
 Even though the \CS discretisations depicted
-in figure \ref{fig:LocalEnergyCS} are not everywhere perfect eigenfunctions
+in figure \ref{fig:LocalEnergyCS} are not perfect eigenfunctions
 of the hydrogen atom,
-the still largely encode most of the physics.
-At the level of a $(5,1,1)$ basis even with a too small value $\kexp = 0.8$,
-the eigenfunction is acceptable over the full depicted range
-except the nucleus.
-Figure \ref{fig:LocalEnergyCSZoom} shows a detailed plot
-of the local energies of a $(3,1,1)$, a $(5,1,1)$
+the local energy is still mostly close to $0.5$,
+thus they encode most of the physics.
+Even with a too small value $\kexp = 0.8$,
+the $(5,1,1)$ basis produces an acceptable eigenfunction over the full depicted
+range --- except the nucleus.
+This is illustrated in more detail in figure
+\ref{fig:LocalEnergyCSZoom},
+which is a close-up of the local energies of a $(3,1,1)$, a $(5,1,1)$
 and a $(7,1,1)$ discretisation for $\kexp = 0.8$
 around the nucleus.
-The $(5,1,1)$ discretisation already is very close to the $0.5$ everywhere,
-but still decays visibly to $-\infty$ at the origin.
-The $(7,1,1$ discretisation already corrects for this
-up to the point, where the resolution of the plot is no longer
-enough to fully show the divergence to $-\infty$.
-For more examples discussing the convergence behaviour of
-\CS discretisations consider chapter \vref{ch:CSQChem}.
+Whilst the $(3,1,1)$ and the $(5,1,1)$ both decay visibly to $-\infty$ at the origin,
+the $(7,1,1)$ discretisation already mostly corrects for this.
+Even though it still goes to $-\infty$ in theory,
+the resolution of the plot is no longer good enough to show this properly.
+From the illustrated trends it is clear that
+\CS discretisations are able to represent
+both the exponential decay as well as the electron-nuclear cusp
+up to any desired accuracy if the basis is chosen large enough.
+More examples discussing the convergence behaviour of
+\CS discretisations can be found in chapter \vref{ch:CSQChem}.
 
-
-\todoil{TODO evaluation of Fock matrix terms}
-
-
-For evaluating the Fock matrix $\matFnfull$,
-let us first consider the terms
-
-Let us now consider the evaluation of the 
-
-
-integrals of the \HF procedure
-
-%---
-The individual terms of the Fock matrix and the overlap matrix
-are given by expressions \eqref{eqn:Tbas} to \eqref{eqn:Sbas}
-
-For evaluating the Fock matrix $\matFnfull$,
-let us first consider the terms
-$\mat{T}$ and $\mat{V}_0$ as well as the overlap matrix $\mat{S}$.
-This amounts to evaluating integrals
-\begin{align*}
-O_{\mu\nu} &=  \int_\Omega \varphi_\mu(\vec{r}) \, \Op{O} \, \varphi_\nu(\vec{r}) \D\vec{r}
-&&\text{where} \quad \Op{O} = \Op{T}, \Op{V}_0 \text{ or } \id_{H^1(\Omega,\R)}.
-\intertext{
-With reference to the grid $\mathcal{M}_h$ we can write this as a
-sum of cell contributions $O^c_{\mu\nu}$
-}
-O_{\mu\nu} &= \sum_{c\in\mathcal{M}_h} O^c_{\mu\nu}
-&&\text{where} \quad O^c_{\mu\nu} = \int_c \varphi_\mu(\vec{r})\, \Op{O}\, \varphi_\nu(\vec{r}) \D\vec{r}.
-\end{align*}
-%---
-
-
-
-
-% evaluation of the integrals
-% one-electron integrals super easy
-% two-electron integrals methods, contraction approach
-
+Next to the ability of a basis function type to properly
+represent the physics of a chemical system, we also need to be able
+to solve the arising numerical problems
+in order to make it useful for practical quantum-chemical calculations.
+Similar to the other basis function types discussed so far,
+we will therefore now turn our attention to the Fock matrix $\matFnfull$,
+both its structure as well as its diagonalisation.
+For this we first consider the computation of the integrals
+\eqref{eqn:Tbas} to \eqref{eqn:Sbas},
+starting with the overlap matrix.
+Its elements $S_{\mu\mu'}$ can be computed
+for any two Coulomb Sturmians%
+\footnote{We will drop the ``CS'' superscripts for basis functions
+and radial parts in the remainder of this section for simplicity.}
+$\varphi_{\mu}$ and $\varphi_{\mu'}$
+by treating radial and angular part separately~\cite{Avery2015}
 \begin{equation}
-	todo
+	\begin{aligned}
+	S_{\mu\mu'} &= \int_{\R^3} \cc{\varphi_{\mu}}(\vec{r}) \varphi_{\mu'}(\vec{r})  \D\vec{r} \\
+	&= \int_0^\infty R_{nl}(r) R_{n'l'}(r) r^2 \D r \cdot
+		\int_{\set{S}^2} \cc{\left(Y^m_l\right)}\!(\uvec{r}) \,
+			Y^{m'}_{l'}(\uvec{r}) \D \uvec{r} \\
+			&= \delta_{m m'} \delta_{l l'}
+				\underbrace{\int_0^\infty R_{nl}(r) R_{n'l}(r) r^2 \D r}_{= s^{(l)}_{n n'}},
+	\end{aligned}
+	\label{eqn:OverlapCS}
+\end{equation}
+Normalisation implies that $s^{(l)}_{n n} = 1$
+and the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrtho}
+implies that $s^{(l)}_{n n'} = 0$ iff $\abs{n -n'} > 1$.
+By following the algebra one can further show~\cite{Avery2015} that
+\[
+	s^{(l)}_{n,n+1} = s^{(l)}_{n+1,n} = - \frac12 \sqrt{\frac{(n-l)(n+l+1)}{n (n+1)}},
+\]
+making $\mat{S}$ both sparse and trivial to compute.
+Similarly one can directly employ the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrtho}
+to show that the nuclear attraction matrix is diagonal, namely
+\begin{equation}
+	\begin{aligned}
+	\left(V_0\right)_{\mu\mu'} &=
+	\int_{\R^3} \cc{\varphi_{\mu}}(\vec{r}) \frac{Z}{r} \varphi_{\mu'}(\vec{r})  \D\vec{r} \\
+	&= \frac{Z\kexp}{n'} \int_{\R^3} \cc{\varphi_{\mu}}(\vec{r}) \frac{n'}{r\kexp} \varphi_{\mu'}(\vec{r})  \D\vec{r} \\
+	&= \delta_{\mu \mu'} \frac{Z\kexp}{n}.
+	\end{aligned}
+	\label{eqn:NucAttrCS}
+\end{equation}
+From \eqref{eqn:CSbeta} to \eqref{eqn:CSenergy} we get
+\[ \left(- \frac12 \Delta - \frac{n \kexp}{r} + \frac{\kexp^2}{2} \right) \varphi_{\mu}(\vec{r}) = 0, \]
+which implies for the kinetic energy matrix elements
+\begin{equation}
+	\begin{aligned}
+		\left(V_0\right)_{\mu\mu'} &=
+		\int_{\R^3} \cc{\varphi_{\mu}}(\vec{r}) \left( - \frac12 \Delta  \right)
+		\varphi_{\mu'}(\vec{r})  \D\vec{r} \\
+		&= \int_{\R^3} \cc{\varphi_{\mu}}(\vec{r})
+		\left(\frac{n' \kexp}{r} - \frac{\kexp^2}{2} \right)
+		\varphi_{\mu'}(\vec{r})  \D\vec{r} \\
+		&= k^2 \left( \delta_{\mu\mu'} - \frac12 S_{\mu\mu'} \right) \\
+		&= k^2 \delta_{ll'} \delta_{mm'} \left( \delta_{nn'} - \frac{1}{2} s^{(l)}_{n n'} \right),
+	\end{aligned}
+	\label{eqn:KineticCS}
+\end{equation}
+such that they follow the same advantageous sparsity pattern as the overlap matrix.
+The one-electron integrals thus contain at most 3 non-zeros per row
+and are tridiagonal in $lmn$ or $mln$ index order.
+Due to the simplicity of the expressions of the matrix elements,
+storing these matrix terms in memory --- even in a compressed tridiagonal form ---
+is not needed,
+since recomputing the values takes a neglible number of flops.
+
+Unsurprisingly treating the two-electron integrals is more involved.
+We follow \cite{Avery2015},
+which describes the treatment in a more general context
+and the specialised arguments presented in the documentaton of
+\sturmint~\cite{sturmintWeb}.
+Due to the structure of the radial part $R_{nl}(r)$
+one may write the product of two Coulomb Sturmians as a
+sum over Coulomb Sturmians with twice the exponent, \ie
+\newcommand{\csC}{\mathcal{C}}
+\begin{equation}
+	\cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r})
+	= \sum_{\mu} \csC^\mu_{\mu_1,\mu_2} \varphi_{\mu}(2\kexp, \vec{r})
+	\label{eqn:CSshellpairExpansion}
+\end{equation}
+This expansion looks familiar to the density-fitting approximation
+in the context of \cGTO basis sets,
+but is in fact \emph{exact} in the case of Coulomb Sturmians.
+Since
+\[ \cc{\left( \cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r}) \right)} =
+\cc{\varphi_{\mu_2}(\vec{r})} \varphi_{\mu_1}(\vec{r}) \]
+it follows that the conjugated product requires the related
+expansion coefficients $\csC^\mu_{\mu_2,\mu_1}$.
+With this the electron repulsion integral tensor in Mullikan index \eqref{eqn:ERI}
+ordering may be written as the contraction
+\begin{equation}
+	\eriMu{\mu_1\mu_2}{\mu_3\mu_4}
+		= \sum_{\mu\mu'} \cc{\left(\csC^\mu_{\mu_1,\mu_2}\right)} \,
+		I_{\mu\mu'} \, \csC^{\mu'}_{\mu_3,\mu_4}
+		= \sum_{\mu\mu'} \csC^\mu_{\mu_2,\mu_1} \,
+		I_{\mu\mu'} \, \csC^{\mu'}_{\mu_3,\mu_4}
+	\label{eqn:CSeriContraction}
+\end{equation}
+where $I_{\mu\mu'}$ is the electron repulsion kernel in terms of the $2\kexp$-functions
+\begin{equation}
+	I_{\mu\mu'} \equiv
+	\int_{\R^3} \int_{\R^3}
+	\frac{
+	\cc{\varphi_{\mu'}}(2k,\vec{r}_1) \,
+	\varphi_{\mu}(2k,\vec{r}_2)
+	}{r_{12}}
+	\D\vec{r}_1 \D\vec{r}_2.
+	\label{eqn:CSeriKernelDef}
+\end{equation}
+Using the well-known expansion of the Coulomb operator
+in terms of spherical harmonics
+\[ \frac{1}{r_{12}} = \sum_{l''=0}^\infty
+	\frac{r^{l''}_<}{r_>^{l'' + 1}} \frac{4\pi}{2l'' + 1}
+	\sum_{m''=-{l''}}^{l''} Y_{l''}^{m''}(\uvec{r}_1)
+	\cc{\left(Y_{l''}^{m''}(\uvec{r}_2)\right)}
+\]
+where
+\begin{align*}
+	r_< &\equiv \min(r_1, r_2) & r_> &\equiv \max(r_1, r_2)
+\end{align*}
+equation \eqref{eqn:CSeriKernelDef} may be rewritten as
+\begin{equation}
+\begin{aligned}
+	I_{\mu\mu'}
+	&= \sum_{l''=0}^{\infty}\frac{4\pi}{2l''+1}
+	\sum_{m''=-l''}^{l''}
+	\int_0^\infty \int_0^\infty
+	r_1^2 R_{nl}(2\kexp,r_1) \, r_2^2 R_{n'l'}(2\kexp,r_2) \frac{r^{l''}_<}{r_>^{l'' + 1}}
+	\, \D r_1  \D r_2 \\
+	&\hspace{30pt}
+	\cdot \int_{\set{S}^2}
+		\underbrace{\cc{\left(Y_l^m\right)}\!(\uvec{r}_1) \, Y_{l''}^{m''}(\uvec{r}_1)}
+		_{=\delta_{l,l''}\delta_{m,m''}}
+		\D \uvec{r}_1
+	\cdot \int_{\set{S}^2}
+		\underbrace{Y_{l'}^{m'}(\uvec{r}_2) \cc{\left(Y_{l''}^{m''}\right)}\!\!(\uvec{r}_2)}
+		_{=\delta_{l',l''}\delta_{m',m''}}
+		\, \D \uvec{r}_2 \\
+	&= \delta_{ll'} \delta_{mm'} I^{(l)}_{nn'}
+\end{aligned}
+\label{eqn:CSeriKernel}
+\end{equation}
+where
+\begin{equation}
+	I^{(l)}_{nn'}
+	= \frac{4\pi}{2l+1}
+	\int_0^\infty \int_0^\infty
+	r_1^2 R_{nl}(2\kexp,r_1) \, r_2^2 R_{n'l}(2\kexp,r_2) \frac{r^{l}_<}{r_>^{l + 1}}
+	\, \D r_1  \D r_2.
+	\label{eqn:CSeriKernelSmall}
+\end{equation}
+It is not immediately obvious from the form of equation \eqref{eqn:CSeriKernelSmall},
+but the dependency on $\kexp$ can be factored out of this expression,
+such that it only depends on $n$, $n'$ and $l$.
+If we assume for the principle quantum number $n \leq 20$, which is rather typical,
+the tensor $I^{(l)}_{nn'}$ has only about $20^3 = 8000$ elements,
+which can be pre-evaluated and stored inside the program.
+In fact even more simplifications are possible if one inserts
+the definition of the radial parts and splits the integration kernel by powers of
+$r_1$ and $r_2$.
+For the required polynomial powers $\alpha, \beta$ the integrals
+\[ \int_0^\infty \int_0^\infty r_1^\alpha r_2^\beta \exp(-r_1) \exp(-r_2)
+	\frac{r^{l}_<}{r_>^{l + 1}} \, \D r_1  \D r_2 \]
+can then be precomputed and stored as a vector.
+At runtime one only needs to form the dot product of the precomputed vector
+with the appropriate vector of polynomial coefficients
+to yield the value for $I^{(l)}_{nn'}$.
+
+\noindent
+Let us now return to equation \eqref{eqn:CSshellpairExpansion}, \ie
+\[
+	\cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r})
+	= \sum_{\mu} \csC^\mu_{\mu_1,\mu_2} \varphi_{\mu}(2\kexp, \vec{r}).
+\]
+To obtain an expression for the coefficients $\csC^\mu_{\mu_1,\mu_2}$
+we multiply this equation with
+$\cc{\left(\varphi_{\mu'}\right)}(2\kexp, \vec{r})$
+from the right and integrate over $\R^3$.
+Using the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrtho}
+for the $2\kexp$ Coulomb Sturmians
+this yields
+\begin{equation}
+	\begin{aligned}
+	\csC^\mu_{\mu_1,\mu_2}
+	&= \frac{n}{2k}
+	\int_{\R^3}
+	\cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r})
+		\frac{1}{r} \varphi_{\mu}(2\kexp, \vec{r})
+	\D \vec{r}. \\
+	&= \frac{n}{2k}
+		\int_0^\infty R_{n_1,l_1}(r) R_{n_2,l_2}(r) R_{n,l}(2k, r) r \D r \\
+	&\hspace{30pt}
+		\cdot \int_{\set{S}^2}
+			\cc{\left(Y_l^m\right)}\!(\uvec{r}) \,
+			\cc{\left(Y_{l_1}^{m_1}\right)}\!(\uvec{r}) \,
+			Y_{l_2}^{m_2}(\uvec{r})
+		\D \uvec{r}.
+	\end{aligned}
+	\label{eqn:CScoefficientExpression}
+\end{equation}
+The angular part of the latter expression can be written in terms of
+Clebsch-Gordan coefficients, which are precomputed and stored%
+\footnote{Due to the sparsity and symmetry properties
+	of the Clebsch-Gordan coefficients even for a large value
+	maximal principle quantum number like $n=20$
+	no more than a few
+	hundred thousand such coefficients need to be stored.
+	If some recursion relations are taken into account as well,
+	it's far less.
+}.
+The properties of the Clebsch-Gordan coefficients imply that
+$\csC^\mu_{\mu_1,\mu_2}$ can only be non-zero if
+\begin{align*}
+	m &= m_2 - m_1 &&\text{and}&
+	l &\in \big[\abs{l_1-l_2}, l_1+l_2\big],
+\end{align*}
+such that $\csC^\mu_{\mu_1,\mu_2}$ is again a sparse tensor.
+The radial part is computed similar to \eqref{eqn:CSeriKernelSmall},
+\ie as a dot product between polynomial coefficients
+and precomputed kernels over polynomial powers.
+
+Due to the outlined sparsity of the $2\kexp$-kernel $I_{\mu\mu'}$
+and the expansion coefficients $\csC^\mu_{\mu_1,\mu_2}$
+the contraction in equation \eqref{eqn:CSeriContraction} can be written
+more effectively as
+\begin{equation}
+	\begin{aligned}
+	\eriMu{\mu_1\mu_2}{\mu_3\mu_4}
+		&= \sum_{\mu\mu'} \csC^\mu_{\mu_2,\mu_1}
+		% note: order has to be 2, then 1 since this implies a complex conjugation
+		\, I_{\mu\mu'} \, \csC^{\mu'}_{\mu_3,\mu_4} \\
+		&= \sum_{n,l,m} \sum_{n',l',m'}
+			\csC^{(n,l,m)}_{\mu_2,\mu_1}
+			\, \delta_{ll'} \delta_{mm'} I^{(l)}_{nn'} \,
+			\csC^{(n',l',m')}_{\mu_3,\mu_4} \\
+		&= \sum_{n'} \sum_{n,l,m}
+			\csC^{(n,l,m)}_{\mu_2,\mu_1}
+			\, I^{(l)}_{nn'} \,
+			\csC^{(n',l,m)}_{\mu_3,\mu_4} \\
+		&= \delta_{m_1 - m_2, m_4 - m_3}
+		\sum_{l=\lmin}^{\lmax} \sum_{n=l+1}^{n_1+n_2-1} \sum_{n'=l+1}^{n_3+n_4-1}
+			\csC^{(n,l,m_2-m_1)}_{\mu_2,\mu_1}
+			\, I^{(l)}_{nn'} \,
+			\csC^{(n',l,m_2-m_1)}_{\mu_3,\mu_4}
+	\end{aligned}
+	\label{eqn:CSeriContractionEffective}
+\end{equation}
+where
+\begin{align}
+	\lmin &= \max(\abs{l_1-l_2},\abs{l_3-l_4}) &
+	\lmax &= \min(l_1+l_2, l_3+l_4).
+	\label{eqn:CSminmax}
+\end{align}
+Because of the selection rules in the quantum numbers $l$ and $m$
+the \ERI tensor is thus a sparse quantity
+with far less than $\Nbas^4$ non-zeros.
+When contracting it with the occupied coefficients $\mat{C}$
+to form the Coulomb and exchange matrices, \ie compute the elements
+\begin{align}
+	\label{eqn:CScoulomb}
+	J_{\mu_3\mu_4}\!\left[\mat{C}^{(n)}\left(\mat{C}^{(n)}\right)^\dagger\right]
+	&= \sum_{i\in\Iocc} \, \sum_{\mu_1,\mu_2 \in\Ibas} \, \sum_{\mu,\mu'\in\Ibas}
+		C^{(n)}_{\mu_1 i} C^{(n)\ast}_{\mu_2 i} \,
+		\csC^{\mu}_{\mu_2,\mu_1}
+		I_{\mu\mu'} \csC^{\mu'}_{\mu_3,\mu_4} \\
+\intertext{and}
+	\label{eqn:CSexchange}
+	K_{\mu_3\mu_4}\!\left[\mat{C}^{(n)}\left(\mat{C}^{(n)}\right)^\dagger\right]
+	&= \sum_{i\in\Iocc} \, \sum_{\mu_1,\mu_2 \in\Ibas} \, \sum_{\mu,\mu'\in\Ibas}
+		C^{(n)}_{\mu_1 i} C^{(n)\ast}_{\mu_2 i} \,
+		\csC^{\mu}_{\mu_2,\mu_3}
+		I_{\mu\mu'} \csC^{\mu'}_{\mu_1,\mu_4},
+\end{align}
+the sparsity is partially lost.
+The reason is that the sum over the occupied orbital index $i$ implies that
+each element $J_{\mu_3\mu_4}$ or $K_{\mu_3\mu_4}$
+becomes a linear combination of contributions from
+different angular quantum number pairs $(l_1, m_1)$ and $(l_2, m_2)$.
+Thus a Coulomb or exchange matrix element is only a known zero
+if \emph{all} of the possible combinations of the indices $\mu_3$, $\mu_4$
+with the pairs $(l_1, m_1)$ and $(l_2, m_2)$ are guaranteed to be zero
+--- a much weaker selection rule.
+For forming the matrix-vector products of $\mat{J}$ and $\mat{K}$
+with other vectors
+therefore most elements of $J_{\mu_3\mu_4}$ and $K_{\mu_3\mu_4}$
+need to be touched.
+For the exchange matrix $\mat{K}$ in fact all elements may be non-zero,
+giving rise to a full quadratic scaling of a matrix-vector product
+in the number of basis functions.
+On the other hand avoiding the storage of $\eriMu{\mu_1\mu_2}{\mu_3\mu_4}$
+and $\mat{K}$ in favour of directly computing
+the matrix-vector product expression
+\begin{equation}
+	\left(\matK \vec{x}\right)_{\mu_3}
+	= \sum_{i\in\Iocc} \, \sum_{\mu_1,\mu_2,\mu_4 \in\Ibas} \, \sum_{\mu,\mu'\in\Ibas}
+		C^{(n)}_{\mu_1 i} C^{(n)\ast}_{\mu_2 i} \,
+		\csC^{\mu}_{\mu_2,\mu_3}
+		I_{\mu\mu'} \csC^{\mu'}_{\mu_1,\mu_4}
+		\, x_{\mu_4}
 	\label{eqn:ApplicationKcs}
 \end{equation}
-Explain how this only works if the coefficients are around as separate quantities
-and not contracted as a density matrix
-another example of contraction-based approach
-
-
-% structure of the fock matrix diagonal dominance
-% Fock matirx similar to gaussians
+whenever the contraction of $\mat{K}$ with a vector $\vec{x}$ is needed,
+allows to fully exploit all angular momentum
+selection rules during the evaluation.
+With this one may achieve the best possible scaling, certainly below quadratic.
+Notice, that an efficient contraction scheme for computing \eqref{eqn:ApplicationKcs}
+will carry out the contraction over occupied orbitals (index $i$) at the very end.
+In other words the improved scaling originating from \eqref{eqn:ApplicationKcs}
+can only be achieved if $\mat{K}$ is not in memory
+and if the occupied coefficients $\mat{C}$ are available as separate quantities
+and not already contracted into a density matrix.
 
 \begin{figure}
 	\centering
 	\includeimage[width=\textwidth]{4_solving_hf/fock_sturmian}
-	\caption{Structure of the Fock matrix for a Coulomb-Sturmian based SCF
+	\caption[Structure of the Fock matrix for a Coulomb-Sturmian based SCF]
+		{Structure of the Fock matrix for a Coulomb-Sturmian based SCF
 		for the beryllium atom starting from using a $(5,1,1)$
 		Coulomb-Sturmian basis in $mln$ order
 		and a Sturmian exponent of $\kexp = 1.99$.
@@ -344,60 +628,71 @@ another example of contraction-based approach
 		% Matrix is symmetric
 	\label{fig:StructureSturmianFock}
 \end{figure}
+Both the very simple form of the one-electron matrices,
+given by the expressions
+\eqref{eqn:OverlapCS},
+\eqref{eqn:NucAttrCS} and
+\eqref{eqn:KineticCS},
+as well as the previous discussion about the angular momentum selection
+rules in the case of the Coulomb and exchange matrices
+suggests to employ a \contraction-based scheme
+for a Coulomb-Sturmian-based \SCF.
+Looking at the structure of the Fock matrix $\matF$
+in figure \vref{fig:StructureSturmianFock},
+we notice that it is very similar to the \cGTO case~(figure \vref{fig:StructureGaussianFock}).
+Most notably it is almost diagonal dominant and of a similar
+size than the \cGTO Fock matrix.
+In other words a dense diagonalisation method could in theory be employed
+for the Fock matrix $\matF$ as well.
+The downside of a dense scheme would be the higher
+storage requirement as well as the larger
+computational scaling of the matrix-vector product.
+Whilst \CS discretisations on the one hand
+do not require \contraction-based methods to be feasible,
+they still allow for improved contraction if such methods are employed.
 
-
-
-
-\todoil{A few lines summarising why they are useful alternatives}
-% Include solution approaches: Direct and iterative, both possible
-
-
-This requires, however, that the mathematical properties of the Sturmians
-can be fully exploited during the computation,
-which in turn requires the Fock matrix to be arranged in a specific way.
-Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
-but much rather only use these matrices in the form of matrix-vector products,
-since this overall saves an order of magnitude in the computational scaling.
-
-\todoil{From here overview of other types of Sturmian functions}
-
-While Coulomb Sturmians are only applicable for simulating atoms,
-a range of more generalised Sturmian-type basis functions exist
-~\cite{Avery2011}
-which share some of the properties~\cite{Avery2011},
-such that Coulomb Sturmians can be seen as a simple test case.
-In the most general sense Sturmian-type orbitals are the solution
-to the $\Nelec$-body Schrödinger-like equation
-\begin{equation}
-	\left( -\frac12 \Delta + \beta_{\mu} V_0(\vec{x}) - E \right) \Phi^\text{St}_\mu(\vec{x}) = 0
-	\label{eqn:SturmianGeneral}
-\end{equation}
-where
-\[ V_0(\vec{x}) = V_0(\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_{\Nelec}) \]
-is a good zeroth order approximation to the actual potential
-\[ V(\vec{x}) = \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}}
-+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \]
-such that \eqref{eqn:SturmianGeneral} can be analytically solved
-and $\beta_{\mu}$ is chosen to make the solutions isoenergetic.
-For many-electron atoms Goscinski for example suggested
-$V_0(\vec{x}) = \sum_i \frac{Z}{r_i}$.
-Many-centre Sturmians are possible, too~\cite{Avery2003,Avery2013}.
-In this broad sense Sturmian-type orbitals are an active
-field of research%
+While Coulomb Sturmians can only be used for simulating atoms,
+a range of more generalised Sturmian-type basis functions exist%
+~\cite{Hoggan2009,Avery2011},
+which can be applied, for example, to molecular systems as well.
+Especially when it comes to evaluating the two-electron integrals,
+these share some of the properties of the Coulomb Sturmians,
+but both the mathematical machinery as well as the numerics is more involved.
+\CS functions can thus be seen as a first step towards these
+more general Sturmian-type basis functions.
+Generalised Sturmian-type orbitals are an active field of research%
 ~\cite{%
-	Gruzdev1990,Avery2006,Hoggan2009,%
+	Gruzdev1990,Avery2003,Avery2006,Hoggan2009,%
 	Randazzo2010,Mitnik2011,%
 	Avery2011,Avery2011PhD,%
 	Avery2013,Avery2015,Randazzo2015,Granados2016,Abdouraman2016,%
 	Morales2016,Avery2017,Avery2018%
-}
-with many efforts to yield fast evaluation schemes
-for the \ERI tensor~\cite{Avery2013,Avery2017,Avery2018}
-for generalised Sturmians as well.
+}.
+Some recent works include efforts to develop schemes for the
+fast evaluation of the resulting \ERI tensor~\cite{Avery2013,Avery2017,Avery2018}
+as well as the application of Sturmian-type functions
+for evaluating \STO integrals more efficiently~\cite{Morales2016,Avery2017}.
+Other methods include the combination of
+Sturmians and some numerical methods to yield ionising Sturmians
+to simultaneously model bound states as well as the continuum
+in a single basis~\cite{Randazzo2010,Mitnik2011,Randazzo2015,Granados2016,Abdouraman2016}.
 
-Methods to use generalised Sturmians or Coulomb Sturmians
-for \STO integral evaluation~\cite{Morales2016,Avery2017}.
-
-Methods to combine numerical methods and Sturmians
-to yield Sturmians including modelling of continuum%
-~\cite{Randazzo2010,Mitnik2011,Randazzo2015,Granados2016,Abdouraman2016}
+% TODO OPTIONAL
+%In the most general sense Sturmian-type orbitals are the solution
+%to the $\Nelec$-body Schrödinger-like equation
+%\begin{equation}
+%	\left( -\frac12 \Delta + \beta_{\mu} V_0(\vec{x}) - E \right) \Phi^\text{St}_\mu(\vec{x}) = 0
+%	\label{eqn:SturmianGeneral}
+%\end{equation}
+%where
+%\[ V_0(\vec{x}) = V_0(\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_{\Nelec}) \]
+%is a good zeroth order approximation to the actual potential
+%\[ V(\vec{x}) = \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}}
+%+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \]
+%such that \eqref{eqn:SturmianGeneral} can be analytically solved
+%and $\beta_{\mu}$ is chosen to make the solutions isoenergetic.
+%For many-electron atoms Goscinski for example suggested
+%$V_0(\vec{x}) = \sum_i \frac{Z}{r_i}$.
+%Many-centre Sturmians are possible, too~\cite{Avery2003,Avery2013}.
+%In this broad sense Sturmian-type orbitals are an active
+%field of research
