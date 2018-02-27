@@ -61,9 +61,12 @@ cap = r"\HF reference values"
 caption = r"Reference values used for comparison of the \CS-based results " + \
     r"and for estimating errors in the \CS values. " + \
     r"The CBS extrapolation was done with a builtin routine provided by " + \
-    "\molsturm following \citet{Jensen2005}. " + \
-    r"For more details regarding the extrapolation procedure see appendix " + \
-    r"\vref{apx:CbsLimit}."
+    "\molsturm following \citet{Jensen2005}. "
+
+# TODO OPTIONAL
+# caption += \
+#   r"For more details regarding the extrapolation procedure see appendix " + \
+#   r"\vref{apx:CbsLimit}."
 
 ret = []
 ret.append(r"\ctable[")
