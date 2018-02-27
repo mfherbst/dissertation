@@ -86,7 +86,7 @@ add_custom_command(
 	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/plot_shape_functions.py
 )
 
-set(PDF_OUTPUTS ${PDF_OUTPUTS} fock_fe_gauss_sturm.pdf}
+set(PDF_OUTPUTS ${PDF_OUTPUTS} fock_fe_gauss_sturm.pdf)
 add_custom_command(
 	OUTPUT fock_fe_gauss_sturm.pdf
 	COMMAND ${CMAKE_COMMAND} -E copy
