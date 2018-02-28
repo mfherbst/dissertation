@@ -97,6 +97,8 @@ def make_table(data, period, label):
                r" period at \HF level. Relative errors are given with respect to the "
                r"reference energies of table \vref{tab:HFReference}.,")
     ret.append(r"    botcap,")
+    ret.append(r"    mincapwidth=0.98\textwidth,")
+    ret.append(r"    footerwidth,")
     ret.append(r"     label=tab:" + label + ",")
     ret.append(r"]{" + colstring + "}{")
     ret.append(r"    \tnote[U]{unrestricted HF}")
