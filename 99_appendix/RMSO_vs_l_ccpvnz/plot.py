@@ -5,9 +5,13 @@ import matplotlib
 import molsturm
 import numpy as np
 import os
+import collections
 
 
+FIGSIZE = (4.8, 3.2)
 dir_of_this_file = os.path.dirname(__file__)
+OrbitalSelection = collections.namedtuple("OrbitalSelection",
+                                          ["indices", "labels"])
 
 
 def load_gauss_atom(atom):
@@ -75,7 +79,7 @@ def compute_rmso_l(state):
 
 def plot_rmso_l(systems):
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=FIGSIZE)
 
     data = {}
     for atom in systems:
@@ -86,27 +90,28 @@ def plot_rmso_l(systems):
         data[atom] = lpop.tolist()
 
     plt.ylim([1e-16, 1])
-    plt.xlabel(r"Orbital angular momentum value $l$")
+    plt.xlabel(r"Angular momentum quantum number $l$")
     plt.ylabel(r"$\text{RMSO}_l$")
     plt.legend()
 
 
-def plot_rms_lf(atom, orbitals=range(10), labels=None):
+def plot_rms_lf_orbitals(atom, selection=None):
+    if selection is None:
+        selection = OrbitalSelection(list(range(10)),
+                                     [str(i) for i in range(10)])
+
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=FIGSIZE)
 
     state = load_gauss_atom(atom)
     data = compute_rms_lf(state)
-    ls = np.arange(0, data[:, 1].size)
-
-    if labels is None:
-        labels = [str(i) for i in range(len(orbitals))]
-    for i, f in enumerate(orbitals):
-        plt.semilogy(ls, data[:, f], "x-", label=labels[i])
+    ls = np.arange(0, data[:, 0].size)
+    for i, f in enumerate(selection.indices):
+        plt.semilogy(ls, data[:, f], "x-", label=selection.labels[i])
 
     plt.ylim([1e-16, 1])
-    plt.ylabel(r"root meam square coefficient value")
-    plt.xlabel(r"Orbital angular momentum value $l$")
+    plt.ylabel(r"Root mean square coefficient value")
+    plt.xlabel(r"Angular momentum quantum number $l$")
     plt.legend(loc=1)
 
 
@@ -137,14 +142,20 @@ def main():
     plot_rmso_l(["Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar"])
     plt.savefig("ccpvnz_rmso_period3_vs_l.pdf", bbox_inches="tight")
 
-    plot_rms_lf("O")
-    plt.savefig("ccpvnz_rms_lf_O.pdf")
+    selection = {
+        "C": OrbitalSelection([1, 3, 9], ["2s", "2p", "3d"]),
+        "N": OrbitalSelection([1, 3, 9], ["2s", "2p", "3d"]),
+        "O": OrbitalSelection([1, 3, 9], ["2s", "2p", "3d"]),
+    }
 
-    plot_rms_lf("N")
-    plt.savefig("ccpvnz_rms_lf_N.pdf")
+    plot_rms_lf_orbitals("O", selection["O"])
+    plt.savefig("ccpvnz_rms_lf_O.pdf",bbox_inches="tight")
 
-    plot_rms_lf("C")
-    plt.savefig("ccpvnz_rms_lf_C.pdf")
+    plot_rms_lf_orbitals("N", selection["N"])
+    plt.savefig("ccpvnz_rms_lf_N.pdf",bbox_inches="tight")
+
+    plot_rms_lf_orbitals("C", selection["C"])
+    plt.savefig("ccpvnz_rms_lf_C.pdf",bbox_inches="tight")
 
 
 if __name__ == "__main__":
