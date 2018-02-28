@@ -32,7 +32,7 @@ with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
 
 headings = ["system", r"\multicolumn{2}{c}{$E_\text{HF}$}"]
 rows = []
-for i in range(1, 20):
+for i in range(3, 19):  # Only Li to Ar
     symbol = gint.element.find(i).symbol
 
     if symbol in restricted:
@@ -73,7 +73,9 @@ ret.append(r"\ctable[")
 ret.append(r"    cap=" + cap + ",")
 ret.append(r"    caption=" + caption + ",")
 ret.append(r"    botcap,")
-ret.append(r"     label=tab:HFReference,")
+ret.append(r"    mincapwidth=0.98\textwidth,")
+ret.append(r"    footerwidth,")
+ret.append(r"    label=tab:HFReference,")
 ret.append(r"]{lr@{.}l@{\hspace{40pt}}lr@{.}l}{")
 
 # Add footnotes
