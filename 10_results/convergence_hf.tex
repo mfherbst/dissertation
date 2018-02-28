@@ -1,0 +1,462 @@
+\section{Convergence at Hartree-Fock level}
+
+\todoil{Some introductory words}
+\todoil{Concentrate first on nlm convergence since larger effect in this and next
+section}
+
+
+\subsection{Reference results}
+\defineabbr{CBS}{CBS\xspace}{complete basis set limit}
+
+In order to estimate errors as well as the quality of the \CS-based \HF
+results obtained,
+we compare against the reference values given in table \vref{tab:HFReference}.
+For the closed-shell atoms we use the very accurate numerical RHF results
+from \citet{Morgon1997}.
+For the open-shell atoms we take the UHF complete basis set~(\CBS)
+limit extrapolated from calculations using the Dunning cc-pV$n$Z family
+of Gaussian basis sets and following the method of \citet{Jensen2005}.
+% TODO OPTIONAL
+% See appendix \vref{apx:CbsLimit} for more details on the extrapolation
+% procedure which lead to the tabulated results.
+\input{table_reference.tex}
+
+\todoil{full-shell is a bad term, complete-shell is better}
+\todoil{This stuff should go into the denoting section}
+\subsection{Convergence of \HF for full-shell \CS basis sets}
+Let us use the term \newterm{shell} to refer to the set
+\[ \{ \chi_{n'l'm'} \, | \, n' = n \} \]
+of \CS basis functions with the same principle quantum number
+in analogy of the same term used for hydrogenic orbitals.
+Naturally this allows us to build up a \CS basis set by considering
+all the shells up to and including the $\nmax$-th shell.
+The result is a \newterm{full-shell} \CS basis of the type
+\[ \{ \chi_{n'l'm'} \, | \, n' \leq \nmax \}. \]
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Delta_EHF_vs_shell}
+	\caption{
+		Plot of the error in the \HF energy vs the number of basis
+		functions in the full-shell \CS basis containing
+		the specified number of shells.
+		As the error we use the absolute error between \CS-based \HF energy
+		$E_\text{HF}^\text{CS}$ as well as the reference value
+		$E_\text{HF}^\text{ref}$ of table \vref{tab:HFReference}.
+		For the closed-shell atoms Be and Ne restricted \HF results are shown,
+		whereas for all other open-shell systems unrestricted \HF results
+		are plotted.
+		All energies are given in Hartree
+		and the $y$-axis has a logarithmic scaling.
+}
+	\label{fig:ErrorHF_vs_shell}
+\end{figure}
+By the means of the similarity between the \CS basis and the actual
+hydrogenic orbitals,
+we would expect such a basis to show convergence to the reference \HF result.
+In fact this is more or less what is observed:
+Figure \vref{fig:ErrorHF_vs_shell} shows the absolute error in the \HF energy
+for the second period versus the number of basis functions.
+Even though the convergence rate drops visibly
+over the selected sequence of basis functions,
+we still clearly note the systematic convergence over the progression
+of basis functions.
+
+The question is now if and how we could improve this convergence rate.
+From a physical point of view,
+we would not expect all angular momentum to be equally important
+for the description of the electronic structure of a particular atom.
+In beryllium for example we would imagine that only $l == 0$ is really required,
+since a ground state beryllium atom only has the 1s and the 2s orbitals occupied,
+which of course both have only $l == 0$.
+To investigate this more quantitatively,
+let us introduce the \newterm{root mean square occupied coefficient}
+per angular momentum $l$:
+
+\defineabbr{RMS}{RMS\xspace}{root mean square}
+\begin{defn}
+	\label{defn:RMSOl}
+	The root mean square~(\RMS) occupied coefficient per angular momentum $l$
+	is the quantity
+	\begin{equation}
+	\RMSOl =
+		\sqrt{
+		\sum_{(n,l,m) \in \Ibas} \
+		\sum_{i \in \IoccA} \frac{1}{\NelecA \ N_{\text{bas}, l}}
+			\Big(C^\alpha_{nlm, i} \Big)^2
+			+ \sum_{i \in \IoccB} \frac{1}{\NelecB \ N_{\text{bas}, l}}
+			\Big( C^\beta_{nlm, i} \Big)^2
+		}
+		\label{eqn:DefRMSOl}
+	\end{equation}
+	where $C^\alpha_{\mu i}$ and $C^\beta_{\mu i}$
+	are the orbital coefficients of the $\alpha$ and $\beta$ orbitals
+	(see \eqref{eqn:HFCoeffMatrix})
+	and
+	\[
+		N_{\text{bas}, l} := \abs{ \left\{ (n',l',m') \, \big|\, (n',l',m') \in \Ibas
+			\ \text{and} \ l' = l \right\} }
+	\]
+	is the number of basis functions in the \CS basis which has angular momentum
+	quantum number $l$.
+\end{defn}
+Since $\RMSOl$ is the \RMS-averaged coefficient for a particular angular
+momentum quantum number $l$ in the occupied SCF orbitals,
+it provides a measure for the importance of the \CS basis functions
+with quantum number $l$ for the description of this particular system.
+Loosely speaking a drop in $\RMSOl$ to values below the
+accuracy desired for the calculation indicates that basis functions with
+this value of $l$ can be omitted from the basis without a change in \HF energy.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rmso_period2_vs_l}
+	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 2}
+	\label{fig:RMSOl_period2}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rmso_period3_vs_l}
+	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 655$ and period 3}
+	\label{fig:RMSOl_period3}
+\end{figure}
+Let us now consider the neutral atoms of the second and third period of
+the periodic table in a $(6,5,5)$ \CS basis set.
+If we plot $\RMSOl$ vs $l$ like in figures \vref{fig:RMSOl_period2}
+and \vref{fig:RMSOl_period3}, we observe two types of behaviour.
+
+Those atoms which consist of a fully filled or half-filled valence subshell
+, i.e. Li, Be, N, Ne and Na, Mg, P and Ar,
+show a very distinct drop in $\RMSOl$ once a certain value
+for $l$ is reached.
+This suggests that for lithium and beryllium only $l=0$,
+i.e. $s$-functions are required for a description of these atoms,
+whilst for the others we only need $l \leq 1$, i.e. $s$- and $p$-functions.
+This is in perfect agreement to what one would expected
+considering the Aufbau principle and the Madelung rule
+\todoil{Maybe briefly explain Madelung rule}
+for atoms,
+since these principles suggest that only $s$ and $p$-orbitals will be
+occupied for the second and third period of the periodic table.
+
+On the other hand the atoms which do not consist
+of a closed or half-filled subshell,
+i.e. B, C, O, F and Al, Si, S, Cl,
+only show a rather moderate decrease in $\RMSOl$ over the range of the plot.
+% TODO HERE
+
+
+
+The first kind applies for closed-shell atoms or atoms
+with a half-filled subshell
+
+
+Half-filled 2p or 3p subshell
+or closed-shell
+
+% Look up in Keeler Wothers
+Elements which have a closed-shell or half-full-shell 
+
+
+If we plot $\RMSOl$ vs $l$ for the neutral atoms of the
+second and the third period
+we observe a clear drop in $\RMSOl$ only for the closed-shell
+and the half-closed-shell systems,
+that is Li, Be, N, Ne, Na, Mg, P and Ar.
+For all other systems the drop in $\RMSOl$ is only comparatively slow.
+
+
+
+
+
+
+
+For this let us consider at first the relationship of the number of basis
+functions $\Nbas$ in a \CS basis including all shells up to $\nmax$.
+We find
+\begin{align}
+	\nonumber
+	\Nbas(\nmax) &= \sum_{n=1}^{\nmax} \sum_{l=0}^{n-1} \sum_{m=-l}^l 1
+		= \sum_{n=1}^{\nmax} \sum_{l=0}^{n-1} 2l+1 \\
+		&= \sum_{n=1}^{\nmax} n^2
+		= \frac{(2\nmax+1)(\nmax+1)\nmax}{6}
+		\in \bigO(\nmax^3),
+	\label{eqn:NbaxFullShellBasis}
+\end{align}
+i.e. a dependency as the third power of $\nmax$.
+In contrast a basis, which is not only limited by $\nmax$, but by $\lmax$ as well,
+exhibits only a linear dependency of $\Nbas$ wrt. $\nmax$, namely
+\begin{align}
+	\nonumber
+	\Nbas(\nmax) &= \sum_{n=1}^{\nmax} \ \sum_{l=0}^{\min(\lmax, n-1)} 2l + 1 \\
+	&= \sum_{n=1}^{\nmax} \Big( \min(\lmax+1, n) \Big)^2 \\
+	\nonumber
+	&\le \sum_{n=1}^{\nmax} (\lmax+1)^2 = (\nmax-1) (\lmax+1)^2
+	\in \bigO(\nmax \lmax^2).
+\end{align}
+In other words if we manage to find a particular value for $\lmax$,
+for which
+
+
+
+
+
+As we will show now,
+for many atoms it is sensible to limit both $\nmax$ as well as $\lmax$
+as the \CS basis functions with large values of $l$ are not selected
+by the SCF procedure for the occupied MOs.
+Leaving them out hence typically does not effect convergence.
+What this implies is that for these atoms the convergence rate
+will be increased by choosing a basis with $\nmax$ and $\lmax$ restriced.
+
+
+% The argument is that we want to explain the reduced convergence
+% rate by saying that the basis grows as n^3 whilst
+% only some of the l values really play a role, i.e.
+% if we restrict l as well we could get something growing only linearly in n
+
+
+
+
+
+
+If we would leave the terrain of full-shell basis sets
+and allow ourselves to limit the maximal angular momentum quantum
+number as well by a constant $\lmax$ as introduced above,
+then the number of basis functions scales as
+\begin{align*}
+\sum_{n=1}^{\nmax} \ \sum_{l=0}^{\min(\lmax, n-1)} 2l + 1
+	&= \sum_{n=1}^{\nmax} \Big( \min(\lmax+1, n) \Big)^2 \\
+	&\le \sum_{n=1}^{\nmax} (\lmax+1)^2 = (\nmax-1) (\lmax+1)^2
+	\in \bigO(\nmax \lmax^2)
+\end{align*}
+in other words only increases linearly with $\nmax$.
+
+It turns out that for some cases like beryllium and nitrogen
+such an approach is very much justified.
+In order to see this let us introduce the
+\newterm{root mean square occupied coefficient}
+per angular momentum $l$:
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rmso_ions_vs_l}
+	\caption{Plot $\RMSOl$ vs $l$ for $nlm = 766$ and the ions}
+	\label{fig:RMSOl_ions}
+\end{figure}
+
+Loosely speaking $\RMSOl$ gives us the importance of the basis functions
+with angular momentum quantum number $l$ in the \CS basis set.
+This idea motivates the next definition
+
+\begin{defn}
+	The \newterm{largest important angular momentum quantum number} is the value
+	\[ \limp = \sup \{ l \, | \, (n,l,m) \in \Ibas \ \text{and} \ \RMSOl > \epsilonconv \}, \]
+	i.e. the largest $l$ for which the coefficients are still larger than the
+	desired accuracy of the SCF procedure.
+\end{defn}
+
+If we look at \vref{fig:RMSO_period2_l} we notice
+that for lithium and beryllium pretty much all angular momentum
+except $l = 0$ and $l = 1$ is unimportant.
+Similarly for nitrogen and neon.
+For the remaining atoms of the second period,
+boron, carbon, oxygen and fluorine, however,
+even angular momentum $l=5$ is reasonably important and the
+decay of $\RMSOl$ is much less pronounced.
+In either case this hints that the rate of convergence might
+be improved for cases like beryllium
+if a restriction is imposed on the principle angular momentum
+quantum number $l$ as well.
+
+This behaviour of carbon and fluorine is known.
+See \citet{Cook1981}
+and this is a general problem of UHF~\citet{Cook1984}.
+See also \citet{McWeeny1985}.
+\citet{Fukutome1981} provides a very detailed discussion of the
+effects of symmetry-breaking in HF wave functions like for example in UHF.
+\label{sec:IssuesUHF}
+% coupling only to l+2 and the same m
+% so we could shrink the basis by imposing that restriction!
+% The states can be stationary or unstable points rather then minimaA
+%
+% Tho odd-even pattern can be explained by considering the parity
+% of the wave function of that particular orbital. Even l have even parity
+% and odd l have odd parity. Linear combination of functions of even
+% and odd parity breks M_L symmetry (???)
+
+In fact analoguous calculations using Gaussian basis sets reveal,
+that the same effect occurs if UHF is used.
+See \vref{apx:GaussianUHF} for equivalent plots to figures \vref{fig:RMSO_period1},
+\vref{fig:RMSO_period2},  \vref{fig:RMSLF_N}, \vref{fig:RMSLF_C}, \vref{fig:RMSLF_O}
+using Dunning basis sets.
+
+% TODO Show by similar analysis that we also have the problem for Gaussians
+% Indeed that is true for gaussians as well!
+
+
+% Sometimes we do not only have this issue, but the SCF also does not converge to
+% a minimum but only a saddle point that way, so we need to force convergence using a DIIS.
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Also look at ions \ce{O+}, \ce{F-}, \ce{C-}, \ce{B+} to show that its
+			to do with the occupation
+	\end{itemize}
+}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rms_lf_N}
+	\caption{Plot root mean square coefficient vs $l$ and orbital index for N}
+	\label{fig:RMSLF_N}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rms_lf_C}
+	\caption{Plot root mean square coefficient vs $l$ and orbital index for C}
+	\label{fig:RMSLF_C}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/rms_lf_O}
+	\caption{Plot root mean square coefficient vs $l$ and orbital index for O}
+	\label{fig:RMSLF_O}
+\end{figure}
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item It seems that the full and half-full shells are ok and the $\RMSOl$
+			decays rather early and in agreement with the chemical intution,
+			but all others this is not the case
+		\item Any clue why?
+		\item \emph{Could} be something to do with the restricted vs unrestricted
+			issue. See TODO in the next section.
+	\end{itemize}
+}
+
+\subsection{Convergence of \HF for \CS basis sets with $\nmax$ and $\lmax$}
+% Hint at the general property James mentioned
+
+
+From the discussion of the previous section
+it becomes clear that at least in some cases it makes sense to
+limit not only $\nmax$, but on top of that $\lmax$ as well.
+For example for beryllium the error
+in the Hartree-Fock energy is pretty much unchanged if the
+restriction $\lmax = 1$ is imposed onto the full-shell \CS basis sets as well.
+This can be seen in figure \vref{fig:ErrorHF_vs_nlm}
+where we again show the error in HF energy compared to the reference
+as specified in table \vref{tab:HFReference},
+but we look at basis sets with a particular $\lmax < \nmax$ now.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/ehf_vs_nlm}
+	\caption{Plot relative error in $E_\text{HF}$ vs $\Nbas$.
+		The reference is mentaioned in \vref{tab:HFReference}.}
+	\label{fig:ErrorHF_vs_nlm}
+\end{figure}
+
+% Plot the same elements or the same basis set kinds with the same color.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/ehf_vs_nlm_O}
+	\caption{Plot relative error in $E_\text{HF}$ vs $\Nbas$}
+	\label{fig:ErrorHF_vs_nlm_O}
+\end{figure}
+
+As can be seen the convergence is greatly improved
+for nitrogen, beryllium and phosphorus
+if we limit ourselves to $\lmax = 1$
+in accordance with the observation we made in fig.
+\vref{fig:RMSO_period2_l}.
+For nitrogen two convergence curves are shown,
+one with the limit $\lmax = 2$ and one with $\lmax = 1$.
+Note that the difference in \HF error in both cases
+is really negligible, whilst the rate of convergence is
+surely much faster for $\lmax = 1$.
+
+\defineabbr{AM}{AM\xspace}{angular momentum}
+This implies that at least for the well-behaving cases,
+i.e. where the $\limp \le 2$,
+the convergence pretty much only depends on the value
+of $n$ and thus a systematic construction of basis
+sets which solve the \HF equations up to a certain
+desired accuracy should be possible for these cases.
+
+For O where we know that higher angular momentum is important, too,
+the effect of truncating the angular momentum can be observed.
+For $\lmax = 1$ the convergence initially is almost linear,
+but than quickly stagnates and the error does not improve for larger
+values of $\nmax$ any more. The same thing happens for
+$\lmax = 2$ just at a larger value of $n$.
+Generally one should note that in the examples shown
+the errors in HF energy are still comparatively large,
+namely in the order of Millihartrees even for the largest
+basis sets employed for oxygen.
+
+The correlation between $\RMSOl$ and the lowest error which can be
+achieved for a given $\lmax$ is interesting to note.
+$\text{RMSO}_2$ and $\text{RMSO}_3$ are of a similar size for oxygen
+whilst there is a decrease by about 2 orders of magnitude going
+from $\text{RMSO}_3$ to $\text{RMSO}_4$.
+This also reflected by the fact that we do not gain a much better
+result choosing $\lmax = 2$ instead of $\lmax = 1$
+the error values stagnate at about the same value.
+For $\lmax = 3$ on the other hand linear convergence is obtained
+up to a much smaller error value.
+
+\todoil{Maybe make a similar plot to fig. \vref{fig:ErrorHF_vs_nlm}
+showing the relative errors of the orbital energies compared
+to reference results in N or O or so.
+Show how the orbital energies are approximated from above.
+This would help in understanding the signifficance of the coefficients
+wrt. correlation methods as well.
+}
+
+% TODO orbital energy convergence?
+% TODO Not sure if this way of plotting is ideal.
+\begin{figure}
+	\centering
+	\includeimage{10_results/orben_vs_nlm_N}
+	\caption{Plot relative difference in the orbital energy vs $n$.
+		The relative difference is $1 - \varepsilon_i^{(n)} / \varepsilon_i^{(n+1)}$
+		for N.
+	}
+	\label{fig:OrbenNlmN}
+\end{figure}
+
+\todo[inline,caption={}]{
+	I get the feeling the bad convergence for oxygen and the other
+	open-shell systems is because we use UHF,
+	which implicitly causes other determinants to be mixed into the HF
+	solution.
+	Some literature suggests that UHF destroys the rotational symmetry.
+	\begin{itemize}
+		\item Try to code a rudimentary ROHF and check weather things are better there
+	\end{itemize}
+}
+% Spin squared values:
+%       should    is
+%  Li   0.75       0.7500174679889692
+%  Be   0
+%  B    0.75       0.7535472111793353
+%  C    2          2.00941178981773
+%  N    3.75       3.755922043215328
+%  O    2          2.006538441200304
+%  F    1.75       0.7530439372523485
+
+\subsection{$m$-tuning for oxygen and carbon}
+Do the calculation of 8.7 but truncate m=1, m=2
+
+Does not really seem to do the trick
+
+\subsection{$n,l,m$ recommendations for HF}
+Pretty much $(n, 0, 0)$ up to Be, $(n, 1, 1)$ for N and Ne, Na, Mg, P, Ar.
+For the rest $(n, 2, 2)$ at least for description up to error less than $1e-4$
+$(n, 3, 3)$ if lower error (down to $1e-6$ is desired.

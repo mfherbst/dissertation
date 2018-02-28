@@ -1,0 +1,37 @@
+\section{Denoting Coulomb-Sturmian basis sets}
+
+
+For the following discussion let us briefly recap
+that in general a Coulomb-Sturmian basis function
+\begin{equation}
+\chi_\mu(\vec{r}) = \mathcal{N}_\mu \,
+	(2 \kexp \, r)^l \,
+	L^{2l+1}_{n-l-1}(2 \kexp \, r) \,
+	\exp(- \kexp \, r) \,
+	Y_l^m(\theta, \varphi)
+	\label{eqn:FormCSBasisFunction}
+\end{equation}
+with $L^{2l+1}_{n-l-1}$ being an associated Legendre polynomial,
+$Y_l^m$ being a spherical harmonic and $\mathcal{N}_\mu$ being a normalisation
+constant,
+can be uniquely described by its quantum numbers $\mu \equiv (n,l,m)$
+as well as the its Coulomb-Sturmian exponent $\kexp$ (\cf section \vref{sec:BasisCS}).
+Since the exponent $\kexp$ is shared amongst all Coulomb-Sturmian in a basis,
+we can define a particular \CS basis
+by specifying the common exponent $\kexp$
+and the set of quantum number triples $(n, l, m)$ of all \CS basis functions
+present in the basis set.
+
+Theoretically any selection of quantum number triples for forming a basis
+is possible.
+In this work, however, we have restricted ourselves to basis sets of the form
+\[ \big\{ (n, l, m) \, \big| \, n \le \nmax, l \le \lmax, -\mmax \le m \le \mmax \big\} \]
+i.e. where all three quantum numbers are bound from above.
+We will sometimes refer to such a \CS basis set by the triple
+$(\nmax, \lmax, \mmax)$ of the three maximal quantum numbers itself.
+In other words a $(3,2,2)$-basis set shall denote a basis set with
+$\nmax = 3$, $\lmax = 2$ and $\mmax = 2$.
+
+The selection to basis sets of this particular form is entirely arbitrary
+and mainly done for the sake of reducing the search space at hand
+and to get some initial insight into the properties \CS basis sets.

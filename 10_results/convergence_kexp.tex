@@ -1,0 +1,326 @@
+\section{The effect of $\kexp$}
+For the remaining discussion in this sections
+we have limited ourselves to rather small basis sets,
+that is we typically set $\lmax$ and $\mmax$ to values
+of 2 or less and $\nmax$ not larger than 6
+to save computational time.
+This should be a reasonable compromise,
+but further investigation has to show this.
+
+As can be seen in figure \vref{fig:EnergyTermsVsK}
+Smaller values of $\kexp$ lead to a slower decay of the orbitals,
+hence the electrons are forced to reside at a more
+distant place to the nucleus on average,
+which in turn leads to a rise in nuclear attraction energy.
+On the other hand larger $\kexp$ lead to more compressed orbitals,
+which drives up the repulsive coulomb interaction as well as the kinetic energy.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/EHF_terms_vs_k}
+	\caption{Terms of the \HF calculation vs $\kexp$ for Be with a $(5,1,1)$ \CS basis}
+	\label{fig:EnergyTermsVsK}
+\end{figure}
+% TODO Electron-electron interaction mostly agnostic to k, a little lower with smaller k (i.e. larger orbitals)
+
+The net result for \HF as well as MP2 and FCI is shown in figure \vref{fig:FCI_vs_k}.
+One easily notices that the dependency of the energy wrt. $\kexp$ is a
+convex curve.
+Notice, that the optimal exponent $\kexp$ for the FCI S1 ground state
+is larger than the optimal exponent $\kexp$ for the description
+of the HF ground state.
+MP2 is in between but much closer to HF.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Efci_vs_k}
+	\caption{Energies vs $\kexp$ for Be with a $(5,1,1)$ \CS basis}
+	\label{fig:FCI_vs_k}
+\end{figure}
+
+The optimal value for $\kexp$ is very much dependent on the
+precise state.
+For the T1 state for example, the optimal $\kexp$
+is around the value for HF.
+
+As can be seen in figure \vref{fig:EHF_vs_k}
+for carbon,
+$\kopt$ depends on the choice of the basis as well.
+Generally speaking larger basis sets will favour
+smaller values of $\kopt$.
+This can be explained by the fact that \CS basis sets
+all share the same exponent.
+Since the largest contribution of the \HF energy
+originates from the nuclear attraction energy,
+small basis sets will overemphasize
+the nuclear attraction interaction,
+i.e. they will tend to larger values for $\kopt$
+in order to minimise the nuclear attraction energy.
+As the basis becomes larger,
+the extra basis functions allow for a balanced
+description of both the nuclear attraction
+as well as the electron repulsion
+and kinetic energy terms,
+which therefore allows to choose a smaller $\kopt$.
+
+\begin{figure}
+	\centering
+	\includeimage{C_ene_gs_vs_k}
+	\caption{\HF energy vs $\kexp$ for a couple of basis sets and carbon.}
+	% Maybe do not have the minimum annotated in the graph but only have in
+	% the text instead
+	\label{fig:EHF_vs_k}
+\end{figure}
+Figure \vref{fig:EHF_vs_k} shows the change in the curvature
+of the energy vs. $\kexp$ graphs as the basis set size is increased.
+Generally speaking the curves become flatter and both the values of the
+\HF as well as the MP2 energies become more agnostic to the precise value of $\kexp$.
+Furthermore the optimal value for $\kexp$ shifts towards smaller values.
+This can be explained by the fact that with larger basis sets
+the basis has more freedom to represent both the core and the valence-like orbitals.
+Since the core-like orbitals, which are more contracted (larger $\kexp$, contribute
+larger to this energy, the small basis will choose a larger $\kexp$.
+Equivalently one can consider the dependence of the nuclear attraction
+energy wrt. $\kexp$.
+
+Another fact worth mentioning is that the MP2 correlation energy typically
+is much less dependant on too large values of $\kexp$ than too small values
+of $\kexp$.
+So for a correlated treatment of the carbon atom a too large value for $\kexp$
+is better than a too small value.
+In agreement with this recommendation is the realisation that
+MP2 calculations tend to have a larger $\kopt$ value, hence tending a bit more
+towards the FCI value for $\kopt$.
+Therefore if the \HF value for $\kexp$ is choosen larger than the optimum,
+the correlated treatment typically even benefits from this a bit.
+
+
+\begin{figure}
+	\centering
+	\includeimage{C_hfterms_vs_k}
+	\caption{HF energy terms vs $\kexp$ for different basis sets}
+	\label{fig:Eterms_vs_k}
+\end{figure}
+
+In figure \vref{fig:Eterms_vs_k} we observe the same trends
+as in figure \vref{fig:EnergyTermsVsK} for beryllium
+just with the difference that
+the result is shown for different basis sets.
+We observe that the trends get smaller if larger basis sets are chosen.
+
+
+\begin{figure}
+	\centering
+	\includeimage{C_orben_622_vs_k}
+	\caption{E orbital vs k, only alpha orbitals are plotted of 622}
+	\label{fig:orben_vs_k}
+\end{figure}
+
+The interpretation of the orbital energy vs $\kopt$ curve
+should be done with care.
+For this note that the minimal sum of the orbital energies
+occurs at a much smaller value for $\kopt$,
+since the electron-electron interactions are counted twice
+hence shifting the optimal value for the sum of the orbital
+energies more towards smaller $\kexp$.
+
+Nevertheless it allows us to qualitatively assess the realisation
+that for the description of the virtual or valence states
+smaller $\kopt$ values are preferable wlist for the core states
+larger $\kopt$ are typically preferred.
+Again since the core-like orbitals have a bigger contribution
+to the energy typically small basis sets tend to try to represent
+these in a good fashion first, hence tending to larger values of $\kopt$.
+Whilst the $\kopt$ decreases as the basis gets larger up to the point
+where its precise value becomes less and less important.
+
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Optimal k for HF and MP2 is similar
+		\item For FCI a bit larger
+		\item For MP2 grows
+		\item With larger basis set optimal k gets smaller
+		\item optimal k for orbitals smaller than for HF energy in general
+		\item Core-like states favour larger k
+	\end{itemize}
+}
+
+
+\subsection{Determining the optimal exponent $\kopt$}
+Due to the convexity of the curve energy-vs-k (see \vref{fig:FCI_vs_k})
+and the fact that we are dealing with a scalar function,
+the optimisation of the energy wrt. $k$ can be performed by
+Brent's method~\cite{Brent1972},
+which does not require energy derivatives.
+
+For \CS basis sets the core hamiltonian guess is in many cases not very good
+in the sense that it can give rise to the wrong SCF minimum.
+A good example to reproduce this is beryllium with a $(3, 2, 2)$ \CS basis
+set and $\kexp = 1.9$.
+Note that this exponent is only $0.1$ from the optimal one,
+but nevertheless hcore fails.
+This behaviour is retained for $(4,2,2)$ and $(5,2,2)$ basis sets,
+which are already quite reasonable for beryllium.
+
+In a similar manor especially for the atoms of the third
+period the SCF stationary point obtained with \molsturm
+is very much dependent on the values of $\kexp$ and $(n,l,m)$.
+If we get humps on the surface because we fall from one SCF
+minimum to another,
+the optimisation for $\kexp$ typically produces erroneous results.
+
+In other words the key starting point for finding $\kopt$
+is to obtain a reliable guess for the atom.
+Our approach is to start 5 SCF calculations with the
+selected \CS basis set at two values of $\kexp$:
+One supplied by the user and one guessed from the \HF orbital
+energies of the first calculation.
+Out of these randomly initialised SCF calculations,
+the lowest-energy version is taken as the guess
+for all SCF calculations performed during the search
+of Brent's method.
+Typically this converges within 10 iteration steps
+to $\kopt$.
+
+The heuristic for finding a reasonable value for
+$\kopt$ from \HF energies follows the idea that the
+energy of an orbital is related to its decay at infinite distance
+according to Kato
+\todo{cite}.
+In other words, since this is the case for sturmians, too,
+we get that the energy of an orbital is related to its optimal
+exponent by
+\[
+	\varepsilon_i = -\frac{k_i^2}{2}
+\]
+thus
+\[
+	k_i = \sqrt{-2 \varepsilon_i}
+\]
+and since we have many of these $\varepsilon$:
+\[
+	\kopt \simeq \sqrt{\frac{-2}{\Nelec} \sum_i \varepsilon_i}
+\]
+
+This guess method is implemented in \molsturm in the
+module \texttt{molsturm.scf\_guess}
+as the function \texttt{best\_of\_n} and the method
+for finding the optimal value of $\kexp$ is implemented
+as \texttt{molsturm.sturmian.cs.find\_kopt}
+
+\subsection{Discussion of the values for $\kopt$}
+\label{sec:ValuesKopt}
+% Introduce relationship to shielding and slaters / clementis work
+% establish: effective nuclear charge increases across the period
+% due to averaging trends become less apparent as we move to larger period numbers
+
+Figure \vref{fig:KoptVsAtnum} shows the optimal Coulomb-Sturmian exponents
+for the neutral atoms across the second and the third period of the periodic table.
+As can be seen the values for $\kopt$ follow a rough linear increase
+as we go from the alkaline metals to the noble gases,
+where the slope of the increase is steeper along the second period.
+Note, however, that a deviation from this linear trend
+is very much apparent in the third period.
+
+\citet{Slater1930} introduces the concept of a nuclear shielding parameter $\sigma$
+in order to construct simple analytic expressions of the form
+\begin{equation}
+	\chi_{n^\ast, \sigma} = r^{n^\ast - 1} \exp\left( - \frac{(Z - \sigma)r}{n^\ast} \right)
+	\equiv r^{n^\ast - 1} \exp\left( -\zeta r\right)
+	\label{eqn:SlaterShielding}
+\end{equation}
+for the atomic orbitals.
+\citet{Clementi1963} later determined optimal values for the Slater exponents $\zeta$
+by performing \HF calculations,
+variationally optimising to yield the lowest energy.
+We will refer to these exponents as $\zeta_\text{Clementi}$ in this section.
+
+Comparing \eqref{eqn:SlaterShielding} and \eqref{eqn:FormCSBasisFunction}
+we easily note that $\kexp$ more or less plays the role of $\zeta$
+with the subtle difference that for \CS basis sets all functions
+need to carry the same exponent.
+Nevertheless the procedure we follow to find $\kopt$ and the procedure
+\citeauthor{Clementi1963} followed to find $\zeta_\text{Clementi}$
+bears a lot of resemblance.
+
+As a result it is not surprising that the behaviour of $\kopt$
+along the periodic table is related to $\zeta_\text{Clementi}$ as well.
+In fact it kind of forms a middle ground between the $\zeta_\text{Clementi}$
+value of the HOAO, the highest occupied atomic orbital,
+and the occupation-averaged value for $\zeta_\text{Clementi}$
+when it comes to the trends observed.
+Naturally its actual value is closer to the occupation-average
+of $\zeta_\text{Clementi}$,
+since we are forced to a single $\kexp$ value.
+Therefore the optimal exponent $\kopt$ bears resemblance of both
+the occupation-averaged value of $Z_\text{eff} / n^\ast$
+as well as the trends of $Z_\text{eff} / n^\ast$ of highest occupied
+atomic orbitals.
+
+Note that by Slater's original definition,
+we can identify the relationship
+\[ Z_\text{eff} = n^\ast \zeta_\text{Clementi} \]
+between the effective nuclear charge $Z_\text{eff}$ and
+the optimal exponents $\zeta_\text{Clementi}$~\cite{Slater1930},
+where $n^\ast$ is a function of the quantum number $n$ of the orbital
+under consideration.
+By means of a similar rationale to what has been sketched above,
+we can therefore find a chemical interpretation for $\kopt$,
+namely that it gives an understanding of the average
+charge which is felt by the orbitals of a particular atom
+or in other words the average shielding which takes place in the atom.
+\todoil{Can one state it like that?}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/kopt_vs_atnum}
+	\caption{Plot of the atomic number versus the optimal Coulomb-Sturmian exponent
+		$\kopt$ for the neutral atoms of the second and the third period.
+		For comparison the occupation-averaged value of the \citet{Clementi1963} optimal
+		Slater exponent $\zeta_\text{Clementi}$ as well as the
+		value $\zeta_\text{Clementi}$ for the highest occupied atomic orbital~(HOAO)
+		are shown.
+	}
+	\label{fig:KoptVsAtnum}
+\end{figure}
+
+Note that the slope of the graph $\kopt$ vs atomic number in the third period
+is much more flat than the equivalent graph in the second period.
+We can understand that by considering once again
+that $\kopt$ gives an average over all orbitals.
+Since especially the low-energy orbitals close to the nucleus
+are shielded very little,
+their value of $\kopt$ increases constantly along the periodic table.
+The $\kopt$ for the valence orbitals, however, changes much more.
+Especially at the beginning of the period, where atomic radii are large,
+the $\kopt$ for the valence orbitals are small,
+whilst this changes as the atoms get smaller across the period
+and hence $\zeta_\text{Clementi}$ and $\kopt$ get larger.
+This effect is diminished, however,
+by the constant $\kopt$ increase of the
+much larger number of core-like orbitals
+and thus the rate of change of $\kopt$ across a period gets smaller,
+the slope thus smaller as well.
+Furthermore this implies that the rapid $\kopt$ change
+going from one period to the next (e.g. Ne to Na)
+will get smaller and smaller as well
+as the effect of the valence-like orbitals gets averaged out.
+
+An alternative way of viewing this is
+that as a new shell becomes occupied it requires
+the representation of an extra (more expanded) orbital.
+So initially $\kexp$ gets reduced.
+As we move across the period the nuclear charge increases
+and since the shielding abilities of electrons in the same shell
+is not that strong the orbitals become more contracted and occupy less space
+thus $\kexp$ increases again.
+As we move to larger periods this effect of change is averaged out
+again by the more constant core-like orbitals.
+
+Yet a third line of argument is the importance of nuclear attraction
+vs. kinetic energy.
+As the effective charge increases across the period
+nuclear attraction becomes more and more important leading to larger values of $k$
+(which support a larger (negative) magnitude of nuclear attraction energy)
+and kinetic energy (which would favour smaller $k$) becomes less important.

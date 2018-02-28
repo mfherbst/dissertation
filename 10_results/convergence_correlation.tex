@@ -1,0 +1,98 @@
+\subsection{Convergence taking electron correlation into account}
+
+% TODO
+% Plot MP2 correlation energy vs. Nbas for the computations we did on manjula
+% converge_correlation. Annotate the points with the actual basis set used.
+% Use this plot to justify the choice of basis in the nlm sense for the
+% different elements.
+
+
+Another aspect to note is that hardly ever one is interested
+in the exact description of the one-determinantal \HF solution.
+Much of the chemistry which takes place happens due to effects originating
+from electron-electron correlation.
+In this section we will therefore try to hint at the convergence effects
+in Full-CI or MP2 calculations with \CS basis sets.
+
+Note, that we have so far not performed conclusive convergence studies
+on these results, so especially for the difficult cases,
+i.e. where $\limp > 2$,
+the results are extremely preliminary.
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Be_fci_cc_vs_nbas}
+	\caption{Fraction of correlation energy recovered
+		relative to a FCI reference calculation with a $(10, 2, 2)$ \CS basis
+		and $\kexp = 2.1$ in beryllium.}
+	\label{fig:EccFciBe}
+\end{figure}
+Table of results in appendix \vref{apx:CSCorrelationConvergence}
+
+% TODO Plot MP2 and FCI correlation energy amount
+
+Table \vref{tab:CStruncationEnergies} shows the \HF, MP2 and
+Full-CI energies for various \CS basis sets.
+As expected from our previous discussion,
+the \HF energy does not depend very much on the choice
+of $\lmax$ and $\mmax$ as long as both values
+are large enough to incorporate the orbitals with $l \leq \limp$.
+Since for beryllium $\limp$ is either $1$ or $0$
+(for a large SCF convergence threshold $\epsilonconv$),
+the HF energy is indifferent
+to the values of $\lmax$ and $\mmax$.
+
+For the methods including electron-electron correlation,
+i.e. MP2 and Full-CI,
+we see that they show largely the same trends
+when it comes to the value of the electronic correlation obtained.
+We will therefore assume from now onwards
+that MP2 is a sensible description
+for the correlation effects of \CS basis sets.
+This observation should be taken with a grain
+of salt
+as we already found out,
+that Be is one of the nicely-behaving atoms.
+
+One should point out again that for the description
+of correlation effects, the effect of increasing $\nmax$
+is generally more significant than increasing
+$\lmax$ once a certain value of $\lmax$ has been reached
+(here about 2).
+
+In appendix \vref{apx:CSCorrelationConvergence} we show
+some computational results for the 2nd and 3rd
+period of the periodic system of elements.
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item I would like to say that FCI and MP2 agree for Be
+		\item Hence we can use MP2 to characterise how CS capture correlation effects
+		\item Kind of does not work except the well-behaving cases as the results jump around
+		\item Still some suggestions that we can get away with basis sets of the kind
+			$\mmax = \lmax-1$ in some cases.
+		\item I feel we should show the results in a nicer manor
+			emphasizing the important features,
+			but I kind of fail to see trends.
+	\end{itemize}
+}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Ecc_vs_bas_easy}
+	\caption{Fraction of MP2 correlation energy recovered
+		relative to the calculation with a $(6,3,3)$ \CS basis for
+		atoms with a full or half-full shell in the second and third period.}
+	\label{fig:EccVsNlmEasy}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includeimage{10_results/Ecc_vs_bas_hard}
+	\caption{Fraction of MP2 correlation energy recovered
+		relative to the calculation with a $(6,4,4)$ \CS basis for
+		atoms with one or two unpaired electrons.}
+	\label{fig:EccVsNlmHard}
+\end{figure}
+
+For the full set of value see appendix \vref{apx:CSCorrelationConvergence}
