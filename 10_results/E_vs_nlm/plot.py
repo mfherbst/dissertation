@@ -45,7 +45,7 @@ def setup():
 
 def plot_orben_vs_bas(vals, alphas=True, selection=None):
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=(4.4, 2.8))
 
     if selection is None:
         selection = {i: str(i) for i in range(12)}
@@ -147,7 +147,7 @@ def main():
     orben_plot_n = [v for v in vals_n if v["l_max"] == 2]
     selection = {0: "1s", 1: "2s", 3: "2p", 5: "3s", 7: "3p", 11: "3d"}
     plot_orben_vs_bas(orben_plot_n, selection=selection)
-    plt.xlabel("Sturmian basis $(n,2,2)$")
+    plt.xlabel("Coulomb Sturmian basis $(n,2,2)$")
     plt.savefig("orben_vs_nlm_N.pdf", bbox_inches="tight")
 
     #

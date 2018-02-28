@@ -10,6 +10,7 @@ import rmsl
 import collections
 
 
+FIGSIZE = (4.8, 3.2)
 dir_of_this_file = os.path.dirname(__file__)
 OrbitalSelection = collections.namedtuple("OrbitalSelection",
                                           ["indices", "labels"])
@@ -29,7 +30,7 @@ def datafile(atom):
 
 def plot_rmso_l(systems):
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=FIGSIZE)
 
     data = {}
     for atom in systems:
@@ -51,7 +52,7 @@ def plot_rmso_l(systems):
         yaml.safe_dump(data, f)
 
     plt.ylim([1e-16, 1])
-    plt.xlabel(r"Orbital angular momentum value $l$")
+    plt.xlabel(r"Angular momentum quantum number $l$")
     plt.ylabel(r"$\text{RMSO}_l$")
     plt.legend()
 
@@ -62,7 +63,7 @@ def plot_rms_lf_orbitals(atom, selection=None):
                                      [str(i) for i in range(10)])
 
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=FIGSIZE)
 
     state = molsturm.load_hdf5(datafile(atom))
     data = rmsl.compute_rms_qf(state)
@@ -71,14 +72,14 @@ def plot_rms_lf_orbitals(atom, selection=None):
         plt.semilogy(ls, data[:, f], "x-", label=selection.labels[i])
 
     plt.ylim([1e-16, 1])
-    plt.ylabel(r"root meam square coefficient value")
-    plt.xlabel(r"Orbital angular momentum value $l$")
+    plt.ylabel(r"Root mean square coefficient value")
+    plt.xlabel(r"Angular momentum quantum number $l$")
     plt.legend(loc=1)
 
 
 def plot_rms_lf_overview(orbmaps):
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=FIGSIZE)
 
     lines = ["--", "-.", ":"]
     colors = []
