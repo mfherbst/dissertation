@@ -69,12 +69,12 @@ def prepare_rows(data):
         n_bas = str(dset["n_bas"])
         basis = r"$(" + str(dset["n_max"]) + ", " + str(dset["l_max"]) + \
                 ", " + str(dset["m_max"]) + r")$"
-        kopt = "{:.4f}".format(dset["k_opt"])
+        kopt = "{:.3f}".format(dset["k_opt"])
         kopt = ["$" + v + "$" for v in kopt.split(".")]
 
         if system in lit:
             error = (hf - lit[system]["value"]) / abs(lit[system]["value"])
-            error = "{:.4e}".format(error)
+            error = "{:.1e}".format(error)
             error = re.sub("e(-?[0-9]+)", r"\E{\1}", error)
             error = ["$" + v + "$" for v in error.split(".")]
         else:
@@ -146,6 +146,11 @@ def main():
         if gint.element.find(d["atom_number"]).symbol in skipl2_elems:
             if l > 1:
                 return False
+
+        # TODO OPTIONAL
+        # Skip charged  ones
+        if d["charge"] != 0:
+            return False
 
         # By default return true
         return True
