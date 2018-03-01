@@ -1,6 +1,14 @@
 \section{The effect of the Coulomb-Sturmian exponent}
-\todoil{TODO}
 \label{sec:kexp}
+\todoil{TODO}
+
+changes of kexp on energies as well as energy compontens
+the trends only change very little if nlm is varied on top
+with generally the curves getting a lot flatter if larger basis sets are used
+
+
+
+
 discuss $\kexp$
 For the remaining discussion in this sections
 we have limited ourselves to rather small basis sets,
@@ -26,6 +34,8 @@ which drives up the repulsive coulomb interaction as well as the kinetic energy.
 \end{figure}
 % TODO Electron-electron interaction mostly agnostic to k, a little lower with smaller k (i.e. larger orbitals)
 
+For larger basis sets the trends get smaller, hence k plays less of a role
+
 The net result for \HF as well as MP2 and FCI is shown in figure \vref{fig:FCI_vs_k}.
 One easily notices that the dependency of the energy wrt. $\kexp$ is a
 convex curve.
@@ -40,6 +50,8 @@ MP2 is in between but much closer to HF.
 	\caption{Energies vs $\kexp$ for Be with a $(5,1,1)$ \CS basis}
 	\label{fig:FCI_vs_k}
 \end{figure}
+Optimal k for fci a bit larger, for mp2 goes in this direction,
+but overall still similar.
 
 The optimal value for $\kexp$ is very much dependent on the
 precise state.
@@ -98,18 +110,19 @@ Therefore if the \HF value for $\kexp$ is choosen larger than the optimum,
 the correlated treatment typically even benefits from this a bit.
 
 
-\begin{figure}
-	\centering
-	\includeimage{C_hfterms_vs_k}
-	\caption{HF energy terms vs $\kexp$ for different basis sets}
-	\label{fig:Eterms_vs_k}
-\end{figure}
-
-In figure \vref{fig:Eterms_vs_k} we observe the same trends
-as in figure \vref{fig:EnergyTermsVsK} for beryllium
-just with the difference that
-the result is shown for different basis sets.
-We observe that the trends get smaller if larger basis sets are chosen.
+% TODO OPTIONAL
+%\begin{figure}
+%	\centering
+%	\includeimage{C_hfterms_vs_k}
+%	\caption{HF energy terms vs $\kexp$ for different basis sets}
+%	\label{fig:Eterms_vs_k}
+%\end{figure}
+%
+%In figure \vref{fig:Eterms_vs_k} we observe the same trends
+%as in figure \vref{fig:EnergyTermsVsK} for beryllium
+%just with the difference that
+%the result is shown for different basis sets.
+%We observe that the trends get smaller if larger basis sets are chosen.
 
 
 % TODO OPTIONAL
@@ -119,39 +132,31 @@ We observe that the trends get smaller if larger basis sets are chosen.
 %	\caption{E orbital vs k, only alpha orbitals are plotted of 622}
 %	\label{fig:orben_vs_k}
 %\end{figure}
-
-The interpretation of the orbital energy vs $\kopt$ curve
-should be done with care.
-For this note that the minimal sum of the orbital energies
-occurs at a much smaller value for $\kopt$,
-since the electron-electron interactions are counted twice
-hence shifting the optimal value for the sum of the orbital
-energies more towards smaller $\kexp$.
-
-Nevertheless it allows us to qualitatively assess the realisation
-that for the description of the virtual or valence states
-smaller $\kopt$ values are preferable wlist for the core states
-larger $\kopt$ are typically preferred.
-Again since the core-like orbitals have a bigger contribution
-to the energy typically small basis sets tend to try to represent
-these in a good fashion first, hence tending to larger values of $\kopt$.
-Whilst the $\kopt$ decreases as the basis gets larger up to the point
-where its precise value becomes less and less important.
-
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Optimal k for HF and MP2 is similar
-		\item For FCI a bit larger
-		\item For MP2 grows
-		\item With larger basis set optimal k gets smaller
-		\item optimal k for orbitals smaller than for HF energy in general
-		\item Core-like states favour larger k
-	\end{itemize}
-}
+%
+%The interpretation of the orbital energy vs $\kopt$ curve
+%should be done with care.
+%For this note that the minimal sum of the orbital energies
+%occurs at a much smaller value for $\kopt$,
+%since the electron-electron interactions are counted twice
+%hence shifting the optimal value for the sum of the orbital
+%energies more towards smaller $\kexp$.
+%
+%Nevertheless it allows us to qualitatively assess the realisation
+%that for the description of the virtual or valence states
+%smaller $\kopt$ values are preferable whilst for the core states
+%larger $\kopt$ are typically preferred.
+%Again since the core-like orbitals have a bigger contribution
+%to the energy typically small basis sets tend to try to represent
+%these in a good fashion first, hence tending to larger values of $\kopt$.
+%Whilst the $\kopt$ decreases as the basis gets larger up to the point
+%where its precise value becomes less and less important.
 
 
+%
+% ----------------------------------------------------------
+%
 \subsection{Determining the optimal exponent $\kopt$}
+\todoil{TODO}
 Due to the convexity of the curve energy-vs-k (see \vref{fig:FCI_vs_k})
 and the fact that we are dealing with a scalar function,
 the optimisation of the energy wrt. $k$ can be performed by
@@ -190,8 +195,7 @@ to $\kopt$.
 The heuristic for finding a reasonable value for
 $\kopt$ from \HF energies follows the idea that the
 energy of an orbital is related to its decay at infinite distance
-according to Kato
-\todo{cite}.
+according to \citet{Kato1951}.
 In other words, since this is the case for sturmians, too,
 we get that the energy of an orbital is related to its optimal
 exponent by
@@ -213,7 +217,11 @@ as the function \texttt{best\_of\_n} and the method
 for finding the optimal value of $\kexp$ is implemented
 as \texttt{molsturm.sturmian.cs.find\_kopt}
 
-\subsection{Discussion of the values for $\kopt$}
+%
+% ----------------------------------------------------------
+%
+\subsection{Interpretation of the optimal exponent}
+\todoil{TODO}
 \label{sec:ValuesKopt}
 % Introduce relationship to shielding and slaters / clementis work
 % establish: effective nuclear charge increases across the period
@@ -251,7 +259,7 @@ bears a lot of resemblance.
 As a result it is not surprising that the behaviour of $\kopt$
 along the periodic table is related to $\zeta_\text{Clementi}$ as well.
 In fact it kind of forms a middle ground between the $\zeta_\text{Clementi}$
-value of the HOAO, the highest occupied atomic orbital,
+value of the HO, the highest occupied orbital,
 and the occupation-averaged value for $\zeta_\text{Clementi}$
 when it comes to the trends observed.
 Naturally its actual value is closer to the occupation-average
@@ -279,11 +287,14 @@ or in other words the average shielding which takes place in the atom.
 \begin{figure}
 	\centering
 	\includeimage{10_results/kopt_vs_atnum}
-	\caption{Plot of the atomic number versus the optimal Coulomb-Sturmian exponent
+	\caption[
+		Plot atomic number versus the optimal Coulomb-Sturmian exponent
+	]{
+		Plot of the atomic number versus the optimal Coulomb-Sturmian exponent
 		$\kopt$ for the neutral atoms of the second and the third period.
 		For comparison the occupation-averaged value of the \citet{Clementi1963} optimal
 		Slater exponent $\zeta_\text{Clementi}$ as well as the
-		value $\zeta_\text{Clementi}$ for the highest occupied atomic orbital~(HOAO)
+		value $\zeta_\text{Clementi}$ for the highest occupied orbital~(HO)
 		are shown.
 	}
 	\label{fig:KoptVsAtnum}
@@ -330,7 +341,5 @@ nuclear attraction becomes more and more important leading to larger values of $
 and kinetic energy (which would favour smaller $k$) becomes less important.
 
 
-
-
+Optimal values see table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
 \include{table_kopt}
-See table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
