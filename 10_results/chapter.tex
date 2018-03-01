@@ -15,30 +15,19 @@ wrong times; premature optimization is the root of all evil
 	see definition \vref{defn:RMSOl}
 }
 
-% TODO Not sure this guy is needed
-\newcommand{\limp}{l_\text{imp}}
-
 \noindent
-In this chapter we will discuss a preliminary computational results
+In this chapter we will discuss preliminary computational results
 obtained from quantum-chemical calculations using Coulomb-Sturmian
 basis functions inside the \linebreak \molsturm framework.
 The focus will be on discussing and understanding the convergence
 properties of \CS-based calculations on atoms of
 the second and the third period of the periodic table,
-mostly at Hartree-Fock or {\MP}2 level.
-Some exemplary Full-CI calculations have been performed
-to obtain reliable reference results
-and to show that the convergence trends of {\MP}2 and Full-CI agree.
+mostly at Hartree-Fock level.
+Some exemplary Full-CI and {\MP}2 calculations have been performed
+as well to get some idea how the picture changes
+if correlation effects are taken into account as well.
 
-Even though these methods represent only a small selection
-of the wide-range of possible quantum-chemical methods,
-we think that Hartree-Fock as a self-consistent field method
-and {\MP}2 to perturbatively capture correlation effects
-provide good insight into what could be expected
-for other single-reference ground state methods
-if Coulomb-Sturmian basis sets are to be used.
-
-Based on these results we therefore suggest
+Based on these results we will discuss some
 preliminary guidelines for selecting \CS basis set parameters,
 like the angular momentum restrictions or the Sturmian exponent $\kexp$,
 where the overall aim is to yield rapid convergence
@@ -50,6 +39,7 @@ excited states calculation at \ADC-(2) level.
 \input{convergence_hf.tex}
 \input{convergence_correlation.tex}
 \input{convergence_kexp.tex}
-\input{suggestions_basis_sets.tex}
+% TODO OPTIONAL
+% \input{suggestions_basis_sets.tex}
 % \input{sturmian_cgto.tex}
 \input{sturmian_adc.tex}

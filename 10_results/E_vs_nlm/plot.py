@@ -67,7 +67,7 @@ def plot_orben_vs_bas(vals, alphas=True, selection=None):
     plt.legend()
 
 
-def plot_EHF_vs_bas(values, full_O=False):
+def plot_EHF_vs_bas(values, full_O=False, ignore_regions=[]):
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
@@ -94,8 +94,10 @@ def plot_EHF_vs_bas(values, full_O=False):
             ls = [(1, 1, "-"), (2, 2, "--")]
         elif atom == "O":
             if full_O:
-                ls = [(1, 1, "-"), (2, 2, "-"), (3, 1, "-"),
-                      (3, 2, "-"), (3, 3, "-")]
+                ls = [(1, 1, "-"), (2, 2, "-"), (3, 3, "-")]
+                # TODO OPTIONAL
+                # ls = [(1, 1, "-"), (2, 2, "-"), (3, 1, "-"),
+                #       (3, 2, "-"), (3, 3, "-")]
             else:
                 ls = [(1, 1, "-"), (2, 2, "--")]
         elif atom == "Be":
@@ -111,7 +113,7 @@ def plot_EHF_vs_bas(values, full_O=False):
 
             mask = np.array([v["l_max"] == l and v["m_max"] == m
                              for v in vals])
-            label = atom + " (n," + str(l) + "," + str(m) + ") "
+            label = atom + r" ($n_\text{max}$," + str(l) + "," + str(m) + ") "
 
             hfdiff = (hfs - litval) / abs(litval)
             p = plt.semilogy(n_bas[mask], hfdiff[mask], "x" + style,
@@ -124,12 +126,22 @@ def plot_EHF_vs_bas(values, full_O=False):
                 xshift = 1.5 if position == "right" else -0.5
                 yfac = 1.15 if full_O else 1.5
                 yshift = yfac if position == "above" else 1
-                plt.text(n_bas[mask][i] + xshift, hfdiff[mask][i] * yshift,
-                         str(ns[mask][i]),
+                x = n_bas[mask][i] + xshift
+                y = hfdiff[mask][i] * yshift
+
+                noplot = any(
+                    np.abs(x - region[0]) < 0.4 and
+                    np.abs(np.log(np.abs(y/region[1]))) < 0.4
+                    for region in ignore_regions
+                )
+                if noplot:
+                    continue
+
+                plt.text(x, y, str(ns[mask][i]),
                          color=p[i].get_color(), size=8)
 
     plt.xlabel(r"Number of basis functions $N_\text{bas}$")
-    plt.ylabel(r"relative error of $E_\text{HF}$")
+    plt.ylabel(r"Relative error in $E_\text{HF}$")
     plt.legend(ncol=2)
 
 
@@ -147,14 +159,23 @@ def main():
     orben_plot_n = [v for v in vals_n if v["l_max"] == 2]
     selection = {0: "1s", 1: "2s", 3: "2p", 5: "3s", 7: "3p", 11: "3d"}
     plot_orben_vs_bas(orben_plot_n, selection=selection)
-    plt.xlabel("Coulomb Sturmian basis $(n,2,2)$")
+    plt.xlabel(r"Coulomb Sturmian basis $(n_\text{max},2,2)$")
     plt.savefig("orben_vs_nlm_N.pdf", bbox_inches="tight")
 
     #
     # Plot energy convergence
     #
-    plot_EHF_vs_bas([vals_be, vals_n, vals_p, vals_o, vals_c])
-    plt.ylim([None, 1])
+    ignore_regions = [(12.5, 0.011), (20.5, 1.4e-3), (40.5, 1.31e-3),
+                      (46.5, 1e-4), (46.5, 2e-4)]
+
+    plot_EHF_vs_bas([vals_be, vals_n, vals_p, vals_o, vals_c],
+                    ignore_regions=ignore_regions)
+    plt.text(12.5, 0.013, "4", size=8, color="tab:orange")
+    plt.text(20.5, 1.4e-3, "6", size=8, color="tab:red")
+    plt.text(40.5, 1.31e-3, "6", size=8, color="tab:red")
+    plt.text(46.3, 1.0e-4, "12", size=8, color="tab:purple")
+
+    plt.ylim([None, 3])
     plt.savefig("ehf_vs_nlm.pdf", bbox_inches="tight")
 
     plot_EHF_vs_bas([vals_o], full_O=True)

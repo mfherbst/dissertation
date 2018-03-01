@@ -26,8 +26,10 @@ values for $l=2$ and $l=4$.
 		Plot $\RMSOl$ vs $l$ for the \HF ground state
 		of the atoms of the second period.
 		All calculations done with the cc-pV6Z basis set,
-		except lithium and beryllium
+		except \ce{Li} and \ce{Be}
 		for which at cc-pV5Z was used.
+		For \ce{Be} and \ce{Ne} a \RHF procedure was used,
+		for the other cases \UHF.
 	}
 	\label{fig:RMSO_period2_l}
 \end{figure}
@@ -41,8 +43,10 @@ values for $l=2$ and $l=4$.
 		Plot $\RMSOl$ vs $l$ for the \HF ground state
 		of the atoms of the third period.
 		All calculations done with the cc-pV6Z basis set,
-		except sodium and manganese
+		except \ce{Na} and \ce{Mg}
 		for which at cc-pV5Z was used.
+		For \ce{Mg} and \ce{Ar} a \RHF procedure was used,
+		for the other cases \UHF.
 	}
 	\label{fig:RMSO_period3_l}
 \end{figure}
@@ -64,7 +68,19 @@ values for $l=2$ and $l=4$.
 \begin{figure}[hp!]
 	\centering
 	\includeimage{99_appendix/ccpvnz_rms_lf_O}
-	\caption{Plot root mean square coefficient vs $l$ and orbital index for O}
+	\caption[
+		Root mean square coefficient value
+		per angular momentum for nitrogen
+	]
+	{
+		Root mean square coefficient value per
+		basis function angular momentum quantum number $l$
+		for selected orbitals of oxygen.
+		The atom is modelled
+		in a cc-pV6Z basis using \UHF.
+	}
+
+
 	\label{fig:RMSLF_O_Gauss}
 \end{figure}
 
