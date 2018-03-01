@@ -1,0 +1,71 @@
+\section{Takeaway}
+\label{sec:SCFtakeaway}
+The \SCF algorithms we discussed in this section all follow the general scheme,
+where a \textbf{Fock-update} step and
+a \textbf{coefficient-update} or \textbf{density-matrix-update}
+step are repetitively executed.
+In the former step a new Fock matrix $\mat{F}^{(n)}$ is constructed from
+the present set of \SCF coefficients $\mat{C}^{(n)}$
+or the present density matrix $\mat{D}^{(n)}$.
+In the latter step this Fock matrix $\mat{F}^{(n)}$,
+perhaps with additional insight gained in previous iterations,
+is used in order to generate a new set of coefficients $\mat{C}^{(n+1)}$
+and perhaps from this a new density $\mat{D}^{(n+1)}$.
+For Roothaan's repeated diagonalisation,
+the optimal damping algorithm and the geometric direct minimisation algorithm
+this sequence of steps is emphasised in figures
+\vref{fig:RoothaanODA} and \vref{fig:GeometricDirectMinimisation},
+where the Fock update step is highlighted in red
+and the coefficient/density update step in blue in each case.
+Motivated by the deviating structure of the aforementioned
+algorithms I consider it reasonable
+to assume that all \SCF algorithms can be thought of in such
+a two-step process.
+
+Another key result in this chapter is
+that different basis function types give rise to
+different numerical structure
+of the quantities involved in the \SCF procedure.
+We focused most on the Fock matrices
+of contracted Gaussian, finite-element and Coulomb-Sturmian discretisations,
+which are shown in figures
+\vref{fig:StructureGaussianFock},
+\vref{fig:StructureFiniteElementFock}
+and \vref{fig:StructureSturmianFock}.
+These matrices differ both in size as well as in sparsity.
+Both for \FE-based as well as \CS-based
+discretisations a \contraction-based ansatz%
+\footnote{See the next chapter for a proper introduction into the concept
+of \contraction-based methods.},
+where one avoids building the Fock matrix at all
+and instead thinks in terms of matrix-vector applications,
+showed noteworthy improvements in formal computational scaling.
+
+As we will discuss in depth in the next chapter
+a \contraction-based ansatz can be thought of as a generalisation
+of a scheme keeping the matrices in memory.
+This suggests targeting a \contraction-based \SCF scheme to achieve
+maximum generality of the \SCF algorithm
+and potentially independence of the \SCF code from
+the basis function type in a quantum chemistry program.
+
+As mentioned before this implies to formulate the \SCF in terms of coefficients
+to exploit the favourable computational scaling
+for some basis function types like the \FE or the \CS functions.
+We indicated for the \ODA algorithm
+how approximations allow to transform this density-matrix-based
+\SCF into the \tODA scheme,
+which can be formulated as a \contraction-based \SCF.
+In section \vref{sec:OverviewSCF} we furthermore gave more general suggestions,
+which allow to transform every density-matrix-based \SCF
+into a coefficient-based \SCF in theory.
+We therefore believe it to be possible
+to construct an efficient \contraction-based \SCF,
+which is independent from the type of basis function used
+and where one is able to switch between
+multiple algorithms depending on the numerical requirements of the basis functions
+as well as the chemical system.
+This in turn opens the door
+for achieving a single quantum-chemistry program,
+which is in theory compatible with every type of basis function.
+We will present such a program in chapter \vref{ch:Molsturm}.

@@ -4,7 +4,13 @@ import yaml
 
 
 if __name__ == "__main__":
-    dist, ene = lib.compute_curve("H", "def2-svp", "libint")
+    basis_args = {
+      "basis_type": "gaussian",
+      "backend": "libint",
+      "basis_set_name": "def2-svp"
+    }
+    dist, ene = lib.compute_curve("H", basis_args)
+
     res = {
         "distances": dist.tolist(),
         "energies": ene.tolist(),

@@ -351,7 +351,7 @@ and allows only treatment of extremely small systems.
 	see definition in remark \vref{rem:ERI}.
 }
 \begin{rem}[Structure of the \FCI matrix]
-	\label{eqn:EvalFCIMatrix}
+	\label{rem:EvalFCIMatrix}
 	Recall the expression
 	\[
 		\Op{H}_{\Nelec}
@@ -470,15 +470,15 @@ and allows only treatment of extremely small systems.
 	Of course the dimensionality is still rather large,
 	but a combination of the iterative methods sketched
 	in section \vref{sec:DiagAlgos}
-	and a \contract-based ansatz like the one sketched in section \vref{sec:ContractionAlgos}
+	and a \contraction-based ansatz like the one sketched in section \vref{sec:ContractionAlgos}
 	allow to obtain a few eigenvalues of $\mat{A}_\text{FCI}$
 	exploiting the sparsity structure.
 \end{rem}
 \begin{figure}
 	\centering
 	\includeimage{3_qchem/fci_matrix}
-	\caption{
-		Schematic sketch of upper left part of the FCI matrix $\mat{A}_\text{FCI}$.
+	\caption[Schematic sketch of the he \FCI matrix]{
+		Schematic sketch of upper left part of the \FCI matrix $\mat{A}_\text{FCI}$.
 		The identified blocks denote the
 		interaction of equivalent classes of excited determinants
 		under the electronic Hamiltonian $\Op{H}_{\Nelec}$.
@@ -490,6 +490,7 @@ and allows only treatment of extremely small systems.
 		sparsity, which is not fully depicted here.
 	}
 	\label{fig:StructureFCIMatrix}
+	\todoil{More detailed: \url{https://arxiv.org/abs/1609.07757}}
 \end{figure}
 
 The electron repulsion integral tensor introduced in \eqref{eqn:ERI}

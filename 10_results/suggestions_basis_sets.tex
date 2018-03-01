@@ -1,0 +1,105 @@
+\section{Suggestions for Coulomb-Sturmian basis sets}
+\todoil{TODO}
+% TODO Table of optimal values for k per basis set.
+%      together with their energy and a comparison to literature and UHF values
+%      create the UHF values via a CBL expansion from cc-pvNz calculations with Orca
+%      N = 5, 6, 7 maybe. Do this for RHF and closed-shell as well to see the difference
+%      This probably should be at the end of the chapter leading over to the comparison
+%      with the Gaussians
+
+
+See table \vref{tab:Kopt2} and table \vref{tab:Kopt3} % and table \vref{tab:Kopt4}
+
+
+% Note that molsturm uses the fitted kopt values as a builtin ad hoc estimate
+	% Explain procedure for finding the optimal k
+	% explain justification for the "out of my hat formula"
+	% comapare with various definitions of Z_eff
+	% compare with solution to 1-electron hydrogenic equation energy scaling with Z
+
+
+
+% Show and discuss the ideal exponent
+% Maybe hint at or suggest good values for nlm
+
+% Since the CS are complete in the radial part,
+% we can essentially select sensible values for l and m and converge them
+% with respect to these quantities thereby determining suggested values for l and m
+% for other types of basis functions as well.
+% => AM choice should apply to gaussians (and fe and \ldots), too!
+
+
+Procedure:
+\begin{enumerate}
+	\item Find a not too small and not too large basis
+	\item Optimise k
+	\item Compute at optimal k a full-shell basis set
+	\item find $\RMSOl$
+	\item limit $\lmax$ and $\mmax$ properly
+	\item Go to large-enough value for $\nmax$ to reach desired convergence
+\end{enumerate}
+
+\subsection{A word about the physics and the chemistry}
+Let us briefly recall that Coulomb-Sturmians are the result of
+solving equation \eqref{eqn:CS},
+which is very much related to the Schrödinger equation for hydrogenic atoms.
+Most importantly the angular part of both the Coulomb-Sturmian
+as well as the solution to the hydrogenic problem (see section \vref{sec:HydrogenAtom})
+is the same, namely a spherical harmonic $Y_l^m$.
+Along this lines we would expect that the \CS basis functions
+which are most important to describe the electronic structure
+of an atom are related to the quantum numbers expected
+for the occupied atomic orbitals in this atom by the Aufbau principle
+or the Madelung rule.
+
+
+
+A very remarkable features of the CS basis is how well it captures all the expectations
+from the chemical and phyisical behaviour, even though this has not been taken
+into account in the above consideration, all chemical trends of the
+periodic table which are known are nicely reproduced and hence
+we would guess, that they are very good at capturing chemical effects as well.
+
+\todo[inline,caption={}]{
+	\begin{itemize}
+		\item Compute Sturmian k-dependence for more than one example
+		\item Contrast the results for the periodic table?
+	\end{itemize}
+
+	% Explain shape of E-vs-k graph:
+	% large k favour valance orbitals and disfavour core-like orbitals
+	% kmall k vice versa
+	% valance orbitals have smaller contribution to the HF energy
+	% Hence steeper slope at small k side
+	%
+	% Hence more complete basis leads to smaller kopt
+	%    - Since more basis functions the large-k contributions are represented
+	%      in the extra basis functions with larger n, hence we can choose a smaller k
+	%      to also represent the valence orbitals well (This is not true!)
+	%    - Explains also why the valance orbitals only become bonding if basis is large enough
+	%
+	% Compute E-vs-k graph for a few examples.
+	% Compute Orben vs k grapk
+
+	% Larger lmax helps nothing fer the first 3 periods
+
+	% Fit approximate formula for atomic number vs k_opt
+
+	% Show convergence graph for eigenvalues (e.g. 311, 411, 511, 611, 711, ... for one example
+	%       Go into largeness of the basis for proper description of the virtual orbitals
+	% Show convergence graph for eigenvalues for k
+
+	% m tuning not looked into very closely
+
+	% TODO
+	% FCI calculation of something to compare
+	%       interpret FCI
+	% Can one really make the argument that a smaller orbital energy value is a better approximation?
+
+	% Smaller optimal exponent for the energy (physical argument):
+	%   - Double counting of e-e interaction leads to electrons avoiding another
+	%   - Hence smaller exponent (and higher effective energy, i.e. smaller magnitude)
+
+	% Compare HF energy and HF orbital energies to CBS limit
+}
+

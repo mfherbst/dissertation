@@ -26,7 +26,7 @@ Mathematically a linear operator is defined as such:
 	called the \newterm{domain} of $\Op{A}$.
 \end{defn}
 Typically we employ just the term \newterm{operator} to refer to linear operators.
-Recall that a mapping is called \newterm{linear} if 
+Recall that a mapping is called \newterm{linear} if
 for all $u, v \in \hilbert$ and all $\alpha \in \C$
 \begin{align}
 	\label{eqn:OperatorLinear}
@@ -132,7 +132,8 @@ $a : \hilbert \times \hilbert \to \C$, defined by
 	\hilbert \times \hilbert \ni (u, v) \mapsto a(u, v) := \braket{u}{\Op{A} v}_\hilbert \in \C.
 	\label{eqn:formA}
 \end{equation}
-This is a consequence of the Riesz representation theorem \vref{thm:Riesz}.
+This is a consequence of the Riesz representation theorem \cite{DiracNotation}.
+%% TODO OPTIONAL \vref{thm:Riesz}.
 
 In many applications, including the numerical treatment discussed in chapter
 \vref{ch:numeigen},
@@ -143,7 +144,9 @@ Using the identification of the previous remark,
 we may define the terms symmetric and self-adjoint.
 \begin{defn}
 	\label{def:SymmetricOperator}
-	An operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric} if
+	An operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric}%
+	\footnote{In Physics textbooks this is sometimes called Hermitian.}
+	if
 	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
 \end{defn}
 
@@ -576,6 +579,7 @@ The point spectrum of $\Op{H}$ can be conveniently
 determined by solving the Schrödinger equation \eqref{eqn:TISE}
 \begin{equation}
 	( \Op{H} - E_{\mu} ) \Psi_\mu = 0,
+	\label{eqn:HydrogenComplete}
 \end{equation}
 where $\Psi \in H^2(\R^3, \C)$ and $E \in \R^-$.
 Without jumping ahead too far let us assume that the state
@@ -595,7 +599,7 @@ suggests a product ansatz
 %
 With \eqref{eqn:LaplaceSphericalHarmonic} this yields to the radial equation
 \begin{equation}
-	- \left( \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2} - \frac{Z}{r} - E \right) R_{nl}(r) = 0
+	\left( - \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2} - \frac{Z}{r} - E \right) R_{nl}(r) = 0
 	\label{eqn:HydrogenRadial}
 \end{equation}
 which has the solutions~\cite{Mueller2000}
@@ -635,10 +639,11 @@ forms the orthonormal basis for a Hilbert space $\mathcal{H}_\text{H}$.
 We saw in examples \vref{exmp:H1sH2} and \vref{exmp:H1sH1}
 that $\exp(-r) \in H^2(\R^3, \C)$,
 which implies
-\[
+\begin{equation}
 	\Psi_{1s}(r, \theta, \phi) = \Psi_{100}(r, \theta, \phi)
 	= \sqrt{\frac{Z^3}{\pi}} \exp(-Z r) \in H^2(\R^3, \C).
-\]
+	\label{eqn:FunctionGShydrogen}
+\end{equation}
 From the functional form of $R_{nl}$ and $Y_l^m$ it is clear,
 that all eigenstates $\Psi_{nlm}$ are infinitely differentiable everywhere
 except $r = 0$.

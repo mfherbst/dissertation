@@ -1,11 +1,41 @@
-\chapter{molsturm: Flexible and modular quantum-chemistry package}
+\chapter{\molsturm method-development framework}
+\label{ch:Molsturm}
 \chapquote{[C has] the power of assembly language and the convenience of \ldots assembly language.}{Dennis Ritchie~(1941--2011)} \\
 \chapquote{Keep it simple, make it general, and make it intelligible.}{Doug McIlroy~(1932--present)}
 
-\todoil{Statistics: Lines of code}
-\todoil{Maybe describe idea behind code structure}
+% 1. Design
+% 2. Adapt Examples
+% 3. Shorten State
 
-\input{need_for_modular.tex}
+\noindent
+When the \molsturm project~\cite{molsturmWeb} was initiated a couple of years back,
+the original idea was to support \textit{mol}ecular calculations
+with \textit{Sturm}ian-type basis functions
+in a formulation similar to the \contraction-based ansatz mentioned in section \ref{sec:BasisCS},
+which explains the name.
+Following my unsuccessful attempts on a finite-element-based Hartree-Fock scheme,
+where I mostly used the approaches known to me from a \cGTO setting,
+we expanded the goals of \molsturm.
+Now the primary project goal has become to yield a quantum-chemistry
+method development framework,
+which supports the implementation and evaluation
+of discretisations based on novel types of basis functions.
+We have managed to achieve this
+building largely on the conclusions
+about the structure of \SCF algorithms
+and the generality of the lazy matrix syntax of \lazyten,
+which we discussed in the previous chapters.
+Additionally \molsturm has been equipped with a powerful \python interface,
+where it is easy to obtain, archive and analyse results.
+Even implementing completely new features on top of \molsturm's \SCF procedure
+often takes comparatively little development time as will be demonstrated.
+The arguments and examples of this chapter follow
+closely our publication~\cite{molsturmDesign}.
+
+All components of the \molsturm program package
+are open-source software, licensed under the GNU General Public License.
+To obtain a copy of the code go to \url{https://molsturm.org}.
+
 \input{related.tex}
 \input{design.tex}
 \input{examples.tex}

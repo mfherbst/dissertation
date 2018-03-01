@@ -32,7 +32,7 @@ with open(dir_of_this_script + "/HF_reference.yaml", "r") as f:
 
 headings = ["system", r"\multicolumn{2}{c}{$E_\text{HF}$}"]
 rows = []
-for i in range(1, 20):
+for i in range(3, 19):  # Only Li to Ar
     symbol = gint.element.find(i).symbol
 
     if symbol in restricted:
@@ -61,16 +61,21 @@ cap = r"\HF reference values"
 caption = r"Reference values used for comparison of the \CS-based results " + \
     r"and for estimating errors in the \CS values. " + \
     r"The CBS extrapolation was done with a builtin routine provided by " + \
-    "\molsturm following \citet{Jensen2005}. " + \
-    r"For more details regarding the extrapolation procedure see appendix " + \
-    r"\vref{apx:CbsLimit}."
+    "\molsturm following \citet{Jensen2005}. "
+
+# TODO OPTIONAL
+# caption += \
+#   r"For more details regarding the extrapolation procedure see appendix " + \
+#   r"\vref{apx:CbsLimit}."
 
 ret = []
 ret.append(r"\ctable[")
 ret.append(r"    cap=" + cap + ",")
 ret.append(r"    caption=" + caption + ",")
 ret.append(r"    botcap,")
-ret.append(r"     label=tab:HFReference,")
+ret.append(r"    mincapwidth=0.98\textwidth,")
+ret.append(r"    footerwidth,")
+ret.append(r"    label=tab:HFReference,")
 ret.append(r"]{lr@{.}l@{\hspace{40pt}}lr@{.}l}{")
 
 # Add footnotes

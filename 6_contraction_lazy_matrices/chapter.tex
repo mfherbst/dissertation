@@ -1,4 +1,6 @@
-\chapter{Lazy matrices and contraction-based algorithms}
+\chapter{Contraction-based algorithms and lazy matrices}
+\chaptermark{Contraction-based algorithms \& lazy matrices}
+\label{ch:LazyMatrices}
 \chapquote{%
 There is a race between the increasing complexity of the
 systems we build and our ability to develop intellectual
@@ -10,241 +12,36 @@ reliable for all but a relatively small set of common tasks.
 Given how hard thinking is, if those intellectual tools are
 to succeed, they will have to substitute calculation
 for thought.}{Leslie Lamport~(1941--present)}
-
-\section{Contraction-based algorithms}
-\label{sec:ContractionAlgos}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Clock speed vs. memory increase plot (where to get the data from?)
-		\item Solves some of the issues mentioned in the previous chapter
-		\item See presentations
-		\item Contraction-based diagonalisation
-	\end{itemize}
-}
-
-\begin{itemize}
-	\item In some cases 
-	\item SCF (and many other methods) use iterative solvers
-	\item They only need application or contraction of matrices
-	\item Can furthermore reduce scaling as we have seen
-	\item Typically matrix expression composed of many terms and dependent (with variations) on the problem we want to solve.
-	\item But expressions may become complicated:
-		\begin{itemize}
-			\item Requirements of individual matrix terms differ in storage scheme, contraction scheme
-			\item What to do in terms of approximations, matrix properties and the cost per application differs
-		\end{itemize}
-	\item[$\Rightarrow$] Contraction expression complicated to code
-	\item[$\Rightarrow$] We would like to stay flexible
-\end{itemize}
-
-\subsection{Advantages and disadvantages of \contraction schemes}
-\begin{itemize}
-	\item Scaling typically reduced in examples to O(N)
-	\item Parallelisation is easier (less data management)
-	\item Hardware trends in favour: figure \vref{fig:MemCpuSpeedup}
-	%
-	\item Matrices more intuitive than dealing with contraction functions
-	\item More computations (FLOPS) are needed
-	\item Schemes need to be efficient and highly parallelisable
-	\item Algorithms typically become more complicated (bookkeeping)
-\end{itemize}
-
-
-\begin{figure}
-	\centering
-	\includeimage{6_contraction_lazy_matrices/mem_cpu_years}
-	\caption{Scale-up of memory band width and CPU clock speed over the years.
-	Data taken from \url{https://dave.cheney.net/2014/06/07/five-things-that-make-go-fast}
-	}
-	\label{fig:MemCpuSpeedup}
-\end{figure}
-
-
-\section{Lazy matrices}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Define
-		\item how it works
-		\item what it solves
-		\item In the context of HF
-	\end{itemize}
-}
-
-\begin{itemize}
-	\item Lazy matrices defined in contrast to stored matrices
-	\item Stored matrices: Everything resides in memory
-	\item Lazy matrices: Generalisation which lifts this restriction
-	\item Only a shell which looks like a matrix, but internally only contains expressions
-	\item Subject to lazy evaluation
-	\item Everything is delayed until \contraction with vector
-	\item For convenience: All matrix operations (including element retrieval) allowed.
-\end{itemize}
-
-Let $\mat{U}$ and $\mat{A}$ be lazy matrices and $\vec{x}$ be a normal vector.
-We wish to compute the expression
-\[ (\mat{I} - \mat{U} \tp{\mat{U}}) \mat{A} (\mat{I} - \mat{U} \tp{\mat{U}}) \vec{x} \]
-which occurs in Jacobi-Davidson procedure.
-A typical code is
-\begin{lstlisting}
-DiagonalMatrix<matrix_type> I(std::vector<scalar_type>(100, 1));
-auto projector = I - U * transpose(U);
-auto mat = projector * A * projector;
-auto res = mat * x
-\end{lstlisting}
-
-
-% See for example slide 15 of iwr school talk
-% Code example
-% Resulting expression tree
-% Evaluation order
-
-
-\label{sec:lazymat}
-\todoil{Maybe illustrate the points mentioned here using the coulomb and exchange matrices as actual examples}
-
-% TODO a good paragraph for this part:
-Whenever operations are done on a matrix \lazyten does not automatically
-evaluate them in all cases.
-Much rather it usually just builds up a datastructure,
-which keeps track of the operations which \textit{should} be done
-at some point in the future.
-Whenever an actual call to the \contraction-function happens,
-the expression history is considered and evaluated with respect
-to the other arguments supplied by the \contraction call.
-% end TODO
-
-% For the design chapter it is important to mention here that \contraction-based methods
-% are a generalisation of non-contraction based methods.
-
-\todoil{Maybe this section is too long given that we want to publish on this again}
-
-As mentioned above for some basis function types it is advantageous
-to not build the coulomb and exchange matrices in memory,
-but instead only use them in the form of matrix-vector applications.
-Since iterative solvers like Krylov-subspace based methods or Davidson's algorithm
-only need the matrix-vector product in order to find a few of the eigenvalues
-of a particular matrix,
-this is not an issue with respect to the eigenproblem which needs to be solved
-as part of the SCF.
-Note, that this approach is furthermore not new in quantum chemistry at all.
-Other examples where one typically avoids to place the matrix to diagonalise
-into memory are the configuration interaction~(CI) matrix
-or the algebraic-diagrammatic construction~(ADC) matrix to name a few.
-
-We shall refer to algorithms which focus on implementing a matrix-vector product
-instead of the full matrix as \contraction-based algorithms.
-
-This concept has been invented many times
-and has hence been called a number of different things
-in the different communities.
-Other names include \texttt{matrix}-free
-\todoil{papers from Kronbichler}
-or apply-based
-\todoil{papers from Michi Wormit}
-
-
-The latter name is supposed to indicate that such a scheme is in principle
-not only restricted to the case of multiplying a matrix with a vector,
-much rather general tensor contractions could be expressed implicitly
-by the means of a function computing the contraction rather than
-by explicitly performing the contraction form tensor elements
-which reside in memory.
-\todoil{Also mention the term \texttt{apply}-based?
-Check what term is used in literature.
-Michi Wormit's thesis uses matrix-vector product as term for ADC
-}
-% Yes mention them all.
-
-Note that a disadvantage of \contraction-based algorithms is that the expressions
-computing the tensor contraction can become rather complicated.
-Furthermore it usually is more intuitive to think of the
-numerical modelling in terms of tensors, matrices and vectors
-rather than \contraction functions.
-For this purpose we generalise the concept of a matrix
-to so-called \term{lazy matrix} objects.
-Whilst a normal or \term{stored matrix} is dense and has all its elements
-residing in memory,
-a lazy matrix is more general.
-It may follow a particular sparse storage scheme
-like compressed-row storage
-or even more general all its elements may just be arbitrary expressions.
-The values of lazy matrices are hence only computed upon request
-or whenever a contraction with another object is required.
-As such the lazy matrix may have, \ie a special \update function
-may be used to modify the expression of the lazy matrix
-at a later point.
-Note, however, that special storage schemes for storing
-sparse matrices are similarly just lazy matrices 
-\todoil{
-	Updating lazy matrices is a bit like reactive programming
-	\url{https://en.wikipedia.org/wiki/Reactive_programming}.
-	In fact one could use them to get reactive programming
-	into C++ in a simple way.
-	Mention this here (or in the \lazyten paper)
-}
-
-This on the one hand makes obtaining the lazy matrix elements
-expensive, but on the other hands gives a nice matrix-like
-interface to more complicated objects.
-All evaluation between lazy matrices
-(i.e. addition or matrix-matrix multiplication)
-is usually delayed until for example a contraction of the resulting
-expression with a vector is performed.
-One typically refers to this strategy as \term{lazy evaluation}.
-
-Since lazy matrices are a straight generalisation
-of usual matrices,
-all algorithms written in terms of lazy matrices
-are at the same time applicable to dense matrices,
-sparse matrices or special matrices like in the case of Sturmians
-where a lazy evaluation scheme is needed.
-So high-level code written in terms of lazy matrices
-does not need to be changed if the low level matrix implementation
-is changed from one basis function type to another.
-
-\todoil{One could mention the  processor-memory performance gap \ldots
-	    but I would leave it for the \lazyten paper}
-
-% 1/2 paragraph: Introducing the problem of large tensors in QM - apply based algorithms
-% 1/2 paragraph: One of the flexibilities of Molsturm is that we can switch between
-%                apply-based, sparse, and dense methods without changing high-level
-%                code (which simply mimic the formulæ). 
 %
-% define stored vs. lazy matrix
-% lazy: sparse or expressions
-% lazy matrix may have state
-% other key features of lazy matrices
+%
 
+\noindent
+Summarised in one sentence the main idea of \contraction-based algorithms
+is to avoid storing large matrices or tensors in memory
+and instead employ highly optimised
+\contraction expressions between tensors for the necessary computations.
+We already saw in the previous chapter that applying
+such a strategy to the Fock matrix resulting from a \FE-based
+or a \CS-based discretisation
+can lead to an improved formal computational scaling
+making these methods a promising approach.
+\contraction-based algorithms are, however,
+not at all limited to \SCF procedures or quantum-chemical calculations.
+This chapter will give a general overview
+of \contraction-based methods,
+giving some examples where these methods are employed
+as well as discussing the potential and some issues.
 
+Closely connected to \contraction-based methods is the concept of lazy matrices,
+which is a direct generalisation to the conventional matrices
+in the form of a domain-specific language
+for coding \contraction-based algorithms.
+Main goal of the lazy matrix language is to result code,
+which can be used both with matrices stored in memory
+and additionally in a \contraction-based fashion without noteworthy changes.
+A preliminary \cpp implementation of lazy matrices
+with focus on user-friendliness and flexibility
+is available in the \lazyten library.
 
-\section{\lazyten lazy matrix library}
-
-\begin{figure}
-	\centering
-	\includeimage{6_contraction_lazy_matrices/lazyten_structure}
-	\caption{Overview of \lazyten}
-	\label{fig:structureLazyten}
-\end{figure}
-
-
-
-
-\begin{itemize}
-	\item Builds up DAG instead of evaluating
-	\item Evaluation is done delayed upon \contraction
-	
-\end{itemize}
-
-Fazit
-\begin{itemize}
-	\item contraction based algorithms may lead to lower memory footprint and
-		hence to improved scaling
-	\item Code can be more readable if if proper abstraction is used
-	\item Good for teaching and for experimentation
-	\item Abstraction between integrals and SCF algorithms
-	\item Plug and play integrals libraries (see next chapter)
-	\item Basis-type independent SCF / quantum chemistry
-\end{itemize}
-
-\section{Examples}
-An example showing the performance and how we can run things with bohrium as well
+\input{6_contraction_lazy_matrices/contraction.tex}
+\input{6_contraction_lazy_matrices/lazy.tex}

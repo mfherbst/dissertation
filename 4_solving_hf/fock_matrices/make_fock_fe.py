@@ -22,14 +22,24 @@ def main():
     #
     fefile = "./Be.fe.stiff.mtx.gz"
     if not os.path.isfile(fefile):
-        raise SystemExit("Cannot plot fe.pdf, since fe data file not found.")
+        raise SystemExit("Cannot plot fock_fe.pdf, since fe data file not found.")
 
+    # This is the stiffness matrix minus the exchange matrix,
+    # so strictly speaking T + V0 + J, so the core Hamiltonian plus Coulomb
+    #
+    fecore_file = "./Be.fe.core.mtx.gz"
+    if not os.path.isfile(fecore_file):
+        raise SystemExit("Cannot plot fock_fe.pdf, since fe core data file not found.")
+
+    # Plot full fock matrices
     fe = scipy.io.mmread(fefile).todense()
-    props = common.mtx_properties(fe)
-    common.plot_mtcs([fe])
+    fecore = scipy.io.mmread(fecore_file).todense()
+
+    common.plot_mtcs([fecore, fe], middle_labels=False, vrange=(-10, 0))
     plt.savefig("fock_fe.pdf", bbox_inches="tight", dpi=300)
 
     with open("fock_fe_props.yaml", "w") as f:
+        props = common.mtx_properties(fe)
         yaml.safe_dump(props, f)
 
 

@@ -8,11 +8,19 @@ Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
 Note, that $\Norb \le \Nbas$.}
 
 \defineabbr{HF}{HF\xspace}{Hartree-Fock}
+\defineabbr{SCF}{SCF\xspace}{Self-consistent field approach}
 %\nomenclature{$\Op{\rho}$}{Density operator}
 \nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{1, \ldots, \NelecA\}$ and similar for $\IoccB$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
 	If the error is below this value, the process should be considered converged.}
 
+
+\nomenclature{$\Theta$}{Tuple of all occupied one-particle SCF orbitals $(\psi_1, \psi_2, \ldots, \psi_{\Nelec}$}
+\nomenclature{$\rho_\Theta(\vec{r})$}{
+	Electron density, see \eqref{eqn:HFDensityNoSpin}}
+\nomenclature{$\gamma_\Theta(\vec{r}_1,\vec{r}_2)$}{
+	One-particle reduced density matrix, see \eqref{eqn:HFDensityNoSpin}}
+	
 \nomenclature{$\Op{K}$}{One-electron exchange operator}
 \nomenclature{$\Op{J}$}{Effective Coulomb operator}
 
@@ -76,10 +84,9 @@ The \HF approach is named both
 after Douglas Hartree and Vladimir Fock.
 Historically \citet{Hartree1928} first proposed
 an ansatz for the electronic problem
-based on symmetric products of one-electron functions,
-which is algorithmically very similar to the procedure followed
-nowadays~(see remark~\vref{rem:SCF}).
-\citet{Slater1939a}
+based on symmetric products of one-electron functions, which is algorithmically very similar to the procedure followed
+nowadays~(see remark~\vref{rem:SCFcoeff}).
+\citet{Slater1930a}
 and \citet{Fock1930} then both noted
 the issue arising from the use of symmetric
 products in the context of spin~(see section \vref{sec:ElectronicSchrödinger})
@@ -103,7 +110,7 @@ electronic ground state.
 	\[  \Theta \equiv \left(\psi_1, \psi_2, \ldots, \psi_{\Nelec}\right)
 		\in \left(H^1(\R^3, \C)\right)^{\Nelec} \]
 	denote an arbitrary tuple of single-particle functions.
-	It uniquely defines a Slater determinant
+	It uniquely identifies a Slater determinant
 	$\Phi_\Theta = \bigwedge_{i=1}^{\Nelec} \psi_i.$
 	Inserting this ansatz into the energy expression
 	\eqref{eqn:EnergySlaterDeterminant} for a single determinant
@@ -113,7 +120,7 @@ electronic ground state.
 		\mathcal{E}^\text{HF}(\Theta)
 		&= \frac12 \sum_{i=1}^{\Nelec} \int_{\R^3} \norm{\nabla \psi_i}_2^2 \D\vec{r}
 		+ \int_{\R^3} \sum_{A=1}^M
-			\frac{\rho_\Theta(Z_A \, \vec{r})}{\norm{\vec{r} - \vec{R}_A}_2} \D\vec{r} \\
+			\frac{Z_A \, \rho_\Theta(\vec{r})}{\norm{\vec{r} - \vec{R}_A}_2} \D\vec{r} \\
 		&\hspace{20pt}
 		+ \frac12 \int_{\R^3}\int_{\R^3}
 			\frac{\rho_\Theta(\vec{r}_1) \rho_\Theta(\vec{r}_2)}
@@ -157,7 +164,7 @@ electronic ground state.
 Before we discuss the mathematical properties of the \HF ansatz,
 let us first pick up on our discussion
 of spin in section \vref{sec:ElectronicSchrödinger}
-and generalise our formalism slightly.
+and generalise the formalism.
 
 \begin{rem}[Spin-adapted formulation of \HF]
 	\label{rem:Spin}
@@ -167,8 +174,8 @@ and generalise our formalism slightly.
 	namely the antisymmetry of the wave function.
 	The missing property is the explicit inclusion of the spin degree of freedom.
 	For a single spin-$\sfrac12$ particle the spin degree of freedom
-	by itself spans the two-dimensional Hilbert space $\C^2$,
-	which can be probed by the one-particle spin operator
+	spans the two-dimensional Hilbert space $\C^2$,
+	which can be probed by the spin operator
 	\[ \op{\vec{s}} \equiv \left( \op{s}_x, \op{s}_y, \op{s}_z \right)
 		= \frac12 \left( \sigma_x, \sigma_y, \sigma_z \right). \]
 	In this expression we used the \newterm{Pauli matrices} defined as
@@ -184,9 +191,10 @@ and generalise our formalism slightly.
 	\end{align*}
 	which are called \newterm{spin-up} and \newterm{spin-down}, respectively.
 
-	One way to incorporate this into our present formalism
+	One way to incorporate spin into our present treatment
 	is the \newterm{spinor} formalism,
-	where a one-particle function is now written as a \newterm{two-component} function
+	where a one-particle function is now written as a function of two
+	\newterm{spin component}s
 	\begin{equation}
 		\psi(\vec{r}) \equiv \mm{\psi^\alpha(\vec{r}) \\ \psi^\beta(\vec{r})}
 		\label{eqn:OneParticleSpinor}
@@ -196,7 +204,7 @@ and generalise our formalism slightly.
 	which we derived for the spin-free case can be adapted to the
 	spinor formalism,
 	simply moving from the function space $L^2(\R^3, \C)$
-	(and its subspaces) to $L^2(\R^3, \C^2)$.
+	(and its subspaces) to $L^2(\R^3, \C^2)$ (and equivalent subspaces).
 	For example for two spin-adapted one-particle functions
 	\begin{align*}
 		\psi &\equiv \smallmm{\psi^\alpha\\ \psi^\beta} \in L^2(\R^3, \C^2)
@@ -208,18 +216,17 @@ and generalise our formalism slightly.
 	\[ \braket{\psi}{\varphi}_1 \equiv
 		\int_{\R^3} \braket{\psi(\vec{r})}{\varphi(\vec{r})}_{2} \D \vec{r}
 		= \int_{\R^3}
-			\cc{\left(\psi^\alpha\right)}\!\!(\vec{r}) \  \varphi^\alpha(\vec{r})
+			\cc{\left(\psi^\alpha(\vec{r})\right)} \varphi^\alpha(\vec{r})
 			+
-			\cc{\left(\psi^\beta\right)}\!\!(\vec{r})\  \varphi^\beta(\vec{r})
+			\cc{\left(\psi^\beta(\vec{r})\right)} \varphi^\beta(\vec{r})
 		\D \vec{r}
 	\]
 	in analogy to the spin-free case.
 	In a similar fashion one may construct the exterior power
 	$\bigwedge_{i=1}^{\Nelec} L^2(\R^3, \C^2)$
 	and Slater determinants $\bigwedge_{i=1}^{\Nelec} \psi_i$
-	from functions $\psi_i \in H^1(\R^3, \C)$.
-	Notice that the tensor product nature of the exterior power
-	implies
+	from functions $\psi_i \in H^1(\R^3, \C^2)$ as well.
+	Notice that the tensor product nature of the exterior power implies
 	\[ \bigwedge_{i=1}^{\Nelec} L^2(\R^3, \C^2) \subset L^2(\R^{3\Nelec}, \C^{2\Nelec}) \]
 	and
 	\begin{equation}
@@ -227,19 +234,21 @@ and generalise our formalism slightly.
 		\subset H^1(\R^{3\Nelec}, \C^{2\Nelec}).
 		\label{eqn:SpinAnsatzSpace}
 	\end{equation}
-	In this sense most of the derivations from this chapter can be brought forward
-	to the spin-adapted case as well.
-	For example the expression of the \HF energy functional
+	In this sense the derived expressions
+	from sections \ref{sec:ManyBodyTISE} and \ref{sec:FCI}
+	can be brought forward to the spin-adapted case with only minor modifications.
+	For example, the expression of the \HF energy functional
 	$\mathcal{E}^\text{HF}(\Theta)$ can be used exactly as stated in
 	\eqref{eqn:HFEnergyFunctional}
 	for a tuple
 	\[ \Theta \equiv \left(\psi_1, \psi_2, \ldots, \psi_{\Nelec}\right)
 		\in \left(H^1(\R^3, \C^2)\right)^{\Nelec} \]
-	of spin-adapted one-particle functions as well,
-	provided that we understand the gradient
+	of spin-adapted one-particle functions as well.
+	We only need to understand the gradient
 	\[ \nabla \psi_1 \equiv \mm{ \nabla \psi_1^\alpha \\ \nabla \psi_1^\beta } \in \C^6 \]
 	as a vector from $\C^6$
 	and define the density as
+
 	\begin{align}
 		\rho_\Theta(\vec{r}) &= \sum_{i=1}^{\Nelec} \norm{\psi_i(\vec{r})}_2^2
 		= \sum_{i=1}^{\Nelec} \abs{\psi_i^\alpha(\vec{r})}^2 + \abs{\psi_i^\beta(\vec{r})}^2 \\
@@ -256,20 +265,21 @@ and generalise our formalism slightly.
 	and component operators $\op{s}_x, \op{s}_y, \op{s}_z$
 	for a single particle,
 	one can define the total spin operator $\Op{\vec{S}}$
-	as well as $\Op{S}_x, \Op{S}_y, \Op{S}_z$,
-	which yield the equivalent quantities for an $\Nelec$-electron system.
+	as well as Cartesian spin components $\Op{S}_x, \Op{S}_y, \Op{S}_z$
+	for an $\Nelec$-electron system.
 	Originating from $\Op{\vec{S}}$ one may define
 	\[ \Op{S}^2 = \Op{\vec{S}} \cdot \Op{\vec{S}} = \left(\Op{S}^2_x, \Op{S}^2_y, \Op{S}^2_z\right). \]
 	One can show~\cite{Shankar1994} that
 	\[ \comm{\Op{S}^2}{\Op{S}_z} = 0, \]
-	\ie that the total spin squared operator commutes with $\op{s}_z$.
-	Furthermore since the Hamiltonian $\Op{H}_{\Nelec}$ makes no explicit reference
+	\ie that the total spin squared operator commutes with $\Op{S}_z$.
+	Since the Hamiltonian $\Op{H}_{\Nelec}$ makes no explicit reference
 	to any particular spin component,
 	we necessarily have
 	\begin{equation}
-		\comm{\Op{S}_z}{\Op{H}_{\Nelec}} = \comm{\Op{S}^2}{\Op{H}_{\Nelec}} = 0.
+		\comm{\Op{S}_z}{\Op{H}_{\Nelec}} = \comm{\Op{S}^2}{\Op{H}_{\Nelec}} = 0
 		\label{eqn:CommutationSpinHamlitonian}
 	\end{equation}
+	as well.
 	This implies\footnote{%
 		Since $\Op{A}\Op{B} f = \Op{B}\Op{A} f \Leftrightarrow \comm{A}{B} = 0$.%
 	}
@@ -280,10 +290,12 @@ and generalise our formalism slightly.
 	or for understanding the aforementioned Stern-Gerlach experiment,
 	the determination of simultaneous eigenstates of these three operators at once
 	is crucial.
-	Due to \eqref{eqn:CommutationSpinHamlitonian}
-	this must be possible for the exact ground state of $\Op{H}_{\Nelec}$ as well.
+	\eqref{eqn:CommutationSpinHamlitonian}
+	naturally implies that it is possible to obtain the ground state
+	or ground states of $\Op{H}_{\Nelec}$
+	in a way that they are eigenfunctions of the spin operators.
 	There is, however, no guarantee that the \HF ansatz
-	\eqref{eqn:HFMO} gives rise to a ground state $\Phi_{\Theta^0}$,
+	\eqref{eqn:HFMO} gives rise to a \HF ground state $\Phi_{\Theta^0}$,
 	which is an eigenfunction of $\Op{S}_z$ or $\Op{S}^2$~\cite{Fukutome1981,McWeeny1985}.
 	In fact it is rather easy to construct Slater determinants,
 	which are neither an eigenstate of $\Op{S}_z$ nor of $\Op{S}^2$.
@@ -299,7 +311,7 @@ and generalise our formalism slightly.
 	such that the resulting \HF ground states
 	are eigenfunctions of $\Op{S}_z$ and $\Op{S}^2$.
 	This is what we will discuss when we move to a discretised
-	treatment of the \HF ansatz in \vref{rem:HFDiscrete}.
+	treatment of the \HF ansatz in \vref{rem:HFDiscreteVariational}.
 \end{rem}
 
 Even though the Hartree-Fock ansatz was already proposed
@@ -308,7 +320,7 @@ its fundamental mathematical properties were
 only rigorously characterised and proved by Lieb~\cite{Lieb1977}
 and Lions~\cite{Lions1987,Lions1989} in the 70s and 80s
 for the general spin-adapted case.
-The are summarised in the following.
+These are summarised in the following.
 
 \begin{rem}[Invariance under orbital rotations]
 	\label{rem:HFInvariance}
@@ -323,7 +335,7 @@ The are summarised in the following.
 	One can easily show~\cite{Lions1989},
 	that for any unitary matrix $\mat{U} \in \C^{\Nelec\times\Nelec}$ it holds:
 	\begin{itemize}
-		\item $\Theta' = \Theta \mat{U}$ satisfies \label{eqn:OrthonormalityCodition} as well.
+		\item $\Theta' = \Theta \mat{U}$ satisfies \eqref{eqn:OrthonormalityCodition} as well.
 		\item $\mathcal{E}^\text{HF}(\Theta \mat{U}) = \mathcal{E}(\mat{U})$
 	\end{itemize}
 	In other words all properties of \HF can only be stated up to
@@ -362,12 +374,13 @@ The are summarised in the following.
 				\label{eqn:OperatorExchange}
 			\end{align}
 
-			To find the minimiser of $\mathcal{E}^\text{HF}$ one needs
-			to solve the Euler-Lagrange equations corresponding to the minimisation
+			To find a stationary point of $\mathcal{E}^\text{HF}$ with respect to $\Theta$
+			one needs to solve the Euler-Lagrange equations corresponding to the minimisation
 			problem \eqref{eqn:HFMO}.
-			They state, that $\Theta^0$ as defined in \eqref{eqn:HFTheoremMinimiser}
-			is a minimiser to $\mathcal{E}^\text{HF}$ if and only if
-			there exists a Hermitian matrix $\mat{\lambda} \in \C^{\Nelec\times\Nelec}$
+			By their means one finds that $\Theta^0$
+			as defined in \eqref{eqn:HFTheoremMinimiser}
+			can only be a stationary point of $\mathcal{E}^\text{HF}$ if
+			there exists a Hermitian matrix $\mat{\lambda} \in \C^{\Nelec\times\Nelec}$,
 			such that for all $i,j \in \{1,\ldots,\Nelec\}$
 			\begin{align}
 				\label{eqn:EulerLagrangeHF}
@@ -376,6 +389,7 @@ The are summarised in the following.
 				\braket{\psi_i^0}{\psi_j^0} &= \delta_{ij}
 			\end{align}
 			hold.
+			This is a necessary condition for $\Theta^0$ to be a minimiser.
 
 			Once we found the ground state, the application of the Fock operator
 			will thus only rotate us around the space spanned by the minimising
@@ -394,7 +408,7 @@ The are summarised in the following.
 			the canonical \newterm{Hartree-Fock equations} hold
 			\begin{align}
 				\label{eqn:HFequations}
-				\Op{F}_{\Theta^0} \psi_i^0 = \varepsilon_i \psi_i^0
+				\Op{F}_{\Theta^0} \psi_i^0 &= \varepsilon_i \psi_i^0
 				&&\text{and}&
 				\braket{\psi_i^0}{\psi_j^0} &= \delta_{ij}
 			\end{align}
@@ -404,7 +418,7 @@ The are summarised in the following.
 			The $\{\varepsilon_1, \ldots,\varepsilon_{\Nelec} \}$
 			are the lowest $\Nelec$ eigenvalues of $\Op{F}_{\Theta^0}$.
 		\item Let $\varepsilon_{\Nelec+1}$ be the $(\Nelec+1)$-th eigenvalue of $\Op{F}_{\Theta^0}$
-			if the Fock matrix has $(\Nelec+1)$ negative eigenvalue (counting multiplicities)
+			if the Fock operator has $(\Nelec+1)$ negative eigenvalue (counting multiplicities)
 			otherwise set $\varepsilon_{\Nelec+1} = 0$.
 			The \textbf{no unfilled-shell} property
 			\[ \varepsilon_{\Nelec} < \varepsilon_{\Nelec+1} \]
@@ -413,121 +427,767 @@ The are summarised in the following.
 \end{thm}
 The proofs for these results in the general setting are somewhat involved
 and can be found in the cited works.
-To sketch the required steps appendix \vref{apx:HFTheoremFinite}
-proves some of the results of remark \ref{rem:HFInvariance}
-and theorem \ref{thm:MathematicalHF} in a finite-dimensional setting.
+% TODO OPTIONAL Skipped for time reasons
+% To sketch the required steps appendix \vref{apx:HFTheoremFinite}
+% proves some of the results of remark \ref{rem:HFInvariance}
+% and theorem \ref{thm:MathematicalHF} in a finite-dimensional setting.
+Theorem \ref{thm:MathematicalHF} provides the mathematical
+justification for the \HF procedure as it is performed
+in almost every quantum-chemistry program these days
+for neutral or positively charged system.
+I am not aware of a mathematical statement making
+the guarantee that \HF gives a sensible ground state for negatively charged systems.
+In fact one can even show that no solution to the \HF problem \eqref{eqn:HFMO}
+exists for negative ions with $\Nelec > 2Z_\text{tot} + M$~\cite{Cances2000}.
+This holds for example for \ce{H^{2-}}.
+To the best of my knowledge there is furthermore no
+uniqueness proof for the solution \eqref{eqn:HFTheoremMinimiser}
+in the infinite-dimensional setting up to today,
+not even for the resulting ground state density~\cite{Cances2000}.
 
-We will return to some of the results of theorem \ref{thm:MathematicalHF}
-further down this section.
-Let us just note, that theorem \ref{thm:MathematicalHF} allows to recast
-the \HF ansatz \eqref{eqn:HFMO} into an equivalent spectral problem \eqref{eqn:HFequations}
-for the Fock operator.
-This problem satisfies all the spectral requirements for applying the Ritz-Galerkin ansatz
-of remark \vref{rem:DiscreteFormulation},
-such that a Ritz-Galerkin ansatz can be applied.
+\subsection{Discretised Hartree-Fock}
+\label{sec:DiscreteHF}
+\defineabbr{UHF}{UHF\xspace}{unrestricted Hartree-Fock}
+\defineabbr{GUHF}{GUHF\xspace}{generalised unrestricted Hartree-Fock}
+\defineabbr{RHF}{RHF\xspace}{restricted Hartree-Fock}
+\defineabbr{ROHF}{ROHF\xspace}{restricted open-shell Hartree-Fock}
+\nomenclature{$\mat{C}$}{Matrix of occupied molecular orbital coefficients of
+	size $2\Nbas \times \Nelec$}
+\nomenclature{$\mat{C}^\alpha$}{Matrix of occupied spin-up molecular orbital
+	coefficients of size $\Nbas \times \NelecA$}
+\nomenclature{$\mat{C}_F$}{Matrix of all molecular orbital coefficients.
+	Result of the diagonalisation of $\mat{F}$. 
+	Size $2\Nbas \times \Norb$}
+\nomenclature{$\mat{C}_F^\alpha$}{Matrix of all spin-up
+	molecular orbital coefficients.
+	Result of the diagonalisation of $\mat{F}^\alpha$.
+	Size $2\Nbas \times \NorbA$}
+\nomenclature{$\mat{I}_N$}{Identity matrix in $\C^{N\times N}$}
 
-\newcommand{\Ehf}{\mathcal{E}^\text{HF}}
-\begin{rem}[Discretised \HF equations]
+A central result of theorem \ref{thm:MathematicalHF}
+is that the \HF ansatz \eqref{eqn:HFMO}
+can be seen as a variational problem towards finding
+the best molecular orbitals for a single Slater determinant,
+which at the optimal point reduces to
+the spectral problem of the Fock operator $\Op{F}$.
+This section deals with the discretisation of both
+representations of \HF.
+
+\begin{rem}[Discretised \HF variational problem]
+	\label{rem:HFDiscreteVariational}
 	Assume a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
-	with $L^2(\R^3,\C)$-orthonormal
-	basis functions $\varphi_\mu$ taken from a dense subspace of $H^1(\R^3,\C)$.
-	The set
-	\begin{equation}
-		\mathcal{S} = \left\{
-		\mm{
-			\sum_{\mu\in\Ibas} C^\alpha_{\mu i} \varphi_\mu \\
-			\sum_{\mu\in\Ibas} C^\beta_{\mu i} \varphi_\mu
-		} \, \middle|\, C^\alpha_{\mu i}, C^\beta_{\mu i} \in \C \right\}
-		\label{eqn:HFDiscretisationAnsatz}
-	\end{equation}
+	consisting of $\Nbas = \abs{\Ibas}$
+	basis functions taken from a dense subspace of $H^1(\R^3,\C)$.
+	The space
+	\[
+		\mathcal{S}_1 = \spacespan \left\{
+			\mm{\varphi_\mu \\ 0 }, \mm{0\\\varphi_\mu}
+		\, \middle| \, \mu \in \Ibas \right\}
+	\]
 	spanned by spin-adapted linear combinations from
 	$\{\varphi_\mu\}_{\mu\in\Ibas}$
 	is a subspace of $H^1(\R^3,\C^2)$.
 	Consequently
-	\[ \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i \,\middle|\, \psi_i \in \mathcal{S},
+	\[ \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i \,\middle|\, \psi_i \in \mathcal{S}_1,
 	\braket{\psi_i}{\psi_j}_1 = \delta_{ij} \right\} \subset \mathcal{R}^1_{\Nelec}, \]
 	which implies
-	\[
-		E_0 \leq E_0^{HF} \leq \tilde{E}_0^\text{HF} = \inf \left\{
-		\mathcal{E}^\text{HF}(\Theta)
+	\begin{equation}
+		E_0 \leq E_0^\text{HF} \leq \tilde{E}_0^\text{HF} = \inf \left\{
+		\Ehf(\Theta)
 		\, \middle| \,
-		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in \mathcal{S}^{\Nelec},
+		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in (\mathcal{S}_1)^{\Nelec},
 			\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
 		\right\}.
-	\]
-	Inserting \eqref{eqn:HFDiscretisationAnsatz} into the \HF energy functional
-	\eqref{eqn:HFEnergyFunctional}
-	we obtain the energy functional for the discrete case
-	\begin{equation}
-		\Ehf(\mat{C})
-		\label{eqn:HFEnergyFunctionalDiscrete}
+		\label{eqn:DiscreteMinimisation}
 	\end{equation}
+	Let us denote with
+	\[ \bm{\varphi} = \mm{\varphi_1 & \varphi_2 & \cdots & \varphi_{\Nbas}} \]
+	the row vector of all basis functions written one after another.
+	Then each element $\psi_i$ of the tuple
+	\begin{equation}
+		\Theta = \left(\psi_1, \ldots, \psi_{\Nelec}\right) \in (\mathcal{S}_1)^{\Nelec}
+		\label{eqn:HFTuple}
+	\end{equation}
+	can be expanded as
+	\begin{equation}
+		\psi_i = \mm{\psi_i^\alpha\\\psi_i^\beta}
+		= \sum_{\mu\in\Ibas} \varphi_\mu \, \mm{
+			\tilde{C}^\alpha_{\mu i} \\
+			\tilde{C}^\beta_{\mu i}
+		}
+		= \underbrace{\mm{\bm{\varphi} & 0 \\ 0 & \bm{\varphi}}}_{
+			\substack{\text{$2$ rows,} \\ \text{$2\Nbas$ columns}}}
+			\mm{%
+				\tilde{C}^\alpha_{1i} \\ \vdots \\ \tilde{C}^\alpha_{\Nbas, i} \\[5pt]
+				\tilde{C}^\beta_{1i} \\ \vdots \\ \tilde{C}^\beta_{\Nbas, i}
+			}.
+		\label{eqn:HFDiscretisationAnsatzPhi}
+	\end{equation}
+	This allows to write
+	\begin{align}
+		\Theta &= \mm{\bm{\varphi} & 0 \\ 0 & \bm{\varphi}} \mat{C}
+		&&\text{where}&
+		\mat{C} &= \mm{\tilde{\mat{C}}^\alpha \\ \tilde{\mat{C}}^\beta}
+			\in \C^{2 \Nbas \times \Nelec}
+		\label{eqn:HFDiscretisationAnsatz}
+	\end{align}
+	is the \newterm{coefficient matrix},
+	which is built by pasting
+	the row matrices at the right hand side of \eqref{eqn:HFDiscretisationAnsatz}
+	one after another.
 
+	It is not hard to imagine
+	that one could insert \eqref{eqn:HFDiscretisationAnsatz}
+	into the expression for the \HF energy functional $\Ehf$
+	in order to obtain an expression of the \HF energy
+	in terms of $\mat{C}$.
+	This expression could be minimised
+	with respect to the coefficients $\mat{C}$
+	in order to obtain an approximate
+	\HF ground state energy and a corresponding approximate \HF ground state.
+	Even though this could be done
+	such a \newterm{generalised unrestricted Hartree-Fock}~(\GUHF)
+	procedure is hardly ever performed in practice~\cite{McWeeny1985}.
+	The reason is that it suffers
+	exactly from the issues raised at the end of remark \vref{rem:Spin},
+	namely that the resulting \HF ground state
+	is neither an eigenfunction of $\Op{S}^2$ nor $\Op{S}_z$.
 
-
-
-
-
-
+	Instead one typically selects a target eigenvalue $M_S$
+	of the projected spin operator $\Op{S}_z$ \emph{before}
+	performing the \HF procedure.
+	From this value and $\Nelec$ one determines two parameters
+	$\NelecA$ and $\NelecB$,
+	the number of spin-up and the number of spin-down electrons,
+	such that
+	\begin{align*}
+		\NelecA + \NelecB &= \Nelec & M_S = \frac12 \left( \NelecA - \NelecB\right).
+	\end{align*}
+	One can show~\cite{Szabo1996,Helgaker2013},
+	that any Slater determinant $\Phi_\Theta$
+	made from a tuple like \eqref{eqn:HFTuple}
+	is an eigenfunction of $\Op{S}_z$ with eigenvalue $M_S$
+	if it consists of $\NelecA$ single-particle functions with zero $\beta$
+	component and $\NelecB$ single-particle functions with zero $\alpha$ component.
+	Invoking remark \vref{rem:HFInvariance}
+	we can always reorder the single-particle functions
+	such that the $\NelecA$ functions with zero $\beta$ component are first
+	and the other functions with zero $\alpha$-component follow thereafter
+	or
+	\begin{align*}
+		\psi_i^\beta  &= 0 \ \forall i \in \{1,\ldots,\NelecA\}
+		&&\text{and}&
+		\psi_i^\alpha  &= 0 \ \forall i \in \{\NelecA+1,\ldots,\Nelec\}.
+	\end{align*}
+	Applying these conditions
+	to the generalised unrestricted Hartree-Fock ansatz \eqref{eqn:HFDiscretisationAnsatz}
+	leads to the \newterm{unrestricted Hartree-Fock}~(\UHF) method%
+	\footnote{
+		Beware that even though the \UHF ansatz is termed \emph{unrestricted}
+		it implies a restriction of the search space due to spin symmetry.
+		This naming is an unfortunate historic consequence.
+	}~\cite{Pople1954}.
+	In \UHF the coefficient matrix $\mat{C}$ of \eqref{eqn:HFDiscretisationAnsatz}
+	becomes block-diagonal
+	\begin{equation}
+		\label{eqn:HFCoeffMatrix}
+		\mat{C} = \mm{\mat{C}^\alpha & 0 \\
+				0 & \mat{C}^\beta}
+			\in \C^{2\Nbas \times \Nelec},
+	\end{equation}
+	where $\mat{C}^\alpha \in \C^{\Nbas \times \NelecA}$
+	and $\mat{C}^\beta \in \C^{\Nbas \times \NelecB}$
+	are the spin-up and spin-down occupied coefficient matrices, respectively.
+	Inserting \eqref{eqn:HFDiscretisationAnsatz} and \eqref{eqn:HFCoeffMatrix}
+	into \eqref{eqn:HFEnergyFunctional}
+	we obtain the \HF energy functional in terms of
+	of the coefficient matrix $\mat{C}$
+	\begin{equation}
+		\Ehf_C(\mat{C})
+			= \tr \Big( \tp{\mat{C}} \left(\mat{T} + \mat{V}_0 \right) \mat{C} \Big)
+			+ \frac12 \tr \Big( \tp{\mat{C}} \left(\matJfull + \matKfull \right) \mat{C} \Big),
+		\label{eqn:HFEnergyFunctionalCoeff}
+	\end{equation}
+	where all involved matrices are $\alpha$-$\beta$ block-diagonal,
+	just like the coefficient matrix \eqref{eqn:HFCoeffMatrix}.
+	Furthermore
 	\begin{itemize}
-			\item 
-	$\varphi$ \newterm{one-particle basis} for HF
-	\item
-	$\psi$ HF orbitals or (SCF) orbital basis,
-	typically in FCI one uses the HF orbital basis as the one-particle basis functions for FCI
-		\end{itemize}
+		\item the \newterm{kinetic energy matrix}
+			$\mat{T}$ has identical $\alpha$ and $\beta$ blocks
+			with elements
+			\begin{equation}
+				T^\alpha_{\mu\nu} = T^\beta_{\mu\nu}
+				= \frac12 \int_{\R^3} \cc{\left(\nabla \varphi_\mu\right)}
+					\cdot \nabla \varphi_\nu \D\vec{r}.
+				\label{eqn:Tbas}
+			\end{equation}
+		\item the \newterm{nuclear attraction matrix} $\mat{V}_0$
+			has identical $\alpha$ and $\beta$ blocks of elements
+			\begin{equation}
+				\left(V^\alpha_0\right)_{\mu\nu} = \left(V^\beta_0\right)_{\mu\nu}
+				= \int_{\R^3} \sum_{A=1}^M Z_A
+				\frac{\cc{\varphi_\mu(\vec{r})} \varphi_\nu(\vec{r})}{\norm{\vec{r} - \vec{R}_A}_2}
+				\D \vec{r}.
+				\label{eqn:Vbas}
+			\end{equation}
+		\item the \newterm{Coulomb matrix} $\matJfull$
+			depends explicitly on the coefficient matrix $\mat{C}$
+			as expressed by the term in the square brackets.
+			It has an identical $\alpha$ and $\beta$ block with elements
+			\begin{equation}
+				J_{\mu\nu}^\alpha\!\left[\mat{C}\mat{C}^\dagger\right]
+					= J_{\mu\nu}^\beta\!\left[\mat{C}\mat{C}^\dagger\right]
+					= \sum_{\sigma\in\{\alpha\beta\}}
+						\sum_{i=1}^{N_\text{elec}^\sigma}
+						C^\sigma_{\lambda i}
+						\cc{\left(C^\sigma_{\kappa i}\right)}
+						\eriMu{\varphi_{\mu} \varphi_{\nu}}
+							{\varphi_{\kappa} \varphi_{\lambda}}.
+				\label{eqn:Jbas}
+			\end{equation}
+			Here as usual $\eriMu{\slot \slot}{\slot \slot}$
+			denotes the electron repulsion integrals defined like \eqref{eqn:ERI}.
+		\item the \newterm{exchange matrix} $\matKfull$ has
+			deviating $\alpha$ and $\beta$ blocks,
+			both depending on the coefficients.
+			For $\sigma \in \{\alpha\beta\}$ their elements are
+			\begin{equation}
+				K_{\mu\nu}^\sigma\!\left[\mat{C}\mat{C}^\dagger\right]
+					= - \sum_{i=1}^{N_\text{elec}^\sigma}
+						C^\sigma_{\lambda i}
+						\cc{\left(C^\sigma_{\kappa i}\right)}
+						\eriMu{\varphi_{\kappa} \varphi_{\nu}}
+							{\varphi_{\mu} \varphi_{\lambda}}.
+				\label{eqn:Kbas}
+			\end{equation}
+	\end{itemize}
+	Let us further define a block-diagonal \newterm{overlap matrix}
+	\[ \mat{S} = \mm{ \mat{S}^\alpha & 0 \\ 0 & \mat{S}^\beta} \]
+	with elements
+	\begin{equation}
+		S^\alpha_{\mu\nu} = S^\beta_{\mu\nu} = \int_{\R^3} \cc{\varphi}_\mu(\vec{r})
+			\varphi_{\nu}(\vec{r})\D\vec{r}.
+		\label{eqn:Sbas}
+	\end{equation}
+	Alltogether definitions \eqref{eqn:HFEnergyFunctionalCoeff}
+	to \eqref{eqn:Sbas} allow to rewrite \eqref{eqn:DiscreteMinimisation}
+	as an optimisation problem with respect to the coefficients $\mat{C}$
+	\begin{equation}
+		\tilde{E}_0^\text{HF} = \inf \left\{
+			\Ehf_C(\mat{C}) \, \middle| \, \mat{C} \in \mathcal{C}
+		\right\}
+		\label{eqn:HFOptCoeff}
+	\end{equation}
+	where
+	\begin{equation}
+		\mathcal{C} = \left\{
+			\mm{\mat{C}^\alpha & 0 \\ 0 & \mat{C}^\beta}
+			\, \middle| \,
+			\mat{C}^\alpha \in \C^{\Nbas\times\NelecA},
+			\mat{C}^\beta \in \C^{\Nbas\times\NelecB},
+			\tp{\mat{C}} \mat{S} \mat{C} = \mat{I}_{\Nelec}
+			\right\}.
+		\label{eqn:HFStiefel}
+	\end{equation}
+	One can show~\cite{Cances2000} in the discrete case,
+	that the minimiser $\mat{C}_0$ is even unique
+	up to unitary rotations, \ie up to multiplications with unitary matrices
+	$\mat{U}^\alpha \in \C^{\NelecA\times\NelecA}$,
+	$\mat{U}^\beta \in \C^{\NelecB\times\NelecB}$ with
+	\[ \mm{\mat{C}^\alpha & 0 \\ 0 & \mat{C}^\beta}
+		\to \mm{\mat{C}^\alpha\mat{U}^\alpha & 0 \\ 0 & \mat{C}^\beta\mat{U}^\beta} \]
+
+	\noindent
+	In many cases an alternative formulation of \eqref{eqn:HFOptCoeff} in terms
+	of the \newterm{density matrix}
+	\begin{align}
+		\label{eqn:Dbas}
+		\mat{D} &= \mat{C} \tp{\mat{C}} \in \C^{2\Nbas\times2\Nbas}
+		&&\text{where}&
+		\mat{D}^\alpha &= \mat{C}^\alpha\tp{\left(\mat{C}^\alpha\right)}, &
+		\mat{D}^\beta  &= \mat{C}^\beta \tp{\left(\mat{C}^\beta \right)},
+	\end{align}
+	is desirable.
+	The coefficient matrices from $\mathcal{C}$ span
+	\begin{equation}
+		\begin{aligned}
+		\mathcal{P} &= \left\{
+			\mm{\mat{D}^\alpha & 0 \\ 0 & \mat{D}^\beta}
+			\, \middle| \,
+			\forall \sigma \in \{\alpha, \beta\} \
+			\mat{D}^\sigma \in \C^{\Nbas\times\Nbas},
+			\right. \\
+			&\hspace{80pt}
+			\tr\left(\mat{S}^\sigma \mat{D}^\sigma\right) = N_\text{elec}^\sigma, \,
+			\mat{D}^\sigma \mat{S}^\sigma \mat{D}^\sigma  = \mat{D}^\sigma
+		\bigg\}.
+		\end{aligned}
+		\label{eqn:HFGrassmann}
+	\end{equation}
+	With these definitions we can recast \eqref{eqn:HFOptCoeff} as
+	\begin{equation}
+		\tilde{E}_0^\text{HF} = \inf \left\{
+			\Ehf_D(\mat{D})
+				\, \middle| \,
+				\mat{D} \in \mathcal{P}
+		\right\},
+		\label{eqn:HFOptDens}
+	\end{equation}
+	where the energy functional in terms of the density matrix is
+	\begin{equation}
+		\Ehf_D(\mat{D})
+			= \tr \big( \left(\mat{T} + \mat{V}_0 \right) \mat{D} \big)
+			+ \frac12 \tr \big( \left(\matJfullD + \matKfullD \right) \mat{D} \big).
+		\label{eqn:HFEnergyFunctionalDens}
+	\end{equation}
+	The respective expressions for $\matJfullD$ and $\matKfullD$
+	can be obtained from \eqref{eqn:Jbas} and \eqref{eqn:Kbas}
+	by replacing
+	\begin{align}
+		\label{eqn:DensityReplacement}
+		\mat{C}\tp{\mat{C}} &\to \mat{D}
+		&&\text{and}&
+	\sum_{i=1}^{N_\text{elec}^\sigma}
+	C^\sigma_{\lambda i}
+	\cc{\left(C^\sigma_{\kappa i}\right)} &\to D^\sigma_{\lambda \kappa}.
+	\end{align}
+	Notice, that the first trace term of $\Ehf_D(\mat{D})$
+	is linear in the density matrix, whereas the second trace term
+	is quadratic in the density matrix.
+	Again the minimiser $\mat{D}_0$ of \eqref{eqn:HFOptDens}
+	is unique~\cite{Cances2000} if the Aufbau principle ordering of orbital
+	energies is chosen when building $\mat{D}$ from $\mat{C}$.
 \end{rem}
 
-% --------------------------------
+\nomenclature{$\norm{\slot}_\text{frob}$}{Frobenius norm of a matrix,
+which is the square root of the sum of all elements squared.}
+\begin{rem}
+	All matrices arising from a discretisation of the \HF ansatz \eqref{eqn:HFMO}
+	in the sense of \UHF give rise to block-diagonal matrices,
+	with the $\alpha$-block describing the
+	spin-up component
+	and the $\beta$-block describing the spin-down component.
+	Apart from the exchange matrix $\matK$,
+	the density matrix $\mat{D}$ as well as the coefficient matrix $\mat{C}$
+	all matrices arising in remark \ref{rem:HFDiscreteVariational}
+	have identical entries in both blocks.
+	Inside the \HF energy functional
+	it is the exchange term $\tr \left(\tp{\mat{C}} \matK \mat{C}\right)$
+	where the $\alpha$ and $\beta$ block lead to non-symmetrical
+	energy contributions.
+	In a minimisation it is thus this term, which distinguishes
+	spin-up and spin-down electrons and makes them become subject to deviating physics.
+	In other words this term gives rise to the non-classical effects
+	inside the Hartree-Fock approximation.
 
+	The \UHF procedure automatically assures that the minimiser $\mat{C}_0$
+	gives rise to a Slater determinant,
+	which is an eigenfunctions of $\Op{S}_z$.
+	It is not assured, however, that it is an eigenfunction of $\Op{S}^2$.
+	In fact one can show~\cite{Szabo1996},
+	that the value obtained for the total spin squared
+	for the discretised \HF ground state $\Phi_0$ is
+	\begin{equation}
+		\label{eqn:UHFS2}
+		S^2 = \braket{\Phi_0}{\Op{S}^2 \Phi_0}
+		=
+		S^2_\text{exact} + \NelecB -
+		\norm{
+		\tp{\left(\mat{C}^\alpha\right)} \mat{S}^\beta \mat{C}^\beta
+		}_\text{frob}^2
+	\end{equation}
+	where
+	\[ S^2_\text{exact}
+		= \left(\frac{\NelecA - \NelecB}{2}\right)
+			\left(\frac{\NelecA - \NelecB}{2} +1\right).
+	\]
+	The observed deviation typically becomes larger if the basis gets larger.
 
+	The mathematical structure of the minimisation problems
+	\eqref{eqn:HFOptCoeff} and \eqref{eqn:HFOptDens} are comparatively complex.
+	One reason for this is that the spaces $\mathcal{C}$ and $\mathcal{P}$,
+	spanned by the coefficent or the density matrix parameters sets,
+	are not vector spaces.
+	Much rather they are \textbf{manifolds},
+	\ie geometrical objects which locally look like vector spaces,
+	but globally show less structure.
+	More precisely $\mathcal{C}$ is a subset of a Stiefel manifold
+	and $\mathcal{P}$ is a subset of a Grassmann manifold.
+	This aspect becomes apparent
+	when designing rigorous algorithms for solving the \HF problem
+	since the
+	topological properties of the \HF parameter spaces
+	imply that intuitive approaches to the problem may not always work.
+\end{rem}
 
-
-
-% define occupied and virtual
-With the elliptic regularity at hand we can even expect convergence of such a discretised
-scheme to be fast
-at all places except the nuclei,
-since the solution is infinitely differentiable almost everywhere.
-
-
-fast, since the functions are smooth everywhere 
-
-
-
-
-% mention term SCF
-
-equivalent problem of diagonalisation
-to find MOs from AOs
-allows to define concept of occupied and virtual orbitals
-No unfilled shell means Homo lumo gap
-
+\begin{rem}[Discretised \HF equations]
+Theorem \vref{thm:MathematicalHF} allows to recast
+the \HF ansatz \eqref{eqn:HFMO} into an equivalent
+spectral problem \eqref{eqn:HFequations}
+for the Fock operator $\Op{F}$ at the minimal point.
+It guarantees further that $\Op{F}$
+shows the spectral requirements for applying the Ritz-Galerkin ansatz
+of remark \vref{rem:DiscreteFormulation},
+namely that it is self-adjoint and shows
+a discrete spectrum below the essential spectrum.
+Choosing the same basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
+as in remark \ref{rem:HFDiscreteVariational}
+and projecting problem \eqref{eqn:HFequations} onto this basis
+yields the discretised \HF equations
+\begin{equation}
+	\forall i,j \in \{1,\ldots,\Nelec\} \quad
+	\left\{
+	\begin{aligned}
+	\, \matFfull \vec{c}_i &= \varepsilon_i \mat{S} \vec{c}_i \\
+	   \tp{\vec{c}}_i \vec{c}_j &= \delta_{ij}
+	\end{aligned}
+	\right. ,
+	\label{eqn:HFDiscreteEquations}
+\end{equation}
+where the elements of the \newterm{Fock matrix} $\matFfull$
+are computed by applying the sesquilinear form
+\begin{equation}
+	a_\Theta(\phi,\chi)
+		= \int_{\R^3} \braket{\phi(\vec{r})}{ \left(\Op{F}_\Theta \chi\right)\!(\vec{r})}_2
+			\D \vec{r}
+		= \int_{\R^3}
+			\cc{\left(\phi^\alpha(\vec{r})\right)}
+				\left(\Op{F}_\Theta\chi\right)^\alpha\!(\vec{r})
+			+ \cc{\left(\phi^\beta(\vec{r})\right)}
+				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r})
+	\label{eqn:SesquilinearFormFock}
+\end{equation}
+to all pairs of basis spinors $(\phi, \chi)$ with
+\[ \phi, \chi \in \left\{ \mm{\varphi\\ 0}, \mm{0\\ \varphi} \,\middle|\,
+	\varphi \in \{\varphi_\mu\}_{\mu\in\Ibas} \right\}.
+\]
+This matrix is Hermitian and block-diagonal%
+\footnote{This is true even in the case of generalised unrestricted Hartree-Fock.}
 \todoil{
-	Quick note that real is possible: \\
-For an atomic system, we can consider the nucleus to be located at the origin
-of the coordinate system, which allows us to simplify
-the Hamiltonian to \\
-Argue that we can do the mathematical background in real function
-arithmetic only and still use the results for complex input due to linearity.
-$\Psi \in H^2(\R^{3d}, \R)$
+	Note:
+	It seems
+	GUHF and UHF are only different if there is spin-orbit coupling or so in place,
+	because otherwise one may always take the coefficients to be block-diagonal
+	without loss of generality \ldots maybe.
+	Think about it.
 }
+\[ \matF = \mm{\mat{F}^\alpha & 0 \\ 0 & \mat{F}^\beta} \]
+and can be written as
+\begin{equation}
+	\matFfull = \mat{T} + \mat{V}_0 + \matJfull + \matKfull \in \C^{2\Nbas\times 2\Nbas},
+	\label{eqn:FockMatrix}
+\end{equation}
+where the matrix terms are defined as \eqref{eqn:Tbas} to \eqref{eqn:Kbas}.
 
-% --------------------------------
+The generalised eigenvalue problem \eqref{eqn:HFDiscreteEquations}
+can be solved for up $\Norb \leq \Nbas$ eigenpairs
+$(\varepsilon_i, \vec{c}_i)$
+using one of the algorithms described in section \vref{sec:DiagAlgos}
+incorporating the modifications discussed in
+section \ref{sec:GeneralisedEigenvalueProblem}.
+Let us assume the usual ordering
+\[ \varepsilon_1 \leq \varepsilon_2 \leq \cdots \leq \varepsilon_{\Nelec}. \]
+By the Aufbau principle of theorem \ref{thm:MathematicalHF}
+the coefficient matrix is
+\[ \mat{C} = \mm{ \vec{c}_1 & \vec{c}_2 & \cdots & \vec{c}_{\Nelec}}, \]
+\ie the first $\Nelec$ eigenvectors pasted together.
+In analogy we define a full coefficient matrix
+\begin{equation}
+	\mat{C}_F = \mm{ \vec{c}_1 & \vec{c}_2 & \cdots & \vec{c}_{\Nelec} & \cdots & \vec{c}_{\Norb}},
+	\label{eqn:DefinitionCoefficient}
+\end{equation}
+which contains all eigenvectors we solved \eqref{eqn:HFDiscreteEquations} for.
 
+Applying the spin restrictions of unrestricted \HF
+exactly as in remark \ref{rem:HFDiscreteVariational},
+we know that that we expect $\NelecA$ eigenvectors
+with only $\alpha$ components and $\NelecB$ eigenvectors with only $\beta$ components.
+Let us take $\Norb$ to be even and such that $\NelecA, \NelecB > \Norb/2$.
+Since both $\mat{F}$ and $\mat{S}$ are block-diagonal
+we can solve \eqref{eqn:HFDiscreteEquations} block-wise,
+\ie we solve
+\[
+	\mat{F}^\sigma\!\!\left[\mat{C}\tp{\mat{C}}\right] \vec{c}_i^\sigma
+	= \varepsilon_i \mat{S}^\alpha \vec{c}_i^\sigma
+\]
+for $\sigma = \alpha$ and $\sigma = \beta$
+separately for $\Norb/2$ eigenpairs each.
+In analogy to \eqref{eqn:DefinitionCoefficient} we proceed to define
+\begin{align*}
+	 \mat{C}_F^\sigma &= \mm{ \vec{c}_1^\sigma & \vec{c}_2^\sigma &
+		\cdots & \vec{c}_{\Norb}^\sigma} \\
+\intertext{and consequently get a block-diagonal full coefficients matrix}
+	\mat{C}_F &= \mm{ \mat{C}_F^\alpha & 0 \\ 0 & \mat{C}_F^\beta }
+		\in \C^{2\Nbas\times \Norb}.
+\end{align*}
+To adhere with the restriction to $\NelecA$ spin-up
+and $\NelecB$ spin-down orbitals
+the \newterm{occupied coefficient matrix}
+$\mat{C}^\alpha$ is obtained as the first $\NelecA$ columns of $\mat{C}_F^\alpha$
+and likewise $\mat{C}^\beta$ as the first $\NelecB$ columns of $\mat{C}_F^\beta$.
 
+The eigenfunctions $\vec{c}_i$ of $\matF$ are called \newterm{HF orbitals}
+or \newterm{SCF orbitals}%
+\footnote{The term \SCF will defined in the next remark.}.
+Those orbitals, which are part of $\mat{C}$ according to the Aufbau principle,
+are called \newterm{occupied orbitals}
+as they are in some sense occupied by electrons.
+Conversely all other orbitals are called unoccupied or \newterm{virtual orbitals}.
+For later convenience let us define the index sets
+\begin{align*}
+	\Iorb &\equiv \{1, \ldots, \Norb \} \\
+	\IoccA &\equiv \{1, \ldots, \NelecA \} &
+		\IvirtA &\equiv \{\NelecA + 1, \ldots, \Norb/2 \} \\
+	\IoccB &\equiv \{\Norb/2 + 1, \ldots, \Norb \} &
+		\IvirtB &\equiv \{\NelecA + \Norb/2 + 1, \ldots, \Norb \} \\
+	\Iocc &\equiv  \IoccA \cup \IoccB &
+		\Ivirt &\equiv  \Iorb \backslash \Iocc,
+\end{align*}
+whose meaning should be self-explanatory.
+\end{rem}
 
+\begin{rem}[Properties of the discretised HF ansatz]
+\label{rem:PropertiesDiscretised}
+By theorem \vref{thm:MathematicalHF}
+the minimiser $\mat{C}_0 \in \mathcal{C}$ of \eqref{eqn:HFStiefel}
+satisfies exactly the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
+such that
+\newcommand{\matFzfull}{\mat{F}\!\!\left[\mat{C}_0\tp{\mat{C}_0}\right]}
+\[
+	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \tilde{\mat{E}}
+\]
+where
+\[
+	\tilde{\mat{E}} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
+		\varepsilon_{\Nelec}) \in \R^{\Nelec \times \Nelec}.
+\]
+This condition can be equivalently expressed as~\cite{Pulay1982}
+\begin{equation}
+	\matFzfull \mat{C}_0\tp{\mat{C}_0} \
+	\mat{S} - \mat{S} \ \mat{C}_0\tp{\mat{C}_0} \ \matFzfull
+	= \mat{0}
+	\label{eqn:HFconvergenceCondition}
+\end{equation}
+and is always satisfied if $\mat{C}_0$ is a minimiser.
+The reverse statement is not true, however,
+since all stationary point of the energy functional
+$\mathcal{E}_C$ optimised on the manifold $\mathcal{C}$
+satisfy \label{eqn:HFconvergenceCondition}.
 
-\newterm{Hartree-Fock}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Summary of the numerical task
-		\item Summary of the result (SCF orbitals)
-		\item Explain properties of the individual terms of Fock operator (locality, ..)
-	\end{itemize}
-}
+Nevertheless nothing stops us to pick any other $\mat{C}^{(n)} \in \mathcal{C}$
+and build the Fock matrix $\matFnfull$
+according to \eqref{eqn:FockMatrix}.
+We can solve for its eigenpairs, \ie find a matrix $\mat{C}_F^{(n+1)}$
+of eigenvectors and corresponding eigenvalues
+\[
+	\mat{E}^{(n+1)}
+	= \text{diag}\left(\varepsilon_1^{(n+1)},
+	\varepsilon_2^{(n+1)}, \ldots,
+	\varepsilon_{\Norb}^{(n+1)}\right) \in \R^{\Norb \times \Norb}.
+\]
+such that
+\begin{equation}
+	\matFnfull \mat{C}_F^{(n+1)} = \mat{S} \mat{C}_F^{(n+1)} \mat{E}^{(n+1)}.
+	\label{eqn:HFiterated}
+\end{equation}
+In such a case, we can in general not expect the expression
+\begin{equation}
+	\mat{e}^{(n)}
+	= \matFnfull \! \mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)} \, \mat{S}
+	- \mat{S} \, \mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)} \! \matFnfull
+	\label{eqn:PulayError}
+\end{equation}
+to be zero.
+Typically, however, $\mat{C}^{(n+1)}$ is
+much closer to the minimum $\mat{C}_0$ than $\mat{C}^{(n)}$
+was --- see section \vref{sec:RoothaanRepeatedDiag} for details.
+This suggests an iterative approach to find the minimum $\mat{C}$
+starting from a guess $\mat{C}^{(0)}$.
+Such an approach is called \newterm{self-consistent field}~(\SCF) procedure
+and we will discuss it in more detail in the next chapter.
+In the context of such an iterative approach
+to solve \eqref{eqn:HFDiscreteEquations}
+expression \eqref{eqn:PulayError} is called the \newterm{Pulay error}
+after Peter Pulay~\cite{Pulay1982}.
 
+\todoil{Instead of number 5. 7. and so on use letters (a)}
+There are two more aspects of theorem \ref{thm:MathematicalHF} worth pointing out.
+From the unfilled shell property (7.) $\varepsilon_{\Nelec} < \varepsilon_{\Nelec+1}$,
+we can deduce that there is always a gap between the
+highest occupied orbital~(HOMO) and the lowest unoccupied orbital~(LUMO)
+in a converged \HF result.
+Together with (5.), we see that only eigenfunctions $\psi_i$
+with negative orbital energy eigenvalue $\varepsilon_i$ may be part of $\mat{C}$
+in the converged case.
+Secondly the smoothness property (3.) makes sure that
+all solutions of the \HF equations are numerically easy to model,
+such that even numerical basis functions like finite elements
+should be able to model the \HF equations with good convergence
+provided that appropriate care is taken with respect to the positions of the nuclei.
+\end{rem}
 
+In this section we discussed roughly three ways to view the \HF
+problem in the discrete setting of a finite basis set $\{\varphi_i\}_{i\in\Ibas}$.
+Firstly as a minimisation on a Stiefel manifold \eqref{eqn:HFOptCoeff},
+where the energy is optimised with respect to the occupied orbital coefficients
+$\mat{C}$.
+The second option is to minimise on a Grassmann manifold \eqref{eqn:HFOptDens}
+and optimise the energy with respect to the density matrix $\mat{D}$.
+The last option is to solve the non-linear \HF equations
+\eqref{eqn:HFDiscreteEquations}
+in a self-consistent field approach,
+which would construct a sequence $\mat{C}^{(n)}$
+of orbital coefficients or of density matrices $\mat{D}^{(n)}$
+until \eqref{eqn:HFDiscreteEquations} is satisfied within a certain error.
+No guarantee is made that this converges to the minimum,
+but in many cases it does.
+For all these approaches we will discuss practical
+algorithms in \vref{sec:SCFAlgorithms}.
 
-%TODO
-% Explain the term Hartree-Fock and SCF (idea from Hartree, but spin adaption from Fock and Slater)
+\subsection{Restricted Hartree-Fock}
+By the means of equation \eqref{eqn:UHFS2}
+we already stated
+that the unrestricted \HF ansatz does not always
+yield an \HF ground state $\Psi_0$,
+which is an eigenfunction of $\Op{S}^2$.
+Following our discussion in remark \vref{rem:Spin}
+we could fix this either by projection onto the space of eigenstates
+of $\Op{S}^2$ or by imposing extra conditions on the \HF ansatz.
+
+In the case of closed-shell chemical systems the latter is in fact rather simple.
+For closed-shell atoms $\NelecA = \NelecB$,
+which implies that \eqref{eqn:UHFS2}
+gives the correct value $S^2_\text{exact}$ if we enforce $\mat{C}^\alpha = \mat{C}^\beta$.
+The condition $\mat{C}^\alpha = \mat{C}^\beta$ not only yields
+an eigenfunction of  $\Op{S}^2$,
+but furthermore implies that $\mat{F}^\alpha = \mat{F}^\beta$ as well.
+In other words in this
+\newterm{restricted Hartree-Fock}~(\RHF)~\cite{Roothaan1951}
+ansatz one only needs to solve one block of the Fock matrix
+in \eqref{eqn:HFDiscreteEquations} and may use the result for both
+spin-up and spin-down functions.
+
+Enforcing the correct $S^2$ value \eqref{eqn:UHFS2}
+for open-shell electronic systems
+with%
+\footnote{By convention there are always more spin-up than spin-down electrons}
+$\NelecA > \NelecB$
+is considerably more involved.
+A first approach was published by \citeauthor{Roothaan1960}
+~\cite{Roothaan1960,Alder1963}.
+In this celebrated work he
+distinguishes doubly occupied singly occupied and virtual orbitals.
+He then replaces the
+block-diagonal Fock matrix from \eqref{eqn:HFDiscreteEquations}
+by a specially crafted Fock matrix
+consisting of nine blocks,
+each block modelling the interaction between pairs of two
+of the aforementioned orbital subspaces.
+A block is build as a linear combination
+of certain parts of $\mat{F}^\alpha$ and $\mat{F}^\beta$,
+made in such a way to ensure,
+that the resulting SCF minimum is an eigenfunction of $S^2$
+with exactly the desired eigenvalue.
+In other words the way this linear combinations are done
+depends on the spin state to be computed.
+Multiple ways to perform the linear combinations is possible~\cite{Glaesemann2010}
+and depending on which method is chosen, results can deviate.
+This restricted open-shell Hartree-Fock~(\ROHF) approach
+will not be considered much further in this thesis.
+Instead we will treat all open-shell systems with the \UHF procedure,
+since \UHF is simpler to implement, computationally cheaper and overall more widespread.
+Nevertheless some issues,
+which appeared in our convergence analysis of our
+Coulomb-Sturmian based Hartree-Fock ansatz~(see chapter \vref{ch:CSQChem})
+turned out to originate from our \UHF treatment
+and could be potentially avoided in an \ROHF formalism.
+We will discuss this further in section \vref{sec:IssuesUHF}.
+
+\subsection{Real-valued Hartree-Fock}
+Our discussion of Hartree-Fock up to this point
+leads to numerical problems taking place in complex arithmetic,
+since both the coefficient matrix $\mat{C}$
+as well as the Fock matrix $\mat{F}$ are complex-valued.
+Whilst doing this is possible,
+it is typically nevertheless
+avoided by reducing
+the \HF problem to a problem of equivalent structure,
+but situated in real Hilbert spaces.
+The major motivation for this is that computations
+amongst complex numbers are slower since effectively
+more floating point operations need to be performed
+in order to treat the real and the imaginary part as required.
+
+\noindent
+Let $(\varepsilon_i, \psi_i) \in \R \times H^2(\R^3, \C^2)$ be an eigenpair
+of the \HF problem, \ie
+\begin{equation}
+	 0 = \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i
+	\label{eqn:FockRealStep0}
+\end{equation}
+Choosing appropriate functions $\psi_i^R, \psi_i^I \in H^2(\R^3, \R^2)$
+we can write $\psi_i = \psi_i^R + \I \psi_i^I$ such that
+by linearity of the Fock operator
+\begin{equation}
+0 = \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^R
+	+ \I \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^I.
+	\label{eqn:FockRealStep1}
+\end{equation}
+For \eqref{eqn:FockRealStep1} to be satisfied,
+we need the real and the complex part of the right hand side
+to be equal to the zero function.
+
+Since all terms of the Fock operator only contain real factors
+or real differential operators,
+it is clear that the Fock operator maps real-valued functions
+to real-valued functions.
+In other words
+\[ \chi \in H^2(\R^3, \R^2) \quad \Rightarrow \quad \left(\Op{F} \chi\right) \in L^2(\R^3, \R^2). \]
+This implies that \eqref{eqn:FockRealStep1} is true iff simultaneously
+\begin{align}
+	0 &= \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^R \\
+	0 &= \left(\Op{F}_{\Theta^0} - \varepsilon_i \right) \psi_i^I.
+\end{align}
+If $\psi_i$ is not already real-valued and thus $\psi_i^I = 0$,
+its real part $\psi_i^R$ and its imaginary part $\psi_i^I$ must both be
+solutions to the \HF equations as well.
+Furthermore $\psi_i^R$ and $\psi_i^I$ are associated to the same
+eigenvalue $\varepsilon_i$ as $\psi$.
+
+As a result one can obtain the solutions for the complex-valued problem
+\eqref{eqn:FockRealStep0} by only looking for eigenpairs
+$(\varepsilon_i, \psi_i) \in \R \times H^2(\R^3, \R^2)$.
+This completely avoids the need for complex arithmetic
+as $\mat{C}_F$, $\mat{D}$, $\mat{F}$ and all other matrices
+we defined previously in this section will only consist of real elements in this case.
+Apart from this simplification no extra care needs to be taken,
+since the real eigenfunctions corresponding to an eigenvalue $\varepsilon_i$
+still span the full complex eigenspace
+one would obtain from solving the original complex-valued problem
+--- provided that complex coefficients are used.
+This makes sure that we neither miss anything nor get
+spurious results by using a real-valued ansatz,
+thus still get exactly the physical eigenstates we are after.
+
+The overall approach sketched here
+is more general than just the Hartree-Fock problem
+and can be applied to many other spectral problems of quantum physics
+in order to yield equivalent real-valued versions for a numerical treatment.
+One should stress, however,
+that the operator under consideration really needs to satisfy
+the condition that it maps vectors from a real vector space
+to to vectors from a real vector space
+on top of being Hermitian.
+Let us illustrate this by the example of the single-particle spin operator
+\[ \op{s}_y = \mm{0 & -\I \\ \I & 0}. \]
+It is easy to see that on the Hilbert space $\C^2$,
+$\op{s}_y$ is a Hermitian matrix, hence a self-adjoint operator.
+Its eigenvalues are $-1$ and $1$ with corresponding normalised eigenvectors
+\[ \frac{1}{\sqrt{2}} \mm{-1 \\ \I} \quad \text{and} \quad
+  \frac{1}{\sqrt{2}} \mm{-1 \\ -\I}.
+\]
+Even though this operator is Hermitian,
+trying to find the aforementioned eigenpairs by solving the sepectral problem
+\[ \op{s}_y \vec{v} = \lambda \vec{v} \]
+in real arithmetic only, \ie with $\vec{v} \in \R^2$,
+will not yield a single eigenpair.

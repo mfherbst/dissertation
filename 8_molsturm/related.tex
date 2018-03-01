@@ -1,203 +1,103 @@
-\section{Related Work}
+\section{Related quantum-chemical software packages}
+\label{sec:MolsturmRelated}
 \newcommand{\psifour}{\texttt{Psi4}\xspace}
 \newcommand{\pyquante}{\texttt{pyQuante}\xspace}
 \newcommand{\horton}{\texttt{HORTON}\xspace}
 \newcommand{\gpaw}{\texttt{GPAW}\xspace}
+\newcommand{\ASE}{\texttt{ASE}\xspace}
+\newcommand{\CPtK}{\texttt{CP2K}\xspace}
 
-\label{sec:related}
-\todoil{See \url{https://en.wikipedia.org/wiki/List_of_quantum_chemistry_and_solid-state_physics_software}}
+Apart from \molsturm I am unaware of another quantum-chemistry package,
+which has achieved
+a similar flexibility with respect to the type of basis functions
+in their \SCF procedure.
+Many packages still have related goals towards flexibility or generality of their codes
+and should therefore not go completely unmentioned here.
+The presented review is not intended to be exhaustive,
+but it should provide an idea of the current status
+of quantum-chemistry softwares with respect to these aspects.
 
-\todoil{We should really mention TURBOMOLE here as well}
+When it comes to flexibility of a program package
+a key ingredient is a versatile interface.
+This allows to invoke or extend the methods already available elsewhere.
+Recently the scripting language \python has become very popular
+for achieving this.
+Even even meta-projects like \ASE~\cite{Larsen2017},
+which aim at extending existing packages by a common \python front end,
+have emerged.
+Other packages like \horton~\cite{Verstraelen2017}, \pyscf~\cite{Sun2017},
+\pyquante~\cite{PyQuante} and \gpaw~\cite{Mortensen2005,Enkovaara2010} are written
+almost exclusively in \python and only employ low-level \ccc or \cpp
+code for the computational hot spots to various extents.
+Starting from the opposite direction \psifour~\cite{Parrish2017} has
+gradually introduced a more and more powerful \python interface on top of
+their existing \cpp core over the years.
 
-% Structure by topic and by defining features what we would like to have
-% Order by defining feature of molsturm not by program
-
-% Introductory sentence: What are the defining features we would like to solve
-% Introduce programs
-% Conclusion: All things somewhere, but not all combined in one package
-
-The idea of using a high-level scripting language to implement
-a substantial part of a quantum-chemical package has been around
-for quite a while.
-
-\psifour\cite{Parrish2017} has gradually introduced a Python layer to its existing
-low-level \cpp and \cee code, which allows to access most features of the backend.
-The internal data structures of \psifour to represent the matrices and tensors
-of quantum-chemical calculations can be easily converted to numpy arrays and back,
-thereby simplifying rapid prototyping by the means of the tools available
-from scipy and numpy.
-\psifour has recently adopted a very modular design based on a set of external
-libraries to drive the computation of GTO integrals or DFT functionals.
-In fact Psi4 has support for multiple electron repulsion integral libraries,
-a fact they call ``unusual''.
-\psifour makes vivid use of open standards like HDF5 to facilitate data exchange
-and integrates well with a wide range of open-source libraries for Post-HF
-methods or other features like solvent models.
-Even though Psi4 allows to multiplex between different GTO libraries,
-the changing between backends is implemented at a very low level
-and the GTO matrix structures are assumed throughout \eg the SCF code.
-
-A slightly different ansatz is chosen by projects like
-\pyscf\cite{Sun2017}, \pyquante\todo{cite} and \horton\cite{Verstraelen2017}.
-They all implement most of their functionality in high-level
-\python and only employ low-level \cpp or \cee code to implement the computational
-hot spots.
-Especially \pyscf has a very large range of methods implemented, some of which
-rely on heavily optimised and parallelised computational cores, which makes the
-package ``as efficient as the best existing \cee or \fortran based quantum
-chemistry programs''\cite{Sun2017}.
-
-They stress the use of python as the frontend language, since
+The popularity of the combination of \fortran or a \ccc-like
+language in the core and \python as the high-level interface language
+can be understood by considering the recent publication of \citet{Sun2017}
+about the \pyscf package.
+They rationalise the choice of \python as follows:
 \begin{itemize}
-	\item There is no need to learn a new input file language
-	\item All python language features are immediately available
+	\item There is no need to learn a particular domain-specific
+		input format.
+	\item All language elements from \python are immediately
+		available to \eg automatise repetitive calculations
+		with loops or similar.
 	\item The code is easily extensible beyond what is available
-		inside \pyscf
-	\item Computations can be done interactively.
+		inside \pyscf, for example to facilitate plotting
+		or other kinds of analysis.
+	\item Computations can be done interactively,
+		which is helpful for testing or debugging.
 \end{itemize}
-\todoil{I could subscribe to all thees four.
-I think we should nick these ideas for the introduction and add our 5ct on top.}
+Additionally one should mention,
+that \python as a high-productivity, multi-paradigm language
+often permits to achieve even complicated tasks with few lines of code,
+whilst still staying surprisingly easy to read.
+In the context of quantum chemistry
+this has the pleasant side effect that a \python script
+used for performing calculations and subsequent analysis
+is typically not overly lengthy,
+but still documents the exact procedure which is followed in a readable manner.
+All this comes at pretty much no downside
+if \python is combined with
+carefully optimised low-level \ccc or \fortran
+code in the computational hot spots.
+\citet{Sun2017} for example claim that \pyscf is as
+fast as any other existing quantum chemistry packages
+written solely in \ccc or \fortran.
 
-According to the description of the authors \cite{Sun2017},
-one of the design principles of \pyscf is generality.
-The use of GTOs and coefficients, however, is currently
-hard-coded in the library unfortunately.
-Nevertheless the design of the library in general is very flexible from
-the user perspective.
-For example the interfacing of \molsturm with the full-CI code
-from \pyscf was only about a day of work.
-\todoil{Maybe this is because I don't understand the code well enough yet}
-The internal structure of the code, however,
-is comparatively complex,
-since a functional-style syntax with little object-oriented paradigms is chosen.
-This makes it often very unclear where things are happening.
+Another common feature between \pyscf and \psifour
+is their modular design inside the package.
+They vividly facilitate well-established open standards
+like HDF5~\cite{HDF5Manual} or \numpy arrays~\cite{Walt2011}
+for data exchange,
+such that linking their codes to external projects is easily feasible.
+\psifour for example managed to integrate more than 15 external packages
+into their framework.
+This includes three completely different back ends for the computation of the
+required integrals.
+In the case of \pyscf it only took us about a day to link
+our \molsturm to the \FCI algorithms of \pyscf
+via an interface based on \numpy.
+Nevertheless the numerical requirements of Gaussian-type orbitals
+are currently hard-coded inside the optimised
+\ccc or \cpp parts of both these projects,
+such that extending them by other types of basis functions could still be involved.
 
-
-\pyquante and \horton on the other hand focus more on
-simplicity of the code.
-They do implement computational hot spots in \cee or \cpp,
-but unlike \pyscf have optimised the low-level code
-much less with a principle target of readability in mind.
-GTOs are also very much hard-coded in both these packages.
-
-Another package, which is mainly implemented in \python is \gpaw \todo{cite}.
-\todoil{Note that these guys are around the corner. They are from DTU in Kongens Lyngby ;)}
-Mainly GPAW makes use of the projector-augmented wave method
-in a DFT context using plane-waves or finite-difference approximations
-on real-space uniform grids as the basis function types.
-They also support GTOs including amending GPAW basis sets with GTOs,
-i.e. hybrid basis sets.
-The computationally intensive parts of \gpaw are again implemented in \cee.
-\todoil{GPAW is mainly used in the solid state community.}
-\todoil{GPAW is focused on DFT}
-
-Another package with support for hybrid basis functions is cp2k \todo{cite}.
-They invoke a hybrid representation of the electronic
-density in GTOs and plane-waves during their calculations.
-
-\todoil{QMC is some sort of Post-HF method, so maybe it is not that applicable
-to talk about it in our paper}
-Amongst the packages which have support for a large number of different types
-of basis functions are the two quantum Monte Carlo programs CASINO\cite{Needs2010}
-and QMCPACK \todo{cite}.
-In order to generate the trial-function for the quantum Monte Carlo
-computations both these packages can invoke interfaces to a range of 3rd party
-program packages
-in order to get representations of the trial-function in
-GTOs, STOs, Plane-Waves or numerical orbitals like splines as well.
-For example CASINO\cite{Needs2010} has interfaces to
-GTO programs including  Psi4, CFOUR, TURBOMOLE, GAMESS-US, MolPro and ORCA,
-ADF for STOs, Quntum ESPRESSO for plane-waves
-and many others.
-In the case of QMCPACK \todo{cite} this has lead to a design
-which is focused on facilitating data exchange.
-Its input file is written in XML and output data is available via HDF5.
-Analysis of QMCPACK's results is done using a set of python scripts
-facilitating for example matplotlib.
-
-Whilst some of the afforementioned packages
-deal with the aspect of a flexible interface for rapid prototyping
-and others deal with the combination of multiple basis functions
-all of them rely on particular hard-coded backends for 
-performing the required linear algebra.
-Mostly this is standard packages like numpy
-(from \python) or BLAS/LAPACK (from \cee, \fortran or \cpp).
-Some of them are CPU parallelised
-\todoil{Research which}
-QMCPACK has partial support for GPU parallelisation via CUDA.
-All packages use strict evaluation for evaluating the linear algebra subexpressions,
-which is realised using high-level calls to the linear libraries
-mentioned above.
-% One should probably mention that the GPU implementation very much seperate and a diffirent
-% one from the CPU parallelised
-
-\todoil{Some words about the \lazyten competition?}
-
-% - Related to gint+(sturmint|gaussint|numerics|...)
-% -- Does anything exist at all to solve this problem? Have a search!
-% -- Some have multi-functions:
-% --- CASINO (QMC)
-%       -> Gaussian via 3rd party (psi4, cfour, turbomole, gamess-us, molpro, orca, .. )
-%       -> PW via 3rd party (quantum expresso, abinit ...)
-%       -> splines via 3rd party (quantum expesso)
-%       -> STOs via ADF
-%       TODO do they have post-hf (only via 3rd party it seems)
-%       only does few things by itself.
-% --- QMCPACK (QMC) -- tailored for quantum monte-carlo
-%       -> Modular
-%       -> HDF5 and xml for data exchange
-%       -> integrates with
-%       -> open source
-%       -> quantum espresso for PW
-%       -> internally bsplines, GTO, STO, NMO ???
-%       -> GTOs from GAMESS-US
-%       -> analysis via python and matplotlib
-%       -> They do not seem to have traditional post-HF
-%
-% -- Hybrid basis functions:
-% --- cp2k has hybrid gaussians (check)
-%      -> mixed representation of matrices / density in GTO and plane-wave basis
-% --- bigdft afaik has some hybrid stuff (check)
-%      -> DFT expanded in wavelets
-%
-% - Related to the molsturm project
-% -- PySCF
-%      -> Large set of methods
-%      -> only GTO
-%      -> Interface to GTO integral library libcint
-%      -> GTO assumptions deep inside the code and at many places due to non-OO design.
-%      -> Implementing sturmians probably hard. Needs to be done at many places
-%      -> For post-HF sometimes ok, hence used for FCI.
-% -- PyQuante2 github
-%      -> GTOs
-%      -> not much going on
-%      -> gaussians very much hard-coded
-%      -> density matrix-based SCF algorithm hard-coded
-% -- HORTON (Python interface, idea is to be helpful and rapid prototype, only GTO, but different backends)
-%      -> Similar motivation than we have
-%      -> Work entirely controlled via python (like pyquante, pyscf and us)
-%      -> Gaussians assumed inside library
-% -- GPAW   (Projector augmented wave, pw, fd, lcao)
-%      -> Mostly python
-%      -> DFT
-%      -> projector-augmented wave
-%      -> many people work on it
-% -- Psi4
-%      -> entirely GTO based
-%      -> external libraries for GTOs and DFT
-%      -> Modular with rapid prototyping in mind
-%      -> Multiple integral libraries !!
-%         -> multiplexing at low level. Other kinds of basis functions not supported.
-%      -> Psithon: Some weird input language designed around python,
-%           which is not python, however
-%         -> full interface for Psi4
-%         -> internally invokes legacy code
-%      -> looks like something to integrate molsturm with some day
-%
-% - Related to L10
-% -- Cyclops tensor framework, pytorch (strict, tensors must live fully in memory, cyclops is restricted to MPI)
-% -- Tensorflow, theano, etc. (all strict, not simple to program)
-% -- SecondQuantizationAlgebra, FemTo, Tensor Contraction Engine: Code generators from high-level interface.
-%
-% - Related to gscf? Have a search.
-
+With respect to supporting a large range of basis function types,
+especially the quantum Monte Carlo packages CASINO~\cite{Needs2010}
+and QMCPACK~\cite{Kim2012} should be mentioned.
+They both allow to start a quantum Monte Carlo calculation
+from discretisations of the trial wave function
+in terms of {\cGTO}s, {\STO}s, plane-waves or numerical orbitals like splines.
+Similarly the packages \CPtK~\cite{Hutter2014}, \ASE~\cite{Larsen2017}
+and \gpaw can be employed to perform and post-process computations
+using more than one type of basis function.
+Both \gpaw and \CPtK even allow to perform calculations
+employing hybrid basis sets with a mixture of
+Gaussian-type orbitals and plane waves.
+To the best of our knowledge,
+the design of these packages is, however,
+very specific to the particular combinations of basis function type
+and method they support.

@@ -1,9 +1,135 @@
 \section{Density-functional theory}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Brief rationale
-		\item Show physical and mathematical relationship to HF
-		\item Extremely brief
-	\end{itemize}
-}
+\label{sec:DFT}
+\defineabbr{DFT}{DFT\xspace}{Density-functional theory}
+In this section we want to briefly look at a different
+approach towards modelling the electronic structure.
+Instead of solving for the wave function $\Psi_0$ associated to the
+ground state of the electronic Hamiltonian $\Op{H}_{\Nelec}$,
+the idea behind \newterm{density-functional theory}
+is to solve for the state's electronic density $\rho_0$ instead.
 
+The rationale for this is twofold.
+Firstly the density contains all information about the chemical system.
+The integral
+$\int_{\R^3} \rho(\vec{r}) \D\vec{r}$
+evaluates to the number of electrons $\Nelec$
+and via Kato's cusp condition~\cite{Kato1951} one may obtain the nuclear
+charges $Z_A$ via the derivatives of the electron density at the cusp points.
+Secondly the Hohnberg-Kohn theorems~\cite{Hohenberg1964}
+as well as the Levy constrained search ansatz~\cite{Levy1979}
+provide a unique identification between a particular ground state electron density
+and the potential, which generates this density.
+Even from a mathematical point of view
+solving for the ground state density $\rho_0(\vec{r})$ is thus
+sufficient to characterise all properties of the ground state of a system.
+
+The Levy constrained search ansatz~\cite{Levy1979}
+provides a conceptionally rather
+intuitive route to obtain the ground state density,
+namely by a constrained minimisation of the energy
+with respect to all possible densities.
+The issue with this procedure is that a closed-form expression
+for the energy functional $\mathcal{E}(\rho)$,
+which returns the energy of a given density,
+is not known for any relevant chemical system.
+In other words Levy constrained search in the form presented so far
+cannot be applied to chemical systems.
+
+Further progress can be made with the Kohn-Sham ansatz~\cite{Kohn1965}, however.
+The idea is to consider a fictitious system of
+$\Nelec$ non-interacting electrons,
+which still has the property that it reproduces the exact
+ground state density of the full, interacting system.
+In this model system the exact wave function is a single determinant
+\begin{align*}
+	\Psi &= \Phi_\Theta = \bigwedge_{i=1}^{\Nelec} \psi_i
+	&&\text{where}&
+	\Theta \equiv \left(\psi_1, \psi_2, \ldots, \psi_{\Nelec}\right)
+	&\in \left(H^1(\R^3, \C)\right)^{\Nelec}
+\end{align*}
+is a tuple of $\Nelec$ single-particle functions.
+Ignoring spin the resulting ground state density is
+\[
+	\rho_\Theta(\vec{r}) = \sum_{i=1}^{\Nelec} \abs{\psi_i(\vec{r})}^2,
+\]
+which allows to write the Kohn-Sham energy functional as
+\begin{equation}
+	\begin{aligned}
+	\mathcal{E}^\text{KS}(\Theta)
+	&= \frac12 \sum_{i=1}^{\Nelec} \int_{\R^3} \norm{\nabla \psi_i}_2^2 \D\vec{r}
+	+ \int_{\R^3} \sum_{A=1}^M
+		\frac{Z_A \, \rho_\Theta(\vec{r})}{\norm{\vec{r} - \vec{R}_A}_2} \D\vec{r} \\
+	&\hspace{20pt}
+	+ \frac12 \int_{\R^3}\int_{\R^3}
+		\frac{\rho_\Theta(\vec{r}_1) \rho_\Theta(\vec{r}_2)}
+			{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2
+	+ E_{xc}(\rho_\Theta).
+	\end{aligned}
+	\label{eqn:KSEnergyFunctional}
+\end{equation}
+In this expression $E_{xc}$ is the \newterm{exchange-correlation functional},
+which depends only on the density function $\rho$.
+This term is supposed to describe the non-local
+many-body effects not yet contained in the other terms,
+which is both the exchange interaction as well as correlation effects.
+The crux with Kohn-Sham \DFT is that its exact functional form is again unknown,
+such that one has to live with approximations.
+Which exchange-correlation functional is sensible for a particular
+problem depends very much on the context of the chemical system,
+the property one is interested in and is still subject of debate
+in quantum-chemical literature.
+
+Following the original Levy constrained search,
+we want to find the density corresponding to the minimal energy,
+which in the Kohn-Sham picture implies the minimisation
+of $\mathcal{E}^\text{KS}(\Theta)$ with respect to the orbitals,
+thus the problem
+\begin{equation}
+	E_0 \leq E_0^\text{KS}
+	= \inf \left\{
+		\mathcal{E}^\text{KS}(\Theta)
+		\, \middle| \,
+		\Theta \in \left(H^1(\R^3, \C)\right)^{\Nelec}, \,
+		\forall i,j \,
+		\braket{\psi_i}{\psi_j}_1 = \delta_{ij}.
+	\right\}.
+	\label{eqn:KSMO}
+\end{equation}
+Both the energy functional \eqref{eqn:KSEnergyFunctional}
+as well as the Kohn-Sham minimisation problem \eqref{eqn:KSMO} are closely
+related to the \HF problem \eqref{eqn:HFMO}.
+In fact the only difference is the substitution of the exchange energy term
+by the exchange-correlation functional.
+As such it should not be very surprising that the methods employed to solve
+\eqref{eqn:KSMO} is very similar to \HF as well.
+The conditions to obtain the stationary points of \eqref{eqn:KSMO},
+the Euler-Lagrange equations,
+can be reformulated as
+\begin{align}
+	\label{eqn:KSequations}
+	\Op{F}^\text{KS}_{\Theta^0} \psi_i^0 &= \varepsilon_i \psi_i^0
+	&&\text{and}&
+	\braket{\psi_i^0}{\psi_j^0} &= \delta_{ij}
+\end{align}
+where $\Theta^0$ is the minimiser of \eqref{eqn:KSMO} and
+\begin{equation}
+	\Op{F}_{\Theta^0}^\text{KS} = \Op{T} + \Op{V}_0 + \Op{J}_{\Theta^0} + V_{xc}
+	\label{eqn:KohnShamOperator}
+\end{equation}
+is the Kohn-Sham operator.
+Its difference to the Fock operator \eqref{eqn:FockOperator}
+is again simply the replacement of the exchange operator $\op{K}_{\Theta^0}$
+by the \newterm{exchange-correlation potential} $V_{xc}(\vec{r})$,
+which is the derivative of the exchange-correlation energy $E_{xc}(\rho)$
+with respect to the density function $\rho$.
+Equation \eqref{eqn:KSequations} as well as the minimisation problem
+\eqref{eqn:KSMO} can now be discretised
+similar to the procedure outlined in section \vref{sec:DiscreteHF}
+for Hartree-Fock,
+which leads to an iterative self-consistent field procedure,
+which is very similar to the Hartree-Fock \SCF outlined in
+remark \vref{rem:PropertiesDiscretised}.
+Algorithmically both for Kohn-Sham \DFT as well as \HF the same type of problem
+needs to be solved, such that all of the numerical procedures
+discussed in the next chapters for \HF could be applied to Kohn-Sham \DFT
+with only very few changes.

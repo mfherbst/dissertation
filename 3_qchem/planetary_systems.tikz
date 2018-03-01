@@ -1,0 +1,31 @@
+[
+	decoration={snake,amplitude=.4mm,segment length=6mm,post length=1mm},
+]
+
+\begin{scope}[xshift=-3.1cm]
+	\draw [gray,decorate,
+		decoration={amplitude=.6mm,segment length=8mm},
+		thick,radius=2.7cm] (0,0) circle;
+	\draw [gray,decorate,thick,radius=1.5cm] (0,0) circle;
+	\draw [gray,decorate,
+		decoration={amplitude=.2mm,segment length=4mm},
+		thick,radius=0.6cm] (0,0) circle;
+	\filldraw [draw=orange,fill=orange,radius=0.2cm] (0,0) circle; 
+
+	\node [shape=circle,draw=black,fill=black,inner sep=1pt] at (0.6,0) {};
+	\node [shape=circle,draw=red,fill=red,inner sep=1pt] at (-1.060,-0.9) {};
+	\node [shape=circle,draw=black,fill=black,inner sep=1pt] at (-1.909,2.0) {};
+
+	\node at (0,-3.1) {real planetary system};
+\end{scope}
+
+\begin{scope}[xshift=3.1cm]
+	\draw [line width=0.1cm,radius=2.7cm] (0,0) circle;
+	\draw [gray,thick,radius=1.5cm] (0,0) circle;
+	\draw [line width=0.1cm,radius=0.6cm] (0,0) circle;
+	\filldraw [draw=orange,fill=orange,radius=0.2cm] (0,0) circle; 
+
+	\node [shape=circle,draw=red,fill=red,inner sep=1pt] at (-1.060,-1.060) {};
+
+	\node at (0,-3.1) {mean-field model};
+\end{scope}

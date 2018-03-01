@@ -20,10 +20,10 @@
 \newcommand{\sturmint} {\texttt{sturmint}\xspace}
 \newcommand{\lazyten}  {\texttt{lazyten}\xspace}
 \newcommand{\krims}    {\texttt{krims}\xspace}
-\newcommand{\contract} {\texttt{contract}\xspace}
-\newcommand{\update}   {\texttt{update}\xspace}
 
-\newcommand{\contraction}{\textcolor{red}{\contract}}
+% used to be tt
+\newcommand{\update}   {update\xspace}
+\newcommand{\contraction}{contraction\xspace}
 
 % Arbitrary hilbert space
 \newcommand{\hilbert}{\mathcal{H}}
@@ -37,6 +37,8 @@
 
 % Number of SCF orbitals
 \newcommand{\Norb}{\ensuremath N_\text{orb}}
+\newcommand{\NorbA}{\ensuremath N_\text{orb}^\alpha}
+\newcommand{\NorbB}{\ensuremath N_\text{orb}^\beta}
 \newcommand{\Iorb}{\ensuremath \mathcal{I}_\text{orb}}
 
 
@@ -46,19 +48,42 @@
 \newcommand{\NelecB}{\Nelec^\beta}
 
 % Indices of the occupied orbitals
-\newcommand{\Ivirt}{\mathcal{I}_\text{virt}}
+\newcommand{\Ivirt}{\ensuremath \mathcal{I}_\text{virt}}
+\newcommand{\IvirtA}{\ensuremath \mathcal{I}_\text{virt}^\alpha}
+\newcommand{\IvirtB}{\ensuremath \mathcal{I}_\text{virt}^\beta}
 \newcommand{\Iocc}{\ensuremath \mathcal{I}_\text{occ}}
 \newcommand{\IoccA}{\ensuremath \mathcal{I}_\text{occ}^\alpha}
 \newcommand{\IoccB}{\ensuremath \mathcal{I}_\text{occ}^\beta}
 
 
-% Fock operator
-\newcommand{\OpFock}{\Op{F}}
-\newcommand{\OpFockFull}{\OpFock\left[\{\varphi_i\}_{i \in \Iorb}\right]}
+% HF stuff
+\newcommand{\Ehf}{\ensuremath \mathcal{E}^\text{HF}}
+\newcommand{\matF}{\ensuremath \mat{F}}
+\newcommand{\matJ}{\ensuremath \mat{J}}
+\newcommand{\matK}{\ensuremath \mat{K}}
+\newcommand{\matFfull}{\mat{F}\!\!\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matFnfull}{\mat{F}\!\!\left[\mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)}\right]}
+\newcommand{\matJfull}{\mat{J}\!\!\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matKfull}{\mat{K}\!\!\left[\mat{C}\tp{\mat{C}}\right]}
+\newcommand{\matJnfull}{\mat{J}\!\!\left[\mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)}\right]}
+\newcommand{\matKnfull}{\mat{K}\!\!\left[\mat{C}^{(n)}\!\tp{\left(\mat{C}^{(n)}\right)}\right]}
+\newcommand{\matFfullD}{\mat{F}\!\left[\mat{D}\right]}
+\newcommand{\matJfullD}{\mat{J}\!\left[\mat{D}\right]}
+\newcommand{\matKfullD}{\mat{K}\!\left[\mat{D}\right]}
+\newcommand{\matFnt}{\ensuremath \tilde{\mat{F}}^{(n)}}
 
 % Convergence of processes
-\newcommand{\epsilonconv}{\varepsilon_\text{conv}}
+\newcommand{\epsilonconv}{\ensuremath \varepsilon_\text{conv}}
 
 % Misc math
 \newcommand{\slot}{\,\cdot\,}
 \DeclareMathOperator{\spacespan}{span}
+
+% Coulomb-Sturmians
+\newcommand{\nmax}{\ensuremath n_\text{max}}
+\newcommand{\lmax}{\ensuremath l_\text{max}}
+\newcommand{\mmax}{\ensuremath m_\text{max}}
+\newcommand{\lmin}{\ensuremath l_\text{min}}
+\newcommand{\kexp}{\ensuremath k_\text{exp}}
+\newcommand{\kopt}{\ensuremath k_\text{opt}}
+\newcommand{\RMSOl}{\text{RMSO}_l}

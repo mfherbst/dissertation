@@ -1,0 +1,61 @@
+[
+	node distance=0.7 and 1.1,
+	box/.style={rectangle,draw,fill=white,minimum width=5.5cm,align=center,
+				font=\smaller, text width=5.2cm},
+	init/.style={box,minimum height=0.5cm},
+	fockup/.style={box,minimum height=1.1cm,fill=red!12!white},
+	extra/.style={box,minimum height=1.5cm},
+	coeffup/.style={box,minimum height=1.5cm,fill=blue!12!white},
+	post/.style={->,shorten <=0.5pt,>=stealth',semithick},
+	label/.style={font=\smaller,text width=5.5cm,
+					align=center,yshift=0.2cm},
+]
+\def\outshift{0.4}
+
+% TODO Equation numbers
+% unify symbols (tildes and _F subscripts ... also gdm
+
+\node [init] (odainit) {Initial density matrix $\tilde{\mat{D}}^{(0)} = \mat{D}^{(0)}$};
+\node [fockup, below=of odainit] (odafock)
+	{Fock matrix \update: \\
+		$\tilde{\mat{F}}^{(i)}
+		= \mat{F}\left[ \tilde{\mat{D}}^{(i)} \right]$};
+\node [extra, below=of odafock] (odadiag)
+	{Diagonalise $\tilde{\mat{F}}^{(i)}$ to get coefficients $\mat{C}_F^{(i+1)}$.
+	 Build $\mat{D}^{(i+1)}$ by Aufbau principle};
+\node [coeffup, below=of odadiag] (odadens)
+	{Find $\tilde{\mat{D}}^{(i+1)}$ resulting in the minimal SCF energy
+		along the line from $\mat{D}^{(i+1)}$ to $\tilde{\mat{D}}^{(i)}$, \eqref{eqn:ODAupDens}};
+%
+% TODO check for convergence
+%
+\draw [post] (odainit.south) --
+	node [anchor=west,right] {\smaller[2]$i=0$}
+	(odafock.north);
+\draw [post] (odafock.south) -- (odadiag.north);
+\draw [post] (odadiag.south) -- (odadens.north);
+\draw [post] (odadens.west) -- ($ (odadens.west) - (\outshift,0) $)
+		-- node [sloped,anchor=south] {\smaller[2]$i\leftarrow i+1$}
+		 ($ (odafock.west) - (\outshift,0) $) -- (odafock.west);
+\node [label,below=of odadens] {b) Optimal damping algorithm};
+
+
+
+\node [init,left=of odainit] (rinit) {Initial coefficients $\mat{C}^{(0)}$};
+\node [fockup,below=of rinit]  (rfock)
+	{Fock matrix \update: $\mat{F}^{(i)}
+		 = \mat{F}\left[ \mat{C}^{(i)} \tp{\left(\mat{C}^{(i)}\right)} \right]$};
+\node [coeffup,left=of odadens]  (rcoeff)
+	{Diagonalise $\mat{F}^{(i)}$ to get coefficients $\mat{C}_F^{(i+1)}$.
+	Use Aufbau principle to find occupied coefficients $\mat{C}^{(i+1)}$};
+%
+% TODO check for convergence
+%
+\draw [post] (rinit.south) --
+	 node [anchor=west,right] {\smaller[2]$i=0$}
+	 (rfock.north);
+\draw [post] (rfock.south) -- (rcoeff.north);
+\draw [post] (rcoeff.west) -- ($ (rcoeff.west) - (\outshift,0) $)
+		-- node [sloped,anchor=south] {\smaller[2]$i\leftarrow i+1$}
+		($ (rfock.west) - (\outshift,0) $) -- (rfock.west);
+\node [label,below=of rcoeff] {a) Roothaan repeated diagonalisation};

@@ -1,43 +1,86 @@
-\chapter{Gaussian $\RMSOl$ plots}
+\chapter{$\RMSOl$ plots for \cGTO discretisations}
 \label{apx:GaussianUHF}
 
-% Here the old version is used of molsturm and libint
-Here we show $\RMSOl$ plots for Gaussian cc-pv5z and cc-pv6Z basis sets.
+This appendix shows $\RMSOl$~(see definition \vref{defn:RMSOl})
+plots for the \cGTO basis sets
+cc-pV5Z and cc-pV6Z%
+~\cite{Dunning1989,Woon1993,Wilson1996,VanMourik2000,Prascher2011}
+similar to the ones depicted for \CS discretisations
+in section \vref{sec:CSconvergenceHF}.
+The values were computed \molsturm~\cite{molsturmWeb,molsturmDesign}
+using \libint~\cite{Libint2_231} as a back end
+for the integral values.
+The most notable differences compared to figures \ref{fig:RMSOl_period2}
+and \vref{fig:RMSOl_period3}
+is that the $\RMSOl$ of lithium and phosphorus
+decreases much slower and
+that beryllium has some pronounced spikes of larger $\RMSOl$
+values for $l=2$ and $l=4$.
 
-\begin{figure}
+\begin{figure}[hp!]
 	\centering
 	\includeimage{99_appendix/ccpvnz_rmso_period2_vs_l}
-	\caption{Plot $\RMSOl$ vs $l$ for period 2 atoms. All calculations are cc-pv6Z,
-	except lithium and beryllium, which are at cc-pv5z level.}
+	\caption
+	[Plot $\RMSOl$ vs $l$ for the \HF ground state of the atoms of the second period]
+	{
+		Plot $\RMSOl$ vs $l$ for the \HF ground state
+		of the atoms of the second period.
+		All calculations done with the cc-pV6Z basis set,
+		except \ce{Li} and \ce{Be}
+		for which at cc-pV5Z was used.
+		For \ce{Be} and \ce{Ne} a \RHF procedure was used,
+		for the other cases \UHF.
+	}
 	\label{fig:RMSO_period2_l}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hp!]
 	\centering
 	\includeimage{99_appendix/ccpvnz_rmso_period3_vs_l}
-	\caption{Plot $\RMSOl$ vs $l$ for period 3. All calculations are cc-pv6Z,
-	except sodium and manganese, which are at cc-pv5z level.}
+	\caption
+	[Plot $\RMSOl$ vs $l$ for the \HF ground state of the atoms of the third period]
+	{
+		Plot $\RMSOl$ vs $l$ for the \HF ground state
+		of the atoms of the third period.
+		All calculations done with the cc-pV6Z basis set,
+		except \ce{Na} and \ce{Mg}
+		for which at cc-pV5Z was used.
+		For \ce{Mg} and \ce{Ar} a \RHF procedure was used,
+		for the other cases \UHF.
+	}
 	\label{fig:RMSO_period3_l}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includeimage{99_appendix/ccpvnz_rms_lf_N}
-	\caption{Plot root mean square coefficient vs $l$ and orbital index for N}
-	\label{fig:RMSLF_N_Gauss}
-\end{figure}
+%\begin{figure}[hp]
+%	\centering
+%	\includeimage{99_appendix/ccpvnz_rms_lf_N}
+%	\caption{Plot root mean square coefficient vs $l$ and orbital index for N}
+%	\label{fig:RMSLF_N_Gauss}
+%\end{figure}
+%
+%\begin{figure}[hp]
+%	\centering
+%	\includeimage{99_appendix/ccpvnz_rms_lf_C}
+%	\caption{Plot root mean square coefficient vs $l$ and orbital index for C}
+%	\label{fig:RMSLF_C_Gauss}
+%\end{figure}
 
-\begin{figure}
-	\centering
-	\includeimage{99_appendix/ccpvnz_rms_lf_C}
-	\caption{Plot root mean square coefficient vs $l$ and orbital index for C}
-	\label{fig:RMSLF_C_Gauss}
-\end{figure}
-
-\begin{figure}
+\begin{figure}[hp!]
 	\centering
 	\includeimage{99_appendix/ccpvnz_rms_lf_O}
-	\caption{Plot root mean square coefficient vs $l$ and orbital index for O}
+	\caption[
+		Root mean square coefficient value
+		per angular momentum for nitrogen
+	]
+	{
+		Root mean square coefficient value per
+		basis function angular momentum quantum number $l$
+		for selected orbitals of oxygen.
+		The atom is modelled
+		in a cc-pV6Z basis using \UHF.
+	}
+
+
 	\label{fig:RMSLF_O_Gauss}
 \end{figure}
 

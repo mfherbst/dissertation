@@ -1,20 +1,38 @@
 \section{Diagonalisation algorithms}
 \label{sec:DiagAlgos}
 
-This section discusses a few algorithms in order to obtain
-numerical approximations to a part of the eigenpairs of a matrix $\mat{A}$.
-In this thesis we will only discuss combinations of operators
-and discretisation methods with basis sets
-$\{\varphi_\mu\}_{\mu \in \Ibas}$, which have the property that
+This section discusses a few algorithms suitable for obtaining
+approximations to eigenpairs of a matrix $\mat{A}$ numerically.
+Whilst the regime of quantum mechanics is a complex-valued Hilbert space,
+in this thesis
+we will only consider combinations of operators and discretisation basis
+$\{\varphi_\mu\}_{\mu \in \Ibas}$,
+which have the property that
 \[ \forall \mu, \nu \in \Ibas: \quad a(\varphi_\mu, \varphi_\nu) \in \R. \]
-As a result all matrices in \eqref{eqn:DiscretisedEigenproblem}
-will be real and symmetric.
-This section is therefore only concerned with eigenproblems of the type
+As a result all matrices in \eqref{eqn:DiscretisedEigenproblem} will be real and symmetric.
+In this section we will therefore only consider eigenproblems of the type
 \[ \mat{A} \vec{u}_i = \lambda_i \vec{u}_i \]
 where $\mat{A} \in \R^{\Nbas \times \Nbas}$,
 $\lambda_i \in \R$ and $\vec{u}_i \in \R^{\Nbas}$.
 
-\todoil{Improve and extend this section once Chapter 4 and 5 are done}
+Furthermore we will restrict our discussion here to so-called
+\newterm{iterative diagonalisation methods},
+where better and better approximations to the eigenpairs of interest
+are found in an iterative procedure.
+These methods are in contrast to so-called \newterm{direct diagonalisation methods},
+where one attempts to find the elements of an orthogonal matrix $\mat{O} \in \R^{\Nbas\times\Nbas}$,
+such that
+\[ \rtp{\mat{O}} \mat{A} \mat{O} = \mat{L} = \diag(\lambda_1, \lambda_2, \ldots, \lambda_{\Nbas}), \]
+the diagonal matrix of eigenvalues, can be computed directly.
+This requires random access into the elements of $\mat{A}$,
+especially since the efficient implementations of such methods
+are usually destructive towards $\mat{A}$.
+This means that they avoid memory allocations by building the product
+$\rtp{\mat{O}} \mat{A} \mat{O}$ directly inside the memory already allocated for $\mat{A}$.
+Direct methods are generally only suitable for small matrices,
+where $\Nbas$ is at most on the order of $1000$.
+The most widely adopted library of dense methods is LAPACK~\cite{LAPACK}.
+
 \subsection{Power method}
 The most simple numerical method to obtain
 a single eigenvalue from a particular matrix $\mat{A}$
@@ -38,15 +56,39 @@ To see this, let us write
 	a
 \end{align}
 
+Gerschgorin's circles
 
 
 \todoil{Do later if time}
 
 \subsection{Shift and invert}
+\label{sec:ShiftInvert}
 \todoil{Do later if time}
+Select the range of interest
+Wilkinson's method
 
 \subsection{Arnoldi's method}
+\label{sec:Arnoldi}
+Arnoldi~\cite{Arnoldi1951}
 \todoil{Do later if time}
 
 \subsection{Davidson's method}
+\label{sec:Davidson}
 \todoil{Do later if time}
+
+mention and explain preconditioning in this context
+
+\subsection{Generalised eigenvalue problems}
+\label{sec:GeneralisedEigenvalueProblem}
+Give some hints how such algorithms
+could be adapted for a generalised eigenvalue problem.
+
+\todoil{Copy stuff from status\_Sturmians}
+
+\begin{itemize}
+	\item $S^{-1/2}$
+	\item Choleski
+	\item Change orthogonalisation
+\end{itemize}
+
+

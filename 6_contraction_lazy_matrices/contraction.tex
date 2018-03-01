@@ -1,0 +1,298 @@
+\section{Contraction-based algorithms}
+\label{sec:ContractionAlgos}
+
+The underlying idea of \contraction-based methods,
+namely to avoid storing large matrices in favour of using
+matrix-vector-product expressions,
+is hardly new.
+In his paper from \citeyear{Davidson1975}
+\citet{Davidson1975} not only describes his now famous
+iterative diagonalisation method~(see section \ref{sec:Davidson}),
+but furthermore he suggests to use an algorithmic expression
+for computing the required matrix-vector products.
+The use case Davidson had in mind back then was the
+diagonalisation of the CI or Full-CI matrix,
+which is --- even today --- too large to keep in memory,
+see remark \vref{rem:EvalFCIMatrix}.
+
+Nowadays \contraction-based methods
+are rather widespread in quantum chemistry.
+Even though the \contraction expressions are sometimes given different
+names such as \textbf{working equations},
+making the concept less clear.
+Examples are recent implementations of the algebraic diagrammatic construction~(\ADC)
+scheme~\cite{Wormit2009,Wormit2014,Dreuw2014},
+which do not build the complete \ADC matrix to be diagonalised,
+and efficient coupled-cluster schemes~\cite{Helgaker2013},
+which similarly avoid constructing the matrix
+governing the \CC root-finding problem explicitly.
+Instead both methods use appropriate tensor contractions
+and compute matrix-vector products on the fly
+during the respective iterative solves.
+A somewhat related take on this are the recent
+\textbf{matrix-free methods}~\cite{Kronbichler2012}
+for solving partial differential equations in a finite-element discretisation
+without building the system matrix in memory at all.
+
+From the algorithmic point of view one should notice,
+that especially the direct eigensolvers and linear solvers algorithms
+as they are implemented in LAPACK\todo{cite}
+do require random access into the matrix,
+are thus not available for a \contraction-based ansatz.
+In practice this an acceptable restriction.
+Firstly because for large matrices direct methods become
+unfavourably expensive anyway%
+\footnote{Usually exactly because they necessarily keep everything in memory.}.
+Secondly because many diagonalisation methods and methods for solving linear systems
+do not need the problem matrix in memory.
+Instead they can be operated just like the Davidson,
+by coding an expression for delivering the required matrix-vector products.
+In this category practically all Krylov-subspace approaches can be found,
+including widely-adopted algorithms like
+\todoil{cite}\noindent
+Arnoldi, Lanczos, conjugate gradient or GMRES.
+In the context of eigenproblems
+one should mention that such iterative methods
+have an additional disadvantage.
+It is typically very costly to obtain a large number of eigenpairs
+of the diagonalised matrix.
+Fortunately for large matrices this is hardly needed
+and techniques like Chebychev preconditioning~\todo{cite}
+or shift and invert~(see section \vref{sec:ShiftInvert})
+allow to effectively direct the diagonalisation routines
+towards the part of the eigenspectrum one is truely interested in.
+
+On the one hand employing a \contraction-based method thus do not really
+restrict the range of numerical problems, which can be tackled.
+On the other hand avoiding the storage of the problem matrix
+immediately reduces the scaling in memory from quadratic (in system size) to linear.
+The rationale for this is that the memory bottleneck
+in most subspace algorithms is storing the generated subspace,
+\ie a fixed number of vectors, which take linear storage.
+This makes \contraction-based methods especially
+attractive for problems where memory is a bottleneck.
+For this reason this concept has been
+introduced in a range of fields of numerics and scientific computing
+under different names.
+Terms like \textbf{apply-based} method, \textbf{matrix-free} method
+or phrases like using \textbf{matrix-vector product expressions}
+or using \textbf{matrix-vector products}
+overall largely describe the same concept.
+I personally like the term \textbf{\contraction-based} best,
+because under the hood
+evaluating such matrix-vector products in many cases,
+that I came across,
+involves expressions with contractions over tensors with rank larger than 2.
+Consider for example the coupled-cluster doubles working equations~\eqref{eqn:CCDworking}
+or the contraction expression for the exchange matrix
+in a \CS-based discretisation of Hartree-Fock~\eqref{eqn:ApplicationKcs}.
+Additionally calling such algorithms \contraction-based
+indicates that the idea to substitute storage by expressions
+is more general than the matrix-vector product.
+In theory one could think of similar approaches for
+higher-order tensor contractions as well.
+
+\subsection{Potential and caveats}
+\label{sec:ContractionPotentialCaveat}
+
+\begin{table}
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		Storage layer  & Latency $/\unit{ns}$ & FLOPs \\
+		\midrule
+		L1 cache       & $0.5$                &  $13$  \\
+		L2 cache       & $7$                  &  $180$ \\
+		Main memory    & $100$                &  $2600$ \\
+		SSD read       & $1.5\E{4}$           &  $4\E{5}$ \\
+		HDD read       & $1\E{7}$             &  $3\E{8}$ \\
+		\bottomrule
+	\end{tabular}
+	\caption[Duration needed for random access into storage]{
+		Ballpark duration needed for random access into selected
+		layers of storage.
+		The right-hand side column represents the peak amount
+		of floating point operations a Sandy Bridge CPU with $\unit[3.2]{GHz}$
+		clock frequency could perform in the same time
+		assuming perfect pipelining.
+		Data taken from \cite{CpuData} and \cite{LatencyWeb}.
+		Notice, that the seek time on HDDs averages out
+		in sequential HDD reads.
+		For example reading $\unit[1]{MB}$ from disk only takes about $\unit[2\E{7}]{ns}$,
+		\ie only twice as long as the seek by itself.
+		For other types of storage this effect is less pronounced.
+	}
+	\label{tab:FLOPcost}
+\end{table}
+
+Historically the main driving force behind \contraction-based
+methods was to circumvent the memory bottleneck.
+Since the amounts of memory available in the mainframes of the 70s
+was much more limited compared to today,
+the only alternative to recomputing the data as needed
+would have been to store the system matrices on disk.
+Taking a look at table \vref{tab:FLOPcost}
+we notice that in the time needed to perform random access to HDDs
+in the order of millions of floating point operations can be performed.
+Overall it is therefore not hard to understand why
+people went for recomputing the data instead.
+
+Nowadays the amounts of available main memory has increased substantially,
+such that for larger and larger system sizes
+the system matrices can now be stored in memory.
+Nevertheless one should not forget that accessing main memory costs time as well,
+which could be equally well spent for computations.
+Assuming perfect pipelining
+on the order of 2500 floating point operations can be performed
+while the CPU waits for a random value to be loaded from main memory%
+~(see table \ref{tab:FLOPcost}).
+This is of course orders of magnitude lower than the corresponding
+value for a random read from SSD or HDD,
+but one should notice that this does not improve as much for sequential
+reads as it does for HDDs.
+In other words this 2500 flops of computation are
+in some sense lost for each memory access
+--- whether it is sequential or completely random.
+
+\begin{figure}
+	\centering
+	\includeimage{6_contraction_lazy_matrices/mem_cpu_years}
+	\caption[Scale-up of memory bus speed and CPU clock speed]
+	{Scale-up of memory bus speed and CPU clock speed
+		relative to 1980 for selected hardware in each year.
+		Data taken from \cite{Gocon2014}.}
+	\label{fig:MemCpuSpeedup}
+\end{figure}
+Another aspect one should take into account are the historic trends.
+Figure \ref{fig:MemCpuSpeedup} clearly%
+\footnote{The original source \cite{Gocon2014}
+does not provide a clear description how the data points in each year
+where computed from the range of processors and chipsets,
+which were released in this year.
+Nevertheless the trend is so clear, that I consider this aspect
+to have little influence on the picture.}
+shows the so-called \newterm{processor-memory performance gap}.
+This is meant to express that the available memory bandwidth
+has increased by a lesser amount relative to 1980 as the CPU clock speed.
+Since the number of flops per second is directly related to the CPU clock speed,
+one can extrapolate that the ratio of computable FLOPs per memory access
+will likely increase in the upcoming years.
+In other words \contraction-based methods
+will become more and more attractive in the future,
+just because they amount to exploit the steeper increase of the CPU clock
+speed curve in figure \ref{fig:MemCpuSpeedup} much better.
+
+Notice, that the aforementioned advantage of \contraction-based methods
+to exploit the emerging hardware trends
+is an effect which comes \emph{on top}
+of the possible reduction in formal computational scaling,
+which we found for \FE-based or \CS-based discretisations of \HF in the previous chapter.
+This reduction in scaling is not an effect
+which is limited to the case of an \SCF routine,
+but can be observed in other cases as well.
+The underlying reason is in many cases
+that the delayed evaluation of the matrix elements
+\emph{alongside} the contraction with an actual trial vector
+allows to reorder the required summations more freely.
+In other words giving up the storage of values
+implies that we do no longer need to comply with one particular storage format,
+allowing to more freely choose an optimal evaluation strategy.
+Somewhat paradoxically this implies that
+\contraction-based method have the potential
+to be faster even though more computational work is done.
+
+Let us consider an iterative diagonalisation method,
+like the Arnoldi or Davidson scheme
+in a \contraction-based ansatz.
+All steps but the matrix-vector product expression
+are performed in the generated iterative subspace,
+which by construction has a lower dimensionality
+than the full system matrix.
+Therefore the matrix-vector product,
+\ie the \contraction expression is the computational bottleneck.
+A typical diagonalisation requires
+around low to mind hundreds of matrix-vector products.
+Implementing this \contraction expression
+in a highly efficient manner is
+key to make a \contraction-based ansatz fast.
+
+Even in the naive manner presented
+in equations \eqref{eqn:ExchangeApply} and \eqref{eqn:ApplicationKcs}
+the \contraction expressions
+of the exchange term of the Fock matrix with a trial vector
+look all but simple.
+In a practical implementation achieving maximal performance
+the required procedures will most probably be more involved,
+since issues like the following will all need to be addressed.
+\todoil{References for the guys in the itemize}
+\begin{itemize}
+	\item \textbf{Adoption to Hardware} and \textbf{parallelisation}:
+		The features provided by modern hardware
+		have of course changed a lot over the years.
+		This includes aspects like vectorisation
+		or the recent trend to employ general-purpose graphics cards
+		in scientific calculations.
+		A good algorithm takes modern features into account
+		and shows a parallelisation scheme,
+		which exploits the available hardware as good as possible.
+		Notice, that in many cases the requirements
+		can be contradictory,
+		such that achieving best performance in all circumstances
+		is a real challenge if not impossible.
+	\item \textbf{Storing intermediates:}
+		Often one can identify subexpressions
+		of a large \contraction expression,
+		where it makes sense to store it between individual
+		executions of the \contraction.
+	\item \textbf{Order of contractions:}
+		For more complicated expressions involving
+		multiple tensor contractions at once the order
+		in which the contractions are executed can be crucial
+		to achieve best computational scaling
+		as well as a low memory footprint.
+	\item \textbf{Approximations:}
+		Especially in iterative procedures one is typically not
+		interested in the numerically exact result
+		of a \contraction.
+		Much rather the iterative procedure will only solve
+		the problem up to a certain accuracy threshold,
+		such that computing elements,
+		which are smaller than this threshold is a waste of computational time.
+		Sometimes this can be incorporated into a \contraction expression
+		by prescreening the elements to compute or by other approximations.
+\end{itemize}
+On top of that one should keep in mind that problem matrices
+are usually composed out of different terms
+with potentially different structure.
+In the case of the \SCF the Fock matrix, for example,
+is as sum of the local one-electron terms $\mat{T}$ and $\mat{V}_0$,
+which can just be computed,
+the Coulomb term $\mat{J}$,
+which requires the solution to a Poisson equation,
+and the exchange term $\mat{K}$ which requires to solve
+multiple equations on a single apply.
+It is therefore not hard to imagine
+that the best approach to the issues raised above might
+well differ from term to term.
+Compared to the traditional case where all these matrices
+are kept in memory,
+adding the terms $\mat{T}$, $\mat{V}_0$, $\mat{J}$
+and $\mat{K}$ to form the Fock matrix $\mat{F}$
+is thus much more involved in the \contraction-based ansatz.
+
+In passing let us note,
+that the parallelisation of \contraction-based methods
+is typically both easier and more efficient than for conventional methods.
+The rationale is that less stored data generally implies
+that there is less data to manage between different cores or nodes
+and thus less data to communicate,
+because it is recomputed on each worker as required.
+Unlike communicating data,
+recomputing data is embarrassingly parallel after all.
+
+Overall we can conclude that \contraction-based methods are more flexible
+and amount to comply better with the current hardware trends.
+Since \contraction expressions are the computational hot-spot,
+the procedures one needs to implement are, however,
+more involved and consequently the resulting code can become less intuitive
+and hard to modify or adapt.

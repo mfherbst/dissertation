@@ -1,0 +1,380 @@
+\section{Lazy matrices}
+\label{sec:lazymat}
+The idea of lazy matrices is to encapsulate the coding \contraction-based
+in a domain-specific language,
+which makes it feel as if one was dealing with actual matrices
+instead of \contraction expressions.
+Even though not all complications can be hidden,
+the resulting syntax allows to write algorithms in a high-level manner
+being independent from the underlying implementation of the \contraction expression.
+This will turn out to be the key aspect
+leading to the basis-type of the quantum-chemistry package \molsturm.
+
+For this purpose we generalise the concept of a matrix
+to objects we call a \newterm{lazy matrix}.
+Whilst a conventional or \newterm{stored matrix} is dense
+and has all its elements residing in a continuous chunk of memory,
+this restriction does no longer hold for a lazy matrix.
+It may for example follow a particular sparse storage scheme
+like compressed-row storage,
+but does not even need to be associated to any kind of storage at all.
+In the most general sense it can be thought of as an
+arbitrary \contraction expression for computing the matrix elements,
+which is dressed to look like an ordinary matrix from the outside.
+
+In other words one may still obtain individual matrix elements,
+add, subtract or multiply such lazy matrix objects together
+or apply them to a bunch of vectors or a stored matrix.
+Not all of these operations may be equally fast
+than there counterparts on stored matrices, however.
+Most importantly obtaining individual elements of such a matrix
+can become rather costly,
+since they might involve a computation as well
+and not just a lookup into memory.
+
+On the upside one gains a much more flexible data structure
+where a familiar matrix-like interface
+can be added to more complicated objects.
+Most notably a lazy matrix may well be non-linear or can have state,
+which may be changed by a \update function
+in order to influence the represented values at a later point.
+An example where this is sensible would be the Coulomb and Exchange matrices,
+where the values of these matrices depend on the set of occupied coefficients,
+which have been obtained in the previous iterations.
+Other examples include the \update of an accuracy threshold for a \contraction expression,
+which might change between iterations.
+
+\begin{figure}
+	\centering
+	\includeimage{6_contraction_lazy_matrices/expression_tree} \\[0.8em]
+	\includeimage{6_contraction_lazy_matrices/expression_tree2}
+	\caption[Examples for lazy matrix expression trees]
+	{
+		Examples for lazy matrix expression trees.
+		The upper represents the instruction
+		$\mat{D} = \mat{A} + \mat{B}$
+		and the lower the multiplication of the result $\mat{D}$
+		with $\mat{C}$.
+	}
+	\label{fig:LazyMatrixExpressionTree}
+\end{figure}
+All evaluation between lazy matrices
+like addition, subtraction or matrix-matrix multiplication
+is usually delayed until a contraction of the resulting
+expression with a vector or a stored matrix is performed
+and thus the represented values are unavoidably needed.
+This evaluation strategy is called \newterm{lazy evaluation}
+in programming language theory~\todo{cite https://dl.acm.org/citation.cfm?doid=72551.72554}, explaining the name of these data structures.
+To make this more clear consider the lazy matrix instructions
+\begin{equation}
+	\begin{aligned}
+		\label{eqn:LazyMatrixInstructions}
+		\mat{D} &= \mat{A} + \mat{B}, \\
+		\mat{E} &= \mat{D} \mat{C}, \\
+		\vec{y} &= \mat{E} \vec{x},
+	\end{aligned}
+\end{equation}
+where $\mat{A}$, $\mat{B}$ and $\mat{C}$ are lazy matrices
+and $\vec{x}$ is a vector stored in memory.
+The first two do not give rise to any computation being done.
+They only amount to build an expression tree in the returned
+lazy matrix $\mat{E}$ as illustrated in figure \vref{fig:LazyMatrixExpressionTree}.
+The final line is a matrix-vector product with a stored vector,
+where an actual stored result should be returned in the vector $\vec{y}$.
+In the lazy matrix sense this triggers the complete expression tree to be
+evaluated in appropriate order,
+leading effectively to an evaluation of the expression
+\begin{equation}
+	\vec{y} = \left( \mat{A} + \mat{B} \right) \mat{C} \vec{x}
+	\label{eqn:LazyMatrixFinalExpression}
+\end{equation}
+at once at this very instance.
+\eqref{eqn:LazyMatrixFinalExpression} can be evaluated entirely only using
+matrix-vector \contraction expressions.
+For example one could first form the product $\tilde{\vec{x}} \equiv \mat{C} \vec{x}$
+using the matrix-vector-product expression of the lazy matrix $\vec{C}$.
+Afterwards one would form $\mat{A} \tilde{\vec{x}}$ and $\mat{B} \tilde{\vec{x}}$
+again by appropriate \contraction expressions
+and finally add the result to give $\vec{y}$.
+This is just one way to perform the evaluation.
+An implementation of the lazy matrix language is free to choose
+a different route for evaluating \eqref{eqn:LazyMatrixFinalExpression}
+by reordering the expression if it considers this useful.
+If $\mat{C}$ for example was made up of a sum $\mat{F} + \mat{G}$,
+it could use distributivity to write
+\[ \left( \mat{A} + \mat{B} \right) \left( \mat{F} + \mat{G} \right) \vec{x}
+	= \mat{A} \left( \mat{F} \vec{x} \right) + \mat{A} \left( \mat{G}\vec{x}\right)
+	+ \mat{B} \left( \mat{F} \vec{x} \right) + \mat{B} \left( \mat{G}\vec{x}\right).
+\]
+Which of these routes is best differs very much on the structure
+of the lazy matrices being part of the expression to evaluate.
+But other factors like the operating system or hardware on which
+the program code is executed are not unimportant either.
+Since the evaluation is delayed
+until the call to $\mat{E}\vec{x}$ gets executed at the actual program runtime,
+all of this can in theory be taken into account for deciding
+which route to take.
+Naturally the design of an appropriate cost function
+will be in practice all but easy
+as previous attempts have shown~\todo{cite a few}.
+
+In either case such decision happen in the evaluation back end
+and are well-abstracted by the lazy matrix language
+from the instructions \eqref{eqn:LazyMatrixInstructions},
+which stay intelligible and understandable.
+Furthermore if the structure of the matrices changes,
+since for example the discretisation scheme changes,
+the evaluation route will automatically adapt
+given that the cost function is sensibly chosen.
+
+%
+% --------
+%
+\defineabbr{LA}{LA\xspace}{linear algebra}
+\section{\lazyten lazy matrix library}
+\begin{figure}
+	\centering
+	\includeimage{6_contraction_lazy_matrices/lazyten_structure}
+	\todoil{Citations for Lapack, Eigen and Anasazi}
+	\caption[Structure of the \lazyten lazy matrix library]{%
+		Structure of the \lazyten lazy matrix library~\cite{lazytenWeb}
+		and its interfaces to the 3rd party codes
+		armadillo~\cite{Armadillo}, Bohrium~\cite{Kristensen2016array,Kristensen2016streaming},
+		LAPACK~\cite{LAPACK} and ARPACK~\cite{ARPACK}.
+		Support for Eigen~\cite{Eigen} and Anasazi~\cite{Anasazi} is planned.
+	}
+	\label{fig:structureLazyten}
+\end{figure}
+An initial implementation of the lazy matrix language has been
+achieved in the \cpp library \lazyten~\cite{lazytenWeb}.
+Not all aspects of lazy matrix concept are yet covered, however.
+For example many opportunities to achieve performance improvements
+by reordering the lazy matrix expression tree are currently missed.
+On the other hand \lazyten goes a bit beyond the lazy matrix specification
+in the sense that it has become a full abstraction layer for linear algebra.
+As depicted in figure \vref{fig:structureLazyten}
+the goal of \lazyten is to provide a common interface
+for \contraction-based methods
+with access to different linear algebra back ends or solver implementations.
+Not everything has been achieved as planned,
+but nevertheless \lazyten is already used in production
+by the \molsturm quantum-chemistry framework discussed in the next section.
+
+\lazyten is open-source software licensed under the
+GNU General Public License.
+Its source code can be obtained from \url{https://lazyten.org} free of charge.
+As of December 2017 \lazyten amounts around 22500 source lines of code
+excluding comments and blanks,
+but including the helper library \krims~\cite{krimsWeb}
+as well as examples and tests.
+
+Inside the framework of \lazyten combining custom lazy matrices
+as well as built-in structures,
+like a lazy matrix representing the inverse of a matrix,
+can be achieved transparently.
+Even a combination with stored matrices in any of these expressions is possible.
+In this manner code working on \lazyten matrix objects
+will continue to work if the type of one of the involved objects is changed.
+In other words replacing a plain stored matrix by an involved lazy matrix,
+which exploits the sparsity properties of the represented quantity
+much better,
+can typically be done without changing any of the code operating on such a matrix.
+
+This is possible, since the interface of \lazyten provides
+high-level routines to perform linear solves
+and to access eigensolvers,
+where the call passes through a branching layer,
+which mediates between the available back ends depending on the structure
+of the problem matrix.
+By providing appropriate parameters to the high-level
+function a user of the implemented code may still overwrite
+which solver implementation
+is chosen and what precise setup parameters are passed to it.
+Currently a selection of methods from the LAPACK~\todo{cite}
+linear algebra library as well as the ARPACK~\cite{ARPACK} package
+for Arnoldi diagonalisation methods is available from \lazyten.
+The selection mechanism between the different algorithms
+for one particular task is not yet extremely sophisticated.
+Generally it will for example favour
+direct diagonalisation methods from LAPACK~\todo{cite}
+if many eigenpairs are requested
+or if the supplied system matrix is already dense.
+On the other hand Arnoldi methods are selected for lazy matrices
+and if only very few eigenpairs are desired.
+
+Whenever an operation like a product of a lazy matrix
+with a stored vector unavoidably requires computation,
+\lazyten addresses the employed \LA back end through an abstracted interface,
+such that switching behaviour on this layer is possible as well.
+At the present stage armadillo~\cite{Armadillo}
+as a LAPACK\todo{cite}-based back end
+as well as Bohrium~\cite{Kristensen2016array,Kristensen2016streaming}
+as an array-operation-based back end are currently available.
+Rather inconveniently switching the back end
+right now requires to recompile \lazyten
+with the appropriate configure options.
+
+For evaluating a lazy matrix \contraction expression the \LA back end
+is typically not extremely important,
+since it is only required for very few operations.
+Consider for example the third line of \eqref{eqn:LazyMatrixInstructions} above,
+where evaluation of the product $\mat{E}\vec{x}$ is required.
+Most work is done by the matrix-vector \contraction expressions
+of the lazy matrices $\mat{A}$, $\mat{B}$ and $\mat{C}$.
+Only for the final sum of the vectors
+$\mat{A} \tilde{\vec{x}}$ and $\mat{B} \tilde{\vec{x}}$
+\lazyten passes on to the \LA back end.
+The impact of changing the back end is naturally larger for operations
+between stored matrices or vectors,
+where it is used to evaluate all arising expressions.
+
+\subsection{Examples of \lazyten code}
+\label{sec:LazytenExamples}
+To finish off this section,
+we demonstrate the high-level syntax of \lazyten
+in two example cases.
+First consider a general linear problem $\mat{A} \vec{x} = \vec{b}$
+with known right-hand side $\vec{b}$ and unknown $\vec{x}$.
+The system matrix $\mat{A}$ shall
+be represented by the \lazyten matrix object \texttt{A}
+and the right-hand side $\vec{b}$ by the object \texttt{b},
+which is taken to be a simple stored vector of type \code{SmallVector<double>}.
+In \lazyten there are two absolutely equivalent ways to solve this problem.
+First
+\begin{lstlisting}[style=c++]
+SmallVector<double> x(b.size());
+solve(A, x, b);
+\end{lstlisting}
+or equivalently
+\begin{lstlisting}[style=c++]
+auto invA = inverse(A);
+auto b = invA * b;
+\end{lstlisting}
+\ie quite literally coding the application of the inverse.
+In both cases the last line will cause the problem to be passed
+to a linear solver algorithm in order to solve it iteratively
+or by direct methods.
+The user may provide extra parameters to the calls of \texttt{solve}
+or \texttt{inverse} in order to influence
+the selected eigensolver algorithm
+or provide some means of preconditioning the problem matrix.
+
+\todoil{From here}
+The second example is more relevant to the scope of this
+work and brings us back to the end of section \vref{sec:SCFtakeaway},
+where we discussed the possibility of
+an \SCF routine,
+which is independent from the type of basis function used.
+Figure \vref{fig:LazytenRhfCode} shows a code fragment
+from a very simple Roothaan repeated diagonalisation \SCF routine%
+~(see section \vref{sec:RoothaanRepeatedDiag})
+for closed-shell systems coded in the syntax of \lazyten.
+
+\begin{figure}
+	\centering
+	\loadnt[firstline=40,lastline=87,style={c++},showstringspaces=false]
+		{6_contraction_lazy_matrices/rhf_code.cpp}
+	\caption
+	[Code fragment of a basis-type independent
+		Hartree-Fock procedure]
+	{Code fragment of a simple basis-type independent
+		Hartree-Fock procedure implemented with \lazyten.
+		The procedure follows the Roothaan repeated diagonalisation
+		algorithm in the specialisation for closed-shell system%
+		~(see section \ref{sec:RoothaanRepeatedDiag}).
+	}
+	\label{fig:LazytenRhfCode}
+\end{figure}
+Before the depicted code segment is executed,
+the integral library is given information about the chemical system
+and the desired discretisation and returns
+the objects \texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb}
+and \texttt{Sbb},
+which represent the matrices
+$\mat{T}$, $\mat{V}_0$, $\mat{J}$, $\mat{K}$ and $\mat{S}$
+as they are defined in \eqref{eqn:Tbas} to \eqref{eqn:Sbas}.
+Additionally parameters appearing in the code
+include \texttt{n\_alpha}, the number of alpha electrons
+and \texttt{n\_orb}, the number of \SCF orbitals to compute in each step.
+
+Alongside the comments the code should largely be self-explanatory.
+In lines 1 to 6 a core Hamiltonian guess is obtained by diagonalising
+$\mat{T} + \mat{V}_0$~(see \ref{sec:CoreHamiltonian}).
+Then the Coulomb and exchange lazy matrices
+are updated to the guess coefficients in lines 9 and 10.
+Depending on the implementation of these lazy matrices,
+this might already involve the computation
+of the matrices \eqref{eqn:Jbas} and \eqref{eqn:Kbas},
+but for others this might just update an internal reference
+to the current set of coefficients and apart from that do nothing.
+From what we discussed in the previous chapter
+it should be clear that the former is better-suited for a \cGTO
+discretisation and the latter from a \FE-based discretisation for example.
+
+Afterwards the main loop starts, where first the Fock matrix
+expression is built in line 17 and then diagonalised in line 21.
+Then the current energies are computed in lines 27 to 30
+following \eqref{eqn:HFEnergyFunctionalCoeff} making
+vivid use of the \texttt{outer\_prod\_sum} routine.
+Right now this routine is required
+in such a case originating from the unfortunate decision
+to represent a matrix and a set of vectors as two inherently
+different data structures.
+Effectively it computes products such as
+$\mat{C}^T \left(\mat{J} \mat{C}\right)$
+from the matrices $\mat{C}$ and $\mat{J} \mat{C}$
+represented as a list of vectors.
+The remaining lines 32 to 43 print the current iteration
+to the user, check for convergence and update the state
+of $\mat{J}$ and $\mat{K}$ for the next iteration.
+
+Despite its simplicity the depicted code is independent of
+the type of basis function used to discretise the problem as
+\lazyten automatically adapts the
+executed eigensolver routines for the calls in lines 6 and 18
+to the structure of the Fock matrix.
+Indirectly it is thus the structure of the matrices
+\texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb} and \texttt{Sbb}
+and usually%
+\footnote{Since the automatic selection methods are not yet extremely advanced,
+it is necessary
+to overwrite the automatic choice from user code from time to time.}
+not the code depicted in figure \vref{fig:LazytenRhfCode}
+which decides, which eigensolver algorithms are chosen.
+Given that the basic heuristics currently implemented,
+the depicted code would for example perform a \contraction-based \SCF
+for a \CS-based discretisation and use direct eigensolves for a \cGTO-based
+discretisation.
+In the light of this \lazyten becomes a very effective
+abstraction layer between the details of the lazy matrix implementation,
+\ie the integral evaluation,
+and the \SCF algorithm.
+
+In the \SCF depicted in figure \ref{fig:LazytenRhfCode}
+many expressions like lines 17 and 18 or the energy computation
+are designed to resemble the equivalent equations one would derive on paper
+up to a very large extent.
+Nevertheless the matrices like
+\texttt{Tbb}, \texttt{Vbb}, \texttt{Jbb}, \texttt{Kbb} and \texttt{Sbb}
+could be stored or lazy for the code to work.
+Adding an extra term to the Fock matrix expression in line 17 can be done by a simple
+addition of another matrix object
+irrespective whether the added object is lazy or stored.
+In either case its structure would be taken into account
+during the following diagonalisation
+without explicit user interaction.
+Still the user could influence the behaviour of the called solver
+by providing appropriate parameters explicitly.
+For this reason we believe \lazyten to be very suitable for teaching
+or experimentation with novel methods,
+since many details are abstracted and one may at first concentrate
+on the algorithm and not on numerics.
+
+Overall \lazyten therefore amount to yield a very intuitive syntax
+for \contraction-based methods in the form of lazy matrices,
+where algorithms can be written at a high level.
+By the means of changing the implementation behind the
+employed lazy matrix objects the code can be fixed but still flexible
+to changes in the available hardware or
+if novel types of basis functions with unusual matrix structures
+become available.

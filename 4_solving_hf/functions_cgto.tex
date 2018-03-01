@@ -1,0 +1,389 @@
+\subsection{Contracted Gaussian-type orbitals}
+\label{sec:cGTO}
+
+In \citeyear{Boys1950} \citeauthor{Boys1950} suggested to replace
+the exponential factor $\exp(- \zeta r)$ in the radial part \eqref{eqn:STOradial}
+by a Gaussian factor $\exp(-\alpha r^2)$,
+resulting in the so-called Gaussian-type orbitals~({\GTO}s).
+Such \GTO basis functions still follow the ansatz radial part times real-valued spherical harmonic
+\begin{equation}
+	\varphi^\text{GTO}_\mu(\vec{r}) =
+	R^\text{GTO}_\mu(r_\mu) \, Y_{l_\mu}^{m_\mu}(\theta_\mu, \phi_\mu)
+	\label{eqn:ACproductCgto}
+\end{equation}
+but their radial part is now given as
+\begin{equation}
+	R^\text{GTO}_\mu(r) = N_\mu r^{l_\mu} \exp(-\alpha_\mu r^2)
+	\label{eqn:GTOradial}
+\end{equation}
+with Gaussian exponent $\alpha_\mu$ and normalisation constant
+\[
+	N_\mu =  \sqrt{\frac{2^{l+2}}{(2l+1)!!}} \, \sqrt[4]{\frac{(2\alpha)^{2l+3}}{\pi}}
+\]
+This replacement allows to perform the
+evaluation of the integrals involved in building the Fock matrix $\mat{F}$
+much more efficiently.
+Because of the \newterm{Gaussian product theorem}%
+~\cite{Boys1950,Szabo1996,Besalu2011},
+the product of two Gaussians may be expressed \emph{exactly} as
+\[
+	R^\text{GTO}_\mu\!\left( \norm{\vec{r} - \vec{R}_\mu}\right)
+	\,
+	R^\text{GTO}_\nu\!\left( \norm{\vec{r} - \vec{R}_\mu}\right)
+	= R^\text{GTO}_\kappa\!\left( \norm{\vec{r} - \vec{R}_\kappa}\right)
+\]
+where $l_\kappa$, $\alpha_\kappa$ and $\vec{R}_\kappa$ are chosen appropriately.
+With this result the evaluation of certain \ERI integrals \eqref{eqn:ERI}
+can be done analytically~\cite{Boys1950}.
+An example would be those involving four basis functions with $l_\mu = 0$.
+All other \ERI integrals, potentially involving higher angular momentum $l_\mu$,
+can be computed from the initial ones employing
+a set of recursion formulas~\cite{Gill1994}.
+Similar strategies can be found for the one-electron integrals
+in order to build $\mat{T}$ and $\mat{V}_0$.
+Overall the construction of $\mat{F}$ therefore becomes much more
+feasible for larger basis sets of Gaussians compared to large sets of {\STO}s.
+
+Unfortunately certain physical aspects like the exponential decay
+or the cusp are no longer directly built into the basis set
+if such \GTO basis functions are used.
+Since $\varphi^\text{GTO}_\mu(\vec{r}) \in C^\infty(\R^3, \R)$,
+which is a dense subset of $H^1(\R^3, \R)$
+this is not \textit{per se} a problem:
+The denseness ensures that we can still represent every function
+from $H^1(\R^3, \R)$ up to arbitrary accuracy if we use enough {\GTO}s.
+In other words Ritz-Galerkin ansatz still allows us to
+solve problems like \HF or \FCI up to arbitrary accuracy.
+Since the {\GTO}s, however,
+span only a smaller subset of $H^1(\R^3, \R)$ than the {\STO}s,
+we will need more \GTO basis functions to achieve the same accuracy.
+
+As a remedy \citet{Hehre1969} introduced so-called
+\newterm{contracted Gaussian-type orbitals}~({\cGTO}s),
+where the radial part of a basis function $\varphi_\mu$
+is expressed as a fixed linear combination of $N_\text{contr}$
+\newterm{primitive Gaussians}%
+\footnote{Here we follow the usual convention to include the normalisation constant
+	inside the contraction coefficients.}
+\[ R^\text{cGTO}_\mu(r) = r^{l_\mu} \sum_i^{N_\text{contr}} c_{\mu,i} \exp(-\alpha_{\mu,i} r^2). \]
+The idea is to get the best out of both worlds:
+The easily solvable integrals in terms of primitive {\GTO}s
+and an accurate description of the wave function by using
+special sets of \newterm{contraction coefficient}s
+$c_{\mu,i}$ and exponents $\alpha_{\mu,i}$
+predetermined to give a good set {\cGTO}s $\{\varphi_\mu\}_{\mu\in\Ibas}$.
+By the means of this trick
+one is able to effectively split the parameter space of the variational problem
+\eqref{eqn:HFOptCoeff} into two parts.
+One --- the contraction coefficients ---
+is fitted once and for all in order to fit a large range of problems
+and another --- the coefficient matrix \eqref{eqn:HFCoeffMatrix} ---
+is the search space over which one minimises during the actual calculation.
+
+Out of the pragmatic desire to perform molecular calculations
+on systems larger than what was feasible with \STO basis sets at that time,
+\citet{Hehre1969} initially focused on contracting primitive Gaussians
+in a way that they most closely resembled a particular \STO function.
+This resulted in the famous STO-$n$G family of basis sets.
+Later it was realised that more accurate basis sets could be constructed
+by trying to minimise the energy,
+which is resulted from an actual \HF or a MP2 calculation.
+Other strategies included a rigorous construction of the basis set
+in order to obtain convergence in the amount of recovered correlation energy,
+or to be consistent in certain computed properties.
+These deviating approaches have lead to a number of
+different basis set families over the years,
+most of which share common concepts, however.
+Our discussion here should remain rather brief.
+Interested readers are referred to the excellent reviews by \citet{Hill2013}
+and \citet{Jensen2013}.
+
+\defineabbr{CBS}{CBS\xspace}{complete basis set:
+The limiting case of a basis set containing an
+infinitely large number of functions of a particular type.}
+%
+All basis sets, which are considered state-of-the-art nowadays,
+are so-called \newterm{split-valence basis set}s,
+which is meant to indicate that multiple contracted Gaussians are available
+for describing the valence shell of an atom.
+How many are used is typically referred to by the $\zeta$-level,
+\eg a double-$\zeta$ basis set contains two \emph{contracted} Gaussians
+for each valence orbital,
+a triple-$\zeta$ basis set three and so on.
+For this characters like \texttt{D}, \texttt{T}, \texttt{Q}, \texttt{5}, \ldots
+--- for double, triple, quadruple, quintuple level ---
+may be found in the name of the basis set.
+Notice, that each contracted Gaussian inside such basis sets
+is typically in turn made up from multiple primitives.
+For a particular basis set family the error generally decreases
+going to higher zeta levels.
+For some families like Dunning's correlation-consistent basis sets~\cite{Dunning1989}
+empirical formulas for estimating the error at a particular zeta
+level exist~\cite{Jensen2005}.
+These results have been used for many years
+to estimate properties at the so-called \newterm{complete basis set}~(\CBS) limit,
+\ie the theoretical value obtained if an infinitely large basis set of {\cGTO}s
+would be employed for the calculation.
+% TODO OPTIONAL See appendix \vref{apx:CbsLimit} for more details.
+A recent work by \citet{Bachmayr2014}
+provides some mathematical support for such formulas
+by rigorously deriving error estimates in the relevant $H^1(\R^3,\R)$-norm.
+One should note, however, that these results strictly speaking
+only apply to a basis of uncontracted even-tempered {\GTO}s.
+The authors point out, however, that a generalisation towards
+{\cGTO}s should be possible.
+
+\begin{figure}
+	\centering
+	\includeimage{4_solving_hf/relative_error_cgto}
+	\caption[Relative error in the hydrogen \HF ground state
+		for selected \cGTO bases]
+	{Relative error in the hydrogen \HF ground state
+		employing various \cGTO basis sets~%
+		\cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
+		The error is plotted against
+		the relative distance of electron and proton.
+	}
+	\label{fig:RelativeErrorCgto}
+\end{figure}
+A large range of \cGTO basis sets are available nowadays,
+which offer a spectrum of compromises between accuracy and computational cost.
+Nevertheless some systematic issues related to the non-physical shape
+of the primitive {\GTO}s can not be fully accounted for,
+even in the largest basis sets.
+To illustrate this, consider figure \ref{fig:RelativeErrorCgto}.
+In this plot the
+relative error of the hydrogen \HF ground state $\Phi_0$
+with respect to the exact
+electronic ground state $\Psi_{1s}$ \eqref{eqn:FunctionGShydrogen}%
+\footnote{For hydrogen \HF is equivalent to solving the full Schrödinger equation.}
+\[ \frac{\Psi_0(\vec{r}) - \Psi_{1s}(\vec{r})}{\Psi_{1s}(\vec{r})} \]
+is shown at various electron-proton distances.
+We show this quantity for a range of standard \cGTO basis sets,
+namely the minimal basis set STO-3G~\cite{Hehre1969},
+the double-$\zeta$ basis sets cc-pVDZ~\cite{Dunning1989}
+and pc-1~\cite{Jensen2001},
+the quadruple-$\zeta$ basis set pc-3~\cite{Jensen2001}
+as well as the sextuple-$\zeta$ basis set cc-pV6Z~\cite{Wilson1996}.
+In each case the error is smallest at intermediate
+electron-proton distances, but increases both at the origin
+as well as larger distances.
+The former feature can be explained due to the faster fall-off
+of the Gaussians, $\exp(-\alpha r^2)$,
+compared to the exact solution,
+which goes as $\exp(-\zeta r)$.
+The latter feature originates from the failure of Gaussians
+to represent the electron-nuclear cusp.
+Larger basis sets like pc-3 or cc-pV6Z amount to recover the
+correct decay behaviour as well as the cusp somewhat,
+such that the error stays below $0.02 \equiv 2\%$
+in the complete inner part of the plot up to distances
+of about $7.5$ Bohr.
+Eventually all relative errors tend towards $-\infty$ as $r \to \infty$,
+however.
+This includes the case of pc-3,
+where the relative error has a local maximum around $r = 10$
+and then follows a downhill slope similar to the pc-1 error around $r = 5$.
+Overall the plots agree with the rule of thumb
+that results become more accurate at higher zeta levels:
+Both the relative errors get smaller as well as the region
+where the wave function is well-represented becomes larger
+as we proceed from STO-3G to double-$\zeta$ and higher $\zeta$ levels.
+
+\begin{figure}[p]
+	\centering
+	\includeimage{4_solving_hf/local_energy_cgto}
+	\caption[Local energy of the hydrogen \HF ground state for {\cGTO} bases]{
+		Local energy $E_L(r)$ of the hydrogen atom \HF ground state
+		obtained using the indicated contracted Gaussian basis sets%
+		~\cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
+		$E_L(r)$ is plotted against the relative distance
+		of electron and nucleus.
+	}
+	\label{fig:LocalEnergyCgto}
+\end{figure}
+
+\begin{figure}[p]
+	\centering
+	\includeimage{4_solving_hf/local_energy_cgto_zoom}
+	\caption[Local energy of the hydrogen \HF ground state for {\cGTO} bases (magnified)]{
+		Magnified version of figure \vref{fig:LocalEnergyCgto}
+		around the origin.
+	}
+	\label{fig:LocalEnergyCgtoZoom}
+\end{figure}
+
+In figures \ref{fig:LocalEnergyCgto} and \ref{fig:LocalEnergyCgtoZoom}
+the local energies \eqref{eqn:LocalEnergy}
+of the aforementioned basis sets are depicted
+--- again as a function of relative distance.
+These plots not only diverge to $-\infty$ as $r \to \infty$,
+but at the origin as well, see particularly figure \ref{fig:LocalEnergyCgtoZoom}.
+At intermediate electron-proton distances
+the local energies of all basis sets
+fluctuate around the exact ground state energy of $0.5$,
+where the amplitude of the fluctuations are lowest for cc-pV6Z and pc-3.
+Recall, that the local energy is related to the relative residual error
+and that ideally it should be a constant.
+At intermediate distances, where the fluctuations are small,
+the \HF ground state thus agrees well with the exact ground state.
+Unsurprisingly the parts of figure \ref{fig:LocalEnergyCgto},
+where $E_L(\vec{r})$ is almost constant,
+agree roughly the parts of figure \ref{fig:RelativeErrorCgto},
+where the relative error is small.
+Similarly the wrongful decay behaviour of the \cGTO solutions
+is observed in both the plot of the relative error as well as
+the local energy plot.
+The most notable discrepancy of both error metrics
+is close to the nucleus, see \ref{fig:LocalEnergyCgtoZoom}.
+Whilst the relative error gets smaller and smaller for the larger
+pc-3 and cc-pV6Z basis sets close to the core as well,
+these show rather vivid fluctuations in $E_L(\vec{r})$ as $r \to 0$.
+Eventually they diverge to $-\infty$ exactly like the result
+employing any other basis set.
+In other words, whilst these basis sets amount to produce
+a very good description of the ground state from distances around
+$0.5$ Bohrs up to $7.5$ Bohrs,
+they fail to do so close to the core in a rather misbehaving manner.
+Since the relative error is small,
+the issue is not that the function value
+of the exact ground state is missed.
+Much rather the culprit is the gradient of the approximated
+\HF ground state.
+
+This can be explained following \cite{Ma2005}.
+The potential term in the local energy \eqref{eqn:LocalEnergy} diverges
+as $-Z_A/r$ close to the nucleus $A$,
+such that the kinetic energy term inside \eqref{eqn:LocalEnergy}
+needs to provide an equal and opposite
+divergence in order for the resulting local energy to be constant.
+Since the gradient of every {\cGTO} basis functions is zero at the origin,
+so is the gradient of the final \HF ground state,
+thus the local energy goes to $-\infty$.
+Furthermore the gradient of each individual primitive Gaussian
+goes to zero at a different rate
+depending on its exponent $\alpha_{\mu,i}$.
+Overall this leads to an overcompensation
+of the diverging potential in the kinetic term at some points
+and an undercompensation at others,
+giving rise to the oscillatory behaviour.
+This oscillatory feature close to the nucleus is well-known
+in the quantum Monte-Carlo community~\cite{Foulkes2001,Ma2005},
+since it can lead to problems when sampling the local energy,
+especially in diffusion Monte-Carlo.
+
+In \HF, \DFT and Post-\HF methods
+the failure of the {\cGTO}s to represent the nuclear cusp
+or the long-range behaviour is typically only an issue,
+if either parts of the wave functions are especially important
+for a particular property.
+Examples would be the determination of Rydberg-like excited states,
+the computation electron affinities,
+the computation of X-ray absorption spectroscopy
+or the computation of nuclear-magnetic resonance properties.
+In such cases specific basis sets
+are required~\cite{Hill2013,Jensen2013},
+which include further \cGTO basis functions
+to either sample the core region or the long-range tail more accurately.
+If such basis sets are not employed
+it may happen that the desired features are completely missed or described very inaccurately.
+In this sense {\cGTO}s are not fully black-box and
+picking a reasonable basis set for a particular problem
+usually requires some idea of the electronic structure already.
+On the other hand if such special basis sets are employed,
+one may encounter numerical instabilities
+due to rather large overlap matrix elements $\braket{\varphi_\mu}{\varphi_\nu}_1$
+and almost linearly dependent basis functions $\varphi_\mu$.
+This problem arises
+since firstly
+the full set of possible \cGTO basis functions is over-complete
+and secondly
+since the special basis sets for sampling the core and tail region
+contain {\cGTO}s of similar exponents,
+which makes over-completeness manifest more strongly.
+
+\begin{figure}
+	\centering
+	\includeimage[width=\textwidth]{4_solving_hf/fock_gaussian}
+	\caption[Structure of the Fock matrix for a \cGTO-based \SCF]
+		{Structure of the Fock matrix for a \cGTO-based \SCF
+		of the beryllium atom
+		in a pc-2~\cite{Jensen2007} basis set.
+		The three figures show the matrix
+		at different convergence stages during the \SCF.
+		From left to right the Pulay error
+		Frobenius norm is $0.18$, $0.0063$ and $4.1 \cdot 10^{-7}$.
+		The colouring depends on the absolute value
+		of the respective Fock matrix entry
+		with white indicating entries below $10^{-8}$.
+	}
+	\label{fig:StructureGaussianFock}
+\end{figure}
+We already mentioned that the Gaussian product theorem
+allows to evaluate the integrals
+required for building the Fock matrix $\mat{F}$
+rather efficiently.
+Furthermore the resulting Fock matrix is comparatively small:
+Even for systems with hundreds of atoms one typically only needs
+in the order of thousands of basis functions.
+In other words both building the Fock matrix
+as well as diagonalising it can be performed using direct methods%
+\todoil{put citations to those methods in footnote 9}\noindent
+\footnote{%
+	A standard procedure would be to reduce the matrix to
+	tridiagonal form using Householder reflections
+	and then use Cuppen's divide and conquer
+	or an algorithm based on relatively robust representations.
+}.
+Ignoring the basis sets suffering from over-completeness for a second
+the numerical structure of a \cGTO-based Fock matrix
+is rather advantageous in most cases.
+Figure \vref{fig:StructureGaussianFock}, for example,
+shows some Fock matrices from an \SCF calculation
+of a beryllium atom
+in the pc-2~\cite{Jensen2007} basis set.
+The matrices are taken as snap shots during the \SCF procedure.
+From left to right the Pulay error Frobenius norm decreases
+from $0.18$ to $0.0063$ and finally $4.1\E{-7}$.
+As the error gets smaller the matrix becomes more and more diagonal
+as the off-diagonal elements in the occupied-virtual block of the
+Fock matrix all have to vanish%
+\footnote{This is another way equivalent to \eqref{eqn:PulayError}
+to express \SCF convergence.}.
+Already the leftmost matrix is almost diagonal-dominant with 12
+out of 15 rows $\mu$
+satisfying the condition for \newterm{diagonal-dominance}
+\[
+	\sum_{\nu=1}^{\Nbas} F_{\mu\nu} < 2 F_{\mu\mu}.
+\]
+For larger systems, the structure generally gets
+worse due to interactions between the atoms,
+but if a proper description of the core region or the tail is not required
+$\mat{F}$ stays numerically manageable and almost diagonal-dominant.
+This allows to additionally employ
+iterative eigensolver methods like Davidson's method~(see section \vref{sec:Davidson})
+to efficiently obtain eigenpairs of the Fock matrix if not all are required.
+
+Since for most cases in chemistry the core-like region
+and the long-range tail are not extremely important
+both obtaining and diagonalising Fock matrices
+from a \cGTO discretisation is straightforward.
+Even though {\cGTO}s are physically not the most sensible basis function type
+this has historically made \cGTO-based methods
+the most predominant approach to describe
+a chemical systems within decent accuracy
+such that these methods are now implemented in countless quantum-chemistry packages.
+In light of this it is remarkable,
+that only in \citeyear{Bachmayr2014}
+error bounds were rigorously derived by \citet{Bachmayr2014} for some special
+kinds of Gaussian basis sets
+and these results are not employed on a daily basis.
+
+I personally consider it a problem
+that selecting the \cGTO basis set for performing a calculation is often done
+based on habit rather than proper scientific evaluation
+in light of the chemical problem at hand.
+I do not dare to estimate how many published works
+draw conclusions based on calculations,
+where a more appropriately chosen basis
+could have given a totally different picture.

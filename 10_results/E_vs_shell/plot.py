@@ -12,7 +12,7 @@ dir_of_this_file = os.path.dirname(__file__)
 
 def plot_EHF_vs_shell(systems):
     plt.close()
-    fig = plt.figure(figsize=(5.5, 3.5))
+    fig = plt.figure(figsize=(4.8, 3.2))
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twiny()
 
@@ -33,9 +33,9 @@ def plot_EHF_vs_shell(systems):
             lit = literature["restricted"][atom]["value"]
         ax1.semilogy(nbas, hfs - lit, "x-", label=atom)
 
-    ax1.set_ylabel(r"Absolute error $E_\text{HF}^\text{CS} - E_\text{HF}^\text{ref}$")
+    ax1.set_ylabel(r"Absolute error")
     ax1.set_xlabel(r"Number of basis functions $N_\text{bas}$")
-    ax1.legend()
+    ax1.legend(ncol=2)
 
     # Setup second axis
     with open(dir_of_this_file + "/Be_results.yaml", "r") as f:
@@ -46,7 +46,7 @@ def plot_EHF_vs_shell(systems):
     ax2.set_xlim(ax1.get_xlim())
     ax2.set_xticks(nbas)
     ax2.set_xticklabels([str(v) for v in ns])
-    ax2.set_xlabel(r"Number of shells $n$")
+    ax2.set_xlabel(r"Number of shells $n_\text{max}$")
 
 
 def setup():

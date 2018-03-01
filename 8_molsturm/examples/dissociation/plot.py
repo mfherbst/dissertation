@@ -35,5 +35,6 @@ def setup():
 
 if __name__ == "__main__":
     setup()
+    plt.figure(figsize=(5.5, 3.5))
     lib.plot_morse_fit(*load_data())
     plt.savefig("h2_dissociation.pdf", bbox_inches="tight")

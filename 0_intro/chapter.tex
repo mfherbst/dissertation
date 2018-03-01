@@ -1,4 +1,4 @@
-\chapter{Preface}
+\chapter{Introduction}
 \chapquote{%
 Humanity needs practical men,
 who get the most out of their work, and,
@@ -10,185 +10,233 @@ so captivating that it becomes impossible for them to devote
 their care to their own material profit.}
 {Marie Skłodowska Curie~(1867--1934)}
 
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Historic context, vision
-		\item Beauty of maths in science
-		\item What this thesis is about
-		\item Structure of the thesis
-		\item Mention the relationship to other scientists
-			and this thesis is just a small building block
-		\item mention where the topic and idea for the thesis came from
-	\end{itemize}
-}
+\noindent
+Compared to experimental chemistry, which has been
+performed for thousands of years in the form of alchemy
+and as a science at least since the 18th century,
+quantum chemistry is a relatively new field.
+It emerged only about 100 years ago from the development of modern physics.
+Still, as \citet{Dirac1929} already noted famously in \citeyear{Dirac1929},
+all fundamental equations of quantum chemistry,
+in the form of the mathematical formulation of quantum mechanics,
+are known.
+Whist solving these equations exactly is possible for model systems,
+solving them for the general case of arbitrary
+chemical systems can only be done using approximate methods.
+Which are best to be employed depends very much on
+the intended application,
+\ie the complexity of the chemical system
+or the properties and behaviour to be simulated.
+Over the years a hierarchy of approximations has been developed
+for this reason,
+ranging from fast and crude on the one hand to slow and numerically exact on the other.
+Nowadays the modelling of chemical processes
+based on quantum-chemical arguments
+is well-established both in industry as well as research.
 
+A chemical system is typically modelled at various levels,
+each improving the accuracy on top of the previous,
+thus building gradually towards the full picture.
+In electronic structure theory, for example,
+one neglects the motion of the nuclei
+in order to yield a simplified equation --- the electronic Schrödinger equation.
+In turn a usual approach to this equation is to first
+solve the approximate Hartree-Fock problem
+as a starting point and amend this solution in a second step.
+Often not every level can be reached due to the increasing
+difficulty of the equations,
+but as mentioned before,
+one may not need the highest level of theory in order to gain
+insight into a particular research question.
+For example electronic structure theory already allows to model
+many aspects of chemical reactivity or spectroscopy
+even though the nuclei are assumed to be motionless.
 
-% TODO Flowify
-\todoil{Check and enhance the story by looking at more references}
-Starting from the exponential form of the analytical solutions of the
-Schrödinger equation for hydrogen,
-\citet{Slater1930} started introducing exponentially decaying basis functions
-in order to compute atomic properties,
-the nowadays well-known Slater-type orbitals~(STOs).
+Since the underlying spaces of quantum mechanics are infinite dimensional
+any of the aforementioned steps
+involve infinite-dimensional spaces as well.
+For a numerical treatment in a computer with finite amounts of memory,
+this is of course an insurmountable obstacle.
+The remedy in practice is yet another approximation,
+where one restricts the problem spaces
+to a finite number of dimensions by only considering
+those subspaces
+spanned by a finite number of basis functions.
+This restriction is called discretisation
+and has the pleasant side effect that the partial differential equations
+dictated by quantum mechanics
+reduce to standard problems of linear algebra.
+In the case of Hartree-Fock, for example,
+the discretised problem may be solved by repetitively diagonalising
+the so-called Fock matrix.
 
-Applying the STOs to molecules turned out to be much more
-challenging due to the demanding structure of the electron repulsion integrals~(ERIs)
-for such types of basis functions.
-\todoil{I cannot download that paper so im not too sure what is in it}
-In \citeyear{Boys1950} \citeauthor{Boys1950} realised that employing
-atom-centered Gaussian type basis functions~(GTOs) leads to integrals
-which are much easier to evaluate numerically.
+This naturally leads to the question,
+which type of basis functions should be used to span the subspace.
+Most available program packages for
+quantum-chemical calculations nowadays employ methodologies based on
+the linear combination of Gaussian-shaped atomic orbital functions.
+This predominance can be rationalised
+by the pragmatic historic developments
+taking place in the founding years of modern electronic structure theory.
+\citet{Boys1950} realised in \citeyear{Boys1950}
+that evaluating the integrals
+required for solving Hartree-Fock
+is much more feasible for Gaussian-type orbitals
+compared to the physically more adequate Slater-type orbitals~\cite{Slater1930}.
+This idea was picked up and refined later~\cite{Hehre1969}
+and eventually set off many developments
+both in terms of efficient algorithms as well as methodologies
+centred around Gaussian basis functions,
+spreading their use for simulating electronic structures.
 
-Since they do, however, not describe the physical reality as closely as STOs
-\todoil{Check whether the pople paper goes into this}
-much larger GTO basis sets are needed to get similar accuracies than STOs.
+Unfortunately Gaussian-type orbitals have a major downside
+caused by their unphysical shape:
+They are not able to represent
+all features of the electron density well.
+Most prominently they fail to describe the cusp of the electron density
+at the position of a nucleus as well as its exponential decay behaviour~\cite{Kato1957}.
+Whilst in most practical use cases one is able to compensate
+by employing specialised Gaussian basis sets~\cite{Jensen2013,Hill2013},
+there are strong hints that the accurate computation of some physical properties
+like NMR shielding tensors~\cite{Guell2008,Hoggan2009}
+requires a correct description of both aforementioned features.
+Additionally those specialised basis sets can lead to
+numerical instabilities in the resulting linear algebra,
+making the results less reliable.
 
-\citet{Hehre1969} later realised that one could combine the best of both
-worlds if one used
-basis sets of contracted GTOs.
-This set off a vivid development of quantum chemical theory and software packages,
-where a lot of work has gone into efficient algorithms
-improving the computational
-scaling as well as the overall runtime of calculations based on GTOs.
-scaling as well as the overall runtime of calculations.
-\todoil{Examples for program packages ??}
-% end flowify
-
-Almost all major quantum chemistry programs,
-\todoil{Cite a few}
-which are actively developed nowadays focus on Gaussian-type
-basis functions or Gaussian-type orbitals~(GTOs) as they are usually called.
-Compared to the Slater-type orbitals~(STOs)
-they certainly have a couple of well-known advantages.
-Most importantly the structure of the electron repulsion integrals~(ERIs)
-is much less demanding and hence makes it feasible to model much larger systems.
-
-The downside of GTOs is of course that they do not describe the physical
-reality that well and as a result fail to capture all of the properties
-of an electronic structure in a truely black-box fashion.
-For example the computation of proper electron affinities or the description
-of Rydberg-like excited states requires incorporating diffuse functions
-with small Gaussian exponents into the GTO basis set.
-
-As such it is not surprising that other types of basis sets have been attempted as well.
-Next to plane-waves or projector-augmented wave methods,
-which are commonly employed in the density-functional theory~(DFT)
-calculations of metal surfaces,
-recently a couple of projects have also investigated the use
-of so-called numerical basis functions.
-Examples would be the use of wavelets and the finite-element medhod.
-\todoil{Cite madness and Dage Sundholm}
-\todoil{The Jensen review paper has a couple of nice citations there}
-
-% structure is vastly different
-% need flexible framework to try them
-% how do they compare -> need fair comparison
+Multiple research groups have therefore looked into alternative types of basis functions.
+Examples are plane-waves or projector-augmented wave methods%
+~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010} or
+so-called numerical basis functions~\cite{Frediani2015}
+like wavelets%
+~\cite{Bischoff2011,Bischoff2012,Bischoff2013,Bischoff2014,Bischoff2014a,Bischoff2017}
+or finite elements%
+~\cite{Tsuchida1995,Soler2002,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
+Rather promising are Sturmian-type functions
+like Coulomb-Sturmians~\cite{Shull1959,Rotenberg1962,Rotenberg1970,Gruzdev1990,Hoggan2009,Randazzo2010}
+or generalised Sturmians~\cite{Avery2006,Avery2011PhD,Avery2011,Morales2016,Avery2017,Randazzo2015,Granados2016},
+since they on the one hand amount to correctly represent
+the physical features of the electron density,
+but on the other hand lead to more feasible integrals than Slater-type orbitals.
 
 \begin{figure}
 	\centering
-	\missingfigure{Instead of having the figures here,
-	refer to fig. \vref{fig:StructureFiniteElementFock}, \vref{fig:StructureGaussianFock}
-	and \vref{fig:StructureSturmianFock}}
-	\caption{The different structure of the Fock matrix when FEs,
-		Sturmians and GTOs are used.
-		All matrices are shown early in the SCF process with a Pulay error norm
-		larger than 0.1.
-		The matrix structures generally improve as the SCF proceeds and contain more zeros.
-		%
-		Sturmian and Gaussian are almost diagonal dominant,
-		even almost strictly diagonal dominant,
-		FE matrix is far from it (About half the rows do not satisfy the condition).
-		%
-		Only the alpha-alpha part of the fock matrix is shown in each case
-		and we perform an RHF calculation of the Berylium atom in a small basis
-		for each set of basis functions.
-		%
-		The Sturmian basis is given in lmn order.
-		% TODO maybe use mln order ?
+	\includeimage[width=\textwidth]{4_solving_hf/fock_fe_gauss_sturm}  \\[-1.3em]
+	{\smaller
+	\begin{tabular}{lc@{\hspace{14pt}}ccl}
+		\hspace{0.017\textwidth} &
+		\hspace{0.25\textwidth} & \hspace{0.27\textwidth} & \hspace{0.25\textwidth} &
+		\hspace{0.1\textwidth} \\
+		&Finite elements     & Gaussians & Coulomb-Sturmians \\
+	\end{tabular}
+	} \\[-0.3em]
+	\caption[Selection of Fock matrices for different discretisations]{
+		Selection of Fock matrices taken from a Hartree-Fock
+		calculation for beryllium when the indicated basis function types
+		were used for the discretisation.
+		Elements smaller than $10^{-10}$ are coloured in white.
 	}
-	\label{fig:FockStructure}
+	\label{fig:IntroFockStructure}
 \end{figure}
+One of the challenging aspects when considering novel basis function types
+are the deviating mathematical properties
+compared to conventional Gaussian-type orbitals.
+As an example figure~\ref{fig:IntroFockStructure} shows the structure of the
+Fock matrix when discretisations
+using finite elements, contracted Gaussians
+or Coulomb-Sturmians are employed.
+The most drastic difference can be seen for a finite-element discretisation,
+where the matrix is both much larger as well as sparser 
+compared to the other two cases.
+In fact the discretisation which gave rise to the
+Fock matrix depicted in figure~\ref{fig:IntroFockStructure}
+is still too small to yield a
+sensible description of the Beryllium atom density.
+A realistic description would need in the order of $10^5$ to $10^6$ basis
+functions~\cite{Davydov2015}.
+For this reason it is not possible to keep the finite-element discretised
+Fock matrix completely in memory and diagonalise it at once,
+which is the standard approach when employing contracted Gaussians.
+Instead iterative diagonalisation methods need to be used for finite elements.
+Coulomb-Sturmians are some kind of a middle ground,
+where iterative methods are not necessarily required,
+but open up the possibility for more efficient algorithms
+as we will discuss in more detail in this work.
+The implementation of alternative basis function types
+therefore requires in many cases numerical techniques,
+which are unusual compared to discretisations based on Gaussians.
 
-The structure which is required in a program package in order to perform even a simple
-self-consistent field~(SCF) calculation
-based on GTOs and on numerical basis functions differs quite a lot.
-As can be seen in \fig~\ref{fig:FockStructure} the structure of the Fock matrix
-varies rather dramatically depending on the type of basis function,
-which is used.
-Most importantly the matrix size and matrix sparsity properties
-changes a lot between numerical approaches like
-Wavelets or Finite Elements and classical atom-centered AO approaches like GTOs.
-As a result none of the widely used program packages
-focus on exactly one type of basis function and are highly specific for exactly this type.
+As mentioned before existing packages for quantum-chemical calculations
+predominantly rely on Gaussian-type orbitals
+and as a consequence are highly optimised towards their properties.
+Implicit assumptions
+about the structure of the discretised quantities,
+like the Fock matrix shown above,
+are thus typically scattered throughout these large codes
+making the implementation of alternative types of basis functions
+rather challenging and time consuming.
+Especially for the initial testing of novel methods
+towards their range of applicability
+in standard problems of electronic structure theory
+this is an obstacle.
+On the other hand starting from scratch for each new basis function type
+is not an ideal option either,
+since one is faced with the task to reprogram all the algorithms for which
+already hundreds of man-years of development have been spent in existing programs.
 
-Since the structure of the numerical problems to be solved differ
-implementing further basis function types into existing packages
-is often challenging.
-Moreover unlike the well-understood Gaussians in novel basis function types
-the kind of solver algorthims to use is less clear and one often needs to be able to experiment.
-\todoil{
-all separate packages 
-see wikipedia page
-\url{https://en.wikipedia.org/wiki/List_of_quantum_chemistry_and_solid-state_physics_software}
-}
-Furthermore we only know of very few programs which have more than experimental
-support in more than one type of basis function.
-\todoil{I do not want to make this statement to harsh to piss anyone off,
-	but the point is that those packages, which do exist are either not widespread
-	or lack features in some of the basis functions
-	or are hard to obtain (i.e. closed-source, even wikipedia knows no website)
-	or I have literally not heard of them anywhere}
+In this thesis I present a different approach,
+which is followed by the \molsturm program package I co-develop.
+Motivated from the mathematical structure of the Hartree-Fock problem
+as well as a typical algorithmic approaches to solve it,
+\molsturm is designed to be a quantum-chemical method development framework,
+which supports experimentation of all levels as much as possible.
+This includes trying new types of basis functions as well as new algorithms.
+It is explicitly \emph{not} the goal of \molsturm to again recode
+every aspect of quantum-chemical modelling,
+but instead to facilitate integration with existing software
+by simple and easy-to-use interfaces.
+In this sense \molsturm is only as small contribution building on top
+of the work of uncountably many other people of the field,
+where the hope is to be useful and allow for
+further developments of quantum-chemical modelling to take place in the future.
 
-\todoil{I feel some more details introducing SCF in general is also appropriate here}
+Following along these lines the following chapters
+\ref{ch:QM} and chapter \ref{ch:numeigen}
+provide the background for treating the problems of quantum mechanics
+as well as quantum chemistry numerically.
+Starting from the similarities of classical and quantum physics
+the reader will be introduced to functional analysis
+and spectral theory, always motivated from a chemical perspective.
+In chapter \ref{ch:numeigen} I introduce standard projection techniques
+for transforming from the beautiful picture of exact mathematics
+into the field of numerical linear algebra,
+which allows to solve quantum-chemical problems on a computer.
 
-In previous work we have investigated the use of so-called generalised Sturmians as basis functions
-in electronic structure theory.
-Generalised sturmians are the solution to a special $N$-body Schrödinger-like
-equation.
-The difference is that the electron-nucleus interaction is scaled by the factor
-$\beta_\nu$ in \eqref{eqn:GenSturm}
-such that the solutions all become isoenergetic.
-This makes Sturmians reproduce the correct long-range decay behaviour of the electron density
-as well as properly represent the nuclear cusp at the core.
-As such the functional form of generalised Sturmians is very much related to STOs.
-Unlike STOs the two-electron integrals can, however, be reformulated in a particular way
-to make computing them less demanding.
-This requires, however, that the mathematical properties of the Sturmians
-can be fully exploited during the computation,
-which in turn requires the Fock matrix to be arranged in a specific way.
-Moreover it is advantageous to not build the coulomb and exchange matrix in memory at all,
-but much rather only use these matrices in the form of matrix-vector products,
-since this overall saves an order of magnitude in the computational scaling.
-%
-\todoil{How much shall we go into detail here to make this clear?}
-% Not at all, do it in the lazyten section.
-%
-This rather unusual demand turned out to make it very difficult to implement Sturmians
-as a basis function type into existing packages alongside STOs and GTOs.
+Thereafter chapter \ref{ch:qchem}
+deals with the mathematical and numerical structure of quantum chemistry
+with a strong focus on the Hartree-Fock problem
+as a first step of computational electronic structure theory.
+Chapter \ref{ch:NumSolveHF}
+follows with a detailed review of numerical techniques and algorithms
+for solving Hartree-Fock.
 
-% TODO do this do this
-\todoil{Go a bit more into why we only do SCF (Explain: Post-HF available, we only need MO basis, structure of AOs not important)}
-% TODO do this do this
-In \molsturm we have achieved to write an Hartree-Fock SCF code,
-which allows us to use both GTOs and Sturmians side by side by the means
-of so-called lazy matrices (see section \ref{sec:lazymat}).
-We achieve true generality in the type of basis function to be used
-up to the point where most of our code is entirely
-independent of the basis function types.
-Enwrapping \molsturm into a \python layer allowed us to easily re-use existing
-software modules (\adcman and \pyscf) in order to go beyond Hartree-Fock.
-Even though we currently only have support for GTOs and Sturmians,
-extending our code to numerical basis functions can be achieved rather easily
-as we will demonstrate in this paper.
+Chapter \ref{ch:LazyMatrices}
+picks up on the lessons learned about the numerical structure
+of Hartree-Fock and discusses
+\contraction-based methods and lazy matrices
+in order to program algorithms
+in a basis-function independent way.
+In chapter \ref{ch:Molsturm} the design of the quantum-chemistry
+package \molsturm is presented,
+emphasising its usefulness for investigating novel methods
+for quantum-chemical calculations
+and computational electronic structure theory.
 
-
-\todoil{The previous section gets rather lengthy. It should probably be split up somehow}
-
-
-% greek indices denote multi-indices
-% \mathcal{I} typically is an appropriate index set.
-
-
-The reader is assumed to have some background in classical physics
-and a solid idea about basic analysis and algebraic structures.
-The other concepts will be revised and developed in the first chapter.
+In chapter \ref{ch:CSQChem} we employ \molsturm
+to perform a systematic assessment of
+the convergence properties of Coulomb-Sturmians
+for the quantum-chemical modelling of atoms
+and make some suggestions regarding
+sensible Coulomb-Sturmian basis sets for ground state calculations of atoms.
+Finally chapter \ref{ch:Conclusion} concludes the work and gives
+an outlook into further directions of research.

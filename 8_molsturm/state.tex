@@ -1,140 +1,108 @@
-\section{Current state and future of the program}
-\label{sec:state}
+\section{Current state of \molsturm}
+\label{sec:MolsturmState}
 
-\todoil{Maybe refer to the figures in the design section?}
+After about two years of development
+\molsturm has become a light-weight quantum-chemistry package of about 45000
+lines of \cpp and \python code%
+\footnote{The number includes the code from the dependencies
+\gint, \gscf, \lazyten, \krims as well as
+all examples and tests, but excludes comment lines and blanks.},
+which tries to explicitly keep the requirements of more than
+one basis function in mind.
+The key ingredient to reach the necessary flexibility
+is a \contraction-based self-consistent field scheme,
+where the details of the Fock matrix \contraction expression
+are varied according to the numerical properties of the basis function type
+by our integral back end library \gint.
+In contrast the code describing the \SCF algorithm
+is well-separated from the details of the \contraction expression
+using the high-level lazy matrix language of \lazyten.
+As such it becomes independent from the type of basis function used for the discretisation.
+Even if changes to the \SCF scheme or some back end
+library are needed in the future our modular design
+will assure that the other parts of the \molsturm package will stay unaffected.
+Once the \SCF orbitals have been obtained,
+the remainder of a calculation, \eg a Post-\HF method,
+can be typically be formulated entirely in the \SCF orbital basis
+and without any reference to the underlying basis functions.
+Because of this \molsturm can be thought of as a mediator
+to produce \SCF results in a very general fashion
+on top of which one may stick any Post-\HF method.
 
-\molsturm currently allows to perform Hartree-Fock calculations
-on small molecules using GTO basis functions or using Coulomb-Sturmians.
-For the former type of basis functions \gint offers interfaces
-to the backend libraries \libint and \libcint and for the latter
-type various implementations inside \sturmint are available.
-During the SCF procedure \molsturm automatically switches between different
-SCF algorithms, currently tODA and a coefficient-based Pulay DIIS,
-in order to achieve a good balance between convergence and cost for each iteration.
-The default guess are the orbitals resulting from a diagonalisation of the core Hamiltonian,
-but the user is free to supply any arbitrary guess from the \python interface.
-This includes orbitals from a previous HF calculation or even a totally random guess.
-By default \molsturm tries to choose an ARPACK-based eigensolver algorithm
-in case the structure of the problem matrix and the other Hartree-Fock
-parameters allow this.
-What results form this is a fully \contraction-based SCF procedure,
-where the Fock matrix is never built in memory at all.
-Again the default behaviour can be influenced by the means of suitable
-parameters.
+In \molsturm the \SCF procedure can be started from either a core Hamiltonian guess,
+a completely random guess or any other arbitrary set of initial
+coefficients supplied by the user via a \numpy array.
+For some cases, \eg if Coulomb-Sturmians are employed,
+\molsturm offers means to interpolate a guess
+from the converged state of a previous calculation.
+During the \SCF \molsturm automatically switches between
+the implemented \SCF schemes.
+This is necessary since the plain Roothaan
+repeated diagonalisation~\cite{Roothaan1951}
+as well as the truncated optimal damping algorithm schemes
+are cheaper, but typically do not converge as efficiently
+as a coefficient-based Pulay DIIS.
+Switching the algorithms allows us to balance this.
+As demonstrated in the examples in section \ref{sec:MolsturmExamples},
+the algorithmic details of the \SCF procedure can be fully controlled
+from \python,
+such that one often only needs to change a single keyword
+in order to switch to a different solver algorithm
+or to employ a different basis function type.
 
-After the SCF procedure the quantities like the core Hamiltonian,
-the Fock matrix and the electron repulsion integrals
-are available via a convenient syntax for post-processing in \python.
-This has been demonstrated for example in section \ref{sec:ex:ccd}.
-These result objects are also used to realise a simple  MP2 implementation
-within \molsturm and to interface to third-party libraries:
-Currently MP3 as well as ADC(1), ADC(2)-s, ADC(2)-x and ADC(3)
-are available via the \adcman package
-and Full-CI can be performed using \pyscf.
+Once an \SCF computation has finished the obtained results can be archived
+in either in YAML~\cite{Ben-Kiki2009} plain text or in HDF5~\cite{HDF5Manual}
+binary files.
+Such an archive not only contains the full final state of the calculation
+but also the precise set parameters which were used to start the \SCF.
+A file therefore becomes self-explanatory and reproducible
+without any special measures taken from the user.
+On top of that an archived calculation can be continued
+or analysed at a later point or on a different machine with ease
+by just restoring the state.
 
-Furthermore these HF results can be archived in HDF5 format
-in order to restore the full state of the finalised calculation at a later point.
-Especially for larger cases where the computations take considerable time,
-this allows to perform the SCF on a cluster in advance and
-transfer the archived result to a local machine for analysis.
-Since the archive contains the full state
-including the orbital coefficients and the repulsion integrals,
-the local analysis can make use of these quantities
-when extracting potential energy surfaces or plotting MOs.
-This can be done conveniently in an iteractive \python shell
-or a Jupyter notebook for instant feedback.
+On top the \SCF a range of interfaces for
+performing Post-HF calculations or further analysis are available.
+Right now \molsturm only implements second order Møller-Plesset perturbation theory%
+~(see section \ref{sec:MP})
+and some utility functions for plotting.
+Some selected methods from third-party libraries can be easily
+invoked on any \SCF result using third party libraries.
+For example full configuration interaction is available via \pyscf~\cite{Sun2017}
+and the excited states methods
+\ADC(1), \ADC(2), \ADC(2)-x~\cite{Schirmer1982}
+and \ADC(3)~\cite{Trofimov1999}
+based on the algebraic diagrammatic construction scheme
+are available via \adcman~\cite{Wormit2014}.
+Calculations in \molsturm may be performed based on
+contracted Gaussians~\cite{Hehre1969} --- using
+the integral libraries \libint~\cite{Libint2_231,Libint2}
+or \libcint~\cite{Sun2015} --- and based on
+Coulomb-Sturmians~\cite{Shull1959,Avery2011} ---
+using \sturmint~\cite{sturmintWeb}.
+Implementing further types of basis functions
+takes nothing more than providing appropriate interface classes in
+our integral interface library \gint.
+Thereafter such basis functions are available for the full \molsturm ecosystem
+including the Post-HF methods
+provided by the third-party libraries mentioned above.
 
-\molsturm aids with the task of analysing the SCF results
-by providing a few basic utility functions.
-For example the function values of the SCF orbitals can be exported on an
-arbitrary shaped grid to a \numpy array.
-This array can than be further manipulated or
-plotted in third party libraries or programs.
-
-% What does the molsturm ecosystem consist of right now
-%    - python interface to run HF calculations
-%        - SCF switches between different algorithms automatically
-%    - keywords to select integral backend and control parameters for calculation
-%        - sturmint and libint, libcint (multiple backends)
-%        - selection of the guess (random, previous, hcore)
-%        - selection of the eigensolver
-%    - archival of intermediate results and state in HDF5 format
-%        - allows to perform big calculation on cluster
-%        - restore archive later in a local session
-%        - analyse results interactively in a shell or a browser
-%    - interactive investigation of results:
-%        - summary of SCF
-%        - easy access to all relevant quantities (including fock, hcore and eri)
-%        - obtain MO data or density on grid for plotting or to 
-%    - interface to posthf methods
-%        - adcman
-%        - pyscf
-%    - LA backend:
-%        - Bohrium
-%        - LAPACK / armadillo
-% What is planned for the future
-%    - DFT using libxc (gscf has the flexibility)
-%    - More analysis tools (direct export of data to standardised output formats like VTK)
-%    - Plot wavefunction directly to VTK
-%    - openbabel to parse third-party input formats
-%    - other standards to interface to further external methods
-%    - SCF switching criteria
-%    - lazyten
-%    - More clever structures for exported quantities
-
-Even though the \python interface of \molsturm allows to control many
-aspects of the computation,
-there are still a couple of directions for possible improvement.
-Most importantly the underlying storage format used
-for the Fock matrix or the repulsion integrals are plain and flat \numpy arrays.
-In other words the inherent symmetry properties due to spin or index permutations
-are entirely unused
-giving rise to a much larger memory requirement than theoretically possible.
-We currently pay this price in order to make use of the simple and intuitive
-syntax employed by \numpy.
-For supporting larger problems it is,
-however, certainly necessary to replace this by a data structure,
-which implicitly considers these symmetries.
-
-One way to do this would be to extend the capabilities of \lazyten.
-Right now it only allows to use lazy matrices,
-i.e. structures supporting matrix-matrix and matrix-vector
-multiplication.
-In order to transparently make use of the symmetry and spin structure
-of the repulsion integral tensor for example,
-we would require lazy tensors,
-which support arbitrary \contraction calls.
-If we choose the interfaces of such lazy tensors to reflect
-the interface of \numpy,
-one could get the best of both worlds.
-The bohrium project,
-which is one of the available computational backends inside \lazyten already,
-uses a vary similar approach in their interface,
-which we aim at incorporating into our project, too.
-
-Apart from \lazyten there are a couple of other directions,
-where molsturm could be easily extended.
-This includes making use of the generality of the SCF procedure
-in order to support further types of basis functions.
-Next steps could be to include basis functions based on
-a finite-difference approximated radial function or
-further Sturmian basis functions like molecular Sturmians.
-
-Similarly solving the Kohn-Sham equations or the Hartree-Fock
-is conceptionally very simple,
-since one plainly substitutes the HF exchange term by an appropriate
-term representing the exchange-correlation functional.
-In the language of lazy matrices one therefore just needs to implement
-one extra lazy matrix for representing exchange-correlation functionals
-in order to be able to perform density-functional theory
-calculations with \molsturm in a basis-function independent way.
-
-Another angle for future work would be to integrate more
-closely with the existing \emph{de facto} standards of quantum-chemical software.
-On the one hand we plan to use \texttt{openbabel} in order to
-support setting up calculations in \molsturm using a range of already existing
-input formats.
-Similarly we want to integrate routines to export
-the orbital coefficients or the denisity to cube or VTK files for plotting
-or to export the HF results in MolPro's FCIDUMP or the molden format
-for interfacing with other third-party programs.
+In section \ref{sec:MolsturmExamples} the abilities of \molsturm
+have been demonstrated by three practical examples.
+We put particular emphasis on how
+our \python interface integrates with existing third-party \python packages
+such that additional functionality can be quickly
+combined with \molsturm,
+potentially to extend \molsturm in ways we as the authors
+would have never thought of.
+In the examples it was further shown how to aid repetitive calculations,
+implement novel quantum-chemical methods
+or rapidly amend functionality in a preliminary way,
+where a proper implementation would be much more involved.
+We hinted how systematic comparisons with established basis functions
+as well as subsequent graphical analysis
+is convenient to perform by the means of our
+readily scriptable interface.
+We hope that in this manner \molsturm
+will be a useful package to rapidly try novel basis function types
+and get a feeling for their range of applicability.

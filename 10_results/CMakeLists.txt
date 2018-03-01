@@ -1,4 +1,13 @@
-add_inputs(chapter.tex)
+add_inputs(
+	chapter.tex
+	denoting_cs_basis.tex
+	convergence_hf.tex
+	convergence_correlation.tex
+	convergence_kexp.tex
+	suggestions_basis_sets.tex
+	sturmian_cgto.tex
+	sturmian_adc.tex
+)
 
 #
 # Tables

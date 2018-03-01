@@ -1,0 +1,301 @@
+\defineabbr{CS}{CS\xspace}{Coulomb-Sturmian or Coulomb-Sturmian basis, see section \vref{sec:BasisCS}}
+\defineabbr{cGTO}{cGTO\xspace}{Contracted Gaussian-type orbitals, see section \vref{sec:cGTO}}
+\defineabbr{GTO}{GTO\xspace}{Gaussian-type orbitals, see section \vref{sec:cGTO}}
+\defineabbr{STO}{STO\xspace}{Slater-type orbitals, see section \vref{sec:STO}}
+\defineabbr{ETO}{ETO\xspace}{Exponential-type orbitals, orbitals with radial part of the form Polynomial in $r$ times $\exp{-\alpha r}$ with some parameter $\alpha$.}
+\defineabbr{FE}{FE\xspace}{Finite elements, see section \vref{sec:FE}}
+\defineabbr{ACO}{ACO\xspace}{atom-centered orbitals}
+
+\section{Basis function types}
+\label{sec:BasisTypes}
+This section tries to address the question,
+which classes of functions can be used
+in order to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
+for solving the \HF problem in an \SCF procedure.
+For this we will first discuss some desirable properties for a basis set,
+both motivated from the aim to represent the physics of the electronic Schrödinger
+equation as good as possible
+as well as requirements from the numerical side.
+In the light of this,
+we will discuss four types of basis functions in depth,
+namely the historic Slater-type orbitals~({\STO}s),
+the most commonly employed contracted Gaussian-type orbitals~({\cGTO}s),
+a finite-element based discretisation method
+as an example of a fully numerical approach
+as well as so-called Coulomb-Sturmian-type orbitals.
+
+Even though we mostly concentrate on the \HF problem in this section,
+quite a few of the observations made here
+apply to \DFT or methods going beyond Hartree-Fock as well.
+In this sense the outlined discussion
+can be seen as an example case for the use of the mentioned
+basis function types in electronic structure theory as a whole.
+
+\subsection{Desirable properties}
+\label{sec:BasisDesiredProperties}
+The central aspect of the Ritz-Galerkin procedure for
+approximately solving a spectral problem
+is the evaluation of the $a(\slot,\slot)$
+corresponding to the operator for all pairs of basis functions,
+compare with remark \vref{rem:ChoiceBasisFunction} for details.
+For this procedure to be mathematically meaningful at all
+this requires the basis functions $\{\varphi_\mu\}_{\mu\in\Ibas}$
+to be taken from a dense subspace of the form domain of the operator.
+For the real-valued \HF problem this is the Sobolev space $H^1(\R^3, \R)$,
+thus a hard requirement for all types of basis functions
+used for Hartree-Fock and quantum chemistry is that
+they originate from $H^1(\R^3, \R)$.
+Furthermore in some or another sense we will need compute the elements
+of the Fock matrix $\matFfull$ \eqref{eqn:FockMatrix},
+which in turn boils down to computing the integrals of the constituent
+matrix expressions \eqref{eqn:Tbas} to \eqref{eqn:Kbas},
+as well as the overlap matrix \eqref{eqn:Sbas}.
+The challenging step for this is typically the evaluation
+of the electron repulsion tensor \eqref{eqn:ERI}
+\[
+	\eriMu{\varphi_\mu \varphi_\nu}{\varphi_\kappa \varphi_\lambda}
+		= \int_{\R^3} \int_{\R^3}
+			\frac{\cc{\varphi_\mu}(\vec{r}_1) \varphi_\nu(\vec{r}_1)
+				\,\cc{\varphi_\kappa}(\vec{r}_2) \varphi_\lambda(\vec{r}_2)}
+			{\norm{\vec{r}_1 - \vec{r}_2}_2}
+			\D \vec{r}_1 \D \vec{r}_2.
+\]
+as it involves a double integral over space
+incorporating a singularity at the origin
+as well as the product over four basis functions.
+Additionally the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
+need to be solvable numerically as well.
+We will see in the next sections,
+that the main reason why contracted Gaussian-type orbitals
+have become so popular in quantum chemistry
+is that both evaluating the ERI tensor
+as well as solving the resulting eigenproblem
+is rather easy compared to the other cases.
+
+Apart from the mathematical and numerical feasibility
+we would like to get meaningful results with as little effort as possible,
+\ie a good description of a chemical system should already be achievable
+with small basis sets.
+Usually this goes hand in hand with a basis function,
+which by itself represents the physics
+of the chemical system very well already
+such that as much prior knowledge and chemical intuition as possible
+could be incorporated already into basis.
+Ideally this would not bias the solution procedure,
+such that unexpected or unintuitive results can still be found.
+
+Last but not least we would like to be able to know
+how wrong our \HF results are compared to the exact electronic ground state,
+possible even with a pointer how to increase the basis,
+such that results can systematically improve.
+The aspired scenario would be a rigorous and tight
+\textit{a priori} or even better \textit{a posteriori} error estimate
+for the chosen basis function type in the context of \HF.
+
+Of course this just sketches an ideal scenario.
+In reality one needs a good compromise,
+typically even a different compromise for different applications.
+Especially the \textit{a priori} and \textit{a posteriori} error estimates
+are not easy to derive rigorously for \HF
+and I am not aware of any work achieving this for the basis function
+types I will discuss here in detail.
+
+\subsection{Local energy}
+Before we start discussing individual basis types,
+let us briefly pause and think about ways to quantitatively
+judge a particular basis function type.
+A natural choice is to consider a model system,
+where the analytical solution can be found and compare
+with the Ritz-Galerkin \HF result produced by a particular basis on the same system.
+In this chapter, we will typically compare against the hydrogen atom.
+Without a doubt this does not probe all aspects of electronic structure theory.
+Most importantly it does miss an evaluation how a basis set deals with electron correlation.
+All results therefore need to be taken with care:
+In more complex systems the situation might be different.
+
+For comparing our numerical answers in the form of the \HF
+ground state Slater determinant $\Phi_0$
+to the exact electronic Schrödinger equation solution $\Psi_0$,
+we will use absolute errors and relative errors in the ground state wave function
+as well as the ground state energy.
+Additionally we will consider a quantity called \newterm{local energy},
+which is defined below.
+\begin{defn}
+	Let $\Phi_0$ be an approximation to the ground state
+	of the operator $\Op{H}_{\Nelec}$.
+	The local energy is defined by the quotient
+	\begin{equation}
+		E_L(\vec{x}) \equiv \frac{\Op{H}_{\Nelec} \Phi_0(\vec{x})}{\Phi_0(\vec{x})},
+		\label{eqn:LocalEnergy}
+	\end{equation}
+	which is constant for an exact eigenstate of $\Op{H}_{\Nelec}$
+	and approximately constant for good approximations.
+	Since the potential operator terms are only multiplicative,
+	this expression can be alternatively written as
+	\[
+		E_L(\vec{x})
+		= -\frac12 \sum_{i=1}^{\Nelec} \frac{\Delta_{\vec{r}_i} \Phi_0(\vec{x})}{\Phi_0(\vec{x})}
+		- \sum_{i=1}^{\Nelec} \sum_{A=1}^M \frac{Z_a}{\norm{\vec{r} - \vec{R}_A}_2}
+		+ \sum_{i=1}^{\Nelec} \sum_{j=1+1}^{\Nelec} \frac{1}{r_{ij}}.
+	\]
+\end{defn}
+The concept of local energy originates from the
+quantum Monte Carlo community~\cite{Foulkes2001,Ma2005},
+where its sampling by a Monte Carlo procedure plays a central role
+for obtaining the correlation energy.
+It is related to the relative residual
+\[
+	\frac{1}{\Phi_0(\vec{x})} \, \left(\Op{H}_{\Nelec} - E_0\right) \Phi_0(\vec{x}) =
+	\frac{\Op{H}_{\Nelec} \Phi_0(\vec{x}) - E_0 \Phi_0(\vec{x})}{\Phi_0(\vec{x})}
+	= E_L(\vec{x}) - E_0,
+\]
+where $E_0$ is the \emph{exact} ground state energy of $\Op{H}_{\Nelec}$.
+This implies first of all
+that $E_L(\vec{x}) = E_0$ is necessary for $\Phi_0(\vec{x})$ being the exact ground state.
+Furthermore the fluctuations of $E_L(\vec{x})$ around the exact constant value $E_0$
+provide a measure how far $\Phi_0(\vec{x})$ is off from being an
+exact eigenstate of $\Op{H}_{\Nelec}$ at a particular point $\vec{x}$.
+In this sense $E_L(\vec{x})$ can thus be seen as a \emph{local} measure
+for the accuracy of $\Phi_0(\vec{x})$.
+Inside regions where $E_L(\vec{x})$ is close to being constant,
+the basis $\{\varphi_\mu\}_{\mu\in\Ibas}$ provides a sensible description
+of an eigenstate of $\Op{H}_{\Nelec}$.
+$E_L(\vec{x})$ is without a doubt conceptionally related to the
+relative error in the ground state wave function $1 - \Phi_0(\vec{r}) / \Psi_0(\vec{r})$.
+Compared to the latter quantity $E_L(\vec{x})$
+has the additional advantage that one is able to notice,
+which eigenstate $\Phi_0(\vec{r})$ approximates in each region of space.
+For example if it fluctuates around $E_0$ in some areas and around $E_1$ in others,
+we can see that $\Phi_0(\vec{r})$ sometimes represents the first excited state
+better than the ground state.
+Additionally $E_L(\vec{x})$ can be applied even for cases where
+the exact solution is not known and thus the relative error cannot be found.
+
+\input{4_solving_hf/functions_sto.tex}
+\input{4_solving_hf/functions_cgto.tex}
+\input{4_solving_hf/functions_fe.tex}
+\input{4_solving_hf/functions_cs.tex}
+
+\subsection{Other types of basis functions}
+The selection of basis function types presented so far
+represents a fair amount of what is used for electronic structure theory
+calculations nowadays.
+Nevertheless there are few more basis function types,
+which should not go unmentioned.
+
+This first of all applies to
+plane-wave and projector-augmented wave approaches
+~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010},
+which are both extremely popular as well as extremely suitable for performing
+electronic structure calculations
+on extended periodic systems or systems in the solid state.
+Over the years there has also been an enormous amount of development
+into the direction of numerical basis functions.
+\citet{Frediani2015} provides an excellent review.
+The approaches range from a so-called fully numerical treatment,
+where similar to the finite-element method as mentioned above,
+the complete problem is treated by grid-based methods.
+This includes employing clever
+numerical integration grids~\cite{Losilla2012DCRsp,Toivanen2015,Enkovaara2010}
+or discretisation schemes
+based on finite-differences~\cite{Kobus2013}
+or finite-elements~\cite{Tsuchida1995,Briggs1996,Pask05,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
+Some approaches~\cite{Soler2002} use a dual representation,
+where the same orbitals are both represented on a real-space grid
+as well as in the form of orbitals
+or they only treat
+part of the electronic wave function numerically~\cite{Fischer1978,LUCAS}.
+Such methods for example employ a factorisation of the one-particle functions
+into a numerical radial part and a spherical harmonic function.
+Last but not least one should also mention
+wavelet-based methods~\cite{Bischoff2011,Bischoff2012,Bischoff2013,Bischoff2014,Bischoff2014a,Bischoff2017},
+where quite some progress has been made in recent years.
+To the best of my knowledge wavelet-based electronic structure theory
+is the only methodology where guaranteed precision in the solution to the
+respective problems can be achieved.
+
+\subsection{Mixed bases}
+In theory nothing stops us from using more than a single type of basis function
+in a discretisation.
+In fact some of the methods mentioned before like
+the SIESTA method~\cite{Soler2002} or the projector-augmented
+plane-wave approaches~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010}
+are in fact cases, where more than one type of basis function is employed.
+For example SIESTA uses two discretisations at once
+--- one in terms of {\cGTO}s and a numerical grid ---
+and projects back and force between them,
+whilst projector-augmented plane-wave methods use a plane-wave basis
+augmented with other types of basis functions close to the atom cores.
+
+In practice not all combinations of basis functions are feasible or sensible.
+This can be rationalised by looking at the {\cGTO} or the \CS discretisations,
+which both heavily rely on basis-specific properties for efficiently
+computing the electron-repulsion integrals
+in order to make the computation of the Fock matrix $\mat{F}$
+or its matrix-vector product fast.
+In a fully mixed basis one not only needs to compute \ERI integrals
+between the same type of basis functions,
+but also between all combinations of four basis functions involving different types.
+In a combination of the two aforementioned basis function types,
+this would destroy their advantageous properties.
+This is not meant to say that mixture basis sets involving
+{\cGTO}s or {\CS} basis functions are not possible or helpful,
+but that getting the integrals fast requires some clever schemes.
+
+\subsection{Takeaway}
+In the previous sections we saw that different basis function types
+can lead to rather different numerical properties in the discretised \HF problem.
+Just considering the three figures
+\vref{fig:StructureGaussianFock},
+\vref{fig:StructureFiniteElementFock}
+and \vref{fig:StructureSturmianFock}
+illustrating the structures of the Fock matrices
+the overall differences are apparent.
+Whilst the number of basis functions of the atom-centred
+\cGTO and \CS discretisations depends on the number of atoms
+in the chemical system,
+\FE discretisations need very similar number of basis functions
+for atoms and molecules.
+In contrast to \ACO approaches \FE-based discretisations
+need many more basis functions, in the order of millions
+compared to hundreds for \ACO discretisations.
+For this reason only iterative methods
+are feasible for a \FE discretisation,
+where a \contraction-based scheme can theoretically
+lead to linear scaling in the number of basis functions.
+On the other hand the finite-element method
+does not rely on the intuition of the user very much.
+Initial grids can be easily auto-generated and
+while the calculation is running adaptively refined.
+Nevertheless prior knowledge of the physics can be incorporated
+into the initial grid generation.
+Leaving the numerical issues aside
+the \FE approach in theory comes very close to the ideal
+basis function type we sketched in \vref{sec:BasisDesiredProperties}.
+
+From a practical point of view
+the \ACO approaches are less black-box,
+since more choices about the particular basis set need to be made before the calculation,
+but they are numerically much more feasible.
+Especially for \cGTO-based methods the evaluation of the integrals
+is considerably less challenging compared to the other basis functions
+we considered in depth and is rather well-understood by now.
+Coulomb-Sturmians on the other hand are physically much more sound than
+{\cGTO}s allowing to represent the wave function
+much better.
+Contrast figures \vref{fig:LocalEnergyCgto} and \vref{fig:LocalEnergyCS} for example.
+Unlike the \STO based approaches
+the integrals in \CS discretisations can be evaluated rather efficiently
+due to the restriction to a single exponent $k$.
+In a \contraction-based ansatz linear scaling in the basis set size
+is theoretically possible.
+As \ref{fig:LocalEnergyCS} suggests the convergence properties
+can be expected to be rather decent and predictable
+going to larger and larger basis sets.
+Originating from the completeness of the \CS functions
+with respect to the form domain $Q(\Op{F}) = H^1(\R^3,\R)$
+eventually both the long-range part as well as the cusp can be represented
+perfectly with larger and larger basis sets.
+The convergence properties of \CS basis sets in the context of
+quantum-chemical calculations will be investigated
+thoroughly in chapter \vref{ch:CSQChem}.

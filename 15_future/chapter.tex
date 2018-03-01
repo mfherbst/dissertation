@@ -1,14 +1,21 @@
-\chapter{Outlook and future work}
+\chapter{Conclusion and future work}
+\label{ch:Conclusion}
 \chapquote{%
 	We must include in any language with which we hope
 	to describe complex data-processing situations
 	the capability for describing data.
 }{Grace Hopper~(1906--1992)}
 
+% TODO Some conclusions?
+
+
 \todo[inline,caption={}]{
 	\begin{itemize}
 		\item Conclusion, outlook and future work
 		\item Lazyten generalisation
+			\begin{itemize}
+				\item The update function already indicates that in reality something more general is needed.
+			\end{itemize}
 		\item Automatic tensor evaluation order
 		\item Sturmian potential
 	\end{itemize}
@@ -18,3 +25,67 @@
 % Other types of CS basis sets,
 % motivate that from Gaussians a little
 
+
+% molsturm
+A good improvement for \molsturm on this front would be a cheap,
+but nevertheless effective \contraction-based \SCF scheme.
+%
+%
+A disadvantage of the current \molsturm interface is,
+that all data is stored as plain and dense memory.
+Both symmetry as well as sparsity properties of the involved tensors
+are entirely ignored at the moment.
+This yields an unacceptably large requirement in memory
+as well as a very unfavourable computational scaling
+for the demanding tensor contractions
+typically required in Post-HF methods like \CCD (see figure \ref{fig:codeCCD}).
+In the future we want to tackle this by extending
+\lazyten towards lazy tensors as well.
+In practice this would imply that the evaluation of
+tensor contractions like in figure \ref{fig:codeCCD} could be implicitly delayed
+for as long as possible.
+Only once the results are needed in the code,
+the calculation would be underdone
+for all delayed expressions at once.
+This could allow to automatically deduce an ideal evaluation strategy
+taking all sparsity and symmetry information
+of the involved tensors into account.
+Ideally this would happen transparently in the background
+without changing the \python interface at all.
+
+Another angle for future work would be to integrate more closely
+with existing quantum-chemistry libraries or program packages.
+A good example is the \texttt{libxc}~\cite{Lehtola2018} library,
+which offers a range of exchange-correlation functionals.
+Implementing an interface to this library inside appropriate
+lazy matrix objects would allow to construct the Kohn-Sham matrix
+inside \molsturm's \contraction-based \SCF as well,
+such that density-functional theory~(DFT) calculations
+could be performed.
+Similarly we would like to simplify
+data exchange with other quantum chemistry packages like \pyscf or \psifour
+by supporting some wide-spread file formats in quantum chemistry,
+\eg \texttt{MolPro}'s FCIDUMP~\cite{Knowles1989}.
+For facilitating plotting of \SCF orbitals or densities
+we plan to implement the \texttt{molden}~\cite{Schaftenaar2000} format
+as well as routines for dumping the data
+in \texttt{Gaussian}~\cite{Frisch2016} cube or VTK~\cite{Avila2010} files.
+
+%
+%
+improvements on basis set sizes my limiting $\mmax$ or not keeping the complete $\lmax$ everywhere
+Investigate usefulness of Sturmians for ADC
+Comparison to cGTO basis sets
+MP2 not a great method for convergence studies (e.g. not variational with respect to FCI solution), so better to rely on CISD or CC methods
+play around with more complex CS basis sets
+replace rmsol by maximum coefficient per angular momentum to find limp
+
+%
+% Hybrid stuff
+%
+Last but not least the ability to treat different kinds of basis functions
+in the same framework simplifies the construction of hybrid basis sets,
+where possibly numerical basis functions and GTOs or STOs are combined.
+Similarly one could employ the strengths of multiple backends for the same type of basis function
+in the sense that one mixes and matches different backends such that one can exploit
+the advantages of both implementations best.

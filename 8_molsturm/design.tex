@@ -1,570 +1,476 @@
-\section{Design of molsturm}
+\section{\molsturm program design}
+\label{sec:MolsturmDesign}
+
+As mentioned above the main target for the current design of \molsturm
+is to yield a framework,
+which supports notions towards novel quantum-chemical methods,
+including methods where unusual discretisation approaches
+or new types of basis functions are employed.
+Ideally for this adding
+new basis functions becomes kind of plug-and-play,
+such that one only implements a minimal interface
+towards an integral library and the rest of \molsturm,
+\ie the \SCF and the Post-HF methods would just work
+in a preliminary manner.
+Many details regarding the numerical and algorithmic treatment
+will most likely still need to be optimised thereafter,
+such that high-level access to influence
+all kinds of parameters of the \SCF scheme or the
+diagonalisation algorithms are absolutely key.
+Additionally such a new method would need to be tested and evaluated
+towards their overall usefulness towards standard problem
+of quantum-chemical modelling.
+These tasks are usually both highly repetitive and again
+require access into many layers of a quantum-chemistry program
+to obtain the quantities to compare.
+Aspects such as these motivate
+the following overall design goals for the \molsturm project.
+
+\paragraph{Enable rapid development:}
+In the early stages of developing new quantum-chemical algorithms
+it is often not clear how well these algorithms perform
+or if they even meet the expected requirements.
+Before worrying about making the algorithm fast,
+one therefore first wants to know whether it even works.
+A light-weight framework, which possesses the flexibility
+to quickly combine or amend what is already implemented is very important for this.
+The syntax of the resulting code should be high-level and intuitive,
+resembling the physical formulae as much as possible.
+To make the initial implementation easy for people
+not entirely familiar with all tricks of the trade,
+the details regarding the numerics and the linear algebra
+should be mostly hidden in the code.
+Especially in highly interdisciplinary subjects such as quantum chemistry
+too often PhD students are rather unfamiliar to coding and numerics
+and thus spend half a year to understand the clunky programs,
+a year to implement the method,
+just to find that it did not quite work that well.
+Still influencing the algorithmic details
+will in many cases be required at a later step.
+Ideally this can be done by the means of changing mere parameters
+directly from the user interface and
+without changing the code very much,
+such that it stays nice and clean for the next feature to be implemented.
+A careful reader should have noticed that the \lazyten lazy matrix library,
+described in the previous chapter,
+covers many of the aspects mentioned here.
+This is of course no surprise and explains why \lazyten has
+become one of the key ingredients to \molsturm.
+For some more details see \vref{sec:MolsturmPython}.
+%
+%
 \begin{figure}
 	\centering
 	\includeimage{8_molsturm/molsturm_structure}
-	\caption[Structure of the \molsturm package]{%
-	Structure of the \molsturm package: Shown are the five modules of the package,
+	\caption[Structure of the \molsturm package]
+	{Structure of the \molsturm package. Shown are the five major
+	modules of the package,
 	along with the set of integrals accessible from \gint and the set of post-HF method,
-	which can be used from \molsturm. The greyed-out parts are not yet implemented.
-	Only the modules inside the red box are part of \molsturm. The blue boxes are all external packages.}
+	which can be used together with \molsturm.
+	Only the modules inside the red box are part of \molsturm.
+	The blue boxes are all external packages.
+	The greyed-out boxes are planned, but not yet implemented.
+	}
 	\label{fig:structureMolsturm}
 \end{figure}
-
-
-
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item molsturm paper
-		\item gint: Integrals are lazy matrices
-		\item gscf: Independent algorithms (refer back to chapter about numerical HF)
-		\item Interfacing with other packages
-	\end{itemize}
-}
-
-
-
-
-
-
-Unlike most existing quantum-chemistry packages
-\molsturm (see \ref{fig:structureMolsturm}) is not tailoring
-a specific type of basis function.
-Even though this certainly requires
-a certain flexibility with respect to the algorithms
-and program flow,
-the very basic structure of a typical quantum chemical
-calculation is pretty much independent
-of the type of basis function used.
-
-Typically one first performs a self-consistent field calculation,
-either by solving the Hartree-Fock or the Kohn-Sham equations.
-The obtained self-consistent solution is then used for example in
-linear response calculations or Post-HF methods.
-It is important to note that these steps
-typically do not need any knowledge of the underlying basis function type
-at all, since they are formulated in terms of SCF orbitals only.
-The \molsturm program package therefore concentrates
-on a basis-function independent SCF code
-with interfaces to simplify using the resulting SCF solution
-in third-party code for further processing.
-
-As can be seen in fig. \ref{fig:structureMolsturm} this is realised
-by a modular design,
-where each of the five major modules has a very
-distinct responsibility.
-Most importantly only the integral module \gint
-exploits the properties of the type of basis functions.
-\gint for example decides the sparsity structure of the
-repulsion integrals or the Fock matrix.
-This structure is encoded inside the lazy matrices,
-which \gint exposes to the SCF algorithms inside \gscf.
-
-From the point of view of \gscf,
-on the other hand,
-the lazy matrices for all types of basis functions look alike.
-In other words by the means of the lazy matrices
-the algorithms in \gscf
-can be written in such a high-level manor,
-that they are entirely independent of the precise matrix structure.
-Consequently they are independent of the choice of basis function type as well.
-
-The lower layers \lazyten and \krims provide
-the lazy matrix implementation as well as other utilities,
-which are needed to pass information between the individual modules.
-\lazyten furthermore contains an interface,
-which allows lazy-matrix based algorithms like the ones in \gscf to
-call standard iterative solver implementations.
-
-The next sections describe the individual modules of the \molsturm
-package in greater detail together with their interaction
-with external packages.
-
+\paragraph{Modular design with low code-complexity:}
+The aspired flexibility of \molsturm as well as the intended
+strong separation between high-level code describing algorithms
+and low-level code dealing with the numerics,
+necessarily calls for proper modularisation.
+Even though our current design takes our experiences with many types
+of basis functions into account,
+it is very likely that we missed certain aspects,
+which will make major restructuring unavoidable in the future.
+To proactively account for this \molsturm consists of five small modules,
+which are designed as layers, see figure \vref{fig:structureMolsturm}.
+The top layer, ``\molsturm'', defines the application programming interface~(API),
+by which other programs may control the flow of \molsturm or exchange data.
+Unlike the other layers, which are mostly implemented in \cpp,
+the \molsturm layer is mainly \python.
+\gint, the \textit{general integral library},
+provides a single link to multiplex between the supported integral calculation back ends.
+\gscf implements a couple of \contraction-based \SCF schemes
+following the general two-step Fock-update, coefficient/density-matrix-update structure,
+we mentioned in section \ref{sec:SCFtakeaway}.
+\gscf is written on top of \lazyten,
+both to make use of its linear algebra abstraction
+as well as the generality of the lazy matrix formalism
+to work on dense, sparse and \contraction-based Fock matrices
+under the same syntax.
+Finally \krims is the library for common utility \textit{Krims}krams%
+\footnote{German for ``odds and ends''}.
+In our design we made sure
+that dependencies are only downwards, never sideways or upwards,
+to make it easy to replace libraries at a later point.
 %
-% ----------
 %
-\subsection{\molsturm interface layer}
+\paragraph{Plug-and-play implementation of new discretisations:}
+When attempting to implement a new basis function type or an unusual discretisation technique
+in existing quantum-chemistry packages,
+there is one rather significant obstacle:
+Implicit assumptions about the numerical properties of the employed basis
+are scattered around the sometimes rather large codes.
+Using the lazy matrix language of \lazyten,
+we have achieved to centralise the basis function specifics as much as possible
+at a single place,
+namely the implementation of the \contraction expressions
+of the integral lazy matrices.
+This takes place in our integral interface \gint,
+where all properties of the basis function type
+as well as the precise back end implementation
+regarding symmetries, selection rules, sparsity properties
+or evaluation schemes are known and can be fully exploited.
+In line with the final example presented in section \vref{sec:LazytenExamples},
+the \SCF and post-\HF methods only need to care about the
+integral lazy matrix objects,
+being completely independent from the precise nature of the \contraction expression.
+The result of these efforts is that switching from one implemented
+basis function type to another can be achieved by merely passing
+the corresponding string parameter.
+All that effectively changes is the collection of lazy matrices,
+which is exposed to the \SCF and all methods building on top
+of the \SCF results.
+Trying a new basis function type
+or a new computational back end for the integral values
+thus becomes really plug and play:
+One implements the respective collection of lazy matrices and selects
+it using the appropriate parameter.
+For more details regarding this aspect see section \vref{sec:GscfGint}.
+%
+%
+\paragraph{Easy interfacing with existing code:}
+The evaluation and assessment of new quantum-chemical methods
+necessarily implies that one needs to test their performance
+towards standard problems of quantum chemistry.
+This is especially true for new discretisation methods.
+Implementing everything from scratch,
+however, is a rather daunting task.
+For this reason it is explicitly \emph{not} our goal
+to create yet another fully-fledged quantum chemistry package
+as well as the surrounding ecosystem around it.
+Instead \molsturm is designed as a small package,
+where both the full package as well as the individual modules
+can be readily incorporated into other infrastructures
+or used on their own for teaching and experimentation.
+Overall our goal here is not to force a particular ``\molsturm-way'' upon
+our users,
+much rather provide well-documented and open interfaces,
+with which it is easy to for them to interact with \molsturm
+exactly how it fits there workflow best.
+In this notion we want our \molsturm interface
+to be flexible enough such that interacting
+with third-party packages can be easily achieved,
+thus building on the hundreds of man-years,
+which went into the development of already existing quantum-chemistry codes,
+and extend \molsturm beyond the scope originally intended.
+For details see section \vref{sec:MolsturmPython}
+as well as the examples in section \vref{sec:MolsturmExamples}.
+%
+%
+\paragraph*{}
+In the following sections we will discuss some of the
+aforementioned design aspects in more detail.
 
-The topmost \molsturm interface layer is concerned with the setup of an
-SCF calculation as well as the analysis of the results or setting
-up Post-HF calculations in third-party code.
+\subsection{Self-consistent field methods and integral interface}
+\label{sec:GscfGint}
+In chapter \vref{ch:NumSolveHF} we looked at various ways to solve the
+\HF equations, both with respect to different types of basis functions
+for the discretisation as well as different \SCF algorithms.
+One conclusion was that all \SCF schemes can be
+condensed into a similar structure,
+namely a two-step process,
+where a Fock-update step and a coefficient-update or density-matrix-update step
+repeat each other until convergence.
+We already saw in the last example of section
+\vref{sec:LazytenExamples},
+that \lazyten is well-suited to support this.
+In the example the Fock-update step could be expressed
+by a call to the \update-function of the exchange and Coulomb lazy matrices
+and the coefficient-update was
+a diagonalisation using \texttt{eigensystem\_hermitian}.
+For more complicated \SCF schemes, where the coefficient-update is more involved,
+a \contraction-based ansatz still allows to express
+this latter step only in terms of calls to the \contraction expression.
+Taking this idea one step further the \SCF schemes
+of \gscf do not need to see the individual terms of the Fock matrix,
+but access to the \update function and \contraction expression
+of a lazy matrix object representing the complete Fock matrix is sufficient.
+This makes the algorithms of \gscf self-contained
+and applicable to \emph{any} non-linear eigenproblem
+with a structure similar to the \HF minimisation problem \eqref{eqn:HFMO}.
+This is rather desirable,
+because there are plenty of methods in electronic structure theory,
+which can be thought of as modifications of the \HF problem.
+Examples include the Kohn-Sham matrix~(see section \vref{sec:DFT})
+arising in standard treatments of density-functional theory~(\DFT)
+or additional terms in the problem matrix
+arising from a modelling of an external field,
+a density embedding or a polarisable embedding.
 
-Unlike most traditional quantum-chemistry packages \molsturm does not have
-a particular ``Input format'' to drive the calculation.
-Much rather one uses \molsturm by writing a \python
-script which calls the appropriate functions from the interface
-layer to perform the SCF or Post-HF calculations.
-One can hence think of this interface layer as a library
-which provides all the functionality needed to write
-a calculation \python script.
-Compared to the traditional input file approach this has
-a couple of advantages.
+Overall the precise self-consistency problem to be solved by \gscf
+is thus defined by the lazy Fock matrix object,
+which is passed downwards from the upper layer \molsturm.
+For building this lazy matrix
+\molsturm inspects the method, which is selected by the user,
+and appropriately combines the integral lazy matrices
+representing the required one-electron and two-electron terms,
+\ie kinetic, nuclear attraction, Coulomb and exchange for \HF.
+Appropriately one would take an exchange-correlation term for \DFT
+and additional terms for embedding theories.
+Both is not currently available, however.
 
-Firstly it makes it very easy to interactively work with \molsturm
-from a shell.
-This reduces the feedback loop for small calculations
-or during debugging.
-If one uses \molsturm from a Jupyter notebook
-\todoil{cite \url{https://jupyter.org/}}.
+The integral lazy matrices are obtained from \gint,
+which acts as broker presenting a common interface for all
+basis function types and third-party integral back end libraries
+towards the rest of the \molsturm ecosystem.
+On calculation start \molsturm will take the discretisation parameters
+supplied by the user and hand them over to \gint,
+which --- based on these parameters ---
+sets up the selected integral back end library
+and returns a collection of lazy matrix integral objects.
+For each basis type and back end the interface of the returned objects
+will thus look alike, since they are all lazy matrices.
+On call to their respective \contraction expressions, however,
+the required computations will be invoked in the previously selected
+integral back end.
+In other words \gint itself does not implement any routine
+for computing integral values at all,
+but it just transparently redirects the requests.
+Notice, that the precise kind of parameters needed by \gint
+to setup the back end depends very much
+on the selected basis function type.
+For example a Coulomb-Sturmian basis requires the Sturmian exponent $\kexp$
+and the selection of $(n, l, m)$ triples of the basis functions
+whereas a contracted Gaussian basis requires the list of angular momentum,
+exponents and contraction coefficients.
+
+Right now contracted Gaussian and Coulomb-Sturmians
+are in fact the only basis function types supported for discretisation in \gint.
+For each of these at least two different implementations is available, however,
+and adding more back end libraries or basis function types is rather easy.
+Essentially one only needs to implement a collection of lazy matrices,
+where the \contraction expressions initiates the appropriate
+integral computations in the back end.
+This collection then needs to be registered as a valid basis type
+to \gint to make it available to the upper layers.
+Adding preliminary support for the contracted Gaussian library
+\libcint, for example, was added in just two days of work.
+Notice, that the design of \gint would even allow all of this to be achieved
+without changing a single line of code inside \gint itself,
+since the call to the registration function could happen dynamically at runtime.
+So one could implement a new integral back end in a separate shared library
+and add it as needed in a plug-in fashion without recompiling \molsturm.
+
+To summarise the responsibility for the \HF problem
+has thus been effectively split between three different,
+well-abstracted modules by the means of the lazy matrices of \lazyten.
+\gint provides the interface to the integrals,
+depending on the supplied discretisation parameters,
+\molsturm builds the Fock matrix expression
+according to the method selected by the user
+and hands it over to \gscf to get the \SCF problem solved.
+
+\subsection{\molsturm \python interface}
+\label{sec:MolsturmPython}
+
+The topmost layer of the \molsturm quantum-chemistry
+package is our interface layer.
+It provides helper functionality to
+define the calculation parameters like the chemical system
+or the basis type and basis set choices
+and finally receives those from the user
+to setup the calculation.
+That is it obtains the integral lazy matrices
+from \gint, builds the Fock matrix
+as described above and starts the actual \SCF calculation.
+The converged results from \gscf are afterwards
+returned in a convenient data structure.
+
+We chose to implement most of this interface layer
+and especially the interface itself
+in the scripting language \python.
+Our reasoning for this is similar to the arguments
+of the \pyscf authors already outlined in section \ref{sec:MolsturmRelated}.
+By providing the required functionality to setup and drive
+a \molsturm calculation from \python,
+we avoid to define yet another ``input format'' and ``output format''
+for quantum-chemical calculations.
+Instead calculations can be initiated cleanly and flexibly
+directly from a host script.
+This can afterwards be used to post-process the results as well,
+such that any kind of output parsing is not needed.
+The whole calculation can be performed in a single script
+from setup to analysis,
+which makes the complete procedure much more transparent.
+Moreover rather repetitive processes like
+benchmarking a new method
+can be easily automatised in this way.
+
+To give the user full control over the complete \molsturm ecosystem
+\emph{all} parameters for \gint, the \SCF algorithms of \gscf
+as well as the employed linear solvers from \lazyten are forwarded
+to the \python interface of \molsturm,
+where they all can be directly accessed and changed.
+These parameters include ways to influence which algorithms are
+chosen by \lazyten for diagonalisation
+or how \gint switches between the implemented \SCF solvers.
+For returning the \SCF results back to the host environment \molsturm
+heavily relies on \numpy arrays,
+which have become the \textit{de facto} standard
+for storing and manipulating matrices or tensors in \python.
+A large range of standard \python packages,
+which are commonly used for plotting or data analysis,
+like matplotlib~\todo{cite}, scipy~\cite{Walt2011,scipyWeb}, pandas~\todo{cite}
+similarly employ \numpy arrays as their primary interface.
+Additionally by the means of interface generators like SWIG~\todo{cite}
+\numpy arrays can be automatically converted to plain
+\ccc arrays for calling more low-level \cpp, \ccc or \fortran code as well.
+
+A \python interface comes in handy in the context of method development as well.
+For example we explicitly support running \molsturm from an interactive
+IPython~\todo{cite} shell,
+such that one can immediately interfere with the progress of a calculation,
+check assertions about intermediate results
+or visualise these graphically with matplotlib~\todo{cite}.
+This greatly reduces the feedback loop for small calculations
+like during debugging.
+If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
 one can even perform calculations and view plots
 interactively from within a web browser.
 
-Secondly this gives the user full flexibility
-in how he or she embeds \molsturm in his or her workflow.
-Since all data from \molsturm is available
-in plain \numpy arrays the user has full control to do
-any kind of standard processing from \python scripts
-after or during a calculation.
-This implies that the automatisation of repetitive
-analysis work or repetitive calculations
-becomes almost effortless as well.
-See section \ref{sec:ex:data} for an example
-\python script which automatically computes and plots
-simple dissociation curves with \molsturm.
+For larger calculations \molsturm is able to archive the complete
+calculation,
+including \emph{all} \SCF results in
+the widely adopted YAML~\cite{Ben-Kiki2009} or HDF5~\cite{HDF5Manual} formats.
+In this way large calculations can be performed in advance
+on a cluster or bigger computer,
+then archived and transferred to a workstation machine
+for analysis.
+This can be again done in an interactive shell
+with full access to the state of the calculation
+as if it would have been performed locally.
+Additionally this allows to restore an archived state
+and continue in a different direction at a later point
+building on results obtained previously
+and without redoing everything from scratch.
+On top of that \molsturm's archived state contains
+the precise set%
+\footnote{That is \emph{not} the parameters provided by the user,
+but the post-processed parameters which were actually used
+by the lower layers, amended for example by default values.}
+of input parameters which were used to obtain the stored results.
+This not only makes the archive self-documenting,
+but additionally makes restarting the identical calculation
+or a slightly amended calculation very easy.
 
-Thirdly the high-level \python interface of \molsturm 
-makes it even possible to go one step further.
-Since the repulsion integral tensors or the fock matrix
-are available from \molsturm as very convenient data structures,
-implementing new Post-HF methods,
-which sit on top of \molsturm is comparatively simple
-as we will demonstrate with a CCD example in section \ref{sec:ex:ccd}.
-Similarly it is possible to employ the features of other \python
-packages to extend what can be done with \molsturm.
-In section \ref{sec:ex:geo} we show a small \python script
-which performs a geometry optimisation of water,
-even though \molsturm currently has no support for SCF gradients.
+Our aforementioned \numpy interface has already proven to be very helpful
+to link to other third-party quantum chemistry codes to \molsturm.
+For example \molsturm's \SCF can be used to start a
+full configuration interaction~(FCI) calculation
+in \pyscf~\cite{Sun2017}.
+Recently support for computing excited state energies at \ADC(2),
+\ADC(2)-x and \ADC(3)~\cite{Schirmer1982,Trofimov1999} level
+with \adcman~\cite{Wormit2014} was added.
+Both these links make use of the \python-\numpy interfaces
+these third-party packages already offer and were realised in only a couple of days.
+Notice, that these interfaces
+are general enough to work both for \CS and \cGTO discretisations
+and theoretically all basis function types which are implemented in \gint.
 
-By breaking with the traditional paradigm of plaintext-in, plaintext-out,
-which most quantum chemistry programs still employ up to now,
-we furthermore gain the flexibility we need to exchange data with
-other third-party packages, for example for Post-HF caluclations.
-Most packages common in quantum chemistry either use data which is
-dumped to disk in the form of plain text or binary files
-in order to store their intermediate or final results of
-a calculations.
-In many cases the programs are not very flexible with regards to
-how the data is stored in these files and one hence needs to reproduce
-the file format very carefully for interfacing.
-In cases where the documentation of these file formats is sparse
-or absent,
-one might even need to reverse-engeneer in order to work with these programs.
-This requires a lot of flexiblity on the calling side.
-Luckily \python offers a large range of functions to serialise \numpy
-arrays in text or binary form.
+The aforementioned aspects will be demonstrated
+in the context of practical examples in section \vref{sec:MolsturmExamples}.
 
-Furthermore \numpy arrays have become the \textit{de facto} standard
-for storing and manipulating matrices or tensors in \python.
-All third-party quantum chemistry codes which
-offer a \python interface
-either use \numpy arrays themselves or
-provide utility functions to convert to and
-from \numpy arrays.
-\todoil{check if this is true and cite them}
-The same is true for typical \python packages used for plotting or
-data manipulation (matplotlib, scipy, pandas).
+\subsection{\molsturm test suite}
+\label{sec:MolsturmTestSuite}
 
-Thirdly by the means of interface generators
-like SWIG \todo{cite} \numpy arrays can be converted to plain
-\cee arrays for calling \cpp, \cee or \fortran code,
-such that even low-level libraries can be employed directly
-from \numpy arrays.
-
-%
-% ----------
-%
-\subsection{The integral interface via \gint}
-Similar to the \molsturm interface layer when it comes to Post-HF methods,
-\gint does not implement any routine for computing the integrals.
-Instead it just acts as a broker,
-which presents a common interface for all available basis function types
-and third-party integral backend libraries.
-
-When a calculation starts,
-\molsturm passes \gint the set of parameters,
-which are relevant for the selection and setup of the integral backend,
-like for example the Coulomb-Sturmian exponent or the Gaussian basis set information.
-In return \gint provides \molsturm with a collection of lazy matrices,
-where each lazy matrix represents a single integral for this
-type of basis functions.
-For example the nuclear attraction matrix, the kinetic operator matrix,
-the coulomb matrix and the exchange matrix each exist as separate
-lazy matrix objects.
-These integral objects may then be combined
-in an arbitrary manor to form the Fock matrix or Kohn-Sham matrix
-expression by just forming linear combinations.
-The resulting Fock matrix expression is then typically passed onto \gscf,
-where the SCF problem is solved.
-
-The generality of the lazy matrices allows the interface of \gint
-to be entirely independent of the structure
-which is used to represent the integral data internally.
-This implies that all code inside \molsturm,
-which works with the integral objects,
-hence becomes independent of the way the integral data is represented
-or how the evaluation of the \contraction-function is actually performed.
-\gint may freely choose the scheme for evaluating a matrix-vector
-product or for example the sparsity structure which is used to
-represent the data of the integral matrix
-without this having any impact towards other parts of \molsturm.
-
-Using lazy matrices furthermore has an advantage for
-dealing with the non-linearity of the coulomb and exchange matrices:
-The lazy matrix formalism of \lazyten provides the possibility
-to implement a special \update function,
-which can be used to update internal state of a lazy matrix.
-The coulomb and exchange lazy matrices
-may use this function to retrieve a new set of coefficients from an
-SCF algorithm and update
-their internal state accordingly.
-As we will discuss in the next section \gscf makes frequent use of this feature.
-
-Currently \gint only offers two types of basis functions,
-namely Gaussian integrals and atomic Coulomb-Sturmians,
-both available in at least two different implementations.
-For example Gaussian integrals for \gint are available from either one of 
-\libint by Valeev et al.\cite{Libint2,Libint2_231}
-or \libcint by Sun et al.\todo{cite} 
-under a common interface.
-The design of \gint makes it furthermore very simple to extend the types of integrals
-available in \molsturm:
-The function calls which compute the integral values only need to be wrapped
-inside lazy matrix objects and the resulting integral collection needs to be registered
-with \gint.
-For example the support for \libcint was added in just two days of work.
-
-Note that this does not even require changing a single line of code inside \gint.
-One could achieve this by linking the library into \molsturm at compile time.
-
-%
-% ----------
-%
-\subsection{Design of SCF algorithms in \gscf}
-\todoil{Fock matrix $\Leftrightarrow$ Kohn-Sham matrix $\Leftrightarrow$ Problem matrix
-to make clear that \gscf is not only for HF problems }
-
-In \gscf all self-consistent field algorithms are assumed to be
-iterative processes alternating between two basic steps.
-Firstly an \term{Fock-update} step where a new Fock matrix is produced from a current set of
-orbital coefficients.
-Secondly a \term{coefficient-update} step where the current Fock matrix guess
-is used to update the current set of orbital coefficients.
-Let us briefly rationalise this choice by 
-looking at the two mathematically equivalent
-\todo{cite}
-ways a
-Hartree-Fock or Kohn-Sham self-consistent field problem is typically
-viewed in order to solve it.
-
-% TODO TODO TODO TODO
-% TODO These plots should live in extra tikz files!
-% TODO TODO TODO TODO
-\tikzset{
-	flobo/.style={rectangle,draw,fill=white,minimum width=4.7cm,align=center,
-					font=\smaller, text width=4.5cm},
-	post/.style={->,shorten <=0.5pt,>=stealth',semithick},
-}
-\begin{figure}
-	% Work the update function and the contraction function calls into these examples
-	\centering
-	\todoil{Look into this algo a little more closely}
-	\begin{tikzpicture}
-		\node [flobo]              (c0)
-			{Initial coefficients $C^{(0)}$};
-		\node [flobo,below=of c0]  (fi)
-			{Build coefficient gradient (involves Fock matrix \update: $F^{(i)} = F\left[ C^{(i)} \right]$)};
-		\node [flobo,below=of fi]  (ci)
-			{Coefficient update};
-
-		\draw [post] (c0.south) -- (fi.north);
-		\draw [post] (fi.south) -- (ci.north);
-		\draw let \p0 = (fi), \p1 = (ci) in 
-			[post] (ci.west) -- (-3, \y1) -- (-3, \y0) -- (fi.west);
-
-		% Coefficient guess -> Gradient (involves Fock update)
-		% -> Coefficient update (as minimum along geodesic)
-		% -> repeat to 2
-	\end{tikzpicture}
-	%\includegraphics{<+file+>}
-	\caption{Geometric direct minimisation algorithm scheme}
-	\label{fig:GDM}
-\end{figure}
-\begin{figure}
-	\centering
-	\begin{tikzpicture}
-		\node [flobo]              (c0)
-			{Initial coefficients $C^{(0)}$};
-		\node [flobo,below=of c0]  (fi)
-			{Fock matrix \update: $F^{(i)} = F\left[ C^{(i)} \right]$};
-		\node [flobo,below=of fi]  (ci)
-			{Diagonalise $F^{(i)}$ to get next $C^{(i+1)}$ (coefficient update)};
-
-		\draw [post] (c0.south) -- (fi.north);
-		\draw [post] (fi.south) -- (ci.north);
-		\draw let \p0 = (fi), \p1 = (ci) in 
-			[post] (ci.west) -- (-3, \y1) -- (-3, \y0) -- (fi.west);
-
-		% Coefficient guess -> Fock matrix update
-		% -> Diagonalisation to get new coefficients
-		% -> repeat to 2
-	\end{tikzpicture}
-	%\includegraphics{<+file+>}
-	\caption{Roothaan repeated diagonalisation (Plain SCF)}
-	\label{fig:Roothaan}
-\end{figure}
-\begin{figure}
-
-	\centering
-	\begin{tikzpicture}
-		\node [flobo] (d0) {Initial density $D^{(0)}$};
-		\node [flobo, below=of d0] (fi)
-			{Fock matrix \update: $F^{(i)} = F\left[ \tilde{D}^{(i)} \right]$};
-		\node [flobo, below=of fi] (diag)
-			{Diagonalise $F^{(i)}$ to get $C^{(i)}$.
-			 Get $D^{(i+1)}$ from Aufbau principle};
-		\node [flobo, below=of diag] (di)
-			{Find $\tilde{D}^{(i+1)} =
-				\argmin\limits_{D \in \text{line}\left(D^{(i+1)}, \tilde{D}^{(i)}\right)}
-				E_\text{HF}(D)$};
-
-		\draw [post] (d0.south) -- (fi.north);
-		\draw [post] (fi.south) -- (diag.north);
-		\draw [post] (diag.south) -- (di.north);
-		\draw let \p0 = (fi), \p1 = (di) in
-			[post] (di.west) -- (-3, \y1) -- (-3, \y0) -- (fi.west);
-
-		% Density guess -> Fock matrix update
-		% -> Diagonalisation and new density
-		% -> linear combination with previous densities giving optimal energy (geodesic in Density manifold)
-		% -> repeat to 2
-	\end{tikzpicture}
-	%\includegraphics{<+file+>}
-	\caption{Optimal damping algorithm scheme}
-	\label{fig:ODA}
-\end{figure}
-
-The first viewpoint thinks of it as the variational minimisation
-of the ground
-state SCF energy with respect to the orbital coefficients making up
-the best single Slater determinant approximation to the ground state.
-An example would be the Geometric direct minimisation algorithm~(see fig. \ref{fig:GDM}).
-In these algorithms the Fock matrix occurs in the gradient expression
-\todoil{Cite Cances paper and Head-Gordon paper}
-of the energy with respect to the coefficients.
-An iterative optimisation procedure hence
-usually involves the computation of the Fock matrix~(Fock update)
-in each iteration in order to determine the search direction
-for the next step.
-This direction then leads to an updated set of coefficients.
-
-The second viewpoint considers the non-linear Eigenproblem
-which results from the aforementioned optimisation problem.
-This is solved by linearisation,
-i.e. one assumes a guess for the coefficients
-in order to build the Fock matrix~(Fock update)
-followed by a diagonalisation of this very Fock matrix
-in order to obtain new update coefficients~(coefficient update).
-This is repeated iteratively until self-consistency is reached.
-An example is Roothaan's repeated diagonalisation algorithm~(see fig. \ref{fig:Roothaan}).
-
-In both cases the typical iterative algorithms used for
-solving optimisation problems or diagonalisation
-can be formulated in a way that they are fully \contraction-based,
-i.e. only require matrix-vector products between the Fock matrix
-and other iterated vectors.
-In \gscf we therefore require only two things from any given Fock matrix:
-Firstly a special \update function which updates the internal state of
-the matrix from the current set of coefficients
-during the Fock-update step of an algorithm.
-Secondly the aforementioned \contraction function for the
-required matrix-vector products
-during the coefficient-update step.
-
-This is exactly the interface offered by the lazy matrix integral objects
-which are returned by the \gint integral library.
-We can therefore simply use the \gint integral terms to build the appropriate expressions
-of the Fock or Kohn-Sham problem matrices
-and hand them over to \gscf for finding the self-consistent set of SCF coefficients.
-In \gscf itself the SCF algorithms are only implemented in the
-high-level language of the lazy-matrix formalism.
-Since the lazy matrix interface fully abstracts the internal structure of the matrix
-the SCF algorithms of \gscf
-are completely agnostic to the structure of the integrals and the Fock matrix,
-which may be freely decided by the integral backend of \gint
-depending on what suits the particular type of basis function best.
-
-In the discussion about \gscf so far we have focused only on
-\term{coefficient-based} SCF algorithms,
-i.e. algorithms where the orbital coefficients are iterated to self-consistency.
-Yet another way to think about the SCF procedure is to iterate the
-density matrix to self-consistency instead.
-Mathematically such \term{density-matrix-based} algorithms
-are just solving the SCF problem in a different parametrisation
-compared to the \term{coefficient-based} algorithms
-and are otherwise equivalent.
-\todoil{cite papers from Eric and others about this.}
-An example for a density-matrix-based algorithm is the optimal damping algorithm
-by Eric Cancès and Claude leBris,
-\todoil{Cite}
-which is shown in fig. \ref{fig:ODA}.
-
-Currently all algorithms which are implemented in \gscf are coefficient-based SCF algorithms.
-This is not strictly speaking required by the library,
-but it has the advantage that for some basis function types
-the computational scaling of the \contraction-function
-of the Fock matrix expression can be reduced by an order of magnitude.
-An example are the Coulomb-Sturmians.
-\todoil{Maybe go into this a little in the previous sections and refer up}
-Furthermore the density-matrix based algorithms
-we have encountered so far could be reformulated as coefficient-based schemes
-or were easily approximated to work as such.
-For example we have implemented a variant of the original ODA,
-which is suitable for a coefficient-based setting by truncating
-the history of SCF steps considered in order to compute the optimal damping.
-
-Compared to a scheme where the Fock matrix is held fully in memory
-the \contraction-based design has some disadvantages, too.
-For example our implementation of Pulay's DIIS conversion accelerator
-cannot always form the linear combination of Fock matrices by adding the
-individual Fock terms in memory.
-Instead the linear combination stays around as a lazy matrix expression
-until it is applied to a trial vector.
-When this happens during an iterative diagonalisation algorithm
-we hence need to call the \contraction-function for each of the
-Fock terms separately instead of only once.
-This is a trade-off we are happy to pay since it allows to
-reduce the computational scaling of the individual \contraction
-calls by an order of magnitude as mentioned before.
-
-%
-% ----------
-%
-\subsection{\lazyten: \contraction-based linear algebra backend}
-
-\lazyten is the linear algebra interface of \molsturm.
-It not only implements the lazy matrix datastructures,
-which define the common interface of \gint and \gscf,
-but further contains code to make standard external
-iterative or direct solver implementations available
-from a lazy matrices-based setting.
-
-As can be seen in figure \ref{fig:structureLazyten} \lazyten provides
-a common interface for the \contraction-based algorithms in \gscf,
-regardless of the linear algebra~(LA) backend or the solver implementation,
-which is used to solve a particular problem.
-Lazy matrices like the integrals from \gint as well as built-in structures
-like for example a lazy matrix representing the inverse of a matrix
-can be used transparently and even in combination with stored matrices
-by the means of the automatic bookkeeping done by \lazyten.
-Whenever a call to for example the \contraction function enforces
-evaluation of a lazy matrix expression,
-\lazyten is flexible with respect to the LA backend which is used for
-this step as well.
-Both armadillo as a LAPACK-based backend as well as Bohrium as a array-operation based backend
-are currently available and by recompiling \molsturm with the appropriate configure options,
-the backend can be switched.
-
-When it comes to the choice of the solver algorithms, \lazyten is even more flexible.
-All algorithms for solving linear problems or eigenproblems are available as 
-convenient high-level interface from \gscf.
-For example a linear problem $A x = b$ with a lazy matrix $A$, known right-hand side $b$
-and unknown $x$ can either be solved by a call to a \texttt{solve} function or by
-the means of calling \texttt{inverse(A)} on $A$ and then subsequently
-multiplying the inverse matrix with $b$, quite literally coding it as $x = A^{-1} b$.
-In both cases \lazyten will perform some introspection regarding the properties of
-the lazy matrix expression behind $A$ and consider the number of solution
-vectors as well as the required accuracy in order to automatically determine the algorithm to use
-for solving the linear problem at hand.
-By the means of keyword arguments the user can influence or override the automatic
-choice made by \lazyten.
-
-Similarly the eigensolvers can be accessed from \gscf via a common interface,
-which abstracts the precise algorithm and allows \lazyten to make an automatic
-choice by looking at the precise structure of the Fock matrix at hand.
-If all eigenpairs are desired or the matrix is stored in memory anyway,
-\lazyten will favour the dense eigensolver algorithms from LAPACK,
-whereas if only few eigenpairs are desired,
-Krylov-subspace based methods from ARPACK are used.
-In either case the precise algorithm can also me chosen from the \python interface
-of \molsturm by supplying an appropriate keyword string.
-
-%  - L10 (but short-ish, because there will be a full paper)
-%  -- Idea: Write high-level formula similar to the equations on paper, generate efficient
-%     streamed/lazy tensor-code.
-%     (currently only supports matrices/linear operators and vectors).
-%  -- Transparent combination of dense, sparse, and matrix-free
-%  -- Solver-switching on the fly
-%  -- How is multi-backend support solved
-%  -- Design towards automatic generation of efficient (Only simple evaluation currently supported)
-%  -- Include simplified L10-figure from talk
-
-%
-% ----------
-%
-\subsection{The \molsturm test suite}
-A very important subsidiary to good software design is a flexible testing framework.
-A test suite which is simple to execute, fast and easy to expand not only allows to verify
+A very important subsidiary to a good software design is a good testing framework.
+A test suite which is simple to execute,
+fast and easy to expand not only allows to verify
 that the current status of a piece of software is correct,
 but it also allows to verify that all future changes do not break anything.
-This includes of cause the potential adaption of the design in the future,
-which might involve changing any of the already existing interfaces.
-A strong test suite aids with this procedure,
-since one can perform these changes in a sequence of many small steps,
+This naturally includes a potential adoption of the design towards future requirements.
+A good test suite generally aids with any code refactoring,
+since all changes can be performed in a sequence of many small steps,
 verifying the correctness of the software on the way.
 
 For this reason \molsturm comes with an extensive test framework
 with roughly four types of tests.
-Firstly there are \term{unit tests},
-which test the functionality of a single function or code unit in a couple of hard-coded examples.
-Further we have \term{functionality tests},
+Firstly there are \newterm{unit tests},
+which test the functionality of a single function
+or code unit in a couple of hard-coded examples.
+Further we have \newterm{functionality tests},
 which test a larger portion of code and are meant to ensure that
 the results of \molsturm agree between different versions.
-Thirdly the \term{reference tests} compare
+Thirdly the \newterm{reference tests} compare
 the results of \molsturm to other quantum-chemistry packages.
 Especially in \lazyten we furthermore make use of yet another type of tests,
-namely so-called \term{property-based tests}.
+namely so-called \newterm{property-based tests}.
 This testing technique uses the expected properties of a code unit
-to randomly generate test cases and to verify the result.
+to randomly generate test cases and to verify the result as well.
 On failure the generated test cases are simplified until the most simple,
 failing test case is found.
-This is really helpful for debugging and in order to reduce the human aspect in testing.
+This is very helpful
+to reduce the human aspect in testing
+and finding the actual issue during debugging.
 
-Next to combining various different types of tests
-other key principles in the design of our test suite were that our tests should be simple
-to execute and take only a couple of minutes.
-This not only makes it easier to motivate others to use the tests, too,
-but it also allows to fully automate the whole testing process as well.
-\todoil{I feel we should explicitly mention github and Travis-CI to show them some credit for this awesome work.}
-In our case any commit to our repositories starts up a couple of virtual machines,
-which build \molsturm and run the test suite for a couple of common compilers and
-build configurations.
-A commit into the stable source code branch is only accepted if the test suite passes.
+Next to combining various different types of tests,
+it is very important that running the tests by itself is hassle-free.
+Only in this way they are actually used.
+In \molsturm we therefore employ the \newterm{continuous integration}
+service offered free of charge by Travis CI GmbH for open source projects:
+Whenever a new commit is made to our github repository,
+a set of virtual machines start automatically
+in order to checkout and build \molsturm completely from scratch
+in a few typical build configurations.
+Afterwards the test suite is automatically executed and
+all output generated by the test suite displayed.
+In this way even people, who are unfamiliar with all details of \molsturm
+can test their changes thoroughly,
+which encourages code contributions.
+Additionally this gives us \molsturm developers
+the chance to easily make sure that no untested code enters the stable source branch,
+since only if the continuous integration testing passes,
+a commit to the stable branch is allowed.
 
-In our test suite even the work of adding a new test is somewhat automated.
+One might argue that such a continuous integration system only
+achieves its purpose if users committing new code
+furthermore write the accompanying tests to check its validity.
+For this reason we try to make it simple to add new tests
+by providing tooling to automate this process as well.
 For example in order to add a new reference test for a new feature
-or a case where a bug was discovered,
-one simply adds a small configuration file to a special directory,
-which defines the testing parameters.
-A \python script, which is part of the test suite,
-then automatically executes the third party program and extracts the reference results in a format,
-which is understood by the \molsturm test suite.
-When the test suite is executed all such reference results are read and
-\molsturm is executed and tested for each of them.
+or a corner case, where a bug was discovered,
+one only needs to add a small configuration file to a special directory.
+Afterwards one only needs to call a \python script,
+which picks up the configuration file,
+reads the desired test case and calls the external third-party reference
+quantum-chemistry program (currently ORCA~\cite{ORCA})
+to compute the required data.
+From the next time the \molsturm test suite is executed,
+this additional reference test will be part of the test suite as well.
 
-\todoil{Mention test coverage ???}
-
-\todoil{We probably should not keep this next paragraphs here}
-On the side of the \molsturm code we employ \term{assertive programming} to assure that
-\molsturm crashes with a very detailed backlog whenever an unexpected behaviour happened.
-By the means of a dual build system setup, we achieve that a Debug version
-(including heavy assertive checks) and a Release version
-(without heavy assertive checks) are compiled side-by-side.
-This allows to use the Debug version with a lot of assertions,
-potentially even in the inner loops,
-to be used for trial runs and the Release version with less assertions for productive runs.
-Switching between Debug and Release from \molsturm's python interface is very simple and
-only requires to recompile a few files,
-since in normal build conditions Release and Debug have already been built.
-
-By the means of checkpointing one could further use the Release version to get an erroneous
-part of \molsturm and the Debug version to step-by-step test what goes wrong.
-The detailed traceback on failure of an assertion can then be used to analyse the problem quickly.
+Another way we employ to make sure that most of \molsturm's code
+is indeed tested
+is a measure called \newterm{coverage analysis}.
+Roughly speaking this method inserts special checkpoints during the compilation
+of a program,
+which allow to retrace which code paths have been executed
+and which have not.
+In combination with our automatic continuous integration builds,
+we use this to check automatically which parts of the code have been touched
+when the test suite was executed,
+\ie which parts of \molsturm are covered by the test suite.
+Ideally one would keep test coverage close to $100\%$,
+implying that literally every line of \molsturm was tested.
+In practice in most modules of \molsturm we currently achieve
+between $80\%$ and $90\%$ coverage.
+Notice that coverage analysis is more powerful than just detecting
+untested code paths.
+For example it allows to find hot spots,
+\ie parts of the code executed very often,
+or dead code, which is never executed.
+Similar to a pass of the continuous integration builds,
+we currently enforce that \molsturm's coverage may not decrease
+by more that $0.5\%$ each time code is merged into the stable branch.
+This makes sure that most of \molsturm's code really gets tested
+each time new features are added.

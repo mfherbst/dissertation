@@ -1,37 +1,520 @@
 \section{Capturing electronic correlation}
 \label{sec:Correlation}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item What is it and where does HF fail
-		\item A couple of sentences about truncated CI
-			\begin{itemize}
-				\item Brief explanation what
-				\item Mention size-consistency issues
-			\end{itemize}
-	\end{itemize}
+
+In the previous chapter we talked at length about the \HF approximation for solving
+the non-relativistic electronic Schrödinger equation.
+Since the search space for the variational minimisation is much more restricted compared
+to the \FCI ansatz,
+we necessarily make a larger approximation error in the \HF case.
+Nevertheless it should be noted that \HF yields a rather good rank-1
+approximation to the full Schrödinger problem,
+where around $99\%$ of the \FCI energy~\cite{Jensen2007book} in a respective basis is obtained
+at a fraction of the cost.
+One might wonder
+what part of the exact physical picture \HF is missing and how one could improve on that.
+
+\subsection{What does Hartree-Fock miss?}
+Even though the
+Fock operator \eqref{eqn:FockOperator} describes a many-electron system
+it is a one-particle operator,
+since it only acts on single-electron functions.
+The many-particle aspect is only treated via the Coulomb term \eqref{eqn:OperatorCoulomb}
+and the exchange term \eqref{eqn:OperatorExchange},
+where the interaction with
+other electrons is included in the form of integrals over
+the electron density $\rho_{\Theta^0}$ or the density matrix $\gamma_{\Theta^0}$.
+Overall an electron thus does not see the exact position of all its neighbours
+via the Fock matrix,
+but only some kind of an average electron field.
+In this sense the \HF ansatz is sometimes called a \newterm{mean-field approximation}.
+In the light of this the \SCF can be thought of as an adjustment procedure,
+where the electronic arrangement in the form of the occupied \SCF orbitals $\{\psi_i\}_{i\in\Iocc}$
+is adjusted until their generated mean field
+is no longer changing this arrangement,
+\ie is self-consistent.
+
+\begin{figure}
+	\centering
+	\includeimage{3_qchem/planetary_systems}
+	\caption[Real planetary system and mean-field model of it shown side-by-side]{
+		Real planetary system and mean-field model
+		in the spirit of the \HF approximation
+		shown side-by-side.
+		The mean-field picture on the right-hand side
+		is shown from the point of view of the red planet,
+		such that its neighbours are smeared out as thick black
+		circles over their respective orbits.
+	}
+	\label{fig:HFplanets}
+\end{figure}
+To visualise this issue better,
+let us consider in analogy a planetary system,
+where multiple planets are revolving around a central sun.
+In the real system,
+which is depicted on the left-hand side of figure \vref{fig:HFplanets},
+the individual planets feel each other at all times
+at their exact positions.
+As a result their orbit around the sun is not a perfect circle but shows pronounced
+wiggles due to the interaction between the planets.
+In other words the motion of the planets around the sun is highly correlated.
+In contrast to this the right-hand side
+depicts the scenario drawn for the red planet in a \HF-like mean-field model.
+Its neighbours are no longer visible at their exact positions,
+much rather the red planet only amounts to interact with
+some sort of smeared out particle density,
+where their position is averaged over their complete orbits.
+This interaction is almost as strong at all points
+and thus the mean-field orbit of the red planet is much more smooth.
+
+In the electronic system the situation is similar
+in sense that the behaviour of individual electrons is indeed very much correlated.
+Due to its mean-field nature the \HF ansatz
+largely misses the description of this so-called \newterm{electron correlation}%
+\footnote{%
+	Conventionally one calls the \HF treatment of a chemical system
+	the \emph{uncorrelated} treatment of the electronic structure.
+	This is not perfectly sound in my opinion,
+	as for example the Pauli principle is fulfilled in \HF.
+	This implies for examples that two electron of the same spin
+	cannot occupy the same orbital,
+	which implies in turn that the motion
+	of electrons of the same spin is at least to this extend correlated.
+}.
+In fact one typically refers to the difference
+\begin{equation}
+	E_0^{\text{corr}} = E_0^{\text{FCI}} - E_0^{\text{HF}}
+	\label{eqn:EnergyCorrelation}
+\end{equation}
+between the \HF and \FCI energies in a particular basis set
+as the \newterm{correlation energy}.
+As mentioned before $E_0^{\text{corr}}$ is typically rather small
+compared to $E_0^{\text{HF}}$.
+Nevertheless the effects of the electron-electron are very important
+for a proper description of the electronic structure of a chemical
+system and can therefore in general not be neglected~\cite{Helgaker2013,Szabo1996,Jensen2007book}.
+
+In practice one sometimes divides correlation effects
+into two subclasses.
+The first kind, the so-called \newterm{dynamic correlation},
+is the aforementioned failure of the \HF approximation
+to treat the communal, correlated motion of electrons properly.
+The second kind, \newterm{static correlation},
+occurs if the number of Slater determinants,
+which is available for the description of a degenerate or near-degenerate
+state is not sufficient.
+For the \HF approximation,
+where only one determinant for the description of the ground state
+is available,
+this defect becomes apparent in situations
+with a low-lying excited state.
+A classic example would be a molecule close to bond breaking.
+In such a case the ground state resulting from a full CI treatment
+has relevant contributions from more than one determinant.
+As a result even the best \HF ground state determinant misses a substantial
+part of the full CI ground state and thus only represents
+a rather poor approximation.
+In the remainder of this discussion about electron correlation
+we will ignore static correlation and assume that a single determinant
+\HF ground state is already a pretty decent description of the electronic structure.
+Detailed discussions of so-called multi-reference
+or multi-configurational methods tackling static correlation
+can be found for example in \cite{McWeeny1985,Fischer1986,Jensen2007book,Helgaker2013}.
+
+\subsection{Truncated configuration interaction}
+In section \vref{sec:FCI} about the \FCI method we already
+mentioned that the exact ground state $\Psi_0$ to the electronic Schrödinger equation
+can be expressed as a CI expansion \eqref{eqn:CIExpansion}%
+\footnote{
+	In this section about correlation methods
+	we will adhere to the usual index conventions
+	where occupied indices are denoted with letters
+	$i,j,k,l \in \Iocc$ and virtual indices with letters $a,b,c,d \in \Ivirt$,
+	see remark \vref{rem:FCI} for details.
+	To avoid clutter we will usually not indicate the index set in sums explicitly,
+	\eg write $\sum_a$ instead of $\sum_{a \in \Ivirt}$.
 }
-We will discuss so-called \newterm{truncated CI methods},
-which only include determinants up to a certain
-degree of excitations (double, triple, quadruple, \ldots)
-in the context of so-called correlation methods in \vref{sec:Correlation}.
+\[
+	\Psi
+	= c_0 \Phi_0 + \sum_{ia} c_i^a \Phi_i^a
+	+ \sum_{\substack{i<j \\a<b}} c_{ij}^{ab} \Phi_{ij}^{ab}
+	+ \sum_{\substack{i<j<k \\ a<b<c}} c_{ijk}^{abc} \Phi_{ijk}^{abc}
+	 + \cdots,
+\]
+starting from an arbitrary reference determinant $\Phi_0$.
+A very natural choice for this is to take the reference
+determinant to be the \HF ground state,
+\ie the best single determinant for describing the electronic ground state.
+In this way the
+remaining contributions of the excited determinants $\Phi_i^a$,
+$\Phi_{ij}^{ab}$, $\Phi_{ijk}^{abc}$, $\ldots$
+can be expected to be small,
+which makes it numerically more feasible to diagonalise
+the \FCI matrix $\mat{A}_\text{FCI}$.
+Furthermore this justifies truncating the CI expansion \eqref{eqn:CIExpansion}
+prematurely to yield some sort of an intermediate approximation
+between \HF and \FCI.
+For example CISD, configuration interaction singles-doubles~\cite{Sherrill1999},
+truncates the above expansion in a way that only singles and doubles
+excitations are taken into account.
+This would lead to the ansatz wave function
+\[
+	\Psi_0^\text{CISD}
+	= \Phi_0 + \sum_{ia} c_i^a \Phi_i^a
+	+ \sum_{\substack{i<j \\a<b}} c_{ij}^{ab} \Phi_{ij}^{ab}
+\]
+where one assumes the individual determinants
+are normalised in a way that $c_0 = 1$.
 
+Even though truncated CI methods are conceptionally very simple,
+they are not used much any more.
+The main reason for this is the so-called \newterm{size-consistency problem}.
+Unlike \FCI or \HF the CISD energy of two molecular fragments
+is in general not additive,
+even if these fragments do not interact.
+Put more mathematically one can show~\cite{Helgaker2013} the following:
+If $E_A$ is the energy corresponding to the CISD ground state $\Psi_0^\text{CISD}$
+for a molecule $A$
+and $E_B$ is the analogous energy for another molecule $B$,
+then the CISD ground state energy $E_{AB}$
+for a system consisting of both $A$ \emph{and} $B$
+separated by an infinite distance is \emph{not} $E_A + E_B$.
+One refers to this unphysical behaviour as \newterm{size-inconsistent}.
+Including higher excitations
+does not fix this problem,
+such that all canonical truncated CI methods are size-inconsistent.
+For the modelling of chemical reactions or even large molecules,
+size-inconsistency is a major problem.
+Nowadays better, size-consistent alternatives like the
+coupled-cluster ansatz~(see below) exist
+and are usually preferred.
 
-\subsection{MP2}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Sketch Hylleras ansatz
-		\item Show resulting expression
-		\item No derivation, brief
-	\end{itemize}
+\defineabbr{MP}{MP\xspace}{Møller-Plesset perturbation theory treatment of electron-electron correlation.
+Typically followed by a number to indicate the order.}
+\subsection{Second order Møller-Plesset perturbation theory}
+\label{sec:MP}
+
+Starting from the reasonable
+assumption that the \HF ground state determinant $\Phi_0$
+is a very good approximation to the exact electronic ground state
+it is a sensible ansatz to
+employ Rayleigh-Schrödinger perturbation theory~\cite{Szabo1996,Helgaker2013}
+and correct perturbatively for the missing correlation contribution
+to the energy as well as the wave function.
+one partitions the electronic Schrödinger Hamlitonian \eqref{eqn:ElectronicHamiltonian}
+into
+\[ \Op{H}_{\Nelec} = \Op{H}^0 + \Op{H}^1, \]
+\ie a zeroth order Hamiltonian $\Op{H}^0$,
+which is easy to compute,
+and the perturbation $\Op{H}^1$,
+which is the part missed in $\Op{H}^0$,
+assumed to be small.
+
+One way this partitioning can be achieved is Møller-Plesset
+perturbation theory~\cite{Moeller1934},
+where the unperturbed operator is taken to be the
+direct sum of $\Nelec$ Fock operators
+at the orbital configuration corresponding to the \HF ground state $\Phi_0$,
+\begin{align*}
+	\Op{H}^0 &= \bigoplus_{i=1}^{\Nelec} \Op{F}_{\Theta^0},
+	\intertext{
+and the perturbation is}
+	\Op{H}^1 &= \Op{V}_{ee} - \bigoplus_{i=1}^{\Nelec} \left( \Op{J}_{\Theta^0} + \Op{K}_{\Theta^0} \right),
+\end{align*}
+\ie whatever the \HF operator misses.
+In the discretised setting of a finite-dimensional one-particle basis
+$\{\varphi_\mu\}_{\mu\in\Nbas}$
+one may easily derive the zeroth to second order
+energy contributions~\cite{Szabo1996}
+\begin{align*}
+	E_0^0 &= \sum_i \varepsilon_i \\
+	E_0^1 &= - \frac12 \sum_{ij} \eriAsym{ij}{ij}  \\
+	E_0^2 &= \frac14 \sum_{ijab} \frac{\abs{\eriAsym{ij}{ab}}^2}
+						{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+\end{align*}
+to the ground state energy.
+In other words up to zeroth order we obtain the sum of the orbital energies.
+The first order correction accounts for the double counting
+of the electron-electron interactions and recovers the \HF energy expression.
+The first real improvement to \HF results
+at \newterm{second order Møller-Plesset perturbation theory}~({\MP}2).
+For reasons, which will become clear in the next section
+one often introduces the so-called \newterm{$T_2$ amplitude}
+\begin{equation}
+	t_{ij}^{ab} \equiv \frac{\eriAsym{ij}{ab}}
+		{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
+	\label{eqn:amplitudesMPtwo}
+\end{equation}
+and writes the {\MP}2 energy as
+\begin{equation}
+	E_0^\text{MP2} = E_0^\text{HF} + \frac14 \sum_{ijab} \cc{\eriAsym{ij}{ab}} t_{ij}^{ab}.
+	\label{eqn:energyMPtwo}
+\end{equation}
+The \MP methods do in general have some issues as well.
+Most notably the perturbation expansion of energies does in general
+not converge~\cite{Helgaker2013},
+making it hard to properly justify these methods from a mathematical basis.
+In practice {\MP}2 is still vividly employed,
+mainly because it gives a decent guess
+towards the exact energy of the electronic ground state
+at manageable computational cost%
+\footnote{Using sensible approximations linear-scaling {\MP}2 is possible.}.
+The other \MP methods on the other hands
+are nowadays used only rarely.
+
+One should mention that due to its perturbative nature,
+there is no guarantee that $E_0^\text{MP2} \geq E_0$,
+the exact ground state energy of the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}.
+In the community of quantum chemistry one often refers
+to this fact as {\MP}2 being non-variational.
+This saying is, however, a bit inaccurate,
+since the method {\MP}2 is indeed variational
+in the sense of the Courant-Fischer theorem \eqref{eqn:CourantFischer},
+namely that larger basis sets will always lead a lower-energy {\MP}2 ground state,
+which is furthermore closer to the exact {\MP}2 ground state wave function.
+This is not that much apparent in the outlined derivation,
+but can be seen from an alternative route
+employing the Hylleraas functional~\cite{Helgaker2013}.
+In contrast it is not variational in the sense that
+a larger basis yields an {\MP}2 energy
+which approaches $E_0$ from above.
+
+\subsection{Coupled-cluster theory}
+\defineabbr{CC}{CC\xspace}{Coupled cluster}
+\label{sec:CC}
+
+The main idea of coupled-cluster theory
+is to employ a more elaborate ansatz for generating a limited amount
+of excited determinants with the overall aim to
+reach a size-consist method.
+In this work coupled-cluster only plays a minor role.
+This section will therefore be limited to the absolutely necessary
+steps to get the rough idea.
+For a more thorough introduction the reader is directed
+to the excellent review by \citet{Crawford2007}
+as well as numerous other works~\cite{Helgaker2013,Hodecker2016}
+dealing with the topic.
+
+\noindent
+In coupled-cluster theory one starts from the so-called exponential ansatz
+\begin{equation}
+	\Psi^\text{CC} = \exp(\op{T}) \Phi_0
+	\label{eqn:AnsatzCC}
+\end{equation}
+to generate the coupled-cluster wave function $\Psi^\text{CC}$
+from a \HF ground state reference determinant $\Phi_0$.
+In this equation
+\begin{equation}
+	\op{T} = \op{T}_1 + \op{T}_2 + \cdots + \op{T}_{\Nelec}
+	\label{eqn:ExcitationCC}
+\end{equation}
+is the \newterm{excitation operator}
+consisting of all singles excitations
+\begin{align*}
+	\op{T}_1 &= \sum_{ia} t_i^a \op{\tau}_i^a
+\intertext{with $\op{\tau}_i^a$ defined, such that $\Phi_i^a = \op{\tau}_i^a \Phi_0$,
+all doubles excitations}
+	\op{T}_2 &= \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab}
+		&&\text{with}& \Phi_{ij}^{ab} &= \op{\tau}_{ij}^{ab} \Phi_0, \\
+\intertext{all triples}
+	\op{T}_3 &= \sum_{\substack{i<j<k \\ a<b<c}} t_{ijk}^{abc} \op{\tau}_{ijk}^{abc}
+		&&\text{with}& \Phi_{ijk}^{abc} &= \op{\tau}_{ijk}^{abc} \Phi_0, \\
+\end{align*}
+and so forth.
+In these sums the
+coefficients $t_i^a$, $t_{ij}^{ab}$, $t_{ijk}^{abc}$ and so forth
+are called \newterm{cluster amplitudes}.
+In a similar notation to \eqref{eqn:ExpansionSlaterDeterminant}
+the excitation operator is often directly written as a sum of the operators
+$\op{\tau}_i^a$, $\op{\tau}_{ij}^{ab}$, $\op{\tau}_{ijk}^{abc}$ \ldots, namely as
+\begin{equation}
+	\op{T} = \sum_\mu t_\mu \op{\tau}_\mu,
+	\label{eqn:ExcitationCCsum}
+\end{equation}
+where $\mu$ is an appropriately chosen multi-index and the sum
+is implicitly taken to have sensible limits.
+
+If we allow all possible excitations in \eqref{eqn:ExcitationCC},
+\ie do not truncate the sum,
+the set of all possible coupled-cluster wave functions $\Psi^\text{CC}$
+is exactly equivalent to the space of all Slater determinants
+$\tilde{Q}(\Op{H}_{\Nelec})$,
+which was defined in \eqref{eqn:FormDomainAllFunctions}.
+Without truncation \CC is thus equivalent to \FCI,
+moreover the exponential ansatz in this case just provides
+an alternative to the standard parametrisation of $\tilde{Q}(\Op{H}_{\Nelec})$
+in terms of the CI expansion~(see remark \vref{rem:Determinants}).
+
+In the corresponding discretised setting
+$\Phi_0$ is the solution to the discretised
+\HF problem~(section \vref{sec:DiscreteHF}).
+In a similar fashion to full CI one would expect
+a good ansatz for obtaining a \CC approximation to
+the ground state of the electronic Schrödinger equation
+to use the Ritz-Galerkin ansatz of remark \vref{rem:DiscreteFormulation}.
+In other words one would attempt to solve the variational minimisation problem
+\begin{equation}
+E_0 \leq E_0^\text{CC} = \inf_{\{t_\mu\}_{\mu}} \frac{\braket{\exp(\op{T}) \Phi_0}{\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0}_{\Nelec}}
+	{\braket{\exp(\op{T}) \Phi_0}{\exp(\op{T}) \Phi_0}_{\Nelec}},
+	\label{eqn:VariationalCC}
+\end{equation}
+where there resulting minimising amplitudes give the \CC ground state
+wave function corresponding to the minimal ground state energy $E_0^\text{CC}$.
+Without truncation of \eqref{eqn:ExcitationCC}
+this is again equivalent to discretised full CI.
+Even with truncation to, for example, $\op{T} = \op{T}_1 + \op{T}_2$,
+equation \eqref{eqn:VariationalCC} is intractable to solve.
+The reason for this is the strong non-linearity of the problem,
+where products of the individual amplitudes $\{t_\mu\}_{\mu}$ often occur
+in the resulting system of equations.
+
+For this reason one usually employs a different projection approach,
+which shall only be sketched here%
+\footnote{Notice, that we drop some mathematical rigour here,
+	since $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$ is only defined properly
+	if $\Phi_0 \in H^2(\C^{3\Nelec}, \C^{2\Nelec})$,
+	which is not true in general.
+	Even in the discretised case one may choose a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$,
+	where some functions are not members of $H^2(\C^{3\Nelec}, \C)$,
+	such that $\Phi_0 \not\in H^2(\C^{3\Nelec}, \C^{2\Nelec})$ is possible.
 }
+If one plugs the exponential ansatz directly into the electronic Schrödinger equation
+\eqref{eqn:ElectronicSchrödinger} for the ground state one obtains
+\begin{equation}
+	\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0 = E_0^\text{CC} \exp(\op{T}) \Phi_0,
+	\label{eqn:CCschrödinger}
+\end{equation}
+where $E_0^\text{CC}$ is the coupled-cluster ground state energy.
+By a simple rearrangement this can be written as
+\begin{equation}
+	E_0^\text{CC} = \mbra{\Phi_0} \Op{H}_T \mket{\Phi_0}_{\Nelec}
+	\label{eqn:CCenergy}
+\end{equation}
+where we introduced the similarity-transformed Hamiltonian
+\[ \Op{H}_T = \exp(-\op{T}) \Op{H}_{\Nelec} \exp(\op{T}). \]
+For making use of equation \eqref{eqn:CCenergy}
+at all the unknown amplitudes $\{t_\mu\}_{\mu}$ still need to be found.
+This is done by projecting \eqref{eqn:CCschrödinger}
+onto determinants $\exp(-\op{T}) \Phi_\mu = \exp(-\op{T}) \op{\tau}_\mu \Phi_0$,
+which yields equations
+\begin{equation}
+	\mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0}_{\Nelec} = 0
+	\label{eqn:CCamplitudes}
+\end{equation}
+one for each $\mu$.
+In truncated \CC methods, where only some of the terms of \eqref{eqn:ExcitationCC} are kept,
+we can use \eqref{eqn:ExcitationCCsum} to generate exactly one equation
+for each amplitude $\mu$.
+In other words the $\mu$ in \eqref{eqn:CCamplitudes} is just taken to run over the same
+index range as in the expansion \eqref{eqn:ExcitationCCsum} for the truncated
+excitation operator $\op{T}$.
 
-\subsection{Coupled-Cluster}
-\todo[inline,caption={}]{
-	\begin{itemize}
-		\item Explain ansatz
-		\item Mention size-consistency, size-extensivity
-		\item Show working exquations (needed later)
-		\item No derivation, brief
-	\end{itemize}
-}
+\defineabbr{CCD}{CCD\xspace}{Coupled cluster doubles}
+Numerically solving for the \CC amplitudes in \eqref{eqn:CCamplitudes}
+amounts to a root-finding problem,
+where the parameters is the set of all amplitudes $\{t_\mu\}_{\mu}$.
+This is typically approached by minimising the residuals
+\begin{equation}
+	r_\mu = \mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0}_{\Nelec}
+	\label{eqn:CCresidual}
+\end{equation}
+iteratively until numerically $r_\mu = 0$ for all $\mu$.
+Even though this problem is easier compared to the
+variational \CC ansatz,
+the working equations resulting from the expressions \eqref{eqn:CCresidual}
+are typically all but simple.
+For example let us consider the simplest coupled-cluster ansatz, where
+\[ \op{T} = \op{T}_2 = \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab} \]
+called coupled-cluster doubles~(\CCD).
+A proper derivation~\cite{Hurley1976,Bartlett1978,Crawford2007,Hodecker2016}
+starting from \eqref{eqn:CCamplitudes}
+yields the equations
+\begin{equation}
+\begin{aligned}
+	r_{ij}^{ab}
+		&= \eriAsym{ab}{ij} \\
+		%
+		&+ \sum_e f_{ae} \, t_{ij}^{eb}
+		 - \sum_e f_{be} \, t_{ij}^{ea}
+		 - \sum_m f_{mi} \, t_{mj}^{ab}
+		 + \sum_m f_{mj} \, t_{mi}^{ab} \\
+		%
+		&+ \frac12 \sum_{mn} \eriAsym{mn}{ij} \, t_{mn}^{ab}
+		+ \frac12 \sum_{ef} \eriAsym{ab}{ef} \, t_{ij}^{ef} \\
+		%
+		&+ \sum_{me} \eriAsym{mb}{ej} \, t_{im}^{ae}
+		 - \sum_{me} \eriAsym{mb}{ei} \, t_{jm}^{ae} \\
+		&- \sum_{me} \eriAsym{ma}{ej} \, t_{im}^{be}
+		 + \sum_{me} \eriAsym{ma}{ei} \, t_{jm}^{be} \\
+		%
+		&- \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{mn}^{af} \, t_{ij}^{eb}
+		 + \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{mn}^{bf} \, t_{ij}^{ea} \\
+		&- \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{in}^{ef} \, t_{mj}^{ab}
+		 + \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{jn}^{ef} \, t_{mi}^{ab} \\
+		&+ \frac14 \sum_{mnef} \eriAsym{mn}{ef} \, t_{mn}^{ab} \, t_{ij}^{ef}
+		 + \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{im}^{ae} \, t_{jn}^{bf} \\
+		&- \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{jm}^{ae} \, t_{in}^{bf}
+		 - \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{im}^{be} \, t_{jn}^{af} \\
+		&+ \frac12 \sum_{mnef} \eriAsym{mn}{ef} \, t_{jm}^{be} \, t_{in}^{af}
+\end{aligned}.
+	\label{eqn:CCDworking}
+\end{equation}
+for the \CCD residual $r_{ij}^{ab}$.
+They involve multiple contractions over the
+antisymmetrised \ERI tensor from remark \vref{rem:ERI},
+the amplitudes $t_{ij}^{eb}$ and elements of the Fock matrix $\mat{f}$ in the \SCF orbital basis.
+This latter matrix is defined as
+\[ \mat{f} = \tp{\mat{C}_F} \mat{F} \mat{C}_F \in \C^{\Norb\times\Norb}.\]
+If the canonical \HF ansatz of \eqref{eqn:HFequations} is used $\mat{f}$ will be diagonal
+and equivalent to $\diag(\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_{\Norb})$.
+The corresponding \CCD energy expression
+\begin{equation}
+	E_\text{CCD} = \frac14 \sum_{ijab} \eriAsym{ij}{ab} t_{ij}^{ab}.
+	\label{eqn:CCDenergy}
+\end{equation}
+can be computed by simplifying \eqref{eqn:CCenergy}.
+Since the rank-4 tensor $t_{ij}^{ab}$ occurs in the expression for the
+$\op{T}_2$ excitation operator,
+this tensor is usually called the $T_2$-amplitudes tensor as well.
+Comparing the structure of \eqref{eqn:energyMPtwo} and \eqref{eqn:CCDenergy},
+the name of the expression \eqref{eqn:amplitudesMPtwo} in {\MP}2 finally becomes apparent.
 
+For higher-order methods like CCSD, where $\op{T} = \op{T}_1 + \op{T}_2$,
+or CCSDT, were $\op{T}_3$ is considered on top,
+the expressions for the working equations \eqref{eqn:CCresidual}
+are even more involved.
+In turn these methods become rather expensive as well,
+\eg CCSD scales as $\bigO(\Nbas^6)$ and CCSDT as $\bigO(\Nbas^8)$.
+Nevertheless \CC methods are very popular and widely adopted in quantum-chemistry.
+Firstly because they converge systematically towards the \FCI energy
+as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
+and secondly because \emph{all} \CC methods are size-consistent
+--- unlike the truncated CI methods we mentioned above.
+
+\defineabbr{ADC}{ADC\xspace}{Algebraic-diagrammatic construction}
+\subsection{Excited states methods}
+In most of our discussion up to this point we have only focused
+on obtaining an approximation to the ground state of the electronic Schrödinger
+equation.
+In some applications of electronic structure theory, however,
+electronic excitations play a role.
+Examples include the interaction of UV photons or photons of visible light
+with the electronic structure in a dye or a solar cell
+or more generally any photo-activated chemical reaction.
+Whenever this is the case the modelling of multiple electronic states at an equal footing
+is required.
+
+\todoil{Find one citation for each method}
+From the methods discussed so far only \FCI and the truncated CI methods
+amount to describe excited states without additional modification,
+because in these methods one may simply solve the full or truncate CI matrix
+for more than one eigenpair.
+These are not the only excited states methods in existence.
+In fact to each of the other methods we have discussed
+so far one is able to appoint at least one analogue~\cite{Dreuw2005}.
+For example for Hartree-Fock, there is configuration-interaction singles
+or time-dependent \HF and
+for coupled-cluster there are the equation-of-motion and linear-response coupled-cluster theories.
+Last but not least the algebraic-diagrammatic construction scheme~(\ADC)
+of the polarisation propagator at various orders is formulated
+on top of a Møller-Plesset ground state
+and can thus be thought of as an \MP for excited states.

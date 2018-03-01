@@ -1,0 +1,35 @@
+[
+	node distance=0.7 and 1.1,
+	box/.style={rectangle,draw,fill=white,minimum width=5.5cm,align=center,
+				font=\smaller, text width=5.2cm},
+	init/.style={box,minimum height=0.5cm},
+	fockup/.style={box,minimum height=1.1cm,fill=red!12!white},
+	extra/.style={box,minimum height=1.5cm},
+	coeffup/.style={box,minimum height=1.5cm,fill=blue!12!white},
+	post/.style={->,shorten <=0.5pt,>=stealth',semithick},
+	label/.style={font=\smaller,text width=5.5cm,
+					align=center,yshift=0.2cm},
+]
+\def\outshift{0.4}
+
+\node [init] (gdminit) {Initial coefficients $\mat{C}^{(0)}$};
+\node [fockup,below=of gdminit]  (gdmfock)
+	{Fock matrix \update: $\mat{F}^{(i)}
+		 = \mat{F}\left[\mat{C}^{(i)} \tp{\left(\mat{C}^{(i)}\right)} \right]$};
+\node [extra,below=of gdmfock]  (gdmgrad)
+	{Compute gradient $\mat{g}^{(i)}$
+	of SCF energy wrt. parameters $\mat{U}$ of
+	orbital rotation $\mat{C}^{(i+1)} = \mat{C}^{(i)} \mat{U}$.
+	This requires $\mat{F}^{(i)}$.};
+\node [coeffup,below=of gdmgrad]  (gdmcoeff)
+	{With $\mat{g}^{(i)}$ perform one step of
+	quasi-Newton minimisation on coefficient
+	manifold $\mathcal{C}$ to yield $\mat{U}$, thus $\mat{C}^{(i+1)}$};
+\draw [post] (gdminit.south) --
+	 node [anchor=west,right] {\smaller[2]$i=0$}
+	 (gdmfock.north);
+\draw [post] (gdmfock.south) -- (gdmgrad.north);
+\draw [post] (gdmgrad.south) -- (gdmcoeff.north);
+\draw [post] (gdmcoeff.west) -- ($ (gdmcoeff.west) - (\outshift,0) $)
+		-- node [sloped,anchor=south] {\smaller[2]$i\leftarrow i+1$}
+		($ (gdmfock.west) - (\outshift,0) $) -- (gdmfock.west);

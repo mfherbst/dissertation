@@ -35,8 +35,10 @@
 \node [boxp] (Eigen) [below=of bohrium] {Eigen};
 
 % Upper layers
-\node [box,text width=2cm,above=0.55cm of inter] (code) {Algorithms e.g. in \gscf};
-\node [box] (integrals) [right=of code,text width=2cm,yshift=0.155cm] {e.g. Integrals in \gint};
+\node [box,text width=2cm,above=0.8cm of inter,anchor=south] (code) {Algorithms e.g. SCF};
+\node [box] (integrals) [text width=2cm,anchor=north]
+	at ($ (code.north) -  (inter.north) + (upmat.north) $)
+	{e.g. integrals for HF discretisation};
 \draw [pre] (integrals) -- (upmat);
 \draw [pre] (inter) -- (code);
 

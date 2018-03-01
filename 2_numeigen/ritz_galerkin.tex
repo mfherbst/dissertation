@@ -8,7 +8,7 @@ that $\Op{A}$ uniquely defines a sesquilinear form
 \[ a(u, v) = \braket{u}{\Op{A} v}_\hilbert \]
 for $(u, v) \in D(\Op{A}) \times D(\Op{A})$.
 
-\subsection{The form domain}
+\subsection{Form domains of operators}
 Even though $\Op{A}$ might only be self-adjoint on the domain $D(\Op{A})$,
 the form $a(\slot, \slot)$ can often be defined sensibly
 on a larger domain $Q(\Op{A})$, called the \newterm{form domain} of $\Op{A}$.
@@ -75,7 +75,8 @@ one can show that any such eigenpair satisfies
 as well, the so-called \newterm{weak formulation} of the eigenproblem.
 In contrast to this, \eqref{eqn:EigenproblemStrong} is sometimes
 referred to as the \newterm{strong formulation}.
-A consequence of the Lax-Milgram theorem \vref{thm:LaxMilgram}
+A consequence of the Lax-Milgram theorem~\cite{Helffer2013}\todo{find page}
+% TODO OPTIONAL \vref{thm:LaxMilgram}
 and the semi-boundedness of $\Op{A}$
 is that a solution in the weak sense implies a solution in the strong sense
 as well, making both formulations equivalent.
@@ -281,7 +282,7 @@ for solving the discretised problem \eqref{eqn:DiscretisedEigenproblem}.
 	\item It should be numerically feasible to solve \eqref{eqn:DiscretisedEigenproblem}.
 		In other words \emph{both} computing $\mat{A}$
 		and determining its eigenpairs
-		should be possible.
+		should be viable.
 	\item The convergence in corollary \ref{cor:Convergence}
 		should be fast and systematic.
 		In other words the basis type should
@@ -342,3 +343,12 @@ In either case the bottom end of the spectrum of $\mat{A}$
 will always carry physical meaning in our cases if the basis
 set satisfies remark \vref{rem:ChoiceBasisFunction}.
 \end{rem}
+
+\todo[inline,caption={}]{
+	Talk about resonance processes and the stabilisation method
+	for modelling continuum states.
+	\begin{itemize}
+		\item \url{https://journals.aps.org/pra/abstract/10.1103/PhysRevA.1.1109}
+		\item \url{http://pubs.acs.org/doi/abs/10.1021/j100396a027}
+	\end{itemize}
+}
