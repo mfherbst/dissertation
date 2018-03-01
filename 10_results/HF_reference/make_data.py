@@ -14,14 +14,20 @@ with open(dir_of_this_script + "/literature.yaml") as f:
 with open(dir_of_this_script + "/summary.yaml") as f:
     cbsdata = yaml.safe_load(f)
 
-CBS_atoms = ["Li", "B", "C", "N", "O", "F",
-             "Na", "Al", "Si", "P", "S", "Cl"]
+CBS_systems = ["Li", "B", "C", "N", "O", "F",
+               "Na", "Al", "Si", "P", "S", "Cl",
+               "B+", "C-", "O+", "F-",
+               "Al+", "Si-", "S+", "Cl-"]
 
 for cset in cbsdata:
-    if cset.get("atom") not in CBS_atoms:
+    system_key = "system"
+    if system_key not in cset:
+        system_key = "atom"
+
+    system = cset[system_key]
+    if system not in CBS_systems:
         continue
 
-    atom = cset["atom"]
     source = "CBL" + "".join([str(c) for c in cset["orders"]])
     value = cset["cbs"]
 
@@ -36,7 +42,7 @@ for cset in cbsdata:
     # the said nuber of digits, then convert back to float.
     value = float(dfmt.format(value, digits))
 
-    data["unrestricted"][atom] = {
+    data["unrestricted"][system] = {
         "value": value,
         "source": source,
     }

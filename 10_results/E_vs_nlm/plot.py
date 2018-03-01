@@ -69,7 +69,11 @@ def plot_orben_vs_bas(vals, alphas=True, selection=None):
 
 def plot_EHF_vs_bas(values, full_O=False, ignore_regions=[]):
     plt.close()
-    plt.figure(figsize=(5.5, 3.5))
+
+    if full_O:
+        plt.figure(figsize=(5.5, 2.9))
+    else:
+        plt.figure(figsize=(5.5, 3.5))
 
     litfile = dir_of_this_file + "/HF_reference.yaml"
     with open(litfile, "r") as f:
@@ -179,6 +183,7 @@ def main():
     plt.savefig("ehf_vs_nlm.pdf", bbox_inches="tight")
 
     plot_EHF_vs_bas([vals_o], full_O=True)
+    plt.ylim([None, 1.4e-3])
     plt.savefig("ehf_vs_nlm_O.pdf", bbox_inches="tight")
 
 

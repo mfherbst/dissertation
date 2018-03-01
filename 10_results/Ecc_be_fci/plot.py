@@ -41,7 +41,7 @@ def setup():
 
 def plot_cc_vs_nbas(data, reference):
     plt.close()
-    fig = plt.figure(figsize=(5.5, 3.5))
+    fig = plt.figure(figsize=(4.8, 2.8))
     ax1 = fig.add_subplot(111)
     ax2 = ax1.twiny()
 

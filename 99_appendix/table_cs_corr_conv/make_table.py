@@ -50,7 +50,7 @@ def prepare_rows(data):
     headings = [
         [
             "atom", "",
-            r"\multicolumn{" + str(2 * n_bass) + r"}{c}{\CS basis sets}",
+            r"\multicolumn{" + str(2 * n_bass) + r"}{c}{Coulomb-Sturmian basis set}",
         ], [
             r"\textit{$\kexp$}", "",
         ] + [
@@ -73,13 +73,17 @@ def make_table(data, period, label):
 
     caption = "Hartree-Fock and MP2 ground state energies " + \
         "as well as MP2 correlation energies~(MP2 corr.) for the atoms " + \
-        "of the " + period + " period for a range of \CS basis sets."
+        "of the " + period + " period and a range of \CS basis sets."
+
+    shortcap = "CS-based HF and MP2 ground state energies for atoms of the " + \
+            period + " period"
 
     ret = []
     ret.append(r"\ctable[")
     ret.append(r"    cap=HF and MP2 energies for the " + period +
                " period.,")
     ret.append(r"    caption=" + caption + ",")
+    ret.append(r"    cap=" + shortcap + ",")
     ret.append(r"    botcap,")
     ret.append(r"     label=tab:" + label + ",")
     ret.append(r"]{" + colstring + "}{}{")
