@@ -32,7 +32,7 @@ def make_element_rows(elementdata, basis_sets):
                 row.append(r"\multicolumn{2}{c}{}")
             else:
                 value = "{:.5f}".format(values[0])
-                value = [ "$" + v + "$" for v in value.split(".")]
+                value = ["$" + v + "$" for v in value.split(".")]
                 row.extend(value)
 
     rows[-1][-1] += r" \ML"
@@ -68,7 +68,7 @@ def prepare_rows(data):
     return headings, colstring, rows
 
 
-def make_table(data, period, label):
+def make_table(data, period, label, continued=False):
     headings, colstring, rows = prepare_rows(data)
 
     caption = "Hartree-Fock and MP2 ground state energies " + \
@@ -76,16 +76,20 @@ def make_table(data, period, label):
         "of the " + period + " period and a range of \CS basis sets."
 
     shortcap = "CS-based HF and MP2 ground state energies for atoms of the " + \
-            period + " period"
+        period + " period"
 
     ret = []
     ret.append(r"\ctable[")
     ret.append(r"    cap=HF and MP2 energies for the " + period +
                " period.,")
+    ret.append(r"    mincapwidth=0.98\textwidth,")
     ret.append(r"    caption=" + caption + ",")
-    ret.append(r"    cap=" + shortcap + ",")
+    ret.append(r"    pos=tbph,")
     ret.append(r"    botcap,")
+    ret.append(r"    cap=" + shortcap + ",")
     ret.append(r"     label=tab:" + label + ",")
+    if continued:
+        ret.append(r"    continued,")
     ret.append(r"]{" + colstring + "}{}{")
 
     # Add headings
@@ -131,27 +135,38 @@ def main():
 
     # TODO One could make this table alternatively a continuing table,
     #      i.e. refer to all periods by the same table name.
-    tble = []
     for p in range(1, 6):
-        data_part = [d for d in data if is_period(d, p)]
-
-        if len(data_part) <= 0:
+        chunk = [d for d in data if is_period(d, p)]
+        if len(chunk) <= 0:
             continue
 
+        data_parts = [chunk]
         if p == 1:
             period = "1st"
         elif p == 2:
             period = "2nd"
+            chunk1 = [d for d in chunk if d["m_max"] < 2]
+            chunk2 = [d for d in chunk if d["m_max"] >= 2]
+            data_parts = [chunk1, chunk2]
+            del chunk1
+            del chunk2
         elif p == 3:
             period = "3rd"
         else:
             period = str(p) + "th"
-        label = "CSCorrConv" + str(p)
-        tble.extend(make_table(data_part, period=period, label=label))
-        tble.append("")
 
-    with open("table_cs_corr_conv.tex", "w") as f:
-        f.write("\n".join(tble))
+        label = "CSCorrConv" + str(p)
+        for i, chunk in enumerate(data_parts):
+            contd = i > 0
+            tble = make_table(chunk, period=period, label=label,
+                              continued=contd)
+
+            extra = ""
+            if contd:
+                extra = "." + str(i)
+            filename = "table_cs_corr_conv_" + str(p) + extra + ".tex"
+            with open(filename, "w") as f:
+                f.write("\n".join(tble))
 
 
 if __name__ == "__main__":

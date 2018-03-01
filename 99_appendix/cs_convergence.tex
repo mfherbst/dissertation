@@ -1,25 +1,37 @@
-\chapter{Computational results of the Coulomb-Sturmian correlation convergence study}
+\chapter{Coulomb-Sturmian-based {\MP}2 ground state energies}
+\chaptermark{Coulomb-Sturmian-based {\MP}2 energies}
 \label{apx:CSCorrelationConvergence}
 
-% TODO Maybe also plot convergence of Be FCI with the basis sets
+% TODO OPTIONAL
+%      Maybe also plot convergence of Be FCI with the basis sets
 %      we did computations with.
 
-\begin{table}
-	\centering
-	\input{Be_hf_mp2_fci_nlm_table.tex}
-	\caption{Coulomb-Sturmian calculations of the Beryllium atom
-		at Hartree-Fock, MP2 and Full-CI level of theory.
-		For all calculations $\kexp = 1.985$ was used.
-		The heading of the table shows the values for
-		$(\nmax, \lmax, \mmax)$ as well as the
-		number of basis functions
-		in the truncated CS basis.}
-	\label{tab:CStruncationEnergies}
-\end{table}
+% TODO OPTIONAL
+%\begin{table}
+%	\centering
+%	\input{Be_hf_mp2_fci_nlm_table.tex}
+%	\caption{Coulomb-Sturmian calculations of the Beryllium atom
+%		at Hartree-Fock, MP2 and Full-CI level of theory.
+%		For all calculations $\kexp = 1.985$ was used.
+%		The heading of the table shows the values for
+%		$(\nmax, \lmax, \mmax)$ as well as the
+%		number of basis functions
+%		in the truncated CS basis.}
+%	\label{tab:CStruncationEnergies}
+%\end{table}
 
+The tables presented in this appendix,
+show computed ground state energies for the atoms of the second
+and third period of the periodic table
+at Hartree-Fock and second-order Møller-Plesset perturbation theory level.
+For each atom only one \CS exponent $\kexp$,
+but a range of \CS basis sets is employed.
+Table C.1 continues on the next page.
 
-The data in this appendix shows the CS HF and MP2 energies
-for various nlm values but the same k
+\hfill
+
+\input{table_cs_corr_conv_2.tex}
 \begin{landscape}
-\input{table_cs_corr_conv.tex}
+\input{table_cs_corr_conv_2.1.tex}
+\input{table_cs_corr_conv_3.tex}
 \end{landscape}
