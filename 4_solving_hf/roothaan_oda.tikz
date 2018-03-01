@@ -25,7 +25,8 @@
 	 Build $\mat{D}^{(i+1)}$ by Aufbau principle};
 \node [coeffup, below=of odadiag] (odadens)
 	{Find $\tilde{\mat{D}}^{(i+1)}$ resulting in the minimal SCF energy
-		along the line from $\mat{D}^{(i+1)}$ to $\tilde{\mat{D}}^{(i)}$, \eqref{eqn:ODAupDens}};
+		along the line from $\mat{D}^{(i+1)}$ to $\tilde{\mat{D}}^{(i)}$, (5.52)};
+	%\eqref{eqn:ODAupDens}};
 %
 % TODO check for convergence
 %

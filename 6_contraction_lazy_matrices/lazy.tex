@@ -190,13 +190,13 @@ By providing appropriate parameters to the high-level
 function a user of the implemented code may still overwrite
 which solver implementation
 is chosen and what precise setup parameters are passed to it.
-Currently a selection of methods from the LAPACK~\todo{cite}
+Currently a selection of methods from the LAPACK~\cite{LAPACK}
 linear algebra library as well as the ARPACK~\cite{ARPACK} package
 for Arnoldi diagonalisation methods is available from \lazyten.
 The selection mechanism between the different algorithms
 for one particular task is not yet extremely sophisticated.
 Generally it will for example favour
-direct diagonalisation methods from LAPACK~\todo{cite}
+direct diagonalisation methods from LAPACK~\cite{LAPACK}
 if many eigenpairs are requested
 or if the supplied system matrix is already dense.
 On the other hand Arnoldi methods are selected for lazy matrices
@@ -207,7 +207,7 @@ with a stored vector unavoidably requires computation,
 \lazyten addresses the employed \LA back end through an abstracted interface,
 such that switching behaviour on this layer is possible as well.
 At the present stage armadillo~\cite{Armadillo}
-as a LAPACK\todo{cite}-based back end
+as a LAPACK-based back end
 as well as Bohrium~\cite{Kristensen2016array,Kristensen2016streaming}
 as an array-operation-based back end are currently available.
 Rather inconveniently switching the back end

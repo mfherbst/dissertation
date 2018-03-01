@@ -13,7 +13,7 @@ for computing the required matrix-vector products.
 The use case Davidson had in mind back then was the
 diagonalisation of the CI or Full-CI matrix,
 which is --- even today --- too large to keep in memory,
-see remark \vref{rem:EvalFCIMatrix}.
+see remark \ref{rem:EvalFCIMatrix} on page \pageref{rem:EvalFCIMatrix}.
 
 Nowadays \contraction-based methods
 are rather widespread in quantum chemistry.
@@ -36,7 +36,7 @@ without building the system matrix in memory at all.
 
 From the algorithmic point of view one should notice,
 that especially the direct eigensolvers and linear solvers algorithms
-as they are implemented in LAPACK\todo{cite}
+as they are implemented in LAPACK\cite{LAPACK}
 do require random access into the matrix,
 are thus not available for a \contraction-based ansatz.
 In practice this an acceptable restriction.
