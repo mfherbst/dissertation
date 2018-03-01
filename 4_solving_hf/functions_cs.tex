@@ -1,6 +1,6 @@
 \subsection{Coulomb-Sturmian-type orbitals}
 \label{sec:BasisCS}
-Coulomb Sturmians~(CS) are another type of atom-centred basis functions,
+Coulomb-Sturmians~(CS) are another type of atom-centred basis functions,
 which so far have seen little attention in electronic structure theory.
 Similar to Slater-type orbitals
 they were introduced~\cite{Shull1959}
@@ -36,7 +36,7 @@ with $\kexp \in \R$ arbitrary to yield
 \end{equation}
 This equation has a countably infinite number of solutions
 $\varphi^\text{CS}_\mu \in H^1(\R^3, \C)$,
-which are the so-called \newterm{Coulomb Sturmians}.
+which are the so-called \newterm{Coulomb-Sturmians}.
 They are \newterm{isoenergetic},
 \ie all have the identical energy eigenvalue
 \begin{equation}
@@ -79,13 +79,13 @@ with normalisation constant
 \[ N_{nl} = \frac{2 \kexp^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}}. \]
 Unsurprisingly this functional form is closely related to the radial part of the
 hydrogen-like orbitals \eqref{eqn:HydrogenRadialSolution}.
-In fact the Coulomb Sturmians can be constructed
+In fact the Coulomb-Sturmians can be constructed
 from the equivalent hydrogen-like orbitals
 just by replacing the factors $Z/r$ by $\kexp$.
 In analogy one therefore commonly uses the spectroscopic terminology
 $1s$, $2s$, $2p$, $\ldots$
 to describe the respective triples
-of quantum numbers $(n, l, m)$ for Coulomb Sturmians as well.
+of quantum numbers $(n, l, m)$ for Coulomb-Sturmians as well.
 Given that both {\STO}s as well as \CS functions are exponential type orbitals
 of the form radial part times spherical harmonic,
 their radial parts \eqref{eqn:CSradialSolution} and \eqref{eqn:STOradial}
@@ -101,7 +101,7 @@ Even though this difference is subtle,
 it is the key ingredient to derive the efficient evaluation schemes
 of the \CS-\ERI tensor discussed further down this section.
 
-In their original work \citet{Shull1959} did not yet use the term ``Coulomb Sturmians''
+In their original work \citet{Shull1959} did not yet use the term ``Coulomb-Sturmians''
 to refer to the functions $\varphi^\text{CS}_\mu$.
 This name was only introduced a few years later
 by Rotenberg~\cite{Rotenberg1962,Rotenberg1970},
@@ -139,7 +139,7 @@ which is of Sturm-Liouville form with
 \begin{align*}
 	p(r) &= 1 & q(r) &= \frac{\kexp^2}{2} + \frac{l (l+1)}{r^2} & \lambda_n w(r) = \frac{n\kexp}{r}
 \end{align*}
-One consequence of this is that Coulomb Sturmians satisfy
+One consequence of this is that Coulomb-Sturmians satisfy
 the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
 \begin{equation}
 	\int_{\R^3} \cc{\left(\varphi^\text{CS}_{nlm}(\vec{r})\right)}
@@ -148,9 +148,9 @@ the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
 	\label{eqn:CoulombSturmianWeightedOrtho}
 \end{equation}
 Most importantly, however, one is able to show
-that the countably infinite set of all Coulomb Sturmians $\{\varphi^\text{CS}_\mu\}_{\mu}$
+that the countably infinite set of all Coulomb-Sturmians $\{\varphi^\text{CS}_\mu\}_{\mu}$
 is a complete basis for $H^1(\R^3, \R)$~\cite[Theorem 2.3.4]{Avery2008}.
-In the original context of Shull and Löwdin this implies that Coulomb Sturmians
+In the original context of Shull and Löwdin this implies that Coulomb-Sturmians
 are not only able to represent the bound states
 of any atomic Schrödinger operator $\Op{H}_{\Nelec}$,
 but the continuum as well.
@@ -304,7 +304,7 @@ For this we first consider the computation of the integrals
 \eqref{eqn:Tbas} to \eqref{eqn:Sbas},
 starting with the overlap matrix.
 Its elements $S_{\mu\mu'}$ can be computed
-for any two Coulomb Sturmians%
+for any two Coulomb-Sturmians%
 \footnote{We will drop the ``CS'' superscripts for basis functions
 and radial parts in the remainder of this section for simplicity.}
 $\varphi_{\mu}$ and $\varphi_{\mu'}$
@@ -369,8 +369,8 @@ which describes the treatment in a more general context
 and the specialised arguments presented in the documentaton of
 \sturmint~\cite{sturmintWeb}.
 Due to the structure of the radial part $R_{nl}(r)$
-one may write the product of two Coulomb Sturmians as a
-sum over Coulomb Sturmians with twice the exponent, \ie
+one may write the product of two Coulomb-Sturmians as a
+sum over Coulomb-Sturmians with twice the exponent, \ie
 \newcommand{\csC}{\mathcal{C}}
 \begin{equation}
 	\cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r})
@@ -379,7 +379,7 @@ sum over Coulomb Sturmians with twice the exponent, \ie
 \end{equation}
 This expansion looks familiar to the density-fitting approximation
 in the context of \cGTO basis sets,
-but is in fact \emph{exact} in the case of Coulomb Sturmians.
+but is in fact \emph{exact} in the case of Coulomb-Sturmians.
 Since
 \[ \cc{\left( \cc{\varphi_{\mu_1}(\vec{r})} \varphi_{\mu_2}(\vec{r}) \right)} =
 \cc{\varphi_{\mu_2}(\vec{r})} \varphi_{\mu_1}(\vec{r}) \]
@@ -476,7 +476,7 @@ we multiply this equation with
 $\cc{\left(\varphi_{\mu'}\right)}(2\kexp, \vec{r})$
 from the right and integrate over $\R^3$.
 Using the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrtho}
-for the $2\kexp$ Coulomb Sturmians
+for the $2\kexp$ Coulomb-Sturmians
 this yields
 \begin{equation}
 	\begin{aligned}
@@ -651,12 +651,12 @@ Whilst \CS discretisations on the one hand
 do not require \contraction-based methods to be feasible,
 they still allow for improved contraction if such methods are employed.
 
-While Coulomb Sturmians can only be used for simulating atoms,
+While Coulomb-Sturmians can only be used for simulating atoms,
 a range of more generalised Sturmian-type basis functions exist%
 ~\cite{Hoggan2009,Avery2011},
 which can be applied, for example, to molecular systems as well.
 Especially when it comes to evaluating the two-electron integrals,
-these share some of the properties of the Coulomb Sturmians,
+these share some of the properties of the Coulomb-Sturmians,
 but both the mathematical machinery as well as the numerics is more involved.
 \CS functions can thus be seen as a first step towards these
 more general Sturmian-type basis functions.
