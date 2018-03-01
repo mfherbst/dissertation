@@ -74,7 +74,7 @@ def plot_zeffn_homo(data, kind="Clementi"):
     HOMO_Zeffs = np.array([Zeff_HOMO(gint.element.by_atomic_number(at).symbol,
                                      kind=kind) / period_of(at)
                            for at in atnums])
-    plt.plot(atnums, HOMO_Zeffs, "x", label=r"$\zeta_\text{Clementi}$ HOAO")
+    plt.plot(atnums, HOMO_Zeffs, "x", label=r"$\zeta_\text{Clementi}$ HO")
 
 
 def plot_zeffn_average(data, kind="Clementi"):

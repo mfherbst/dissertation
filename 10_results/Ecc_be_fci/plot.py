@@ -69,7 +69,8 @@ def plot_cc_vs_nbas(data, reference):
     ax2.set_xticklabels([
         r"$({0:},{1:},{2:})$".format(*nlm) for nlm in nlms
     ], fontdict={"fontsize": 7})
-    ax2.set_xlabel(r"Coulomb-Sturmian basis set $(n,l,m)$")
+    ax2.set_xlabel(r"Coulomb-Sturmian basis set "
+                   r"$(n_\text{max},l_\text{max},m_\text{max})$")
 
 
 def main():

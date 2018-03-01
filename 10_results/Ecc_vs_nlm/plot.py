@@ -62,7 +62,7 @@ def build_atom_chunks(data):
     return ret
 
 
-def plot_y_vs_nbas(data, ykey):
+def plot_y_vs_nbas(data, ykey, kind="plot", rel_error=False):
     plt.close()
     fig = plt.figure(figsize=(4.8, 2.8))
     ax1 = fig.add_subplot(111)
@@ -70,9 +70,12 @@ def plot_y_vs_nbas(data, ykey):
 
     all_nlms = set()
     for chk in build_atom_chunks(data):
-        relative = chk[ykey] / chk[ykey][-1]
-        ax1.plot(chk["n_bas"], relative, "x:", label=chk["symbol"],
-                 linewidth=0.2)
+        if rel_error:
+            relative = 1 - chk[ykey] / chk[ykey][-1]
+        else:
+            relative = chk[ykey] / chk[ykey][-1]
+        getattr(ax1, kind)(chk["n_bas"], relative, "x:", label=chk["symbol"],
+                           linewidth=0.2)
         for nlm in chk["nlm"]:
             all_nlms.add(nlm)
 
@@ -93,13 +96,14 @@ def plot_y_vs_nbas(data, ykey):
     ax2.set_xticklabels([
         r"$({0:},{1:},{2:})$".format(*nlm) for nlm in all_nlms
     ], fontdict={"fontsize": 7})
-    ax2.set_xlabel(r"Coulomb-Sturmian basis set $(n,l,m)$")
+    ax2.set_xlabel(r"Coulomb-Sturmian basis set "
+                   r"$(n_\text{max},l_\text{max},m_\text{max})$")
     return ax1
 
 
 def plot_total_vs_bas(data):
-    ax = plot_y_vs_nbas(data, ykey="Egs")
-    ax.set_ylabel(r"Fraction of total energy")
+    ax = plot_y_vs_nbas(data, ykey="Egs", rel_error=True)
+    ax.set_ylabel(r"Fraction of total energy missing")
 
 
 def plot_cc_vs_bas(data):

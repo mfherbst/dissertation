@@ -1,8 +1,8 @@
 \section{Convergence at Hartree-Fock level}
 \label{sec:CSconvergenceHF}
 In chapter~\vref{ch:qchem} we mentioned that Hartree-Fock
-is not only a very good approximative method for simulating chemical systems,
-but it furthermore forms the reference for many more accurate Post-HF methods.
+is typically the first step for a quantum-chemical simulation
+with many accurate Post-HF methods building on top of the \HF result.
 Because of this as well as its simplicity it is a very good
 starting point for our investigation of the convergence
 of Coulomb-Sturmian-based discretisations in quantum-chemical calculations.
@@ -10,7 +10,7 @@ To reduce the complexity further,
 we will not yet consider variations of the \CS exponent $\kexp$ in this as well as
 next few sections
 and only discuss the effect of changing the maximal quantum numbers
-$\nmax$, $\lmax$ and $\mmax$.
+$\nmax$, $\lmax$ and --- to a lesser extend --- $\mmax$.
 The reason for this is twofold.
 First of all already our initial discussion
 about the relative error and local energies of \CS discretisations
@@ -74,7 +74,7 @@ the maximal angular momentum $\lmax$ scales as
 	\label{eqn:NbasAmLimitedBasis}
 \end{equation}
 In other words if we manage to find a sensible upper bound for $\lmax$,
-which captures all of the angular part of the wave function,
+which captures all of the angular part of the \HF wave function,
 we can converge the radial part thereafter by just increasing the basis set size
 linearly.
 A key aspect of the next few sections will therefore be to find a suitable
@@ -140,7 +140,7 @@ for basis sets with more than $80$ atoms.
 
 The question is now whether all employed
 basis functions are actually required
-in order to represent the wave function properly.
+in order to represent the \HF wave function properly.
 From a physical point of view,
 we would not expect all angular momentum to be equally important
 for the description of the electronic ground state of a particular atom.
@@ -459,7 +459,7 @@ in figure \ref{fig:RMSOl_period2} suggests that limiting the angular
 momentum quantum numbers to $\lmax = 0$ is reasonable.
 Similar arguments for \ce{N} and \ce{P} suggest taking $\lmax = 1$ for these atoms.
 In other words we would expect the discretisation
-of the angular part of the wave function to be already well-converged
+of the angular part of the \HF wave function to be already well-converged
 for \CS discretisations with $\lmax = 0$ or $\lmax = 1$, respectively.
 Consequently we will only need to increase $\nmax$ further and further
 in order to converge the remaining radial part of the wave function as well.
@@ -472,8 +472,8 @@ we would expect to obtain a much faster convergence rate.
 	\centering
 	\includeimage{10_results/ehf_vs_nlm}
 	\caption[
-		Relative error in $E_\text{HF}$ versus the number of basis functions
-		for some \CS discretisations.
+		Relative error in $E_\text{HF}$ versus the basis size
+		for selected \CS discretisations
 	]{
 		Relative error in $E_\text{HF}$ versus the number of basis functions
 		for selected \CS basis sets of the form $(\nmax, \lmax, \lmax)$.
@@ -525,7 +525,7 @@ Even though the convergence is initially linear as well,
 the curves bend off at some point.
 The reason for this is that the truncation of the available
 set of angular momentum quantum numbers to at most $\lmax$ causes
-an error in the discretisation of the angular part of the wave function.
+an error in the discretisation of the angular part of the \HF wave function.
 At some point this error completely dominates,
 such that improving the radial part by increasing $\nmax$
 does not improve the relative error by much any more.
