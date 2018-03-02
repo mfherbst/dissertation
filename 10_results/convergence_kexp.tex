@@ -1,114 +1,194 @@
 \section{The effect of the Coulomb-Sturmian exponent}
 \label{sec:kexp}
-\todoil{TODO}
 
-changes of kexp on energies as well as energy compontens
-the trends only change very little if nlm is varied on top
-with generally the curves getting a lot flatter if larger basis sets are used
-
-
-
-
-discuss $\kexp$
-For the remaining discussion in this sections
-we have limited ourselves to rather small basis sets,
-that is we typically set $\lmax$ and $\mmax$ to values
-of 2 or less and $\nmax$ not larger than 6
-to save computational time.
-This should be a reasonable compromise,
-but further investigation has to show this.
-
-As can be seen in figure \vref{fig:EnergyTermsVsK}
-Smaller values of $\kexp$ lead to a slower decay of the orbitals,
-hence the electrons are forced to reside at a more
-distant place to the nucleus on average,
-which in turn leads to a rise in nuclear attraction energy.
-On the other hand larger $\kexp$ lead to more compressed orbitals,
-which drives up the repulsive coulomb interaction as well as the kinetic energy.
+In our discussion about the properties of Coulomb-Sturmian basis sets
+we have  neglected the effect of the \CS exponent $\kexp$ so far.
+Our main argument was that a \CS basis is complete regardless of the
+value of $\kexp$,
+such that for large enough \CS basis sets
+the result will not depend on $\kexp$ anyway.
+In practice the aim is of course to yield a sensible
+discretisation of the wave function in the smallest basis possible.
+For getting the best out of a particular truncated set,
+the value of $\kexp$ can therefore not be chosen completely arbitrary.
+This section is therefore devoted to a discussion
+of some general trends regarding
+the variation of obtained energies with $\kexp$.
+Furthermore we will discuss some methodologies
+for obtaining the optimal exponent $\kopt$
+with respect to minimising the \HF energy.
+These results will be presented for the
+atoms of the first two periods of the periodic table
+and discussed from a physical point of view.
 
 \begin{figure}
 	\centering
 	\includeimage{10_results/EHF_terms_vs_k}
-	\caption{Terms of the \HF calculation vs $\kexp$ for Be with a $(5,1,1)$ \CS basis}
+	\caption[
+		Plot of the \HF energy contributions
+		versus the Coulomb-Sturmian exponent $\kexp$.
+	]{
+		Plot of the \HF energy contributions
+		of the beryllium
+		atom versus the Coulomb-Sturmian exponent $\kexp$.
+		All calculations are done in a $(5,1,1)$ \CS basis.
+	}
 	\label{fig:EnergyTermsVsK}
 \end{figure}
-% TODO Electron-electron interaction mostly agnostic to k, a little lower with smaller k (i.e. larger orbitals)
 
-For larger basis sets the trends get smaller, hence k plays less of a role
-
-The net result for \HF as well as MP2 and FCI is shown in figure \vref{fig:FCI_vs_k}.
-One easily notices that the dependency of the energy wrt. $\kexp$ is a
-convex curve.
-Notice, that the optimal exponent $\kexp$ for the FCI S1 ground state
-is larger than the optimal exponent $\kexp$ for the description
-of the HF ground state.
-MP2 is in between but much closer to HF.
+In the \CS basis functions
+$\kexp$ only occurs in the radial part \eqref{eqn:RadialPartCsRepeated}.
+In the form of the exponential term $\exp(-\kexp r)$
+it influences how quickly the basis functions decay at infinity
+and in the form of the polynomial prefactor it determines
+the curvature of the radial functions as they oscillate between the radial nodes.
+Keeping this in mind let us consider figure \vref{fig:EnergyTermsVsK},
+which shows the changes to individual energy contributions
+of the \HF ground state energy as $\kexp$ is altered.
+The largest changes are apparent for the nuclear attraction energy,
+which decreases --- initially rather steeply --- as $\kexp$ is increased.
+This can be easily understood from a physical point of view:
+Since larger values of $\kexp$ imply a more rapid decay
+of the basis functions,
+the electron density on average stays closer to the nucleus,
+which in turn leads to a lower (more negative) interaction energy
+between electrons and nucleus.
+The converse effect happens for smaller values of $\kexp$,
+where the electron density is more expanded
+and thus on average further away from the nucleus.
+On the other hand the kinetic energy is related to the curvature of the wave function,
+which --- as described above --- increases for larger $\kexp$.
+In other words the trends of nuclear attraction energy and electronic kinetic energy
+oppose each other,
+with the kinetic energy being somewhat less effected.
+On the scale depicted in figure \ref{fig:EnergyTermsVsK}
+the variation of the electron-electron interaction,
+\ie both classical Coulomb repulsion as well as the exchange interaction combined,
+is much less pronounced.
+Only a very minor increase with $\kexp$ can be observed.
+The physical mechanism is again similar to the nuclear attraction
+energy term,
+namely that larger $\kexp$ compresses the wave function
+and thus leads to the electrons reside more closely to another,
+which increases the Coulomb repulsion between them.
+The exchange interaction is effected as well,
+but the changes are smaller and thus not visible.
 
 \begin{figure}
 	\centering
 	\includeimage{10_results/Efci_vs_k}
-	\caption{Energies vs $\kexp$ for Be with a $(5,1,1)$ \CS basis}
+	\caption[
+		Plot of the \HF, {\MP}2 and \FCI energies
+		versus the Coulomb-Sturmian exponent $\kexp$.
+	]{
+		Plot of the \HF, {\MP}2 and \FCI ground state energies
+		of beryllium
+		versus the Coulomb-Sturmian exponent $\kexp$.
+		The optimal exponent $\kopt$ for each
+		method is marked by a cross.
+		All calculations are done in a $(5,1,1)$ \CS basis.
+	}
 	\label{fig:FCI_vs_k}
 \end{figure}
-Optimal k for fci a bit larger, for mp2 goes in this direction,
-but overall still similar.
-
-The optimal value for $\kexp$ is very much dependent on the
-precise state.
-For the T1 state for example, the optimal $\kexp$
-is around the value for HF.
-
-As can be seen in figure \vref{fig:EHF_vs_k}
-for carbon,
-$\kopt$ depends on the choice of the basis as well.
-Generally speaking larger basis sets will favour
-smaller values of $\kopt$.
-This can be explained by the fact that \CS basis sets
-all share the same exponent.
-Since the largest contribution of the \HF energy
-originates from the nuclear attraction energy,
-small basis sets will overemphasize
-the nuclear attraction interaction,
-i.e. they will tend to larger values for $\kopt$
-in order to minimise the nuclear attraction energy.
-As the basis becomes larger,
-the extra basis functions allow for a balanced
-description of both the nuclear attraction
-as well as the electron repulsion
-and kinetic energy terms,
-which therefore allows to choose a smaller $\kopt$.
+Summing up all energy contributions leads to the blue curve
+in figure \vref{fig:FCI_vs_k},
+which shows the total Hartree-Fock energy versus
+the Coulomb-Sturmian exponent $\kexp$.
+From our discussion of the individual terms
+it is apparent that at small values for $\kexp$
+the increase in nuclear attraction energy dominates,
+such that the \HF energy increases rapidly.
+At large distances the kinetic energy and electron-electron
+interaction terms win, such that a convex curve
+for the plot $E_\text{HF}$ versus $\kexp$ results.
+Adding correlation effects by a treatment of the atom at {\MP}2 or \FCI level,
+does not change this overall behaviour much.
+Up to a large extend the curves are just shifted downwards by the
+correlation energy term.
+The shift is, however, not completely uniform.
+This can be seen if we consider the optimal \CS exponent $\kopt$,
+which is denoted by a cross in each of the plots of figure \ref{fig:FCI_vs_k}.
+This exponent of minimal energy shifts
+to slightly larger values going from \HF to {\MP}2 and finally to \FCI
+indicating that the amount of correlation energy is somewhat larger
+at exponents slightly above $\kopt$ for Hartree-Fock.
+Notice that $\kopt$ not only depends on the method used for modelling
+a particular state,
+but it well depends on the state as well.
+For example for modelling the first $T1$ excited state of beryllium
+a smaller value for $\kopt$ is obtained than the \FCI $\kopt$
+of the depicted $S0$ ground state.
 
 \begin{figure}
 	\centering
 	\includeimage{C_ene_gs_vs_k}
-	\caption{\HF energy vs $\kexp$ for a couple of basis sets and carbon.}
-	% Maybe do not have the minimum annotated in the graph but only have in
-	% the text instead
+	\caption[
+		Dependency of the \HF and {\MP}2 energies
+		on the \CS exponent $\kexp$
+		and the basis set
+	]{
+		Plot of the unrestricted
+		\HF and {\MP}2 ground state energies of carbon
+		versus the Coulomb-Sturmian exponent $\kexp$
+		in the $(4,2,2)$, $(5,2,2)$ and $(6,2,2)$ basis sets.
+		The optimal exponent $\kopt$ at \HF level
+		for each basis set is marked by a cross.
+	}
 	\label{fig:EHF_vs_k}
 \end{figure}
-Figure \vref{fig:EHF_vs_k} shows the change in the curvature
-of the energy vs. $\kexp$ graphs as the basis set size is increased.
-Generally speaking the curves become flatter and both the values of the
-\HF as well as the MP2 energies become more agnostic to the precise value of $\kexp$.
-Furthermore the optimal value for $\kexp$ shifts towards smaller values.
-This can be explained by the fact that with larger basis sets
-the basis has more freedom to represent both the core and the valence-like orbitals.
-Since the core-like orbitals, which are more contracted (larger $\kexp$, contribute
-larger to this energy, the small basis will choose a larger $\kexp$.
-Equivalently one can consider the dependence of the nuclear attraction
-energy wrt. $\kexp$.
 
-Another fact worth mentioning is that the MP2 correlation energy typically
-is much less dependant on too large values of $\kexp$ than too small values
-of $\kexp$.
-So for a correlated treatment of the carbon atom a too large value for $\kexp$
-is better than a too small value.
-In agreement with this recommendation is the realisation that
-MP2 calculations tend to have a larger $\kopt$ value, hence tending a bit more
-towards the FCI value for $\kopt$.
-Therefore if the \HF value for $\kexp$ is choosen larger than the optimum,
-the correlated treatment typically even benefits from this a bit.
+Since $\kexp$ only occurs in the radial part of the \CS basis functions
+the effect of its variation depends on the
+maximal principle quantum number $\nmax$ of the basis set.
+As larger and larger values of $\nmax$ are used,
+the discretisation of the radial part of the wave function
+becomes more and more complete,
+such that the choice of $\kexp$ in turn becomes less important.
+Figure \vref{fig:EHF_vs_k} shows this for the ground state energy of the carbon atom
+at unrestricted \HF and {\MP}2 level.
+Whilst a $(4,2,2)$ \CS basis reproduces largely the
+shape of the plots in figure \ref{fig:EHF_vs_k},
+for $(5,2,2)$ and $(6,2,2)$ the energy versus exponent curves
+become visibly flatter close to the optimal exponent (around $\kexp = 2.8$).
+The influence of increasing $\nmax$ is not the same
+for all values of $\kexp$.
+Instead the curves seem to bend down in the range $\kexp > 3$.
+In other words choosing a \CS exponent larger than $\kopt$
+will generally speaking lead to a smaller error
+than choosing a too large exponent%
+\footnote{We already noted this aspect in the context of discussing
+	the local energy plots in section \vref{sec:BasisCS}.}.
+Another conclusion we can draw from figure \ref{EHF_vs_k}
+is that the optimal value for the exponent $\kopt$
+depends on $\nmax$ as well
+as larger basis sets give rise to smaller values for $\kopt$.
+We can rationalise by taking the plots of the energy terms
+in figure \vref{fig:EnergyTermsVsK} into account.
+We already noticed above that the nuclear attraction energy
+is influenced by $\kexp$ most strongly.
+Additionally it is (by magnitude) the largest contribution to the \HF energy.
+In order to yield the minimal ground state energy
+in a small basis the dominating effect is therefore to
+minimise the nuclear attraction energy as much as possible.
+As a result the optimal exponent $\kopt$ takes comparatively large values.
+As the basis becomes larger a balanced description
+of the complete physics becomes possible,
+such that the electron repulsion and kinetic energy terms
+are described better as well
+and thus smaller values for $\kopt$ result.
 
+Due to the structure of the energy versus exponent curves,
+like the ones shown in figure \vref{fig:EHF_vs_k},
+one hardly ever needs to know $\kopt$ very accurately.
+As long as one uses a reasonable guess,
+which is constructed to overestimate $\kopt$
+rather than underestimate it, one is usually safe.
+If a highly accurate treatment of a particular system is required,
+then increasing $\nmax$ has both a much larger effect
+and is computationally cheaper than finding the optimal exponent in the smaller basis.
+See the next section for details.
+% overestimating plays in line with correlated treatment,
+% where $\kopt$ becomes larger due to the correlation.
 
 % TODO OPTIONAL
 %\begin{figure}
@@ -157,6 +237,10 @@ the correlated treatment typically even benefits from this a bit.
 %
 \subsection{Determining the optimal exponent $\kopt$}
 \todoil{TODO}
+
+% need reasonable basis set such that errors in the angular part
+% are not too large, other than that angular part is not important.
+
 Due to the convexity of the curve energy-vs-k (see \vref{fig:FCI_vs_k})
 and the fact that we are dealing with a scalar function,
 the optimisation of the energy wrt. $k$ can be performed by
@@ -217,12 +301,22 @@ as the function \texttt{best\_of\_n} and the method
 for finding the optimal value of $\kexp$ is implemented
 as \texttt{molsturm.sturmian.cs.find\_kopt}
 
+% Mention builtin estimation function based on linear fits.
+
+
+Optimal values for second and third period
+see table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
+\include{table_kopt}
+
+
 %
 % ----------------------------------------------------------
 %
 \subsection{Interpretation of the optimal exponent}
 \todoil{TODO}
 \label{sec:ValuesKopt}
+
+
 % Introduce relationship to shielding and slaters / clementis work
 % establish: effective nuclear charge increases across the period
 % due to averaging trends become less apparent as we move to larger period numbers
@@ -341,5 +435,3 @@ nuclear attraction becomes more and more important leading to larger values of $
 and kinetic energy (which would favour smaller $k$) becomes less important.
 
 
-Optimal values see table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
-\include{table_kopt}

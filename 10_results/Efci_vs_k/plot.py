@@ -44,13 +44,16 @@ def plot_fci(data):
     s1 = np.array([d["states"][0]["energy"] for d in data])
     t1 = np.array([d["states"][1]["energy"] for d in data])
 
-    p = plt.plot(ks, s1, label="FCI S1")
+    # TODO OPTIONAL
+    # p = plt.plot(ks, s1, label="FCI S1")
+    p = plt.plot(ks, s1, label="FCI")
     min_idx = np.argmin(s1)
     plt.plot(ks[min_idx], s1[min_idx], "x", color=p[0].get_color())
 
-    p = plt.plot(ks, t1, label="FCI T1")
-    min_idx = np.argmin(t1)
-    plt.plot(ks[min_idx], t1[min_idx], "x", color=p[0].get_color())
+    # TODO OPTIONAL
+    # p = plt.plot(ks, t1, label="FCI T1")
+    # min_idx = np.argmin(t1)
+    # plt.plot(ks[min_idx], t1[min_idx], "x", color=p[0].get_color())
 
 
 def plot_methods_vs_k(data):
@@ -60,7 +63,7 @@ def plot_methods_vs_k(data):
     plot_mp2(data)
     plot_fci(data)
 
-    plt.xlabel(r"Sturmian exponent $k_\text{exp}$")
+    plt.xlabel(r"Coulomb-Sturmian exponent $k_\text{exp}$")
     plt.ylabel("Energy in Hartree")
     plt.ylim([-14.75, -13.5])
     plt.xlim([1.0, 4.5])
@@ -68,7 +71,7 @@ def plot_methods_vs_k(data):
 
 
 def plot_hf_energies_vs_k(data):
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=(5.5, 3.0))
 
     ks = np.array([d["k"] for d in data])
     Eatr = np.array([d["energy_nuclear_attraction"] for d in data])
@@ -76,11 +79,11 @@ def plot_hf_energies_vs_k(data):
     Ecoul = np.array([d["energy_coulomb"] for d in data])
     Eexch = np.array([d["energy_exchange"] for d in data])
 
-    plt.plot(ks, Eatr, "--", label="Electron-nuclear interaction")
+    plt.plot(ks, Eatr, "--", label="Nuclear attraction energy")
     plt.plot(ks, Ekin, ":", label="Electronic kinetic energy")
-    plt.plot(ks, Ecoul + Eexch, "-", label="Electron-electron interaction")
+    plt.plot(ks, Ecoul + Eexch, "-", label="Electron-electron interaction energy")
 
-    plt.xlabel(r"Sturmian exponent $k_\text{exp}$")
+    plt.xlabel(r"Coulomb-Sturmian exponent $k_\text{exp}$")
     plt.ylabel("Energy in Hartree")
     plt.legend()
 

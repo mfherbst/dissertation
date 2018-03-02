@@ -8,7 +8,8 @@ import os
 import yaml
 
 
-def plot_E_ground_state_vs_k(data, methods=["hf", "mp2"]):
+def plot_E_ground_state_vs_k(data, methods=["hf", "mp2"], hfkopt=True,
+                             mp2kopt=False):
     plt.close()
     plt.figure(figsize=(5.5, 3.5))
 
@@ -34,8 +35,9 @@ def plot_E_ground_state_vs_k(data, methods=["hf", "mp2"]):
                          "," + str(m) + ")$ " + r"$E_\text{HF}$")
             mp2color = p[0].get_color()
 
-            min_idx = np.argmin(hfenes)
-            plt.plot(ks[min_idx], hfenes[min_idx], "x", color=p[0].get_color())
+            if hfkopt:
+                min_idx = np.argmin(hfenes)
+                plt.plot(ks[min_idx], hfenes[min_idx], "x", color=p[0].get_color())
         else:
             mp2color = None
 
@@ -44,9 +46,10 @@ def plot_E_ground_state_vs_k(data, methods=["hf", "mp2"]):
                          label=r"$(" + str(n) + "," + str(l) +
                          "," + str(m) + ")$ " + r"$E_\text{MP2}$",
                          color=mp2color)
-            min_idx = np.argmin(mp2enes)
-            plt.plot(ks[min_idx], mp2enes[min_idx], "+",
-                     color=p[0].get_color())
+            if mp2kopt:
+                min_idx = np.argmin(mp2enes)
+                plt.plot(ks[min_idx], mp2enes[min_idx], "+",
+                         color=p[0].get_color())
 
     plt.ylabel("Energy in Hartree")
     plt.xlabel(r"Coulomb-Sturmian exponent $k_\text{exp}$")
