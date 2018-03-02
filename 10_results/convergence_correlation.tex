@@ -13,22 +13,24 @@ In the previous section we took a first look at the convergence
 properties of Coulomb-Sturmian-based discretisations at Hartree-Fock level.
 In practical quantum-chemical calculations Hartree-Fock is typically
 not the final answer,
-but only the first step,
+but only a first step,
 such that our discussion of convergence should really not focus on Hartree-Fock alone.
-The aim of this section is therefore to take our preliminary guidelines
+In this spirit the aim of this section is to take our preliminary guidelines
 for sensible basis sets at \HF level and describe some adaptions,
 which could help to construct sensible \CS basis sets for correlated
 quantum-chemical methods.
-Similar to the previous section, we will ignore the dependency
-of the \CS basis on the exponent $\kexp$ and only consider
-the changes in energies resulting from
-altering the maximal angular momenta $\nmax$, $\lmax$ and $\mmax$.
-Furthermore our results so far are extremely preliminary,
-both due to the fact that we only considered two Post-HF methods,
-namely {\MP}2 as well as Full-CI,
-as well as the fact that we have performed only very few
-systematic investigations
-calculations employing Coulomb-Sturmian beyond Hartree-Fock so far.
+In line with what we discussed before, we will ignore the dependency
+of the \CS basis on the exponent $\kexp$ and keep a sensibly chosen,
+fixed exponent value for each atom throughout.
+So far we have pretty much done only the presented calculations
+for investigating the dependency of the correlated ground state energy
+with respect to altering the maximal quantum numbers $\nmax$, $\lmax$ and $\mmax$.
+Our results in this section are therefore just exemplary
+and should not be taken to be general for Coulomb-Sturmian discretisations
+at correlated level.
+Moreover we have only considered two Post-HF approaches,
+namely {\MP}2 and to a much lesser extent Full-CI,
+such that the behaviour might well deviate in other methods.
 
 \begin{figure}
 	\centering
@@ -45,13 +47,15 @@ calculations employing Coulomb-Sturmian beyond Hartree-Fock so far.
 \end{figure}
 A first impression regarding the dependency of the correlation energy
 on the \CS basis set provides figure \vref{fig:EccFciBe}.
-It shows the fraction of the Full-CI correlation energy
-obtained in the rather large $(10,2,2)$ basis,
-which is recovered at {\MP}2 and \FCI level if
-some selected smaller \CS basis sets are employed.
+It shows the fraction of the beryllium atom correlation energy, which is recovered
+by selected \CS basis sets and at \FCI and {\MP}2 level,
+plotted against the size of the basis.
+As the reference, \ie $100\%$ correlation energy,
+we take the value obtained in a \FCI calculation employing
+the rather large $(10,2,2)$ \CS basis.
 When it comes to interpreting this figure one has to be a little careful.
 First of all the ground state energy at \HF level is
-not constant for all of the basis sets employed.
+not necessarily constant for all of the basis sets employed.
 In the depicted cases the changes in $E_\text{HF}$ are,
 however, only very little and orders of magnitude
 smaller than the changes in correlation energy.
@@ -61,7 +65,7 @@ whilst the beryllium \HF wave function is already
 converged very well in the angular part for $\lmax = 0$.
 The second issue with this plot
 is that the blue curve somewhat compares apples and pears,
-namely a variationally obtained correlation energy at \FCI level
+namely a variationally obtained reference correlation energy at \FCI level
 with a perturbatively obtained correlation energy using {\MP}2.
 Ignoring this fact for a moment,
 we find that the \FCI and the {\MP}2 correlation energy curves
@@ -85,14 +89,15 @@ The only other correlation method,
 which is currently available from \molsturm is {\MP}2.
 Thus somewhat pragmatically we limited
 our investigation of the convergence at correlated level
-for the other atoms of the second and third period to {\MP}2 only.
+for the other atoms of the second and third period to {\MP}2 only,
+arguing that at least for the case of beryllium we got the same trends.
 The results are presented in the tables of appendix
 \vref{apx:CSCorrelationConvergence} and graphically
 in figures \ref{fig:EccVsNlmEasy} and \vref{fig:EccVsNlmHard}.
-The latter show show the fraction of \emph{total} {\MP}2 energy
+These show that the fraction of \emph{total} {\MP}2 energy
 which is missed by a particular basis set compared to the most
-accurate calculation we did for a particular atom
-as plots against the size of the basis set.
+accurate result we obtained in our calculations for a particular atom.
+Again this value is plotted against the size of the basis set.
 Similar to the case of beryllium sketched above,
 we concentrate on capturing the effect of converging the discretisation
 of the angular part of the {\MP}2 wave function
@@ -151,7 +156,7 @@ with the currently available results.
 	\label{fig:EccVsNlmHard}
 \end{figure}
 
-It is probably a little far fetched to assume
+Following our discussion above it is probably a little far fetched to assume
 that one can properly judge how well
 a \CS basis set is able to capture correlation effects
 just by looking at {\MP}2 correlation energies.
