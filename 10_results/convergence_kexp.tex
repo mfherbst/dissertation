@@ -15,11 +15,9 @@ This section is therefore devoted to a discussion
 of some general trends regarding
 the variation of obtained energies with $\kexp$.
 Furthermore we will discuss some methodologies
-for obtaining the optimal exponent $\kopt$
-with respect to minimising the \HF energy.
+for obtaining the optimal exponent $\kopt$ with respect to minimising the \HF energy.
 These results will be presented for the
-atoms of the first two periods of the periodic table
-and discussed from a physical point of view.
+atoms of the first two periods of the periodic table.
 
 \begin{figure}
 	\centering
@@ -236,78 +234,131 @@ See the next section for details.
 % ----------------------------------------------------------
 %
 \subsection{Determining the optimal exponent $\kopt$}
-\todoil{TODO}
+For variational quantum-chemical methods finding the best Coulomb-Sturmian
+exponent $\kopt$ for the ground state is equivalent to minimising the ground state
+energy with respect to $\kexp$.
+Since such energy curves are
+convex~(compare figures \ref{fig:FCI_vs_k} and \ref{fig:EHF_vs_k})
+and only scalar functions of a single parameter,
+this minimisation can be performed quite effectively
+by gradient-free optimisation algorithm such as Brent's method~\cite{Brent1972}.
+Starting from a reasonable guess for $\kopt$ convergence to the minimum
+is usually achieved in around $10$ iterations.
+For achieving this Brent's method will require a similar number of
+energy computations using the chosen quantum-chemical method
+and the chosen \CS basis.
 
-% need reasonable basis set such that errors in the angular part
-% are not too large, other than that angular part is not important.
+With respect to the basis, which is used for such a procedure,
+there are two things to note.
+Firstly we already mentioned in our previous discussion
+that $\kexp$ is a parameter,
+which only affects the radial part.
+In other words for obtaining a situation in which the individual
+calculations of the energies
+are not dominated by the error in the angular discretisation,
+but the current value of $\kexp$,
+large enough values for  $\lmax$ and $\mmax$ should be chosen.
+Too large values of $\lmax$ will, however, lead to large basis sets,
+thus long run times for the energy calculations.
+In practice a compromise between accuracy and runtime needs to be found.
+Our investigations~(see tables \ref{tab:Kopt2} and \vref{tab:Kopt3})
+seem to suggest that one can find reasonable values for $\kopt$
+already for basis sets where $\lmax$ is chosen smaller than
+the value suggested by the $\RMSOl$ plots.
+Secondly one should keep in mind that too large values of $\nmax$
+will cause the energy-vs-$\kexp$ curves to become flat around $\kopt$,
+which slows down convergence of the optimisation procedure.
+Keeping in mind that typically getting \emph{roughly} the
+right value for $\kopt$ is good enough,
+it is sometimes more sensible to find $\kopt$ in a smaller
+basis set,
+where the energy-vs-$\kexp$ is more steep and calculations are faster,
+and use this value for larger basis sets as well.
+For the reasons we discussed in the previous section
+such a $\kopt$ from a smaller basis
+will always be an \emph{overestimation} of the actual $\kopt$,
+which is favourable.
 
-Due to the convexity of the curve energy-vs-k (see \vref{fig:FCI_vs_k})
-and the fact that we are dealing with a scalar function,
-the optimisation of the energy wrt. $k$ can be performed by
-Brent's method~\cite{Brent1972},
-which does not require energy derivatives.
+Our investigations have so far only considered
+obtaining optimal exponents $\kopt$ at \HF level.
+The most challenging aspect for doing so is in fact the stability of the
+\SCF procedure itself.
+Especially at the beginning of the iteration,
+when the Coulomb-Sturmian exponent $\kexp$ is still relatively
+far off the optimal value, the core Hamiltonian guess%
+\footnote{So far only random guesses, guesses from previous \SCF cycles
+	and core Hamiltonian guesses are implemented in \molsturm.}
+we employ by default is not very good and frequently
+fails to lead to the true \SCF minimum in our \SCF scheme.
+Much rather another stationary point on the \SCF Stiefel manifold is found.
+If we now continue to use the resulting wrongfully converged \SCF coefficients
+as the guess for the next iteration of Brent's method,
+we will typically manage to find a $\kopt$,
+but this might not be the $\kopt$ of the true \SCF minimum,
+\ie the true \HF ground state.
+On the other hand if we start from the core Hamiltonian guess each time,
+it can happen that the \SCF iterations for different values of $\kexp$
+lead to different stationary points on the Stiefel manifold.
+This violates a fundamental assumption of Brent's method,
+namely the continuity of the objective function.
+In other words the optimisation procedure is likely to find
+a wrong value for $\kopt$ in this case.
 
-For \CS basis sets the core hamiltonian guess is in many cases not very good
-in the sense that it can give rise to the wrong SCF minimum.
-A good example to reproduce this is beryllium with a $(3, 2, 2)$ \CS basis
-set and $\kexp = 1.9$.
-Note that this exponent is only $0.1$ from the optimal one,
-but nevertheless hcore fails.
-This behaviour is retained for $(4,2,2)$ and $(5,2,2)$ basis sets,
-which are already quite reasonable for beryllium.
-
-In a similar manor especially for the atoms of the third
-period the SCF stationary point obtained with \molsturm
-is very much dependent on the values of $\kexp$ and $(n,l,m)$.
-If we get humps on the surface because we fall from one SCF
-minimum to another,
-the optimisation for $\kexp$ typically produces erroneous results.
-
-In other words the key starting point for finding $\kopt$
-is to obtain a reliable guess for the atom.
-Our approach is to start 5 SCF calculations with the
-selected \CS basis set at two values of $\kexp$:
-One supplied by the user and one guessed from the \HF orbital
-energies of the first calculation.
-Out of these randomly initialised SCF calculations,
-the lowest-energy version is taken as the guess
-for all SCF calculations performed during the search
-of Brent's method.
-Typically this converges within 10 iteration steps
-to $\kopt$.
-
-The heuristic for finding a reasonable value for
-$\kopt$ from \HF energies follows the idea that the
-energy of an orbital is related to its decay at infinite distance
-according to \citet{Kato1951}.
-In other words, since this is the case for sturmians, too,
-we get that the energy of an orbital is related to its optimal
-exponent by
-\[
-	\varepsilon_i = -\frac{k_i^2}{2}
+Our remedy is to first make very sure we obtain a reliable
+guess for starting the \SCF procedures called during the optimisation
+before starting the optimisation procedure energy versus $\kexp$ at all.
+In order to do so
+we first perform $5$ {\SCF}s starting from totally random guesses
+for the input value of $\kexp$ supplied by the user.
+From the lowest-energy result of these we then
+take the orbital energies $\varepsilon_i$
+and use them to estimate a second value for $\kexp$, namely
+\begin{equation}
+	\kexp \simeq \sqrt{\frac{-2}{\Nelec} \sum_{i\in\Iocc} \varepsilon_i}.
+	\label{eqn:KoptHfEstimate}
+\end{equation}
+The rationale for this heuristic formula is
+the energy-dependent decay of the exact wave function~\cite{Kato1951},
+which --- assuming \HF to be exact --- would manifest as well in an
+energy-dependent decay of the orbitals by themselves.
+Applying the formula
+\[ \varepsilon_i = - \frac12 k_i \qquad \Leftrightarrow \qquad k_i
+	= \sqrt{-2 \varepsilon_i}
 \]
-thus
-\[
-	k_i = \sqrt{-2 \varepsilon_i}
-\]
-and since we have many of these $\varepsilon$:
-\[
-	\kopt \simeq \sqrt{\frac{-2}{\Nelec} \sum_i \varepsilon_i}
-\]
+to yield the best exponent $k_i$ for describing orbital $i$ and taking the average
+over all $k_i$ results in \eqref{eqn:KoptHfEstimate}.
+The result from applying \eqref{eqn:KoptHfEstimate} is typically not extremely good,
+but in the cases we considered it is at least in the same order of magnitude
+as the final $\kopt$,
+such that this estimate is easy to compute and corrects for the cases,
+where the user's guess was very far off.
+For this second $\kexp$ we perform another $5$ \SCF iterations
+starting completely from random guesses.
+From all $10$ obtained \SCF ground states,
+both the $5$ with the $\kexp$ supplied by the user and the $5$ with the $\kexp$
+from \eqref{eqn:KoptHfEstimate},
+we only keep the solution, which has the lowest \HF energy.
+For \emph{all} {\SCF}s which are started during the
+subsequent energy versus $\kexp$ optimisation
+this solution is used as the initial guess.
+In this way all inner {\SCF}s approach the \SCF procedure
+from the same reliable guess,
+which largely avoids discontinuities in the \HF energies
+and thus directs Brent's method to a sensible value for $\kopt$.
 
-This guess method is implemented in \molsturm in the
-module \texttt{molsturm.scf\_guess}
-as the function \texttt{best\_of\_n} and the method
-for finding the optimal value of $\kexp$ is implemented
-as \texttt{molsturm.sturmian.cs.find\_kopt}
-
-% Mention builtin estimation function based on linear fits.
-
-
-Optimal values for second and third period
-see table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
-\include{table_kopt}
-
+This algorithm for finding $\kopt$ is not cheap,
+since around 20 to 30 complete {\SCF}s are required for convergence.
+It is, however, reliable and allowed us to obtain optimal exponents
+for a range of basis sets for all atoms of the second and third period.
+These results are shown in tables \vref{tab:Kopt2} and \vref{tab:Kopt3}.
+For convenience this procedure is implemented in \molsturm
+and can be called from \python using the function
+\texttt{find\_kopt} from the module \texttt{molsturm.sturmian.cs}.
+\molsturm also offers the function \texttt{empirical\_kopt}
+as a cheaper empirical estimate for $\kopt$.
+It is based on interpolations using the values from
+tables \ref{tab:Kopt2} and \ref{tab:Kopt3}.
+Currently it can thus only be used for atoms of the second and third period.
 
 %
 % ----------------------------------------------------------
@@ -316,67 +367,32 @@ see table \vref{tab:Kopt2} and table \vref{tab:Kopt3}
 \todoil{TODO}
 \label{sec:ValuesKopt}
 
-
-% Introduce relationship to shielding and slaters / clementis work
-% establish: effective nuclear charge increases across the period
-% due to averaging trends become less apparent as we move to larger period numbers
-
-Figure \vref{fig:KoptVsAtnum} shows the optimal Coulomb-Sturmian exponents
-for the neutral atoms across the second and the third period of the periodic table.
-As can be seen the values for $\kopt$ follow a rough linear increase
-as we go from the alkaline metals to the noble gases,
-where the slope of the increase is steeper along the second period.
-Note, however, that a deviation from this linear trend
-is very much apparent in the third period.
-
-\citet{Slater1930} introduces the concept of a nuclear shielding parameter $\sigma$
-in order to construct simple analytic expressions of the form
+In his \citeyear{Slater1930} paper \citet{Slater1930} introduced
+the concept of a shielding parameter $\sigma$ in order to
+describe the atomic orbitals by simple analytic expressions of the form
 \begin{equation}
 	\chi_{n^\ast, \sigma} = r^{n^\ast - 1} \exp\left( - \frac{(Z - \sigma)r}{n^\ast} \right)
-	\equiv r^{n^\ast - 1} \exp\left( -\zeta r\right)
+	\equiv r^{n^\ast - 1} \exp\left( -\zeta r\right),
 	\label{eqn:SlaterShielding}
 \end{equation}
-for the atomic orbitals.
-\citet{Clementi1963} later determined optimal values for the Slater exponents $\zeta$
-by performing \HF calculations,
-variationally optimising to yield the lowest energy.
-We will refer to these exponents as $\zeta_\text{Clementi}$ in this section.
-
-Comparing \eqref{eqn:SlaterShielding} and \eqref{eqn:RadialPartCsRepeated}
-we easily note that $\kexp$ more or less plays the role of $\zeta$
-with the subtle difference that for \CS basis sets all functions
+which are now used as basis functions for quantum-chemical
+calculations under the term Slater-type orbitals~(see section \vref{sec:STO}).
+In the context of introducing the Coulomb-Sturmians
+in section \vref{sec:BasisCS}
+we already indicated the similarity of Slater-type orbitals
+and the Coulomb-Sturmians.
+Essentially the Slater exponent $\zeta$ and the \CS exponent $\kexp$
+play the equivalent roles,
+but with the subtle difference that for \CS basis sets all functions
 need to carry the same exponent.
-Nevertheless the procedure we follow to find $\kopt$ and the procedure
-\citeauthor{Clementi1963} followed to find $\zeta_\text{Clementi}$
-bears a lot of resemblance.
 
-As a result it is not surprising that the behaviour of $\kopt$
-along the periodic table is related to $\zeta_\text{Clementi}$ as well.
-In fact it kind of forms a middle ground between the $\zeta_\text{Clementi}$
-value of the HO, the highest occupied orbital,
-and the occupation-averaged value for $\zeta_\text{Clementi}$
-when it comes to the trends observed.
-Naturally its actual value is closer to the occupation-average
-of $\zeta_\text{Clementi}$,
-since we are forced to a single $\kexp$ value.
-Therefore the optimal exponent $\kopt$ bears resemblance of both
-the occupation-averaged value of $Z_\text{eff} / n^\ast$
-as well as the trends of $Z_\text{eff} / n^\ast$ of highest occupied
-atomic orbitals.
-
-Note that by Slater's original definition,
-we can identify the relationship
-\[ Z_\text{eff} = n^\ast \zeta_\text{Clementi} \]
-between the effective nuclear charge $Z_\text{eff}$ and
-the optimal exponents $\zeta_\text{Clementi}$~\cite{Slater1930},
-where $n^\ast$ is a function of the quantum number $n$ of the orbital
-under consideration.
-By means of a similar rationale to what has been sketched above,
-we can therefore find a chemical interpretation for $\kopt$,
-namely that it gives an understanding of the average
-charge which is felt by the orbitals of a particular atom
-or in other words the average shielding which takes place in the atom.
-\todoil{Can one state it like that?}
+In his original work Slater already provided rough guidelines for
+estimating the shielding parameter and thus the exponent $\zeta$.
+Later this work was picked up by \citet{Clementi1963},
+who determined optimal values for $\zeta$ by performing \HF calculations,
+variationally optimising $\zeta$ to yield the lowest \HF energy.
+For clarity we will refer to their optimal exponents as
+$\zeta_\text{Clementi}$ in this section.
 
 \begin{figure}
 	\centering
@@ -393,9 +409,28 @@ or in other words the average shielding which takes place in the atom.
 	}
 	\label{fig:KoptVsAtnum}
 \end{figure}
+The procedure of \citeauthor{Clementi1963} to determine $\zeta_\text{Clementi}$
+and our procedure followed to find $\kopt$ bears a lot of resemblance.
+As such it should not come to a surprise that the behaviour of $\kopt$
+along the periodic table is related to
+the behaviour of $\zeta_\text{Clementi}$ as well.
+This result is summarised in figure \vref{fig:KoptVsAtnum},
+which shows the optimal Coulomb-Sturmian exponents
+as well as two values related to $\zeta_\text{Clementi}$
+for the neutral atoms across the second and the third period of the periodic table.
+One value is the exponent $\zeta_\text{Clementi}$ for the HO,
+the highest occupied orbital, of the atom
+whilst the other is the occupation-averaged value of $\zeta_\text{Clementi}$
+for each atom.
+Due to the fact that all Coulomb-Sturmians share the same exponent
+the value of the optimal exponent $\kopt$ is much closer to the
+averaged $\zeta_\text{Clementi}$ values
+than to the $\zeta_\text{Clementi}$ of the HO or any other orbital alone.
 
-Note that the slope of the graph $\kopt$ vs atomic number in the third period
-is much more flat than the equivalent graph in the second period.
+% ----
+
+Over the period $\kopt$ follows a roughly linear trend,
+where the increase is less steep in the third period compared to the second.
 We can understand that by considering once again
 that $\kopt$ gives an average over all orbitals.
 Since especially the low-energy orbitals close to the nucleus
@@ -416,6 +451,26 @@ going from one period to the next (e.g. Ne to Na)
 will get smaller and smaller as well
 as the effect of the valence-like orbitals gets averaged out.
 
+% ----
+
+
+Note that by Slater's original definition,
+we can identify the relationship
+\[ Z_\text{eff} = n^\ast \zeta_\text{Clementi} \]
+between the effective nuclear charge $Z_\text{eff}$ and
+the optimal exponents $\zeta_\text{Clementi}$~\cite{Slater1930},
+where $n^\ast$ is a function of the quantum number $n$ of the orbital
+under consideration.
+By means of a similar rationale to what has been sketched above,
+we can therefore find a chemical interpretation for $\kopt$,
+namely that it gives an understanding of the average
+charge which is felt by the orbitals of a particular atom
+or in other words the average shielding which takes place in the atom.
+\todoil{Can one state it like that?}
+
+% ---
+
+
 An alternative way of viewing this is
 that as a new shell becomes occupied it requires
 the representation of an extra (more expanded) orbital.
@@ -427,11 +482,5 @@ thus $\kexp$ increases again.
 As we move to larger periods this effect of change is averaged out
 again by the more constant core-like orbitals.
 
-Yet a third line of argument is the importance of nuclear attraction
-vs. kinetic energy.
-As the effective charge increases across the period
-nuclear attraction becomes more and more important leading to larger values of $k$
-(which support a larger (negative) magnitude of nuclear attraction energy)
-and kinetic energy (which would favour smaller $k$) becomes less important.
 
-
+\include{table_kopt}
