@@ -148,6 +148,16 @@ add_custom_command(
         DEPENDS ${CMAKE_CURRENT_LIST_DIR}/kopt_vs_atnum/summary.yaml
 )
 
+set(PDF_OUTPUTS ${PDF_OUTPUTS} be_adc2_vs_n.pdf)
+add_custom_command(
+        OUTPUT be_adc2_vs_n.pdf
+        COMMAND ${CMAKE_CURRENT_LIST_DIR}/be_adc/plot.py
+        COMMAND ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/be_adc/plot.py
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/be_adc/literature.yaml
+        DEPENDS ${CMAKE_CURRENT_LIST_DIR}/be_adc/data_adc2.yaml
+)
+
 foreach(out ${PDF_OUTPUTS})
         pdf_image(${CMAKE_CURRENT_BINARY_DIR}/${out} TMP)
         add_depends(${TMP})

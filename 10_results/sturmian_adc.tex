@@ -1,16 +1,61 @@
-\section{Sturmian-based ADC}
-todoil{TODO}
-%
-% Maybe show a single Be ADC calculation to show that it can be done
-%
+\section{Coulomb-Sturmian-based ADC calculations}
+This section provides a first look into excited states calculations
+employing Coulomb-Sturmians as the underlying basis functions.
+As mentioned in section \vref{sec:MolsturmState} the modular design
+of the \molsturm package allowed us to link it to a few third-party
+packages employing our \python interface.
+One of them is \adcman~\cite{Wormit2014},
+which can be employed to perform excited states calculations
+based on the algebraic diagrammatic construction scheme at
+{\ADC}(1), {\ADC}(2), {\ADC}(2)-x~\cite{Schirmer1982}
+and {\ADC}(3)~\cite{Trofimov1999} level.
 
+\begin{figure}
+	\centering
+	\includeimage{10_results/be_adc2_vs_n}
+	\caption[
+		Convergence of a \CS-based {\ADC}(2) calculation of beryllium
+	]{
+		Convergence of a \CS-based {\ADC}(2)~\cite{Schirmer1982}
+		calculation of beryllium.
+		Plotted are the singlet excitation energies
+		going from the ground state $2s2s$ to the denoted excited state.
+		We show the results from a progression
+		of \CS calculations with exponent $\kexp = 2.0$
+		as well as bases sets of the form $(\nmax, 1, 1)$.
+		For comparison the last two data points
+		show the results from a \cGTO-based calculation
+		using cc-pVTZ~\cite{Prascher2011}
+		as well as the experimental values from \citet{Moore1949}.
+	}
+	\label{fig:KoptVsAtnum}
+\end{figure}
+This section now reports the first successful {\ADC}(2)
+calculation employing Coulomb-Sturmians for the discretisation
+on the beryllium atom.
+In figure \ref{fig:KoptVsAtnum} we show the singlet excitation energies
+as a progression with increasing \CS basis set size from $(4,1,1)$ to $(10,1,1)$.
+For comparison the figure also indicates an equivalent calculation
+using cc-pVTZ~\cite{Prascher2011} as well as the experimental values~\cite{Moore1949}.
+Within the \CS basis set progression the results converge nicely from above.
+Compared to cc-pVTZ the $(10,1,1)$ basis set
+performs worse at the first excited state $2s2p$~($\unit[1.0]{eV}$ versus $\unit[0.6]{eV}$ error) but significantly better for the $2s3s$ and the $2s3p$ states,
+where the cc-pVTZ error is four times as large
+for $2s3s$~($\unit[2.2]{eV}$ versus $\unit[0.5]{eV}$)
+and twice as large for $2s3p$~($\unit[2.0]{eV}$ versus $\unit[1.2]{eV}$).
 
-
-Beryllium computed and experimental absorption spectra~\cite{Serrao1985}
-% 1E_h = 2Ry
-
-plot with 2s2p, 2s3s, 2s3d, 2s4s and so on
-
+When it comes to the comparison with experiment there are more
+errors to consider than just the discretisation error.
+In our treatment we neglect relativistic effects
+and {\ADC}(2) as an approximate method for solving excited states
+of the electronic Schrödinger equation naturally contains
+an intrinsic method error as well.
+Nevertheless the initial results we have presented
+seem to suggest that Coulomb-Sturmians
+are able to give a more balanced description of more than one state
+compared to \cGTO basis functions.
+For this reason they could be a promising alternative
+for modelling excited states phenomena.
 
 
 % TODO OPTIONAL

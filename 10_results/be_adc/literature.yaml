@@ -1,0 +1,7 @@
+# Experimental values after Moore1949
+# Given in Rydberg, where 2 Ry = 1 Hartree
+s2s2p: 0.3381
+s2s3s: 0.4985
+s2s3p: 0.5487
+s2s4s: 0.5948
+s2s4p: 0.6112
