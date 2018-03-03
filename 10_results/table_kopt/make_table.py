@@ -94,7 +94,8 @@ def make_table(data, period, label):
     ret.append(r"    cap=Optimal \CS exponent for the " + period +
                " period at \HF level.,")
     ret.append(r"    caption=Optimal \CS exponent for the " + period +
-               r" period at \HF level. Relative errors are given with respect to the "
+               r" period of the periodic table at \HF level. "
+               r"Relative errors are given with respect to the "
                r"reference energies of table \vref{tab:HFReference}.,")
     ret.append(r"    botcap,")
     ret.append(r"    mincapwidth=0.98\textwidth,")
