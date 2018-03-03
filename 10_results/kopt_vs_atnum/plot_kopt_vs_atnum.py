@@ -82,7 +82,7 @@ def plot_zeffn_average(data, kind="Clementi"):
     avgs = np.array([Zeffn_average(gint.element.by_atomic_number(at).symbol,
                                    kind=kind)
                      for at in atnums])
-    plt.plot(atnums, avgs, "x", label=r"$\zeta_\text{Clementi}$ average")
+    plt.plot(atnums, avgs, "x", label=r"average $\zeta_\text{Clementi}$")
 
 
 def plot_fit_kopt_vs_atnum(data):
@@ -130,7 +130,7 @@ def setup():
 def main():
     setup()
     data = load_kopts()
-    plt.figure(figsize=(5.5, 3.5))
+    plt.figure(figsize=(5.5, 3.0))
 
     def is_period(d, p):
         return period_of(d["atom_number"]) == p
@@ -154,12 +154,14 @@ def main():
     plot_fit_kopt_vs_atnum(data_period2)
     plot_fit_kopt_vs_atnum(data_period3)
     plot_fit_kopt_vs_atnum(data_period4)
-    plot_zeffn_homo(data_period2 + data_period3 + data_period4)
+    # makes no sense to plat that here, since it has nothing to do with kexp
+    # plot_zeffn_homo(data_period2 + data_period3 + data_period4)
     plot_zeffn_average(data_period2 + data_period3 + data_period4)
 
-    plt.ylim([0, 7])
+    plt.ylim([None, 6.5])
     plt.legend(loc='upper left', fontsize=9)
     plt.xlabel(r"Atomic number")
+    plt.ylabel(r"Exponent")
     plt.savefig("kopt_vs_atnum.pdf", bbox_inches="tight")
 
 

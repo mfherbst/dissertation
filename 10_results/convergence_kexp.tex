@@ -357,42 +357,53 @@ and can be called from \python using the function
 \molsturm also offers the function \texttt{empirical\_kopt}
 as a cheaper empirical estimate for $\kopt$.
 It is based on interpolations using the values from
-tables \ref{tab:Kopt2} and \ref{tab:Kopt3}.
-Currently it can thus only be used for atoms of the second and third period.
+tables \ref{tab:Kopt2} and \ref{tab:Kopt3},
+can thus only be used for atoms of the second and third period.
 
 %
 % ----------------------------------------------------------
 %
-\subsection{Interpretation of the optimal exponent}
-\todoil{TODO}
+\subsection{Relationship to the effective nuclear charge}
 \label{sec:ValuesKopt}
 
-In his \citeyear{Slater1930} paper \citet{Slater1930} introduced
-the concept of a shielding parameter $\sigma$ in order to
-describe the atomic orbitals by simple analytic expressions of the form
+In his \citeyear{Slater1930} paper \citet{Slater1930} proposed simple guidelines
+for approximating the orbitals of atoms.
+For this he introduced for each orbital a shielding parameter $\sigma$,
+which was supposed to indicate how much of the nuclear charge is screened
+away by the electrons closer to the core.
+He then proceeded to describe the functional
+form of the atomic orbitals by the simple analytic expression
 \begin{equation}
 	\chi_{n^\ast, \sigma} = r^{n^\ast - 1} \exp\left( - \frac{(Z - \sigma)r}{n^\ast} \right)
 	\equiv r^{n^\ast - 1} \exp\left( -\zeta r\right),
 	\label{eqn:SlaterShielding}
 \end{equation}
-which are now used as basis functions for quantum-chemical
-calculations under the term Slater-type orbitals~(see section \vref{sec:STO}).
-In the context of introducing the Coulomb-Sturmians
-in section \vref{sec:BasisCS}
-we already indicated the similarity of Slater-type orbitals
-and the Coulomb-Sturmians.
-Essentially the Slater exponent $\zeta$ and the \CS exponent $\kexp$
-play the equivalent roles,
-but with the subtle difference that for \CS basis sets all functions
+along with empirical rules to find $n^\ast$ and $Z - \sigma$,
+the \newterm{effective nuclear charge}.
+We already met functions like \eqref{eqn:SlaterShielding}
+as basis functions for solving the Hartree-Fock problem
+when we discussed Slater-type orbitals in section \vref{sec:STO}.
+In the same chapter we mentioned the close relationship between
+the Coulomb-Sturmians and the Slater-type orbitals
+in the sense that the \CS exponent $\kexp$
+plays the role of the Slater exponent $\zeta$
+with the subtle difference that for \CS basis sets all functions
 need to carry the same exponent.
 
-In his original work Slater already provided rough guidelines for
-estimating the shielding parameter and thus the exponent $\zeta$.
-Later this work was picked up by \citet{Clementi1963},
-who determined optimal values for $\zeta$ by performing \HF calculations,
-variationally optimising $\zeta$ to yield the lowest \HF energy.
-For clarity we will refer to their optimal exponents as
-$\zeta_\text{Clementi}$ in this section.
+\newcommand{\zCl}{\ensuremath \zeta_\text{Clementi}}
+The rough results obtained by Slater's rules
+were later refined by \citet{Clementi1963},
+who determined optimal values for $\zeta$ by performing \HF calculations.
+In turn they used these values to define a new set of shielding parameters
+and thus a new set of effective nuclear charges.
+Their optimisation procedure was very similar to the procedure
+we followed to find $\kopt$,
+namely they optimised the energy variationally with respect to the
+Slater exponents $\zeta$.
+Both the similarity of the form of both types
+of functions as well as the similarity of the procedures followed
+indicates that our $\kopt$ and the optimal exponents $\zCl$ from
+\citeauthor{Clementi1963} should bear some resemblance.
 
 \begin{figure}
 	\centering
@@ -403,84 +414,100 @@ $\zeta_\text{Clementi}$ in this section.
 		Plot of the atomic number versus the optimal Coulomb-Sturmian exponent
 		$\kopt$ for the neutral atoms of the second and the third period.
 		For comparison the occupation-averaged value of the \citet{Clementi1963} optimal
-		Slater exponent $\zeta_\text{Clementi}$ as well as the
-		value $\zeta_\text{Clementi}$ for the highest occupied orbital~(HO)
-		are shown.
+		Slater exponent $\zeta_\text{Clementi}$ are shown as well.
 	}
 	\label{fig:KoptVsAtnum}
 \end{figure}
-The procedure of \citeauthor{Clementi1963} to determine $\zeta_\text{Clementi}$
-and our procedure followed to find $\kopt$ bears a lot of resemblance.
-As such it should not come to a surprise that the behaviour of $\kopt$
-along the periodic table is related to
-the behaviour of $\zeta_\text{Clementi}$ as well.
-This result is summarised in figure \vref{fig:KoptVsAtnum},
-which shows the optimal Coulomb-Sturmian exponents
-as well as two values related to $\zeta_\text{Clementi}$
-for the neutral atoms across the second and the third period of the periodic table.
-One value is the exponent $\zeta_\text{Clementi}$ for the HO,
-the highest occupied orbital, of the atom
-whilst the other is the occupation-averaged value of $\zeta_\text{Clementi}$
-for each atom.
-Due to the fact that all Coulomb-Sturmians share the same exponent
-the value of the optimal exponent $\kopt$ is much closer to the
-averaged $\zeta_\text{Clementi}$ values
-than to the $\zeta_\text{Clementi}$ of the HO or any other orbital alone.
+As a first attempt to characterise this similarity we propose
+to compare $\kexp$ to the average value of $\zCl$ taken
+in all occupied orbitals of a particular atom.
+A plot of these values
+across the second and third period of the periodic
+table is shown in figure \vref{fig:KoptVsAtnum}.
+Over the full depicted range the magnitude of $\kopt$ and $\zCl$ stays similar.
+Furthermore except the sharp drop going from atom number 10 to 11
+the roughly linear increase of $\zCl$ is reproduced by $\kopt$.
+One reason why the diverging feature between atom number 10 and 11
+is observed is that we chose to use a different, larger \CS basis set
+for determining $\kopt$ in the third period.
+In our discussion related to figure \ref{fig:EHF_vs_k}
+we already mentioned that larger basis sets tend to
+yield a lower value of $\kopt$.
+The observed drop in figure \ref{fig:KoptVsAtnum} is, however,
+much larger than any lowering induced by increasing the basis
+we observed in our calculations~(see tables \ref{tab:Kopt2} and \ref{tab:Kopt3}).
+One possible additional explanation could be the reduction
+of information, which is implied by taking the average of all $\zCl$.
+For example when changes in the physics of the electronic structure of the atom
+cause relative adjustments of the exponents $\zCl$,
+this is not captured by the average $\zCl$.
+Especially when going to a new shell,
+\ie when adding a new, more expanded orbital
+with only a single electron in it,
+the structure of the electron density does indeed change more
+compared to the previous atom as in other cases.
+Whilst the Slater-type orbital basis has more degrees of freedom
+in form of the multiple exponents to adapt to this,
+the \CS basis needs to balance the errors,
+which could lead to the observed deviation from the trend in the previous period.
 
-% ----
+Overall figure \ref{fig:KoptVsAtnum} suggests
+that there is some connection between $\kopt$ and the average $\zCl$.
+Considering the relationship between $\zCl$ and the effective nuclear charge in turn,
+we could think of $\kopt$ as a measure for the average effective nuclear charge,
+which is felt by the individual orbitals.
 
-Over the period $\kopt$ follows a roughly linear trend,
-where the increase is less steep in the third period compared to the second.
-We can understand that by considering once again
-that $\kopt$ gives an average over all orbitals.
-Since especially the low-energy orbitals close to the nucleus
-are shielded very little,
-their value of $\kopt$ increases constantly along the periodic table.
-The $\kopt$ for the valence orbitals, however, changes much more.
-Especially at the beginning of the period, where atomic radii are large,
-the $\kopt$ for the valence orbitals are small,
-whilst this changes as the atoms get smaller across the period
-and hence $\zeta_\text{Clementi}$ and $\kopt$ get larger.
-This effect is diminished, however,
-by the constant $\kopt$ increase of the
-much larger number of core-like orbitals
-and thus the rate of change of $\kopt$ across a period gets smaller,
-the slope thus smaller as well.
-Furthermore this implies that the rapid $\kopt$ change
-going from one period to the next (e.g. Ne to Na)
-will get smaller and smaller as well
-as the effect of the valence-like orbitals gets averaged out.
+% TODO OPTIONAL
+%An alternative way of viewing this is
+%that as a new shell becomes occupied it requires
+%the representation of an extra (more expanded) orbital.
+%So initially $\kexp$ gets reduced.
+%As we move across the period the nuclear charge increases
+%and since the shielding abilities of electrons in the same shell
+%is not that strong the orbitals become more contracted and occupy less space
+%thus $\kexp$ increases again.
+%As we move to larger periods this effect of change is averaged out
+%again by the more constant core-like orbitals.
 
-% ----
+% TODO OPTIONAL
+% I am not sure this is correct
+%Over the period $\kopt$ follows a roughly linear trend,
+%where the increase is less steep in the third period compared to the second.
+%We can understand that by considering once again
+%that $\kopt$ gives an average over all orbitals.
+%Since especially the low-energy orbitals close to the nucleus
+%are shielded very little,
+%their value of $\kopt$ increases constantly along the periodic table.
+%The $\kopt$ for the valence orbitals, however, changes much more.
+%Especially at the beginning of the period, where atomic radii are large,
+%the $\kopt$ for the valence orbitals are small,
+%whilst this changes as the atoms get smaller across the period
+%and hence $\zeta_\text{Clementi}$ and $\kopt$ get larger.
+%This effect is diminished, however,
+%by the constant $\kopt$ increase of the
+%much larger number of core-like orbitals
+%and thus the rate of change of $\kopt$ across a period gets smaller,
+%the slope thus smaller as well.
+%Furthermore this implies that the rapid $\kopt$ change
+%going from one period to the next (e.g. Ne to Na)
+%will get smaller and smaller as well
+%as the effect of the valence-like orbitals gets averaged out.
 
-
-Note that by Slater's original definition,
-we can identify the relationship
-\[ Z_\text{eff} = n^\ast \zeta_\text{Clementi} \]
-between the effective nuclear charge $Z_\text{eff}$ and
-the optimal exponents $\zeta_\text{Clementi}$~\cite{Slater1930},
-where $n^\ast$ is a function of the quantum number $n$ of the orbital
-under consideration.
-By means of a similar rationale to what has been sketched above,
-we can therefore find a chemical interpretation for $\kopt$,
-namely that it gives an understanding of the average
-charge which is felt by the orbitals of a particular atom
-or in other words the average shielding which takes place in the atom.
-\todoil{Can one state it like that?}
-
-% ---
-
-
-An alternative way of viewing this is
-that as a new shell becomes occupied it requires
-the representation of an extra (more expanded) orbital.
-So initially $\kexp$ gets reduced.
-As we move across the period the nuclear charge increases
-and since the shielding abilities of electrons in the same shell
-is not that strong the orbitals become more contracted and occupy less space
-thus $\kexp$ increases again.
-As we move to larger periods this effect of change is averaged out
-again by the more constant core-like orbitals.
-
+% TODO OPTIONAL I am not sure this makes sense either
+%Along this line one ansatz for the physical interpretation of $\kopt$
+%is to relate it to the average shielding in an atom as follows.
+%By Slater's original definition \eqref{eqn:SlaterShielding},
+%we can identify the relationship
+%\[ Z_\text{eff} = Z - \sigma = n^\ast \zeta_\text{Clementi} \]
+%between the effective nuclear charge $Z_\text{eff}$ felt
+%by a particular atomic orbital
+%and the optimal exponent $\zeta_\text{Clementi}$~\cite{Slater1930},
+%where $n^\ast$ is a function of the quantum number $n$ of the orbital
+%under consideration.
+%By means of a similar rationale to what has been sketched above,
+%we can therefore find a chemical interpretation for $\kopt$,
+%namely that it gives an understanding of the average
+%charge which is felt by the orbitals of a particular atom
+%or in other words the average shielding which takes place in the atom.
 
 \include{table_kopt}
