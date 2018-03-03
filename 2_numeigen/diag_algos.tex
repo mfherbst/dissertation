@@ -1,7 +1,7 @@
 \section{Diagonalisation algorithms}
 \label{sec:DiagAlgos}
 
-This section discusses a few algorithms suitable for obtaining
+This section discusses the key ideas of a few algorithms suitable for obtaining
 approximations to eigenpairs of a matrix $\mat{A}$ numerically.
 Whilst the regime of quantum mechanics is a complex-valued Hilbert space,
 in this thesis
@@ -34,50 +34,167 @@ where $\Nbas$ is at most on the order of $1000$.
 The most widely adopted library of dense methods is LAPACK~\cite{LAPACK}.
 
 \subsection{Power method}
-The most simple numerical method to obtain
-a single eigenvalue from a particular matrix $\mat{A}$
-is the Power method.
-The algorithmic scheme consists of the steps
-
-% https://www.math.tu-berlin.de/fachgebiete_ag_modnumdiff/fg_modellierung_simulation_und_optimierung_in_natur_und_ingenieurswissenschaften/v_menue/mitarbeiter/prof_dr_reinhold_schneider/publikationen/
-
-
-\todoil{Algorithm}
-
-where
-\[ \rho_R(\vec{u}) := \frac{\vec{u}^T \mat{A} \vec{u}}{\vec{u}^T \vec{u}} \]
-is known as the Rayleigh quotient,
+The most simple iterative method to obtain
+a single eigenvalue from a particular matrix $\mat{A}$ is the Power method.
+Starting from a random initial vector $\vec{v}^{(0)} \in \R^{\Nbas}$,
+the algorithms only consists of applying the matrix $\mat{A}$
+repetitively to the vector, \ie
+\begin{align*}
+	\vec{v}^{(1)} &= \mat{A} \vec{v}^{(0)} \\
+	\vec{v}^{(2)} &= \mat{A} \vec{v}^{(1)} = \mat{A}^2 \vec{v}^{(0)} \\
+	\vec{v}^{(3)} &= \mat{A} \vec{v}^{(2)} = \mat{A}^3 \vec{v}^{(0)} \\
+	&\vdots \\
+	\vec{v}^{(j)} &= \mat{A} \vec{v}^{(j-1)} = \mat{A}^j \vec{v}^{(0)}.
+\end{align*}
+In each step we may compute an estimate for the eigenvalue $\theta^{(j)}$ using
+\[ \theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right) \]
+where $\rho_R$ is the 
+\newterm{Rayleigh quotient}
+\begin{equation}
+	 \rho_R(\vec{u}) := \frac{\vec{v}^T \mat{A} \vec{v}}{\vec{v}^T \vec{v}},
+	\label{eqn:RayleighQuotient}
+\end{equation}
 the discretised version of \eqref{eqn:CourantFischer}.
+In well-behaved cases this algorithm will find an approximation for
+the largest eigenvalue in $\theta^{(i)}$
+and an approximation for the corresponding eigenvector as
+\[ \frac{1}{\norm{\vec{v}^{(i)}}_2}  \vec{v}^{(i)}. \]
+To understand this
+let us write $\vec{v}^{(0)}$ as an expansion in the exact
+eigenvectors \linebreak $\vec{u}_1, \vec{u}_2, \ldots, \vec{u}_{\Nbas}$:
+\begin{equation}
+	\vec{v}^{(0)} = \sum_{i=1}^{\Nbas} \alpha_i \vec{u}_i = \alpha_{\Nbas} \vec{u}_{\Nbas} + \sum_{i=1}^{\Nbas-1} \alpha_i \vec{u}_i
+	\label{eqn:Vexpansion}
+\end{equation}
+Without loss of generality%
+\footnote{The case $\alpha_{\Nbas} = 0$ is handled by the limited precision
+floating point arithmetic. After a single application of $\mat{A}$,
+this is cured and we are back to the case we consider here.}
+we can normalise $\vec{v}^{(0)}$ such that $\alpha_{\Nbas} = 1$.
+If we apply $\mat{A}$ to \eqref{eqn:Vexpansion} we obtain
+\[
+	\mat{A} \vec{v}^{(0)} = \lambda_{\Nbas} \left( \vec{u}_{\Nbas} + \sum_{i=1}^{\Nbas}
+	\frac{\lambda_k}{\lambda_{\Nbas}}
+	\alpha_i \vec{u}_i \right)
+\]
+or after the $j$-th step and subsequent normalisation
+\[
+	\frac{1}{\norm{\vec{v}^{(j)}}_2} \vec{v}^{(j)} =
+	\vec{u}_{\Nbas} + \bigO\left(
+	\left( \frac{\lambda_{\Nbas-1}}{\lambda_{\Nbas}} \right)^j
+	\right).
+\]
+Provided that $\abs{\lambda_{\Nbas-1}} \neq \abs{\lambda_{\Nbas}}$,
+\ie that the largest eigenvalue (by magnitude) is single,
+the iterate $\vec{v}^{(j)}$
+therefore converges linearly against the eigenvector corresponding to this
+largest eigenvalue $\lambda_{\Nbas}$.
+Similarly $\theta^{(j)}$ converges against $\lambda_{\Nbas}$ in this case.
 
-Let us define
-\[ \lambda_\text{max} = \argmax_{\lambda \in \sigma(\mat{A})} \abs{\lambda}. \]
-Provided that $\lambda_\text{max}$ is unique,
-\ie no other eigenvalue of this magnitude exists,
-this algorithm converges to $\lambda_\text{max}$.
-To see this, let us write
-\begin{align}
-	a
-\end{align}
+% TODO OPTIONAL
+% Gerschgorin's circles
 
-Gerschgorin's circles
-
-
-\todoil{Do later if time}
-
-\subsection{Shift and invert}
+\subsection{Spectral transformations}
 \label{sec:ShiftInvert}
-\todoil{Do later if time}
-Select the range of interest
-Wilkinson's method
+With the Power method at hand the question is now how one could
+generalise this approach in order to obtain an eigenpair at the lower end of the
+spectrum or somewhere between both extremes.
+This is the purpose of so-called spectral transformations.
+
+\begin{prop}
+	\label{prop:Spectral}
+	Given a symmetric matrix $\mat{A} \in \R^{\Nbas \times \Nbas}$,
+	the following holds for each eigenpair
+	$(\lambda_i, \vec{u}_i)) \in \R \times \R^{\Nbas}$:
+	\begin{enumerate}[label=(\alph*)]
+		\item If $\mat{A}$ is invertible,
+			$\vec{u}_i$ is an eigenvector of $\mat{A}^{-1}$ with eigenvalue
+			$1 / \lambda_i$.
+		\item For every $\sigma \in \R$, $\vec{u}_i$ is an eigenvector
+			of the matrix $\mat{A} - \sigma \mat{I}_{\Nbas}$
+			with eigenvalue $\lambda_i - \sigma$.
+		\item If $\sigma \in \R$ is chosen such that
+			$\mat{A} - \sigma \mat{I}_{\Nbas}$
+			is invertible, than  $\vec{u}_i$ is an eigenvector
+			of $\left( \mat{A} - \sigma \mat{I}_{\Nbas} \right)^{-1}$
+			with eigenvalue $1 / (\lambda_i - \sigma)$.
+	\end{enumerate}
+	\begin{proof}
+		All can be shown in a single line:
+		\begin{enumerate}[label=(\alph*)]
+			\item Since $\mat{I}_{\Nbas} = \mat{A}^{-1} \mat{A}$
+				by definition we have
+				\[ \frac{1}{\lambda_i} \vec{u}_i
+					= \frac{1}{\lambda_i} \mat{I}_{\Nbas} \vec{u}_i
+					= \frac{1}{\lambda_i} \mat{A}^{-1} \mat{A} \vec{u}_i
+					= \mat{A}^{-1} \vec{u}_i.
+				\]
+			\item Direct calculation leads
+				\[ \left( \mat{A} - \sigma \mat{I}_{\Nbas} \right) \vec{u}_i
+					= \mat{A} \vec{u}_i - \sigma \vec{u}_i
+					= \lambda_i \vec{u}_i - \sigma \vec{u}_i
+					= \left( \lambda_i - \sigma  \right) \vec{u}_i
+				\]
+			\item Follows from (a) and (b).
+		\end{enumerate}
+	\end{proof}
+\end{prop}
+
+Proposition \ref{prop:Spectral} provides us with a toolbox for
+changing the spectrum of a matrix without changing its eigenvectors.
+If we are interested in obtaining the lowest eigenvalue of a matrix $\mat{A}$
+using the Power method,
+we essentially only need to apply it to $\mat{A}^{-1}$ instead
+of  $\mat{A}$, since the largest eigenvector of $\mat{A}^{-1}$ will be
+the smallest of $\mat{A}$.
+Similarly by proposition \ref{prop:Spectral}(c)
+we can even tune the Power method into a particular eigenvalue of interest.
+
+Spectral transformations like the ones shown in proposition \ref{prop:Spectral}
+are general and can be applied to all iterative eigensolver methods,
+not only the Power method.
+Some generalisations based on forming polynomials over the matrix $\mat{A}$
+exist as well.
+For example Chebychev polynomial filtering works similar to this
+\todoil{Check}
+
+% TODO OPTIONAL
+% Wilkinson's method
 
 \subsection{Arnoldi's method}
 \label{sec:Arnoldi}
 Arnoldi~\cite{Arnoldi1951}
 \todoil{Do later if time}
 
+Idea is to diagonalise in a subspace of vectors generated by the
+Power method,
+the so-called Krylov subspace.
+Naturally the subspace vectors need to be orthonormal
+this is the purpose of the Arnoldi procedure
+
+Lanczos for symmetric matrices
+Result of applying arnoldi to real symmetric matrix
+is a tridiagonal subspace matrix,
+which can be easily diagonalised.
+To find estimates.
+
+problem is multiplicities (block version)
+and loss of orthogonality (partial reorthogonalisation)
+growing subspace size (implicit restart, deflation, locking)
+
+See arbenz~\cite{Arbenz2010} for details
+
 \subsection{Davidson's method}
 \label{sec:Davidson}
+Davidson~\cite{Davidson1975}
 \todoil{Do later if time}
+
+Also a subspace method but different procedure to create subspace
+essentially the idea is to use the information encoded in the residuals
+to grow the subpace
+by solving a correction equation.
+For solving the correction equation no exact solvtion is required
+This leads to the idea of a preconditioner.
 
 mention and explain preconditioning in this context
 
