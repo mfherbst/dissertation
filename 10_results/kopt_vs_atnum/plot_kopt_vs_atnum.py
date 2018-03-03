@@ -145,7 +145,7 @@ def main():
                     if is_period(d, 2) and is_nlm(d, 5, 2, 2) and
                     is_charge(d, 0)]
     data_period3 = [d for d in data
-                    if is_period(d, 3) and is_nlm(d, 7, 2, 2) and
+                    if is_period(d, 3) and is_nlm(d, 6, 2, 2) and
                     is_charge(d, 0)]
     data_period4 = [d for d in data
                     if is_period(d, 4) and is_nlm(d, 7, 2, 2) and
