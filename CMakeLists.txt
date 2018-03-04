@@ -64,6 +64,7 @@ add_subdirectory(4_solving_hf)
 add_subdirectory(6_contraction_lazy_matrices)
 add_subdirectory(8_molsturm)
 add_subdirectory(10_results)
+add_subdirectory(13_conclusion)
 add_subdirectory(15_future)
 add_subdirectory(99_appendix)
 
