@@ -39,7 +39,7 @@ def main():
         e_cgto = v_cgto - g_cgto
         err_cgto = (e_cgto - literature[k]) * HARTREE_TO_EV
 
-        cs = [d for d in data if d["nmax"] == 10][0]
+        cs = [d for d in data if d["nmax"] == 7][0]
         g_cs = cs["ground_state"]
         v_cs = cs["singlets"][cs["selected"][k]]
         e_cs = v_cs - g_cs

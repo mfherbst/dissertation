@@ -13,27 +13,65 @@ BEGINFILE {
 }
 
 function map(a) {
-	switch(a) {
-		case 1:
-			return "1s"
-		case 2:
-			return "2s"
-		case 3:
-		case 4:
-		case 5:
-			return "2p"
-		case 6:
-			return "3s"
-		case 7:
-		case 8:
-		case 9:
-			return "3p"
-		case 10:
-			return "4s"
-		case 11:
-		case 12:
-		case 13:
-			return "4p"
+	if (l == 1 || m == 1) {
+		switch(a) {
+			case 1:
+				return "1s"
+			case 2:
+				return "2s"
+			case 3:
+			case 4:
+			case 5:
+				return "2p"
+			case 6:
+				return "3s"
+			case 7:
+			case 8:
+			case 9:
+				return "3p"
+			case 10:
+				return "4s"
+			case 11:
+			case 12:
+			case 13:
+				return "4p"
+		}
+	}
+	if (l == 2 || m == 2) {
+		switch(a) {
+			case 1:
+				return "1s"
+			case 2:
+				return "2s"
+			case 3:
+			case 4:
+			case 5:
+				return "2p"
+			case 6:
+				return "3s"
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+				return "3d"
+			case 12:
+			case 13:
+			case 14:
+				return "3p"
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+				return "4d"
+			case 20:
+			case 21:
+			case 22:
+				return "4p"
+			case 23:
+				return "4s"
+		}
 	}
 	return a
 }
