@@ -56,13 +56,13 @@ one should mention that such iterative methods
 have an additional disadvantage.
 It is typically very costly to obtain a large number of eigenpairs
 of the diagonalised matrix.
-Fortunately for large matrices this is hardly needed
+Fortunately this is hardly needed for large matrices
 and techniques like Chebychev preconditioning~\todo{cite}
-or shift and invert~(see section \vref{sec:ShiftInvert})
+or spectral transformations~(see section \vref{sec:ShiftInvert})
 allow to effectively direct the diagonalisation routines
 towards the part of the eigenspectrum one is truely interested in.
 
-On the one hand employing a \contraction-based method thus do not really
+On the one hand, employing a \contraction-based method thus does not really
 restrict the range of numerical problems, which can be tackled.
 On the other hand avoiding the storage of the problem matrix
 immediately reduces the scaling in memory from quadratic (in system size) to linear.
@@ -71,7 +71,7 @@ in most subspace algorithms is storing the generated subspace,
 \ie a fixed number of vectors, which take linear storage.
 This makes \contraction-based methods especially
 attractive for problems where memory is a bottleneck.
-For this reason this concept has been
+Therefore this concept has been
 introduced in a range of fields of numerics and scientific computing
 under different names.
 Terms like \textbf{apply-based} method, \textbf{matrix-free} method
@@ -86,7 +86,7 @@ involves expressions with contractions over tensors with rank larger than 2.
 Consider for example the coupled-cluster doubles working equations~\eqref{eqn:CCDworking}
 or the contraction expression for the exchange matrix
 in a \CS-based discretisation of Hartree-Fock~\eqref{eqn:ApplicationKcs}.
-Additionally calling such algorithms \contraction-based
+Additionally, calling such algorithms \contraction-based
 indicates that the idea to substitute storage by expressions
 is more general than the matrix-vector product.
 In theory one could think of similar approaches for
@@ -138,8 +138,8 @@ Overall it is therefore not hard to understand why
 people went for recomputing the data instead.
 
 Nowadays the amounts of available main memory has increased substantially,
-such that for larger and larger system sizes
-the system matrices can now be stored in memory.
+such that for larger and larger system sizes,
+the required matrices can now be stored in memory.
 Nevertheless one should not forget that accessing main memory costs time as well,
 which could be equally well spent for computations.
 Assuming perfect pipelining
@@ -167,10 +167,10 @@ Another aspect one should take into account are the historic trends.
 Figure \ref{fig:MemCpuSpeedup} clearly%
 \footnote{The original source \cite{Gocon2014}
 does not provide a clear description how the data points in each year
-where computed from the range of processors and chipsets,
-which were released in this year.
+were computed and what kinds of processors and chipsets
+were selected for each year.
 Nevertheless the trend is so clear, that I consider this aspect
-to have little influence on the picture.}
+to have little influence on the conveyed picture.}
 shows the so-called \newterm{processor-memory performance gap}.
 This is meant to express that the available memory bandwidth
 has increased by a lesser amount relative to 1980 as the CPU clock speed.
@@ -216,7 +216,7 @@ Implementing this \contraction expression
 in a highly efficient manner is
 key to make a \contraction-based ansatz fast.
 
-Even in the naive manner presented
+Even in the na\"{i}ve manner presented
 in equations \eqref{eqn:ExchangeApply} and \eqref{eqn:ApplicationKcs}
 the \contraction expressions
 of the exchange term of the Fock matrix with a trial vector
@@ -224,7 +224,8 @@ look all but simple.
 In a practical implementation achieving maximal performance
 the required procedures will most probably be more involved,
 since issues like the following will all need to be addressed.
-\todoil{References for the guys in the itemize}
+% TODO OPTIONAL
+% \to doil{References for the guys in the itemize}
 \begin{itemize}
 	\item \textbf{Adoption to Hardware} and \textbf{parallelisation}:
 		The features provided by modern hardware
@@ -263,14 +264,15 @@ since issues like the following will all need to be addressed.
 \end{itemize}
 On top of that one should keep in mind that problem matrices
 are usually composed out of different terms
-with potentially different structure.
-In the case of the \SCF the Fock matrix, for example,
+with potentially different structures.
+In the case of  a finite-element-based \SCF, for example, the Fock matrix
 is as sum of the local one-electron terms $\mat{T}$ and $\mat{V}_0$,
-which can just be computed,
+which can be directly computed,
 the Coulomb term $\mat{J}$,
-which requires the solution to a Poisson equation,
-and the exchange term $\mat{K}$ which requires to solve
-multiple equations on a single apply.
+which requires the solution to a Poisson equation
+as well as
+and the exchange term $\mat{K}$, which requires to solve
+multiple equations on each single apply.
 It is therefore not hard to imagine
 that the best approach to the issues raised above might
 well differ from term to term.

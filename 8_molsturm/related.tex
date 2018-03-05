@@ -7,15 +7,12 @@
 \newcommand{\ASE}{\texttt{ASE}\xspace}
 \newcommand{\CPtK}{\texttt{CP2K}\xspace}
 
-Apart from \molsturm I am unaware of another quantum-chemistry package,
+Apart from \molsturm I am unaware of another quantum-chemistry package
 which has achieved
 a similar flexibility with respect to the type of basis functions
-in their \SCF procedure.
+in its \SCF procedure.
 Many packages still have related goals towards flexibility or generality of their codes
 and should therefore not go completely unmentioned here.
-The presented review is not intended to be exhaustive,
-but it should provide an idea of the current status
-of quantum-chemistry softwares with respect to these aspects.
 
 When it comes to flexibility of a program package
 a key ingredient is a versatile interface.
@@ -75,8 +72,7 @@ for data exchange,
 such that linking their codes to external projects is easily feasible.
 \psifour for example managed to integrate more than 15 external packages
 into their framework.
-This includes three completely different back ends for the computation of the
-required integrals.
+This includes three completely different back ends for computing integrals.
 In the case of \pyscf it only took us about a day to link
 our \molsturm to the \FCI algorithms of \pyscf
 via an interface based on \numpy.

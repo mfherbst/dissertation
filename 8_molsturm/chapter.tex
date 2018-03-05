@@ -1,4 +1,4 @@
-\chapter{\molsturm method-development framework}
+\chapter{The \molsturm method-development framework}
 \label{ch:Molsturm}
 \chapquote{[C has] the power of assembly language and the convenience of \ldots assembly language.}{Dennis Ritchie~(1941--2011)} \\
 \chapquote{Keep it simple, make it general, and make it intelligible.}{Doug McIlroy~(1932--present)}
@@ -16,15 +16,14 @@ which explains the name.
 Following my unsuccessful attempts on a finite-element-based Hartree-Fock scheme,
 where I mostly used the approaches known to me from a \cGTO setting,
 we expanded the goals of \molsturm.
-Now the primary project goal has become to yield a quantum-chemistry
+Now, the primary project goal has become to yield a quantum-chemistry
 method development framework,
 which supports the implementation and evaluation
 of discretisations based on novel types of basis functions.
-We have managed to achieve this
-building largely on the conclusions
-about the structure of \SCF algorithms
+We have achieved this by building largely on the conclusions
+about the common structure of \SCF algorithms
 and the generality of the lazy matrix syntax of \lazyten,
-which we discussed in the previous chapters.
+which were discussed in the previous chapters.
 Additionally \molsturm has been equipped with a powerful \python interface,
 where it is easy to obtain, archive and analyse results.
 Even implementing completely new features on top of \molsturm's \SCF procedure

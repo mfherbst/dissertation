@@ -54,9 +54,8 @@ Many day-to-day tasks in quantum chemistry boil down to
 performing a multitude of similar calculations,
 followed by a subsequent graphical analysis
 by plotting or fitting.
-Here we want to consider the computation of a dissociation curve
-followed by the fit of a Morse potential
-as an example for such a procedure.
+Here, we want to consider the computation of a dissociation curve
+followed by the fit of a Morse potential.
 
 Even though many traditional quantum-chemistry programs
 have developed functionality for automatising simple
@@ -67,12 +66,12 @@ In other words in many cases one is required to write a script
 to parse the program's output and then feed it to potentially yet
 another program for doing the fitting and the plotting.
 
-This has the disadvantage,
+This has the disadvantage
 that skill in at least two different settings is required:
 The domain-specific language the quantum-chemistry program uses
 in its input file as well as the scripting language to parse the results.
-For people who are new to the field this can become quite an obstacle.
-More subtly the output formats
+For people who are new to the field, this can become quite an obstacle.
+More subtly, the output formats
 of quantum-chemistry programs change from time to time
 breaking the parser scripts or --- even worse ---
 producing wrong results without any notice.
@@ -91,7 +90,7 @@ Then it calls the function \texttt{plot\_morse\_fit}
 to plot the resulting data points of energies vs. distances
 and to fit a Morse potential through them,
 see figure \ref{fig:dissociation}.
-Note, how the error-prone parsing step is replaced by just
+Note how the error-prone parsing step is replaced by just
 line \lextract of figure \ref{fig:codeDissociation},
 where UMP2 ground state energy is requested from the
 dictionary of results returned by the calculation.
@@ -217,7 +216,7 @@ the computation of the tensor contractions
 shown in the script of figure \ref{fig:codeCCD}.
 For this reason such implementations are all but suitable for
 real-world applications.
-Nevertheless the script presented in figure \ref{fig:codeCCD}
+Nevertheless, the script presented in figure \ref{fig:codeCCD}
 may be used for \CCD calculations of small molecules with small basis sets.
 For example an \ce{O2} 6-31G~\cite{Hehre1972} calculation on a recent laptop took
 about an hour to converge up to a residual $l_\infty$-norm of $10^{-4}$.
@@ -270,12 +269,12 @@ even without nuclear gradients --- neither analytical nor numerical.
 The script shown in figure \ref{fig:codeGeoOpt}
 performs a geometry optimisation of a water
 based on Powell's gradient-free optimisation algorithm~\cite{Powell1964,Press1992}
-as it is implemented in the \texttt{scipy} library%
+as implemented in the \texttt{scipy} library%
 ~\cite{Walt2011,scipyWeb}.
 The optimal structure is found in a two-step procedure.
-First a cheap \mbox{STO-3G}~\cite{Hehre1969} basis set is used to obtain
+First, a cheap \mbox{STO-3G}~\cite{Hehre1969} basis set is used to obtain
 a reasonable guess.
-Then the final geometry is found
+Then, the final geometry is found
 by minimising to a lower convergence threshold in the more costly
 \mbox{def2-SV(P)}~\cite{Weigend2005} basis.
 

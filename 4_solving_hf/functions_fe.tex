@@ -463,7 +463,7 @@ This leads to linear scaling in storage with respect to the number
 of finite elements as well.
 
 For the evaluation of the Coulomb term $\matJ$
-and the exchange term $\matK$ this naive approach does not work,
+and the exchange term $\matK$ this na\"{i}ve approach does not work,
 unfortunately, since neither $\Op{J}$ nor $\Op{K}$ are local operators.
 Let us first treat the Coulomb term.
 With reference to \eqref{eqn:OperatorCoulomb} and \eqref{eqn:Jbas}
@@ -679,7 +679,7 @@ $\gamma^{(n)}\!\left(\tau_c(\vec{\xi}_q), \tau_d(\vec{\xi}'_r)\right)$
 takes $\bigO(\Nelec k^6)$,
 which makes a single element $K^{(n)}_{\mu\nu}$ get evaluated
 in $\bigO(k^6 \Nquadc \Nquadc' \Nelec)$.
-Overall the computational scaling for the naive
+Overall the computational scaling for the na\"{i}ve
 procedure outlined above is therefore $\bigO(\Nbas^2)$.
 In storage we would expect the same quadratic scaling,
 which is highly undesirable.

@@ -35,7 +35,7 @@ and not just a lookup into memory.
 On the upside one gains a much more flexible data structure
 where a familiar matrix-like interface
 can be added to more complicated objects.
-Most notably a lazy matrix may well be non-linear or can have state,
+Most notably a lazy matrix may well be non-linear or can have a state,
 which may be changed by a \update function
 in order to influence the represented values at a later point.
 An example where this is sensible would be the Coulomb and Exchange matrices,
@@ -58,7 +58,7 @@ which might change between iterations.
 	}
 	\label{fig:LazyMatrixExpressionTree}
 \end{figure}
-All evaluation between lazy matrices
+All evaluations between lazy matrices
 like addition, subtraction or matrix-matrix multiplication
 is usually delayed until a contraction of the resulting
 expression with a vector or a stored matrix is performed
@@ -149,7 +149,7 @@ An initial implementation of the lazy matrix language has been
 achieved in the \cpp library \lazyten~\cite{lazytenWeb}.
 Not all aspects of lazy matrix concept are yet covered, however.
 For example many opportunities to achieve performance improvements
-by reordering the lazy matrix expression tree are currently missed.
+by reordering the lazy matrix expression tree are currently missing.
 On the other hand \lazyten goes a bit beyond the lazy matrix specification
 in the sense that it has become a full abstraction layer for linear algebra.
 As depicted in figure \vref{fig:structureLazyten}
@@ -248,7 +248,7 @@ solve(A, x, b);
 or equivalently
 \begin{lstlisting}[style=c++]
 auto invA = inverse(A);
-auto b = invA * b;
+auto x = invA * b;
 \end{lstlisting}
 \ie quite literally coding the application of the inverse.
 In both cases the last line will cause the problem to be passed
@@ -370,10 +370,10 @@ or experimentation with novel methods,
 since many details are abstracted and one may at first concentrate
 on the algorithm and not on numerics.
 
-Overall \lazyten therefore amount to yield a very intuitive syntax
+Overall \lazyten therefore amounts to yield a very intuitive syntax
 for \contraction-based methods in the form of lazy matrices,
 where algorithms can be written at a high level.
-By the means of changing the implementation behind the
+By means of changing the implementation behind the
 employed lazy matrix objects the code can be fixed but still flexible
 to changes in the available hardware or
 if novel types of basis functions with unusual matrix structures

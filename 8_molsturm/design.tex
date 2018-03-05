@@ -6,41 +6,38 @@ is to yield a framework,
 which supports notions towards novel quantum-chemical methods,
 including methods where unusual discretisation approaches
 or new types of basis functions are employed.
-Ideally for this adding
-new basis functions becomes kind of plug-and-play,
+Ideally, adding new basis functions becomes kind of plug-and-play,
 such that one only implements a minimal interface
-towards an integral library and the rest of \molsturm,
-\ie the \SCF and the Post-HF methods would just work
-in a preliminary manner.
+linking an integral library and the rest of \molsturm.
+Thereafter the \SCF and the Post-HF methods would just work.
 Many details regarding the numerical and algorithmic treatment
 will most likely still need to be optimised thereafter,
 such that high-level access to influence
 all kinds of parameters of the \SCF scheme or the
 diagonalisation algorithms are absolutely key.
 Additionally such a new method would need to be tested and evaluated
-towards their overall usefulness towards standard problem
+towards their overall usefulness in standard problems
 of quantum-chemical modelling.
 These tasks are usually both highly repetitive and again
 require access into many layers of a quantum-chemistry program
 to obtain the quantities to compare.
-Aspects such as these motivate
-the following overall design goals for the \molsturm project.
+This motivates the following overall design goals for the \molsturm project.
 
 \paragraph{Enable rapid development:}
-In the early stages of developing new quantum-chemical algorithms
+In the early stages of developing new quantum-chemical algorithms,
 it is often not clear how well these algorithms perform
 or if they even meet the expected requirements.
-Before worrying about making the algorithm fast,
-one therefore first wants to know whether it even works.
+In other words before worrying about making an algorithm fast,
+one first wants to know whether it even works.
 A light-weight framework, which possesses the flexibility
 to quickly combine or amend what is already implemented is very important for this.
 The syntax of the resulting code should be high-level and intuitive,
 resembling the physical formulae as much as possible.
 To make the initial implementation easy for people
 not entirely familiar with all tricks of the trade,
-the details regarding the numerics and the linear algebra
+the details regarding numerics and linear algebra
 should be mostly hidden in the code.
-Especially in highly interdisciplinary subjects such as quantum chemistry
+Especially in highly interdisciplinary subjects such as quantum chemistry,
 too often PhD students are rather unfamiliar to coding and numerics
 and thus spend half a year to understand the clunky programs,
 a year to implement the method,
@@ -169,7 +166,7 @@ as well as the examples in section \vref{sec:MolsturmExamples}.
 %
 %
 \paragraph*{}
-In the following sections we will discuss some of the
+The following sections discuss some of the
 aforementioned design aspects in more detail.
 
 \subsection{Self-consistent field methods and integral interface}
@@ -218,7 +215,7 @@ representing the required one-electron and two-electron terms,
 \ie kinetic, nuclear attraction, Coulomb and exchange for \HF.
 Appropriately one would take an exchange-correlation term for \DFT
 and additional terms for embedding theories.
-Both is not currently available, however.
+Both are not currently available, however.
 
 The integral lazy matrices are obtained from \gint,
 which acts as broker presenting a common interface for all
@@ -262,7 +259,7 @@ since the call to the registration function could happen dynamically at runtime.
 So one could implement a new integral back end in a separate shared library
 and add it as needed in a plug-in fashion without recompiling \molsturm.
 
-To summarise the responsibility for the \HF problem
+To summarise, the responsibility for the \HF problem
 has thus been effectively split between three different,
 well-abstracted modules by the means of the lazy matrices of \lazyten.
 \gint provides the interface to the integrals,
@@ -281,11 +278,11 @@ define the calculation parameters like the chemical system
 or the basis type and basis set choices
 and finally receives those from the user
 to setup the calculation.
-That is it obtains the integral lazy matrices
+That is, it obtains the integral lazy matrices
 from \gint, builds the Fock matrix
 as described above and starts the actual \SCF calculation.
-The converged results from \gscf are afterwards
-returned in a convenient data structure.
+The converged results from \gscf are
+returned in a convenient data structure afterwards.
 
 We chose to implement most of this interface layer
 and especially the interface itself
@@ -296,22 +293,22 @@ By providing the required functionality to setup and drive
 a \molsturm calculation from \python,
 we avoid to define yet another ``input format'' and ``output format''
 for quantum-chemical calculations.
-Instead calculations can be initiated cleanly and flexibly
+Instead, calculations can be initiated cleanly and flexibly
 directly from a host script.
 This can afterwards be used to post-process the results as well,
 such that any kind of output parsing is not needed.
 The whole calculation can be performed in a single script
 from setup to analysis,
 which makes the complete procedure much more transparent.
-Moreover rather repetitive processes like
+Moreover, rather repetitive processes like
 benchmarking a new method
-can be easily automatised in this way.
+can be easily automated in this way.
 
 To give the user full control over the complete \molsturm ecosystem
 \emph{all} parameters for \gint, the \SCF algorithms of \gscf
 as well as the employed linear solvers from \lazyten are forwarded
 to the \python interface of \molsturm,
-where they all can be directly accessed and changed.
+where they can all be directly accessed and changed.
 These parameters include ways to influence which algorithms are
 chosen by \lazyten for diagonalisation
 or how \gint switches between the implemented \SCF solvers.
@@ -321,7 +318,8 @@ which have become the \textit{de facto} standard
 for storing and manipulating matrices or tensors in \python.
 A large range of standard \python packages,
 which are commonly used for plotting or data analysis,
-like matplotlib~\todo{cite}, scipy~\cite{Walt2011,scipyWeb}, pandas~\todo{cite}
+like matplotlib~\cite{Matplotlib}, scipy~\cite{Walt2011,scipyWeb},
+or pandas~\cite{pandasWeb},
 similarly employ \numpy arrays as their primary interface.
 Additionally by the means of interface generators like SWIG~\todo{cite}
 \numpy arrays can be automatically converted to plain
@@ -332,9 +330,9 @@ For example we explicitly support running \molsturm from an interactive
 IPython~\todo{cite} shell,
 such that one can immediately interfere with the progress of a calculation,
 check assertions about intermediate results
-or visualise these graphically with matplotlib~\todo{cite}.
-This greatly reduces the feedback loop for small calculations
-like during debugging.
+or visualise such graphically with matplotlib~\cite{Matplotlib}
+This greatly reduces the feedback loop for small calculations,
+\eg during debugging.
 If one uses \molsturm from a Jupyter notebook \cite{Jupyter},
 one can even perform calculations and view plots
 interactively from within a web browser.
@@ -354,15 +352,15 @@ Additionally this allows to restore an archived state
 and continue in a different direction at a later point
 building on results obtained previously
 and without redoing everything from scratch.
-On top of that \molsturm's archived state contains
+On top of that, \molsturm's archived state contains
 the precise set%
 \footnote{That is \emph{not} the parameters provided by the user,
 but the post-processed parameters which were actually used
 by the lower layers, amended for example by default values.}
 of input parameters which were used to obtain the stored results.
 This not only makes the archive self-documenting,
-but additionally makes restarting the identical calculation
-or a slightly amended calculation very easy.
+but additionally restarting the identical calculation
+or a slightly amended calculation becomes very easy.
 
 Our aforementioned \numpy interface has already proven to be very helpful
 to link to other third-party quantum chemistry codes to \molsturm.
@@ -370,11 +368,11 @@ For example \molsturm's \SCF can be used to start a
 full configuration interaction~(FCI) calculation
 in \pyscf~\cite{Sun2017}.
 Recently support for computing excited state energies at {\ADC}(2),
-{\ADC}(2)-x and {\ADC}(3)~\cite{Schirmer1982,Trofimov1999} level
+{\ADC}(2)-x and {\ADC}(3) \cite{Schirmer1982,Trofimov1999} level
 with \adcman~\cite{Wormit2014} was added.
 Both these links make use of the \python-\numpy interfaces
 these third-party packages already offer and were realised in only a couple of days.
-Notice, that these interfaces
+Notice that these interfaces
 are general enough to work both for \CS and \cGTO discretisations
 and theoretically all basis function types which are implemented in \gint.
 
