@@ -1,15 +1,15 @@
 \section{Coulomb-Sturmian-based ADC calculations}
 \label{sec:SturmianADC}
-This section provides a first look into excited states calculations
+This section provides an outlook towards excited states calculations
 employing Coulomb-Sturmians as the underlying basis functions.
-As mentioned in section \vref{sec:MolsturmState} the modular design
-of the \molsturm package allowed us to link it to a few third-party
-packages employing our \python interface.
-One of them is \adcman~\cite{Wormit2014},
-which can be employed to perform excited states calculations
+As mentioned in section \vref{sec:MolsturmState} the \python interface
+of \molsturm allowed us to link it to multiple third-party packages.
+One of these is \adcman~\cite{Wormit2014},
+which in this manner can be employed to perform excited states calculations
 based on the algebraic diagrammatic construction scheme at
 {\ADC}(1), {\ADC}(2), {\ADC}(2)-x~\cite{Schirmer1982}
-and {\ADC}(3)~\cite{Trofimov1999} level.
+and {\ADC}(3)~\cite{Trofimov1999} level
+based on any basis function type supported by \molsturm.
 
 \begin{figure}
 	\centering
@@ -31,47 +31,51 @@ and {\ADC}(3)~\cite{Trofimov1999} level.
 	}
 	\label{fig:SturmianAdcResults}
 \end{figure}
-This section now reports the first successful {\ADC}(2)
-calculation employing Coulomb-Sturmians for the discretisation
-on the beryllium atom.
+This section reports the first successful {\ADC}(2)
+calculation using Coulomb-Sturmians for the discretisation.
 In figure \ref{fig:SturmianAdcResults} we show the singlet excitation energies
+of the beryllium atom
 as a progression with increasing \CS basis set size from $(4,1,1)$ to $(10,1,1)$.
-For comparison the figure also indicates an equivalent calculation
+For comparison the figure further indicates an equivalent calculation
 using cc-pVTZ~\cite{Prascher2011} as well as the experimental values~\cite{Moore1949}.
-Within the \CS basis set progression the results converge nicely from above,
-where for the first few excited states we require
+Within the \CS basis set progression the results converge from above as expected.
+Judging from the plots
 a maximum principle quantum number around $\nmax = 10$
-to reach a decent convergence in the radial part.
-This agrees with the convergence plots for the ground state,
-see for example figures \vref{fig:ErrorHF_vs_nlm} and \vref{fig:ErrorHF_vs_nlm_O}.
+seems to be required to converge the radial part.
+This agrees with our findings for the ground state,
+see for example figures \vref{fig:ErrorHF_vs_nlm} and \vref{fig:ErrorHF_vs_nlm_O},
 
-Comparing the computed excitation energies with experiment
+Comparing the computed excitation energies to the experimental values
 the $(10,1,1)$ basis set
 performs worse than cc-pVTZ at the first excited state $2s2p$,
 but better for the $2s3s$ and the $2s3p$ states.
-This result is, however, a little misleading for three reasons.
-First of all the \CS exponent of $2.0$ is a good value for describing
+This result is, however, a little misleading for two reasons.
+First the cc-pVTZ basis set and the $(10,1,1)$ \CS basis are not exactly comparable,
+since they have a deviating structure.
+Whilst cc-pVTZ contains 10 contracted Gaussian
+functions with angular momentum up to $l = 4$,
+$(10,1,1)$ contains 37 uncontracted Coulomb-Sturmians
+with angular momentum at most $l = 1$.
+Second the \CS basis has not really been optimised at all
+with respect to {\ADC}(2) as a method or with respect to the excited states of beryllium.
+For example the employed \CS exponent of $2.0$ is a good value for describing
 the ground state of beryllium, but it is certainly not an optimal value
-for describing the excited states,
-such that an optimisation with respect to this parameter could lead
-to improvements of the \CS results.
-Secondly there is some indication, that functions of angular momentum $l = 2$
-are required for a proper description of the $2s2p$ excited state.
-This explains the observed convergence to a \emph{higher} excitation energy
-in figure \ref{fig:SturmianAdcResults},
-where we used a $(\nmax, 1,1)$ progression for the calculation.
-Thirdly the cc-pVTZ basis set --- even in decontracted form ---
-is much smaller compared to a $(10,1,1)$ \CS basis,
-such that it is fact more comparable to a $(7,1,1)$ or an $(8,1,1)$ \CS
-basis in the number of basis functions.
-Compared to the $(7,1,1)$ basis the cc-pVTZ in fact does better
-for all three states shown,
-but the $(7,1,1)$ results are not far off~(between $\unit[0.5]{eV}$
-and $\unit[2]{eV}$).
-Keeping in mind that we have so far not optimised
-the \CS basis set for the description of the excited states
-of beryllium or {\ADC}(2) as a method,
-this result still looks promising.
+for describing the excited states.
+Further there is some indications from example calculations
+that at least angular momentum $l = 2$
+is required for a proper description of the $2s2p$ excited state.
+In figure \ref{fig:SturmianAdcResults} this amounts to explain,
+why the observed convergence to a \emph{higher} excitation energy
+than the \cGTO result or experiment is observed.
+
+Keeping both these aspects in mind it is therefore not yet possible
+to directly compare the \CS and the \cGTO results.
+But given than no attempts to optimise the \CS basis towards the {\ADC}(2)
+excited states setting have been made,
+it is still remarkable to find the observed convergence.
+A further, more systematic investigation could easily lead
+to a clarification of the picture and allow to contrast
+the different properties of both discretisations with respect to computing atomic spectra.
 
 
 % TODO OPTIONAL
