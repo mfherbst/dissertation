@@ -39,7 +39,8 @@ void restricted_hartree_fock(const krims::GenMap& intparams, const size_t n_alph
 
 // Obtain a core Hamiltonian guess
 const auto hcorebb       = Tbb + Vbb;
-const auto eigensolution = eigensystem_hermitian(hcorebb, Sbb, n_orbs);
+const auto eigensolution = eigensystem_hermitian(hcorebb, Sbb,
+                                                 n_orbs);
 
 // View current occupied coefficients in convenient data structure
 const auto cocc = eigensolution.evectors().subview({0, n_alpha});
@@ -54,7 +55,8 @@ std::cout << "Iter      etot      echange" << std::endl;
 for (size_t i = 0; i < max_iter; ++i) {
   // Obtain new eigenpairs ...
   const auto Fbb           = hcorebb + (2 * Jbb - Kbb);
-  const auto eigensolution = eigensystem_hermitian(Fbb, Sbb, n_orbs);
+  const auto eigensolution = eigensystem_hermitian(Fbb, Sbb,
+                                                   n_orbs);
 
   // ... and a new view to the occupied coefficients
   const auto cocc = eigensolution.evectors().subview({0, n_alpha});
@@ -88,7 +90,8 @@ for (size_t i = 0; i < max_iter; ++i) {
 
   std::cout << "Doubly occupied orbitals: " << std::endl;
   for (size_t i = 0; i < n_alpha; ++i) {
-    std::cout << "  " << eigensolution.evalues()[i] << std::endl;
+    std::cout << "  " << eigensolution.evalues()[i]
+              << std::endl;
   }
 }
 }  // namespace rhf

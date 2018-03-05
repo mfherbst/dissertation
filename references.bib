@@ -2955,6 +2955,38 @@
   url    = {http://pandas.pydata.org/},
 }
 
+@Misc{Xerus,
+  author       = {Huber, Benjamin and Wolf, Sebastian},
+  title        = {Xerus - A General Purpose Tensor Library},
+  howpublished = {\url{https://libxerus.org/}},
+  year         = {2014--2017},
+}
+
+@InProceedings{Baumgartner2005,
+  author    = {G. Baumgartner and A. Auer and D.E. Bernholdt and A. Bibireata and V. Choppella and D. Cociorva and X and Gao, R.J. Harrison and S. Hirata and S. Krishnamoorthy and S. Krishnan and C. Lam and Q. Lu and M. Nooijen and R.M. Pitzer and J. Ramanujam and P. Sadayappan and A. Sibiryakov},
+  title     = {Synthesis of High-Performance Parallel Programs for a Class of Ab Initio Quantum Chemistry Models},
+  booktitle = {Proceedings of the IEEE},
+  year      = {2005},
+  volume    = {93},
+  number    = {2},
+  pages     = {276-292},
+  month     = {February},
+  comment   = {Tensor contraction engine},
+}
+
+@InProceedings{Peise2015,
+  author        = {Peise, Elmar and Fabregat-Traver, Diego and Bientinesi, Paolo},
+  title         = {On the Performance Prediction of BLAS-based Tensor Contractions},
+  booktitle     = {High Performance Computing Systems. Performance Modeling, Benchmarking, and Simulation},
+  year          = {2015},
+  editor        = {Jarvis, Stephen A. and Wright, Steven A. and Hammond, Simon D.},
+  pages         = {193--212},
+  address       = {Cham},
+  publisher     = {Springer International Publishing},
+  abstract      = {Tensor operations are surging as the computational building blocks for a variety of scientific simulations and the development of high-performance kernels for such operations is known to be a challenging task. While for operations on one- and two-dimensional tensors there exist standardized interfaces and highly-optimized libraries (BLAS), for higher dimensional tensors neither standards nor highly-tuned implementations exist yet. In this paper, we consider contractions between two tensors of arbitrary dimensionality and take on the challenge of generating high-performance implementations by resorting to sequences of BLAS kernels. The approach consists in breaking the contraction down into operations that only involve matrices or vectors. Since in general there are many alternative ways of decomposing a contraction, we are able to methodically derive a large family of algorithms. The main contribution of this paper is a systematic methodology to accurately identify the fastest algorithms in the bunch, without executing them. The goal is instead accomplished with the help of a set of cache-aware micro-benchmarks for the underlying BLAS kernels. The predictions we construct from such benchmarks allow us to reliably single out the best-performing algorithms in a tiny fraction of the time taken by the direct execution of the algorithms.},
+  isbn          = {978-3-319-17248-4},
+}
+
 @Misc{WikipediaBornOppenheimer,
   title           = {Wikipedia on Born-Oppenheimer approximation},
   note            = {Accessed: 10-01-2018},
@@ -3039,5 +3071,12 @@
 @Unpublished{molsturmDesign,
   author = {Michael F. Herbst and Andreas Dreuw and James E. Avery},
   title  = {\molsturm: {A} light-weight quantum-chemistry framework for rapid method development not restricted to a particular type of basis function},
-  note   = {\textit{In preparation}},
+  note   = {In preparation},
+}
+
+@Misc{Fuzzing,
+	author = {Hanno Böck},
+	title = {The Fuzzing Project},
+	howpublished = {\url{https://fuzzing-project.org/}},
+	note = {accessed on 05/03/2018},
 }
