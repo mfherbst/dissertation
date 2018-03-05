@@ -1,10 +1,133 @@
+\defineabbr{HF}{HF\xspace}{Hartree-Fock}
+\defineabbr{SCF}{SCF\xspace}{Self-consistent field approach}
+
 %
 % English
 %
 \chapter*{Abstract}
 \markboth{\leftheadstyle{Abstract}}{}
 \addcontentsline{toc}{chapter}{Abstract}
-\todo[inline]{TODO}
+\todoil{Draft version}
+
+State-of-the art methods for calculating the electronic structures
+of molecules predominantly employ Gaussian-type basis functions.
+Existing code packages therefore tend to be highly optimised
+towards such a basis, assuming its numerical requirements throughout.
+Different approaches, making use of other types of basis functions,
+may show deviating mathematical properties
+and implementing them inside the same program package
+may thus become challenging.
+On the other hand starting a new package from scratch
+is time-consuming and potentially wasteful,
+especially if the novel method does not turn out to be fruitful in practice.
+
+In contrast, this thesis develops
+a design for a light-weight
+quantum-chemical program package,
+which focuses on obtaining a general Hartree-Fock~(\HF)
+self-consistent field~(\SCF) scheme on the one hand
+as well as a readily usable interface on the other.
+In this way both the flexibility to support calculations
+based on many basis function types in one package is gained
+as well as the possibility to link to third-party
+libraries for performing Post-\HF methods on top of the results.
+
+In order to arrive at this point,
+first the mathematical background of quantum mechanics
+as well as the Ritz-Galerkin projection for a variational treatment
+of spectral problems is discussed.
+Care is taken to emphasise the often overlooked peculiarities when
+discretising an infinite-dimensional spectral problem
+in order to obtain a finite-dimensional eigenproblem.
+Common quantum-chemical methods such as Full-CI
+and Hartree-Fock are reviewed providing insight
+into their mathematical properties.
+By employing the Ritz-Galerkin projection different
+formulations of the Hartree-Fock approximation are discretised
+leading to an expression for the Fock matrix,
+which involves integrals over products of the basis functions
+employed in the discretisation.
+% Additionally the failures of Hartree-Fock as well as
+% common measures to correct these are discussed.
+
+In a following case study the properties of four types of basis functions
+with respect to the feasibility of the integrals,
+the structure of the Fock matrix
+and the ability to represent the physical features of the wave function are contrasted.
+Next to Slater-type orbitals and contracted Gaussian-type orbitals,
+the discussion considers finite elements,
+which are piecewise linear polynomials on a real-space grid,
+as well as Coulomb-Sturmians,
+which are the analytical solution to a Schrödinger-like equation.
+Special demands with respect to the arising numerical problems
+are emphasised and similarities elaborated.
+Originating from recent advances in the context of finite elements
+a contraction-based ansatz is suggested as an algorithmic approach
+to deal with each of them on the same level.
+The underlying idea of this ansatz is to avoid the storage of the Fock matrix,
+but instead construct algorithms,
+which only require the computation of the product of the Fock matrix with
+arbitrary vectors by the means of a carefully constructed contraction expression.
+It is shown that such an approach does not only allow to formulate
+an \SCF algorithm which can deal with each of the discussed types
+of basis functions,
+but furthermore even improve the theoretically achievable
+computational scaling for finite-element-based discretisations
+as well as Coulomb-Sturmian-based discretisations.
+Thereafter the ability of standard \SCF algorithms to support
+a contraction-based setting is discussed and
+for the example of the optimal damping algorithm
+an approximate scheme is constructed,
+which allows to carry some features of this algorithm to the
+contraction-based setting.
+
+A detailed discussion of contraction-based methods
+along with their potential and caveats is presented thereafter.
+With reference to trends in the development of modern computer hardware
+it is indicated that the implied re-computation of matrix
+data in each application of the contraction expression
+is not only no problem but furthermore enables to properly adapt to such trends.
+To provide an intuitive interface to deal with contraction-based methods,
+concept of lazy matrices is introduced,
+which generalises the usual matrix concept towards data structures
+suitable for encapsulating contraction expressions.
+This allows to program contraction-based
+methods in a convenient way.
+An implementation of this concept in the \lazyten linear algebra
+library is presented followed by examples
+demonstrating the applicability in the context of the Hartree-Fock problem.
+
+% TODO Clearify the link to the second paragraph
+Afterwards we discuss the design of the quantum-chemical method
+development framework \molsturm,
+which combines both the concept of lazy matrices
+as well as a contraction-based \SCF procedure
+in order to yield a clear separation between the code describing
+the \SCF algorithm as well as the code dealing with the basis function type.
+It is discussed how this allows to add a new basis function type
+by only making code changes in a single integral interface library.
+On top of that we demonstrate the means of examples
+how the readily scriptable interface of \molsturm
+can be employed to implement new quantum-chemical methods
+or combine the features of \molsturm with existing third-party packages.
+
+The final part of the thesis discusses an application of \molsturm
+for an initial investigation of the convergence properties
+of Coulomb-Sturmian-based quantum-chemical calculations.
+The convergence at Hartree-Fock level is considered
+in detail for the atoms of the second and the third period of the periodic table
+with particular emphasis on the required
+maximal angular momentum in order to achieve convergence
+of the discretisation of the angular part of the wave function.
+Some modifications required for a treatment at correlated level are suggested,
+followed by a discussion of the effect of the Coulomb-Sturmian exponent.
+A routine for obtaining an optimal exponent is presented
+and optimal exponents for the atoms of the
+second and the third period of the periodic table at \HF level in various
+Coulomb-Sturmian basis sets are given.
+Furthermore the first result of a Coulomb-Sturmian-based excited
+states calculation based on the algebraic-diagrammatic construction
+scheme for the polarisation propagator is presented.
 
 
 %
