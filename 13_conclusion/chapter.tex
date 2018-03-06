@@ -5,132 +5,128 @@
 	to describe complex data-processing situations
 	the capability for describing data.
 }{Grace Hopper~(1906--1992)}
-
-% mention molsturm later .. first discuss only the methods
-% go through conclusions as in structure of the thesis
-% mention challenges
-
-% only passive
+\todoil{Draft version}
 
 % refer to the appropriate sections
 \noindent
-The present thesis devised a novel ansatz for solving the Hartree-Fock~(\HF) problem,
-which allows to implement a self-consistent field~(\SCF) algorithm
-in such a way that it is independent from the type
-of basis function used for the discretisation.
-This scheme was implemented in the quantum-chemical program package \molsturm,
-introduced in chapter \ref{ch:Molsturm},
-which lead to a design,
-where adding a new integral back end or a new discretisation method for \HF
-is possible almost in a plug-and-play fashion.
-In combination with a readily scriptable \python interface
-this made \molsturm a light-weight method development framework,
-where the focus is not on providing every possible method
-of quantum chemistry,
-but to make it easy to link to third-party packages.
-In chapter \ref{ch:CSQChem} a connection between the \SCF of \molsturm,
-the integral library \sturmint~\cite{sturmintWeb} as well as
-Post-HF methods from \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}
-was exploited to perform an initial assessment
-of the convergence properties of a discretisation based on Coulomb-Sturmians,
-an exponential-type basis function,
-which has seen little attention in the context quantum-chemical calculations so far.
+The present thesis devised a contraction-based self-consistent field~(\SCF)
+scheme for solving the Hartree-Fock~(\HF) problem
+and leveraged it in order to design and implement
+the quantum-chemical program package \molsturm.
+It was shown in section \ref{sec:MolsturmDesign}
+that \molsturm's flexible design readily supports the addition
+of further integral back ends or discretisation methods.
+By the means of examples it was demonstrated in section \ref{sec:MolsturmExamples}
+how \molsturm's \python interface allows to combine the package
+with existing third-party libraries
+for rapidly developing new methods,
+or to aid systematic comparisons
+% automatisation.
 
-In chapter \vref{ch:QM} and chapter \vref{ch:NumSolveHF}
-the mathematical background of quantum mechanics was reviewed
+First the mathematical background of quantum mechanics
+was reviewed in chapter \ref{ch:QM}
 and the Ritz-Galerkin method for discretising
-spectral problems was presented.
-The emphasis was to discuss the material from a quantum-chemical perspective,
+spectral problems was presented in chapter \ref{ch:NumSolveHF}.
+The emphasis in both chapters
+was to discuss the material from a quantum-chemical perspective,
 but indicate the often overlooked peculiarities,
 which occur when transforming from the infinite-dimensional regime
 of functional analysis to the finite-dimensional regime of linear algebra.
-In the light of this chapter \vref{ch:qchem} elaborated on the
-spectral properties of the electronic Schrödinger equation
-and discussed a range of quantum-chemical methods
-for solving this equation approximately.
-Particular emphasis was put on the Hartree-Fock~(\HF)
-ansatz for which multiple equivalent mathematical formulations
-were provided in section~\vref{sec:HFIntro}.
-Their respective discretised forms
-were contrasted in section~\vref{sec:DiscreteHF}
-followed by an introduction of the self-consistent field~(\SCF) approach
-for solving \HF.
-The failures of Hartree-Fock and some Post-\HF methods
-for correcting them were reviewed thereafter in section \vref{sec:Correlation}.
 
-For solving the Hartree-Fock problem numerically chapter \ref{ch:NumSolveHF}
-showed by the means of a detailed discussion 
-
-Chapter \ref{ch:NumSolveHF} characterised existing numerical approaches
-for solving the Hartree-Fock problem on many levels
-and devised a general scheme supporting multiple basis
-function types and multiple \SCF algorithms on a common ground.
-
-By the means of examples both with respect to \SCF algorithms
-as well as discretisation methods
-it was shown that a contraction-based \SCF ansatz 
+% TOdo maybe shorten this part
+In chapter \vref{ch:qchem} common quantum chemical methods
+were discussed from a mathematical perspective.
+This includes the spectral properties of the Schrödinger equation
+in section \ref{sec:ElectronicSchrödinger},
+as well as the mathematical formulation of Full-CI
+in section \ref{sec:FCI}.
+Originating from this Hartree-Fock~(\HF)
+was introduced as a rank-1 approximation to Full-CI
+and its mathematical properties discussed.
+Employing a spin-adapted formulation based on spinors
+different discretised formulations of Hartree-Fock~(\HF)
+as a minimisation problem
+were presented in section \ref{sec:DiscreteHF}.
+% mention coefficient matrix and density matrix
+An analogous classification of the self-consistent field~(\SCF) schemes
+into coefficient-based and density-matrix-based was 
+Some failures of \HF and common methodologies
+to correct for these were briefly
+discussed in section \ref{sec:Correlation} for completeness.
 
 
 
-picked up on the \SCF method
-collecting the numerical requirements of multiple
-basis function types used of the discr
-
-devising a common scheme,
+then numerical hf chapter
+% contrast basis functions
 
 
-on the different mathematical
-formulations of Hartree-Fock and devised a common scheme,
-which is able to support on the one hand the deviating
-numerical requirements of discretisations employing different
-basis function types
-as well as on the other hand multiple \SCF schemes.
+% ------------------------------------
+
+Chapter \ref{ch:NumSolveHF} was devoted to characterising
+different approaches for numerically solving the Hartree-Fock problem
+and to identify similarities and common structures
+in the numerical approaches typically required.
+
+% basis function aspect
+Following a review of desirable properties
+for basis function types employed for discretisations in \HF
+in section \vref{sec:BasisDesiredProperties}
+as well as a discussion
+of some measures for judging the errors when it comes to properly
+representing the physical wave function
+in section \vref{sec:LocalEnergy},
+including the concept of a local energy,
+we discussed four basis function types in general
+regarding their numerical properties,
+their Fock matrix structure
+as well as their ability to represent the physical wave function
 
 
+Slater-type orbitals were introduced in section \vref{sec:STO}.
+As exponential-type these are a very good description of the physics,
+but the evaluation of the required integrals is comparatively challening.
+Constracted Gaussian-type orbitals
+as the most common approach in electronic structure theory
+were discussed next in section ~\ref{sec:cGTO}.
+Furthermore we considered contracted Gaussian-type orbitals~({\cGTO}s)
+as a measure to yield feasible integrals,
+but fail to represent all aspects of the proper physics
+or specialised measures need to be employed.
+In contrast to these rather common approaches we presented
+finite elements in section \vref{sec:FE},
+which are piecewise polynomials defined on a real-space grid.
+Whilst they are mathematically well-understood
+with guaranteed convergence properties
+and the ability to adapt to the problem automatically,
+their numerical structure, however, is extremely challenging
+and can only be tackled if linear scaling methods are employed.
+Section \vref{sec:BasisCS} reviewed Coulomb-Sturmians
+an alternative exponential-type basis function,
+which is able to reproduce both the nuclear cusp as well as the exponential
+decay properly
+and is furthermore complete,
+such that convergence is guaranteed
+with increasing basis set size.
+Compared to Slater-type orbitals their integrals stay feasible
+since all basis functions share the same common exponent.
+They are only able to represent atoms,
+but generalisations exist, which show similar properties
+and they are just the first step.
+Originating for the arising deviating numerical structures
+an algorithmic based on matrix-vector contraction expressions
+was outlined,
+which focuses on formulating the algorithms
+in terms of the contraction of the Fock matrix with other
+vectors or matrices.
+It was shown that this ansatz
+can lead to a formulation
+of the \SCF algorithms in a basis-function independent way
+and in the case of finite-elements and Coulomb-Sturmians
+could even lead to scaling improvements.
+Furthermore only coefficient-based \SCF schemes could be employed
+for this type of basis function.
 
-was devoted to characterising
-existing numerical approaches for solving the Hartree-Fock problem
-and devised a scheme,
-which supports the numerical requirements of discretisations employing different
-underlying basis function types.
-For this we found a contraction-based ansatz to most general.
-
-
-
-where the main result was a contraction-based coefficient-based \SCF
-scheme as a means to support
-
-
-and to  a common structure,
-which is able 
-
-
-and elaborate on a common ground suitable to support
-all basis function types and all \SCF algorithms known
-
-The main result of this chapter was
-that a 
-
-
-For this the focus in this chapter was twofold,
-first to find a common 
-
-show the common structure between various \SCF
-algorithms and second to contrast discretisations
-employing different types of basis functions
-regarding their ability to reproduce the physical wave function
-as well as the numerical properties of the resulting problems of linear algebra.
-
-% basic point is that only contraction-based methods are able
-% to support all basis function types
-
-
-focusing mainly on the structural similarities
-of \SCF algorithms as well as a discussion of
-discretisations based on different types of basis functions.
-
-
-
+% scf aspect
 Based on the various mathematical formulations of the \HF problem,
 section \vref{sec:OverviewSCF}
 distinguished between two different types of \SCF algorithms,
@@ -138,9 +134,6 @@ namely coefficient-based and density-matrix-based.
 The former category performs a minimisation of the \HF energy
 with respect to the orbital coefficients,
 whilst the latter minimises it with respect to the density matrix.
-
-
-
 It was argued how both of these schemes are equivalent
 and thus in theory each algorithm of the first kind could
 be transformed into an algorithm of the second kind.
@@ -151,108 +144,12 @@ section \vref{sec:tODA} showed the construction of
 an approximate scheme in the coefficient-based setting
 keeping some of the advantage of the original.
 
-
-
-
-
-One main aspect was to elaborate on the common structures
-of various \SCF algorithms in
-\vref{sec:OverviewSCF} and \vref{sec:SCFAlgorithms}.
-Based on the mathematical 
-
-
-
-
-In section \vref{sec:BasisTypes}
-various basis function types
-including Slater-type orbitals in section \ref{sec:STO},
-
-
-
-a detailed discussion
-of basis function types
-which could be used to discretise the \HF problem
-
-
-
-
-in section \vref{sec:BasisTypes}.
-For this first a list of desirable properties
-was presented in section \vref{sec:BasisDesiredProperties}
-and the concept of a local energy,
-a well-established quantity in the quantum Monte Carlo community,
-was introduced as a measure for the relative deviation from being an eigenstate
-in section \vref{sec:LocalEnergy}.
-Both this metric as well as the relative error
-was used to contrast the ability of various basis function types
-to represent the exact solution to the Schrödinger equation of the Hydrogen atom.
-Our discussion included
-Slater-type orbitals in section \vref{sec:STO},
-which describe the physical features of the wave function very well,
-but the evaluation of the required integrals is difficult.
-Furthermore we considered contracted Gaussian-type orbitals~({\cGTO}s)
-as a measure to yield feasible integrals,
-but fail to represent the proper physics.
-In contrast to these rather common approaches we presented
-finite elements in section \vref{sec:FE},
-which are piecewise polynomials defined on a real-space grid.
-Whilst they are mathematically well-understood
-with guaranteed convergence properties
-and the ability to adapt to the problem automatically,
-their numerical structure, however, is extremely challenging
-and can only be tackled if linear scaling methods are employed.
-In this context we showed that only a contraction-based ansatz,
-which focuses on formulating the algorithms
-in terms of the contraction of the Fock matrix with other
-vectors or matrices,
-is able to achieve this.
-Furthermore only coefficient-based \SCF schemes could be employed
-for this type of basis function.
-Section \vref{sec:BasisCS} reviewed Coulomb-Sturmians
-an alternative exponential-type basis function,
-which is able to reproduce both the nuclear cusp as well as the exponential
-decay properly
-and is furthermore complete,
-such that convergence is guaranteed
-with increasing basis set size.
-The integrals are feasible.
-only atoms possible, generalisations exist.
-To exploit the mathematical properties of Coulomb-Sturmians
-again a contraction-based \SCF is required.
-
-
-
-
-
-
-
-
-\SCF takeaway (hint of similar structure) \vref{sec:SCFtakeaway}
+In a review of standard \SCF algorithms
+we found them to be expressable as a two step
 two-step coefficient-update or density-matrix-update and Fock-update
-coefficient-based {\SCF}s support \contraction-based ansatz
-common ground for \SCF schemes and basis function types.
-
-
-
-%coefficient based vs density-matrix-based
-where the overall aim was to find the similarities as well as the common
-structure between all approaches.
-Both different types of basis functions which could be used
-for discretising the \HF problem as well as
-a range of standard \SCF algorithms were introduced.
-The advantages and disadvantages of different basis function
-types were contrasted
-and the challenges with the deviating numerical structure
-of finite elements as well as Coulomb-Sturmians
-were mentioned
-as well as the potential prospect to combine the structure
-of all \SCF algorithms
-inside a contraction-based \SCF,
-where the Fock matrix is no longer held in memory
-% possible with all basis functions too
-% no need for dense methods
-% some call for iterative methods
-
+process
+and that coefficient-algorithms are generally required
+to support a contraction-based approach to the \SCF problem.
 
 % ---------------------------------------------------------------------
 
@@ -282,6 +179,18 @@ of physics and chemistry as well.
 lazy matrix library \lazyten \vref{sec:lazymat}
 Examples showing simple \SCF coded in the language of lazyten \vref{sec:LazytenExamples}
 
+% ---------------------------------------------------------------------
+
+Following a review of existing quantum-chemical software
+with flexibility and generality in mind in section \vref{sec:MolsturmRelated}
+the design of the \molsturm framework was discussed in section \vref{sec:MolsturmDesign}.
+
+
+
+
+
+
+
 The program package \molsturm is introduced and its design described
 in chapter \vref{ch:Molsturm}.
 It heavily employs lazy matrices as a mediator between
@@ -303,25 +212,11 @@ The current state and possibilities of molsturm
 were summarised in section \vref{sec:MolsturmState}
 plug-and-play implementation
 
-In chapter \vref{ch:CSQChem} we took a first
-look at the convergence properties of Coulomb-Sturmian
-basis sets in the context of quantum-chemical calculations.
-The emphasis was on Hartree-Fock,
-but initial results employing correlated methods look promising, too.
-First \ADC(2) calculation with \molsturm was underdone
-and presented in section \vref{sec:SturmianADC}
-which looked promising and motivating for further research.
 
 
 
 
 
-in the context of \HF as well as some Post-HF methods.
-
-
-
-which has so far only seen little attention in the context of quantum-chemical
-calculations.
 
 not focused on implementing every available quantum-chemical method,
 bu
@@ -340,6 +235,8 @@ as well as a detailed study in chapter \vref{ch:CSQChem},
 which performed calculations
 at Hartree-Fock as well as various correlated levels of theory
 
+% molsturms functionality: look at molsturm's state section
+
 
 In this way a connection from \molsturm
 to \libint~\cite{Libint2_231,Libint2} and \libcint~\cite{Sun2015}
@@ -352,3 +249,77 @@ for performing \FCI as well as \adcman~\cite{Wormit2014}
 for performing {\ADC}(1), {\ADC}(2), {\ADC}(2)-x and {\ADC}(3)
 have been achieved.
 
+
+a novel approach for solving the Hartree-Fock~(\HF) problem
+based on a contraction-based self-consistent field~(\SCF) 
+
+which allowed to implement a self-consistent field~(\SCF) algorithm
+in such a way that it is independent from the
+type of basis function used for the discretisation.
+Inside the quantum-chemical program package \molsturm
+this allowed to achieve a flexibility
+where adding a new integral back end or a new discretisation method for \HF
+is possible almost in a plug-and-play fashion.
+
+
+
+Using a design focused on flexibility such
+an implementation was achieved inside the
+quantum-chemical program package \molsturm,
+where adding a new integral back end or a new discretisation method for \HF
+
+this made \molsturm a light-weight method development framework,
+where the focus is not on providing every possible method
+of quantum chemistry,
+but to make it easy to link to third-party packages.
+In chapter \ref{ch:CSQChem} a connection between the \SCF of \molsturm,
+the integral library \sturmint~\cite{sturmintWeb} as well as
+Post-HF methods from \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}
+was exploited to perform an initial assessment
+of the convergence properties of a discretisation based on Coulomb-Sturmians,
+an exponential-type basis function,
+which has seen little attention in the context quantum-chemical calculations so far.
+
+
+% ------------------------------------
+
+As an application of \molsturm and its link to the
+Coulomb-Sturmian integral library \sturmint,
+chapter \ref{ch:CSQChem} performed an initial investigation
+of the convergence properties of Coulomb-Sturmian-based
+quantum-chemical calculations.
+The main focus was on understanding the convergence
+properties of \HF calculations on the atoms
+of the second and third period of the periodic table.
+A detailed analysis based on the root mean square values
+of the occupied coefficients per angular momentum
+allowed to suggest $\lmax = 0$ for Li and Be,
+$\lmax = 1$ for N, Ne, Na, Mg, P and Ar.
+It further allowed to understand that the
+underlying cause of the slow convergence of the other
+atoms is an issue due to \UHF.
+At correlated level some Full-CI and {\MP}2 calculations
+were performed,
+which suggested that to capture most correlation effects
+an extra angular momentum is sufficient
+for Li, Be, N, Ne, Na, Mg, P and Ar.
+The effect of modifying the Sturmian exponent on the result
+was analysed in detail
+% with larger basis set size precise value not important
+and a routine for estimating $\kopt$ as well as finding
+optimal values was discussed.
+% issues with bad convergence in the beginning.
+Need clever scheme%
+Resulting values were presented.
+%
+An analogy between the optimal exponent and
+the effective nuclear charge is indicated and the roughly
+linear relationship of $\kopt$ with the atomic number presented.
+%
+In section \ref{sec:SturmianADC} the connection from
+\molsturm to \adcman~\cite{Wormit2014} via \python
+was exploited to perform the first
+excited states calculation based on the algebraic-diagrammatic construction
+scheme for the polarisation propagator.
+The inital results were reported,
+which looked promising and motivating for further research.
