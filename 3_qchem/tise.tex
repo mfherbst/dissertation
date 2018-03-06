@@ -336,7 +336,7 @@ the simplified electronic Hamiltonian
 \begin{equation}
 	\Op{H}_{\Nelec} \equiv \Op{H}^\text{elec} - \Op{V}_{nn}
 	= -\frac12 \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i}
-	+ \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{r_{iA}}
+	- \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{r_{iA}}
 	+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
 	\label{eqn:ElectronicHamiltonian}
 \end{equation}
@@ -547,15 +547,14 @@ Before we discuss the physical interpretation of these results,
 let us first introduce some terminology.
 If we are either concerned with a neutral or positively charged
 $\Nelec$-electron system or a negatively charged system
-with at least a single discrete eigenvalue, we can define a \newterm{ground state energy}
+with at least a single discrete eigenvalue, we can define a \newterm{ground-state energy}
 \begin{equation}
 	E^{\Nelec}_0 = \min \sigma\left(\Op{H}_{\Nelec}\right) = \Sigma_{\Nelec}
 	\label{eqn:GroundStateEnergy}
 \end{equation}
-We order the energies of the discrete spectrum ordered as usual
+The energies of the discrete spectrum are ordered as usual
 \[ E^{\Nelec}_0 \leq E^{\Nelec}_1 \leq E^{\Nelec}_2 \leq \cdots \]
-and associate with these eigenvalues
-the corresponding (bound) eigenstates
+and associated with these eigenvalues are the corresponding (bound) eigenstates
 \[ \Psi_0, \Psi_1, \Psi_2, \ldots. \]
 All states $\Psi_i$ which have an energy eigenvalue $E^{\Nelec}_i = E^{\Nelec}_0$
 are commonly refered to as the \newterm{ground state}.
@@ -569,7 +568,9 @@ term ``ground state'' to refer to the state or states corresponding
 to the lowest eigenvalue of $\sigma_P\left(\Op{H}_{\Nelec}\right)$
 and ``excited states'' for the other eigenfunctions of $\Op{H}_{\Nelec}$.
 Note, however, that for negatively charged systems
-the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is possible.
+the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is possible%
+~(see proposition \ref{prop:ZhislinYafaev}),
+\ie that the lowest-energy bound state is already embedded inside the continuum.
 
 \begin{rem}[Physical interpretation of the spectrum]
 	In this remark we will summarise the results,
@@ -582,7 +583,7 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	system with $\Nelec$ electrons.
 	It has a ground states as well as an infinite number
 	of discrete and bound excited states
-	until the ground state energy $E^{\Nelec-1}_0$
+	until the ground-state energy $E^{\Nelec-1}_0$
 	of the corresponding $(\Nelec-1)$-electron
 	with the same nuclear arrangement is hit.
 	Note, that we can be sure that $E^{\Nelec-1}_0$

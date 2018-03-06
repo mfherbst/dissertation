@@ -175,7 +175,7 @@ Put more mathematically one can show~\cite{Helgaker2013} the following:
 If $E_A$ is the energy corresponding to the CISD ground state $\Psi_0^\text{CISD}$
 for a molecule $A$
 and $E_B$ is the analogous energy for another molecule $B$,
-then the CISD ground state energy $E_{AB}$
+then the CISD ground-state energy $E_{AB}$
 for a system consisting of both $A$ \emph{and} $B$
 separated by an infinite distance is \emph{not} $E_A + E_B$.
 One refers to this unphysical behaviour as \newterm{size-inconsistent}.
@@ -231,7 +231,7 @@ energy contributions~\cite{Szabo1996}
 	E_0^2 &= \frac14 \sum_{ijab} \frac{\abs{\eriAsym{ij}{ab}}^2}
 						{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
 \end{align*}
-to the ground state energy.
+to the ground-state energy.
 In other words up to zeroth order we obtain the sum of the orbital energies.
 The first order correction accounts for the double counting
 of the electron-electron interactions and recovers the \HF energy expression.
@@ -263,14 +263,14 @@ are nowadays used only rarely.
 
 One should mention that due to its perturbative nature,
 there is no guarantee that $E_0^\text{MP2} \geq E_0$,
-the exact ground state energy of the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}.
+the exact ground-state energy of the electronic Schrödinger equation \eqref{eqn:ElectronicSchrödinger}.
 In the community of quantum chemistry one often refers
 to this fact as {\MP}2 being non-variational.
 This saying is, however, a bit inaccurate,
 since the method {\MP}2 is indeed variational
 in the sense of the Courant-Fischer theorem \eqref{eqn:CourantFischer},
 namely that larger basis sets will always lead a lower-energy {\MP}2 ground state,
-which is furthermore closer to the exact {\MP}2 ground state wave function.
+which is furthermore closer to the exact {\MP}2 ground-state wave function.
 This is not that much apparent in the outlined derivation,
 but can be seen from an alternative route
 employing the Hylleraas functional~\cite{Helgaker2013}.
@@ -358,7 +358,7 @@ E_0 \leq E_0^\text{CC} = \inf_{\{t_\mu\}_{\mu}} \frac{\braket{\exp(\op{T}) \Phi_
 	\label{eqn:VariationalCC}
 \end{equation}
 where there resulting minimising amplitudes give the \CC ground state
-wave function corresponding to the minimal ground state energy $E_0^\text{CC}$.
+wave function corresponding to the minimal ground-state energy $E_0^\text{CC}$.
 Without truncation of \eqref{eqn:ExcitationCC}
 this is again equivalent to discretised full CI.
 Even with truncation to, for example, $\op{T} = \op{T}_1 + \op{T}_2$,
@@ -383,7 +383,7 @@ If one plugs the exponential ansatz directly into the electronic Schrödinger eq
 	\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0 = E_0^\text{CC} \exp(\op{T}) \Phi_0,
 	\label{eqn:CCschrödinger}
 \end{equation}
-where $E_0^\text{CC}$ is the coupled-cluster ground state energy.
+where $E_0^\text{CC}$ is the coupled-cluster ground-state energy.
 By a simple rearrangement this can be written as
 \begin{equation}
 	E_0^\text{CC} = \mbra{\Phi_0} \Op{H}_T \mket{\Phi_0}_{\Nelec}
