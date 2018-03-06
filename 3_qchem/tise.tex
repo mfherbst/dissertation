@@ -41,7 +41,7 @@ Coulombic interaction potentials
 	\Op{V}_{ee} &= \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec}
 		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \\
 	\nonumber
-	\Op{V}_{ne} &= \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2},
+	\Op{V}_{ne} &= - \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2},
 \end{align}
 respectively.
 Furthermore we used the electronic and nuclear kinetic energy operators
@@ -163,7 +163,7 @@ we can write it as
 \begin{equation}
 	\Op{H}^\text{elec}
 	= - \frac12 \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i}
-	+ \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{r_{iA}}
+	- \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{r_{iA}}
 	+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
 	\  + \  %
 	\sum_{A=1}^{M} \sum_{B=A+1}^{M} \frac{1}{r_{AB}}.
