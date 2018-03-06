@@ -28,7 +28,7 @@ Clearly the associated norm $\norm{\slot}_{\Op{A}}$ satisfies
 	\label{eqn:FormDomainNorm}
 \norm{u}_{\Op{A}}
 = \braket{u}{\Op{A} u} + (C+1) \norm{u}_{\hilbert}
-\stackrel{\text{\abbr{def}{n} \ref{defn:SemiBounded}}}{\geq} \norm{u}_{\hilbert}.
+\stackrel{def. \ref{defn:SemiBounded}}}{\geq} \norm{u}_{\hilbert}.
 \end{equation}
 We now take the completion of $D(\Op{A})$ under the norm $\norm{u}_{\Op{A}}$
 and call it $Q(\Op{A})$.
@@ -155,7 +155,7 @@ in increasing order, \ie
 			than $\inf \sigma_\text{ess}(\Op{A})$ (counting multiplicities
 			the appropriate number of times),
 			then $\lambda_n(\Op{A})$ is the $n$-th eigenvalue of the discrete spectrum
-			of $\Op{A}$.
+			of $\Op{A}$,
 		\item otherwise, $\lambda_n(\Op{A}) = \inf \sigma_\text{ess}(\Op{A})$.
 	\end{itemize}
 \end{thm}
@@ -247,7 +247,7 @@ sketch an approximation method for our setting.
 	with elements
 	\begin{align}
 		\label{eqn:DiscretisationExpression}
-		A_{\mu\nu} &= a(\varphi_\mu, \varphi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\varphi_\nu}{v^{(n)}_i} = C^{(n)}_{\mu i}
+		A_{\mu\nu} &= a(\varphi_\mu, \varphi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\varphi_\mu}{v^{(n)}_i} = C^{(n)}_{\mu i}
 	\end{align}
 	we can write \eqref{eqn:DiscretisedEigenproblemHalfWay}
 	as the matrix eigenvalue problem
@@ -288,7 +288,8 @@ for solving the discretised problem \eqref{eqn:DiscretisedEigenproblem}.
 		In other words the basis type should
 		allow to construct a suitable basis set
 		in case certain requirements
-		regarding accuracy, computational demand,  description of properties, \ldots
+		regarding accuracy, computational demands,
+		description of properties, \ldots~
 		should be met.
 		Any prior knowledge about the physical problem
 		or the properties of $\Op{A}$ can ideally be incorporated
@@ -323,7 +324,7 @@ In other words the methods we developed in this section
 will only help to find the bottom end of the essential spectrum,
 but no further information about it at all.
 
-Another consequence of cor. \ref{cor:Convergence} is
+Another consequence of corrollary \ref{cor:Convergence} is
 that only a part of the eigenpairs obtained by
 diagonalising the matrix $\mat{A}^{(n)}$ of \vref{eqn:DiscretisedEigenproblem}
 can be trusted to carry any meaning regarding
