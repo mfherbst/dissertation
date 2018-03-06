@@ -3,14 +3,15 @@
 	box/.style={rectangle,draw,fill=white,minimum width=5.5cm,align=center,
 				font=\smaller, text width=5.2cm},
 	init/.style={box,minimum height=0.5cm},
-	fockup/.style={box,minimum height=1.1cm,fill=red!12!white},
+	fockup/.style={box,minimum height=1.1cm,fill=red!20!white},
 	extra/.style={box,minimum height=1.5cm},
-	coeffup/.style={box,minimum height=1.5cm,fill=blue!12!white},
+	coeffup/.style={box,minimum height=1.5cm,fill=blue!20!white},
 	post/.style={->,shorten <=0.5pt,>=stealth',semithick},
 	label/.style={font=\smaller,text width=5.5cm,
 					align=center,yshift=0.2cm},
 ]
 \def\outshift{0.4}
+\def\searchproblemeqn{5.53}
 
 % TODO Equation numbers
 % unify symbols (tildes and _F subscripts ... also gdm
@@ -25,7 +26,7 @@
 	 Build $\mat{D}^{(i+1)}$ by Aufbau principle};
 \node [coeffup, below=of odadiag] (odadens)
 	{Find $\tilde{\mat{D}}^{(i+1)}$ resulting in the minimal SCF energy
-		along the line from $\mat{D}^{(i+1)}$ to $\tilde{\mat{D}}^{(i)}$, (5.52)};
+		along the line from $\mat{D}^{(i+1)}$ to $\tilde{\mat{D}}^{(i)}$, (\searchproblemeqn)};
 	%\eqref{eqn:ODAupDens}};
 %
 % TODO check for convergence
