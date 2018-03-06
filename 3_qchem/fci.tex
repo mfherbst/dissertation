@@ -426,7 +426,7 @@ and allows only treatment of extremely small systems.
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_0}_{\Nelec}
 		&= \frac12 \sum_{i\in\Iocc} \sum_{j\in\Iocc}
 			  \eriMu{\psi_i\psi_i}{\psi_j\psi_j}
-			- \eriMu{\psi_i\psi_j}{\psi_i\psi_j} \\
+			- \eriMu{\psi_j\psi_i}{\psi_i\psi_j} \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_i^a}_{\Nelec}
 		&= \sum_{j\in\Iocc}
@@ -464,7 +464,7 @@ and allows only treatment of extremely small systems.
 	Originating from the two-electron Coulomb term $\Op{V}_{ee}$
 	all entries $a(\Phi_1, \Phi_2)$ where the determinants
 	differ by more than two functions vanish.
-	If we pick an arbitrary reference determinant $\Op{Phi}_0$
+	If we pick an arbitrary reference determinant $\Op{\Phi}_0$
 	and order the $\Nelec$-electron basis as in equation \eqref{eqn:NelectronBasisFinite}
 	a banded structure as in fig. \vref{fig:StructureFCIMatrix} results.
 	Of course the dimensionality is still rather large,

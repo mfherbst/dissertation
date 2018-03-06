@@ -33,6 +33,7 @@ the dimensionality
 of the matrix $\mat{A}_\text{FCI}$ becomes simply too large.
 In this section we discuss the opposite end of the scale and
 only consider one-dimensional subspaces of the form domain
+\todoil{Check the next expression \ldots the wedge could be somewhere elese}
 \[ Q(\Op{H}_{\Nelec}) = \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C) \cap L^2(\R^3, \C) \]
 for solving the electronic problem.
 Formally by the Courant-Fischer theorem \eqref{thm:CourantFischer}
@@ -117,7 +118,7 @@ electronic ground state.
 		\begin{aligned}
 		\mathcal{E}^\text{HF}(\Theta)
 		&= \frac12 \sum_{i=1}^{\Nelec} \int_{\R^3} \norm{\nabla \psi_i}_2^2 \D\vec{r}
-		+ \int_{\R^3} \sum_{A=1}^M
+		- \int_{\R^3} \sum_{A=1}^M
 			\frac{Z_A \, \rho_\Theta(\vec{r})}{\norm{\vec{r} - \vec{R}_A}_2} \D\vec{r} \\
 		&\hspace{20pt}
 		+ \frac12 \int_{\R^3}\int_{\R^3}
@@ -623,7 +624,7 @@ representations of \HF.
 			has identical $\alpha$ and $\beta$ blocks of elements
 			\begin{equation}
 				\left(V^\alpha_0\right)_{\mu\nu} = \left(V^\beta_0\right)_{\mu\nu}
-				= \int_{\R^3} \sum_{A=1}^M Z_A
+				= - \int_{\R^3} \sum_{A=1}^M Z_A
 				\frac{\cc{\varphi_\mu(\vec{r})} \varphi_\nu(\vec{r})}{\norm{\vec{r} - \vec{R}_A}_2}
 				\D \vec{r}.
 				\label{eqn:Vbas}
