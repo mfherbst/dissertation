@@ -7,7 +7,7 @@ from molsturm import integrals
 from scipy import linalg
 
 XLABEL = r"relative distance in Bohr"
-ELLABEL = r"$E_L(r)$ in Hartree"
+ELLABEL = r"$E_L(\underline{\boldsymbol{r}})$ in Hartree"
 RELABEL = r"relative error"
 
 

@@ -4,7 +4,7 @@
 In section \vref{sec:HydrogenAtom}
 we discussed the analytical solution of the simplest chemical systems,
 namely the hydrogen-like atoms or ions with only a single nucleus and a single electron.
-Their solutions where functions
+Their solutions were functions
 \[ \Psi_{nlm}(\vec{r}) = N_{nl} \tilde{P}_{nl}\left(\frac{2Zr}{n}\right)
 	Y_l^m(\theta, \phi) \exp\left(-\frac{Zr}{n} \right) \]
 where $\tilde{P}_{nl}$ is polynomial of degree $n-1$ in $\frac{2Zr}{n}$,
@@ -35,16 +35,19 @@ full electronic Hamiltonian $\Op{H}_{\Nelec}$ as summarised in the following rem
 				\left. \frac{\partial \rho(\vec{r})}{\partial \vec{r}} \right|_{\vec{r} = \vec{R}_A}
 				= -2 Z_A \rho(\vec{R}_A).
 			\]
-		\item At large distances $r_1 \to \infty$,
-			where all other electronic and nuclear coordinates stay finite,
+		\item Taking the limit $r_1 \to \infty$,
+			while keeping all other electronic and nuclear coordinates finite,
 			the first electron is essentially decoupled from the motion
-			of the other particles and only sees them as a point charge
-			of value
-			\[ Z^\text{net} = \sum_{A=1}^M Z_A - \Nelec\]
-			of the full system.
-			The remaining system is effectively a $\Nelec-1$-electron system.
+			of the other particles
+			and only sees them as a point charge of value
+			\begin{equation}
+				Z^\text{net} = \sum_{A=1}^M Z_A - (\Nelec -1).
+				\label{eqn:ChargeNet}
+			\end{equation}
+			The other particles of the system, \ie excluding electron 1,
+			effectively forms a $\Nelec-1$-electron system.
 			This allows to approximately write
-			\[ \Psi_i(\vec{x}) = \tilde{\Psi}^\text{rest}_j(\vec{x}) \tilde{\Psi}^1_i(\vec{r}_1), \]
+			\[ \Psi_i(\vec{x}) \simeq \tilde{\Psi}^\text{rest}_j(\vec{x}) \tilde{\Psi}^1_i(\vec{r}_1), \]
 			where $\tilde{\Psi}^\text{rest}_j$ has only parametric dependence%
 			\footnote{Notice that this ansatz is somewhat related to the Born-Oppenheimer
 			approximation.}
@@ -57,10 +60,9 @@ full electronic Hamiltonian $\Op{H}_{\Nelec}$ as summarised in the following rem
 				\tilde{\Psi}_i^1(\vec{r}_1) \simeq 0,
 				\label{eqn:ExponentialDecay}
 			\end{equation}
-			where
-			\[ Z^\text{net} = \sum_{A=1}^M Z_A - \Nelec - 1\]
-			is the net charge and $E^\text{net}_i$ is the net energy eigenvalue
-			roughly equal to \linebreak
+			where $Z^\text{net}$ is the net charge as in \eqref{eqn:ChargeNet}
+			and $E^\text{net}_i$ is the net energy eigenvalue
+			roughly equal to
 			$E^{\Nelec}_i - E^{\Nelec-1}_j < 0$.
 			For a neutral $\Nelec$-system $Z_\text{net} = 1$,
 			such that the solution of \eqref{eqn:ExponentialDecay} is
@@ -131,11 +133,11 @@ $\eriMu{\varphi_\mu \varphi_\nu}{\varphi_\kappa \varphi_\lambda}$
 is challenging,
 such that \STO-based methods
 are not amongst the most commonly used quantum-chemistry methods nowadays.
-Nevertheless their promising properties and fast convergence
+Nevertheless, their promising properties and fast convergence
 has motivated many people to work on optimising \STO expansions
 and on designing efficient evaluation schemes for the \ERI tensor%
 ~\cite{Weniger1983,Hoggan2009,Hoggan2011,Avery2013,Avery2017}.
-As a result a number of packages
+As a result, a number of packages
 like STOP~\cite{Bouferguene1996},
 SMILES~\cite{FernandezRico2001}
 and ADF~\cite{ADF}

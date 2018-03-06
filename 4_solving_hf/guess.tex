@@ -2,9 +2,9 @@
 \label{sec:ScfGuesses}
 A good guess for an iterative procedure like the \SCF
 is characterised by two things.
-Firstly it should of course already be close to the expected solution.
-Otherwise one might as well from a totally random random guess instead.
-Secondly it should be cheap to obtain,
+Firstly, it should already be close to the expected solution.
+Otherwise one might as well start from a random initial set of coefficients.
+Secondly, it should be cheap to obtain,
 at least considerably cheaper than the \SCF itself.
 Otherwise again a totally random guess does just as well.
 
@@ -12,7 +12,7 @@ Notice that in general random guesses have not much application
 from a practical point of view,
 but for investigating the stability of an \SCF procedure
 they are really helpful.
-For example one could check whether a combination of guess method
+For example, one could check whether a combination of guess method
 and \SCF algorithm yields the true minimum or just a stationary
 point of the \HF problem \eqref{eqn:HFOptCoeff}
 by trying a few random guesses and checking the resulting energies.
@@ -38,7 +38,7 @@ and keeping the $\Nelec$ lowest eigenvalue solutions.
 Since electrons in this model do not repel each other
 the resulting approximate orbitals are typically too contracted
 and thus not extremely physical.
-In my experiments with Coulomb-Sturmian-type
+In my calculations with Coulomb-Sturmian-type
 basis functions~(see section \ref{sec:BasisCS})
 for example I found core Hamiltonian guesses to often
 converge to stationary points in the \SCF process,
@@ -50,7 +50,7 @@ matrix by a factor $0 < \alpha \leq 1$
 in order to mimic the shielding of the nuclear charge somewhat.
 Nevertheless this guess method is typically only used
 if other options are not available.
-It can, however, always be done.
+An advantage is, however, that it can always be done.
 
 \subsection{Superposition of atomic densities}
 The idea of the superposition of atomic densities~(SAD)~\cite{Lenthe2006}
@@ -136,12 +136,12 @@ using only a small basis set and to refine the result later in a larger basis.
 Ideally as much of the information gained in the crude result
 is used for starting the large calculation.
 
-In the context of the \SCF procedure one would for example
+In the context of the \SCF procedure one would, for example,
 like to use the final coefficients $\tilde{\mat{c}}_0$ from a calculation
 in the small basis $\{\chi_{\tilde{\nu}}\}_{\tilde{\nu}=1,\ldots,N_g}$
 with only $N_g$ functions
 to obtain a guess for the more refined calculation in the basis
-$\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$ with $N_b \leq N_g$.
+$\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$ with $N_b \geq N_g$.
 Conceptionally this requires to operate on the coefficients
 with the transformation matrix
 $\mat{U} \in \C^{N_b\times N_g}$
@@ -150,10 +150,10 @@ consisting of elements
 Since $U_{\mu\tilde{\nu}}$ is not necessarily unitary,
 the simple matrix-matrix product $\mat{U} \mat{c}_0$
 will in general not be orthonormal
-with respect to the overlap matrix $\mat{S} \in \R^{N_b \times N_b}$
-in the new basis and is thus not directly usable.
-Instead a more involved treatment taking the overlap matrices
-both in the old and the new basis into account.
+with respect to the overlap matrix of the new basis $\mat{S} \in \R^{N_b \times N_b}$
+and is thus not directly usable.
+Instead, a more involved treatment is required,
+taking the overlap matrices both in the old and the new basis into account.
 If we use $\tilde{\mat{s}} \in \R^{\N_g \times \N_g}$
 to denote the overlap matrix in the new basis,
 a properly orthonormalised guess would be~\cite{Polly2004}
@@ -166,13 +166,13 @@ takes care of proper normalisation.
 The computation (and diagonalisation) of $\mat{N}$
 can be avoided if other techniques
 for orthogonalising the $\Norb$ column vectors $\mat{S}^{-1} \mat{U} \mat{c}_0$
-are used, like Gram-Schmidt procedure or a singular-value decomposition.
+are used, like a Gram-Schmidt procedure or a singular-value decomposition.
 
 A modification of this procedure would be to alternatively build
 \begin{align}
 	\label{eqn:GuessMatF}
 	\mat{f} &= \mat{U} \mat{c}_0 \tilde{\mat{E}} \tp{\mat{c}_0} \tp{\mat{U}}, \\
-	\intertext{where}
+	\intertext{where (assuming $N_g \geq \Norb$)}
 	\nonumber
 	\tilde{\mat{E}} &= \diag\left(\tilde{\varepsilon}_1, \tilde{\varepsilon}_2,
 			\ldots \tilde{\varepsilon}_{\Norb}\right)
@@ -189,9 +189,9 @@ The extended Hückel~(EH) procedure for obtaining estimates
 of molecular orbitals was developed in the 1960s
 by Hoffmann~\cite{Hoffmann1963}
 based on the extended Hückel Hamiltonian matrix defined
-in the earlier work by Wolfsberg and Helmholtz~\cite{Wolfsberg1952}.
+in the earlier work by \citet{Wolfsberg1952}.
 Sometimes this procedure is called
-\textbf{Generalised Wolfsberg-Helmholtz procedure}
+\textbf{Generalised Wolfsberg-Helmholz procedure}
 for this reason as well.
 
 The idea is here to start from a minimal set of orbitals
@@ -230,10 +230,10 @@ for small basis sets and small molecular systems.
 This drawback is overcome if an approach related to the
 superposition of atomic densities is used for obtaining the diagonal
 elements of $\mat{H}^\text{EH}$.
-The quantum-chemistry ORCA~\cite{ORCA} for example
+The quantum-chemistry package ORCA~\cite{ORCA} for example
 uses both the atomic orbitals as well as the orbital energies
-from pre-calculated atomic STO-3g~\cite{Hehre1969} calculations
+from pre-calculated atomic STO-3G~\cite{Hehre1969} calculations
 to drive the EH guess:
 The trial basis set $\{\phi_i\}_{i=1,\ldots,N_\text{trial}}$
-in their approach is just the combination of all atomic STO-3g orbitals
-and the diagonal elements $H_{ii}^\text{EH}$ the corresponding STO-3g orbital energies.
+in their approach is just the combination of all atomic STO-3G orbitals
+and the diagonal elements $H_{ii}^\text{EH}$ the corresponding STO-3G orbital energies.

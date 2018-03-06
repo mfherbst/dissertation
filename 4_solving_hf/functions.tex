@@ -38,14 +38,14 @@ approximately solving a spectral problem
 is the evaluation of the $a(\slot,\slot)$
 corresponding to the operator for all pairs of basis functions,
 compare with remark \vref{rem:ChoiceBasisFunction} for details.
-For this procedure to be mathematically meaningful at all
+For this procedure to be mathematically meaningful at all,
 this requires the basis functions $\{\varphi_\mu\}_{\mu\in\Ibas}$
 to be taken from a dense subspace of the form domain of the operator.
 For the real-valued \HF problem this is the Sobolev space $H^1(\R^3, \R)$,
 thus a hard requirement for all types of basis functions
 used for Hartree-Fock and quantum chemistry is that
 they originate from $H^1(\R^3, \R)$.
-Furthermore in some or another sense we will need compute the elements
+Furthermore, in some or another sense we will need compute the elements
 of the Fock matrix $\matFfull$ \eqref{eqn:FockMatrix},
 which in turn boils down to computing the integrals of the constituent
 matrix expressions \eqref{eqn:Tbas} to \eqref{eqn:Kbas},
@@ -63,9 +63,9 @@ of the electron repulsion tensor \eqref{eqn:ERI}
 as it involves a double integral over space
 incorporating a singularity at the origin
 as well as the product over four basis functions.
-Additionally the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
+Additionally, the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
 need to be solvable numerically as well.
-We will see in the next sections,
+We will see in the next sections
 that the main reason why contracted Gaussian-type orbitals
 have become so popular in quantum chemistry
 is that both evaluating the ERI tensor
@@ -76,18 +76,18 @@ Apart from the mathematical and numerical feasibility
 we would like to get meaningful results with as little effort as possible,
 \ie a good description of a chemical system should already be achievable
 with small basis sets.
-Usually this goes hand in hand with a basis function,
+Usually this goes hand in hand with a basis function
 which by itself represents the physics
-of the chemical system very well already
+of the chemical system very well already,
 such that as much prior knowledge and chemical intuition as possible
-could be incorporated already into basis.
+could be incorporated already into the basis.
 Ideally this would not bias the solution procedure,
 such that unexpected or unintuitive results can still be found.
 
 Last but not least we would like to be able to know
 how wrong our \HF results are compared to the exact electronic ground state,
 possible even with a pointer how to increase the basis,
-such that results can systematically improve.
+such that results can be systematically improved.
 The aspired scenario would be a rigorous and tight
 \textit{a priori} or even better \textit{a posteriori} error estimate
 for the chosen basis function type in the context of \HF.
@@ -101,25 +101,27 @@ and I am not aware of any work achieving this for the basis function
 types I will discuss here in detail.
 
 \subsection{Local energy}
-\vref{sec:LocalEnergy}
+\label{sec:LocalEnergy}
+\todo{Rephrase the introductory paragraphs \ldots less we}
 Before we start discussing individual basis types,
 let us briefly pause and think about ways to quantitatively
 judge a particular basis function type.
 A natural choice is to consider a model system,
-where the analytical solution can be found and compare
+where the analytical solution can be found, and compare it
 with the Ritz-Galerkin \HF result produced by a particular basis on the same system.
-In this chapter, we will typically compare against the hydrogen atom.
-Without a doubt this does not probe all aspects of electronic structure theory.
+In this chapter, we will compare against the hydrogen atom.
+Without a doubt this does not probe all aspects of the physical interactions
+happening inside the electronic structure.
 Most importantly it does miss an evaluation how a basis set deals with electron correlation.
 All results therefore need to be taken with care:
-In more complex systems the situation might be different.
+In more complex systems the situation might be deviating.
 
 For comparing our numerical answers in the form of the \HF
-ground state Slater determinant $\Phi_0$
+ground-state Slater determinant $\Phi_0$
 to the exact electronic Schrödinger equation solution $\Psi_0$,
-we will use absolute errors and relative errors in the ground state wave function
-as well as the ground state energy.
-Additionally we will consider a quantity called \newterm{local energy},
+we will use absolute errors and relative errors in the ground-state wave function
+as well as the ground-state energy.
+Additionally, we will consider a quantity called \newterm{local energy},
 which is defined below.
 \begin{defn}
 	Let $\Phi_0$ be an approximation to the ground state
@@ -131,7 +133,7 @@ which is defined below.
 	\end{equation}
 	which is constant for an exact eigenstate of $\Op{H}_{\Nelec}$
 	and approximately constant for good approximations.
-	Since the potential operator terms are only multiplicative,
+	Since the potential energy operator terms are only multiplicative,
 	this expression can be alternatively written as
 	\[
 		E_L(\vec{x})
@@ -150,7 +152,7 @@ It is related to the relative residual
 	\frac{\Op{H}_{\Nelec} \Phi_0(\vec{x}) - E_0 \Phi_0(\vec{x})}{\Phi_0(\vec{x})}
 	= E_L(\vec{x}) - E_0,
 \]
-where $E_0$ is the \emph{exact} ground state energy of $\Op{H}_{\Nelec}$.
+where $E_0$ is the \emph{exact} ground-state energy of $\Op{H}_{\Nelec}$.
 This implies first of all
 that $E_L(\vec{x}) = E_0$ is necessary for $\Phi_0(\vec{x})$ being the exact ground state.
 Furthermore the fluctuations of $E_L(\vec{x})$ around the exact constant value $E_0$
@@ -162,14 +164,14 @@ Inside regions where $E_L(\vec{x})$ is close to being constant,
 the basis $\{\varphi_\mu\}_{\mu\in\Ibas}$ provides a sensible description
 of an eigenstate of $\Op{H}_{\Nelec}$.
 $E_L(\vec{x})$ is without a doubt conceptionally related to the
-relative error in the ground state wave function $1 - \Phi_0(\vec{r}) / \Psi_0(\vec{r})$.
-Compared to the latter quantity $E_L(\vec{x})$
-has the additional advantage that one is able to notice,
+relative error in the ground-state wave function $1 - \Phi_0(\vec{r}) / \Psi_0(\vec{r})$.
+Compared to the latter quantity, $E_L(\vec{x})$
+has the additional advantage that one is able to notice
 which eigenstate $\Phi_0(\vec{r})$ approximates in each region of space.
-For example if it fluctuates around $E_0$ in some areas and around $E_1$ in others,
+For example, if it fluctuates around $E_0$ in some areas and around $E_1$ in others,
 we can see that $\Phi_0(\vec{r})$ sometimes represents the first excited state
 better than the ground state.
-Additionally $E_L(\vec{x})$ can be applied even for cases where
+Additionally, $E_L(\vec{x})$ can be applied even for cases where
 the exact solution is not known and thus the relative error cannot be found.
 
 \input{4_solving_hf/functions_sto.tex}
