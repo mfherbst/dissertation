@@ -108,9 +108,9 @@ called \newterm{completeness}. Formally it is defined as such:
 \begin{defn}
 	\label{def:Completeness}
 	A vector space $V$ is called \newterm{complete} if every
-	\newterm{Cauchy sequence} of vectors in $V$ has a limit $V$.
+	\newterm{Cauchy sequence} of vectors in $V$ has a limit in $V$.
 \end{defn}
-Let us first recall, that a sequence $(x_n) \in V$ is called Cauchy if
+Let us first recall, that a sequence $(x_n)_{n\in\N} \in V$ is called Cauchy if
 \[ \forall \varepsilon > 0 \quad
 	\exists M \in \N \quad \text{such that} \quad
 	\norm{x_n - x_m}_V < \varepsilon \quad \forall n,m > M.
@@ -118,8 +118,9 @@ Let us first recall, that a sequence $(x_n) \in V$ is called Cauchy if
 One can show that every converging sequence is Cauchy.
 A roughly equivalent way of phrasing definition \vref{def:Completeness}
 is therefore,
-that a space $V$ is complete iff every converging sequence
-of elements from $V$ has a limit which is from $V$ \emph{as well}.
+that a space $V$ is complete iff every sequence $(x_n)$
+of elements which come arbitrarily close at large enough $n$
+tend towards an element, which is from $V$ \emph{as well}.
 
 \begin{exmp}
 	\label{exmp:QdenseR}
@@ -204,7 +205,7 @@ Denseness is therefore one of the fundamental properties required for approximat
 \begin{rem}
 	\label{rem:HilbertCd}
 	If a Hilbert space is separable we can find a basis set
-	$\{ \varphi_\mu \}_{0 \leq \mu \leq \Ibas}$
+	$\{ \varphi_\mu \}_{\mu \in \Ibas}$
 	of at most countably infinite cardinality,
 	\ie where $\Ibas \subseteq \N$.
 	With this we can write for each $\Psi \in \hilbert$:
@@ -263,8 +264,9 @@ In our treatment we adhere to the
 \newterm{Copenhagen interpretation} or \newterm{Born interpretation}
 of the quantum-mechanical state $\Psi$,
 which associates the meaning of a probability density
-with the magnitude $\abs{\Psi(x_1, x_2, \ldots x_d)}$
-of the state function at each point in space $(x_1, \ldots x_N)$.
+with the square
+of the state function $\abs{\Psi(x_1, x_2, \ldots x_d)}^2$
+at each point in space $(x_1, \ldots x_N)$.
 A more detailed analysis in light of this probabilistic meaning of $\Psi$
 suggests to take these functions from the Hilbert space of square-integrable functions
 $L^2(\R^d, \C)$, defined as such:
@@ -277,6 +279,15 @@ $L^2(\R^d, \C)$, defined as such:
 		\braket{f}{g}_{L^2} := \int_{\R^d} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
 		\label{eqn:defL2InnProd}
 	\end{equation}
+	\todoil{Fabian:\\
+		das innere product is fuer allgemeine functionen nicht wohldefiniert.
+		ich wuerde vorschlagen, schreib ``wherever well defined''
+		dazu oder erwaehne lebesgue messbarkeit.
+		Weiter wuerde ich die ``norm'' als abbildung definieren,
+		da es ja lediglich eine semi-norm ist. Dann kann man $L^2$
+		definieren mit der bemerkung, dass eine aquivalenz klasse eingefuehrt
+		wird bzgl. der die ``norm-abbildung'' $\norm{\slot}$ eine norm ist.
+	}
 	and the corresponding induced norm
 	\begin{equation}
 		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2},
@@ -301,7 +312,7 @@ $L^2(\R^d, \C)$, defined as such:
 \end{prop}
 
 \noindent
-Luckily one can show~\cite{Grossmann1992}
+Luckily one can show~\cite{Werner2011}
 \begin{prop}
 	$L^2(\R^d, \C)$ is separable.
 \end{prop}
@@ -439,8 +450,12 @@ and is furthermore an important building block of the Coulomb-Sturmians%
 \begin{exmp}
 	\label{exmp:H1sH1}
 	The function $\Psi_{1s}$ of \eqref{eqn:H1sFunctionalForm} belongs to $H^1(\R^3, \C)$.
+	\todoil{
+		Loch im Beweis (Fabian):\\
+-> mhhh..., ich bin mir nicht sicher ob das durchgeht. nur weil eine function nirgends gegebn unendlich strebt heisst nicht, dass sie im $L^2$ sinn beschraenkt ist. das gilt nur fuer functionen auf einer menge von endlichem mass, was $\mathbb{R}^3$ nicht ist. ich wuerde folgendes vorschlagen: $\Psi$ ist stetig also lebesgue messbar, damit ist die $L^2$ norm wohldefiniert. weiter fallen die gaussfunctionen 'schnell genug' ab (sind im schwarzraum) [referenz... wahrscheinlich auch im werner], s.d. die norm insbesondere endlich ist. dann kann man den beweis abschliessen, wie du es gemacht hast: [Due to ....].
+	}
 	\begin{proof}
-	Since the function is bounded~\footnote{Does not go to infinity anywhere},
+	Since the function is bounded\footnote{Does not go to infinity anywhere.},
 	we clearly have $\Psi_{1s} \in L^2(\R^3, \C)$.
 	Furthermore for any $\alpha \in \{x, y, z\}$:
 	\begin{equation}
@@ -526,7 +541,7 @@ we need two results relating $H^1(\R^3, \C)$ and $L^2(\R^3, \C)$.
 \begin{rem}
 	Analogously to what we sketched in examples \vref{exmp:H1sH1} and \vref{exmp:H1sH2},
 	one could attempt to probe whether the one-dimensional function
-	$f(x) = \exp(-\abs{x})$ lives in $H^1(\R,\C)$ or $H^2(\R,\C)$.
+	$f(x) = \exp(-\abs{x})$ is in $H^1(\R,\C)$ or $H^2(\R,\C)$.
 	Whilst the former can be easily verified,
 	one finds $f \not\in H^2(\R,\C)$.
 \end{rem}
@@ -555,7 +570,7 @@ has to be.
 %	\label{thm:Riesz}
 %	bla
 %	\begin{proof}
-%		\to doil{Find reference}
+%		See \cite{Werner2011}
 %	\end{proof}
 %\end{thm}
 %
