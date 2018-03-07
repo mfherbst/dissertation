@@ -1,4 +1,5 @@
 \section{Diagonalisation algorithms}
+\todoil{Draft version}
 \label{sec:DiagAlgos}
 
 This section discusses the key ideas of a few algorithms suitable for obtaining
@@ -15,27 +16,66 @@ In this section we will therefore only consider eigenproblems of the type
 where $\mat{A} \in \R^{\Nbas \times \Nbas}$,
 $\lambda_i \in \R$ and $\vec{u}_i \in \R^{\Nbas}$.
 
-Furthermore we will restrict our discussion here to so-called
-\newterm{iterative diagonalisation methods},
-where better and better approximations to the eigenpairs of interest
-are found in an iterative procedure.
-These methods are in contrast to so-called \newterm{direct diagonalisation methods},
-where one attempts to find the elements of an orthogonal matrix $\mat{O} \in \R^{\Nbas\times\Nbas}$,
-such that
+\subsection{Direct methods}
+One way this can be done are so-called \newterm{direct diagonalisation methods}.
+These methods directly attempt to perform a transformation
 \[ \rtp{\mat{O}} \mat{A} \mat{O} = \mat{L} = \diag(\lambda_1, \lambda_2, \ldots, \lambda_{\Nbas}), \]
-the diagonal matrix of eigenvalues, can be computed directly.
-This requires random access into the elements of $\mat{A}$,
-especially since the efficient implementations of such methods
-are usually destructive towards $\mat{A}$.
-This means that they avoid memory allocations by building the product
-$\rtp{\mat{O}} \mat{A} \mat{O}$ directly inside the memory already allocated for $\mat{A}$.
-Direct methods are generally only suitable for small matrices,
-where $\Nbas$ is at most on the order of $1000$.
-The most widely adopted library of dense methods is LAPACK~\cite{LAPACK}.
+where $\mat{O} \in \R^{\Nbas\times\Nbas}$ is an orthogonal matrix.
+Typically this is performed in steps by inspecting the elements of $\mat{A}$
+and gradually building both $\mat{O}$ as well as matrix-matrix product
+$\rtp{\mat{O}} \mat{A} \mat{O}$
+using techniques such as Householder reflectors~\cite{Arbenz2010}
+or Givens rotation~\cite{Arbenz2010}.
+In either case this requires random access into the memory of $\mat{A}$
+and may even be destructive,
+\ie overwrite the elements of $\mat{A}$ with other data.
+This is one of the reasons why
+direct methods are typically only suitable for small matrices,
+where $\Nbas$ is at most on the order of $1000$,
+or matrices with special structure,
+like being tridiagonal or banded.
+Important dense diagonalisation methods include
+QR factorisation~\cite{Arbenz2010,Saad2003}
+as well as Cuppen's divide and conquer algorithm~\cite{Arbenz2010,Saad2003}.
+They generally yield \emph{all} eigenvalues of a matrix at once
+and little or no
+extra work is required to further obtain all eigenvectors as well.
+
+\subsection{Iterative diagonalisation methods}
+In contrast to direct methods are \newterm{iterative diagonalisation methods},
+where abstractly speaking the matrix $\mat{A}$ is probed iteratively
+in order to gather more and more information
+about the eigenpairs of interest until convergence is achieved.
+The way this is done in practice is to repetitively form
+the matrix-vector product
+\[ \vec{y} = \mat{A}\vec{x} \]
+of the problem matrix $\mat{A}$
+with suitably constructed trial vectors $\vec{x}$
+and use the resulting vector $\vec{y}$
+to improve upon the approximation for the eigenpairs as well as to
+build the $\vec{x}$ for the next step.
+This implies that random access into $\mat{A}$
+is not required for such methods and thus specific storage schemes
+or well-crafted algorithms going beyond a typical matrix-vector product
+for forming $\vec{y}$ can be employed.
+The latter aspect is most important in the context of this thesis,
+see chapter \vref{ch:NumSolveHF} and chapter \vref{ch:LazyMatrices}.
+
+Iterative methods are typically badly suited for
+computing many or all eigenpairs of a matrix $\mat{A}$,
+which is in contrast to direct methods.
+They do work, however, much better than direct methods
+if only few eigenpairs are desired
+and it is well-known \emph{where} in the spectrum they are located.
+An example of a case where they work very well
+would be if some of the largest eigenvalues of $\mat{A}$ would be required
+or some of the ones closest to an estimated value $\sigma$.
+Some important iterative methods are sketched in the following sections.
 
 \subsection{Power method}
-The most simple iterative method to obtain
-a single eigenvalue from a particular matrix $\mat{A}$ is the Power method.
+\label{sec:Power}
+The simplest iterative approach to obtain a single extremal eigenvalue
+from a particular matrix $\mat{A}$ is the Power method.
 Starting from a random initial vector $\vec{v}^{(0)} \in \R^{\Nbas}$,
 the algorithms only consists of applying the matrix $\mat{A}$
 repetitively to the vector, \ie
@@ -47,8 +87,11 @@ repetitively to the vector, \ie
 	\vec{v}^{(j)} &= \mat{A} \vec{v}^{(j-1)} = \mat{A}^j \vec{v}^{(0)}.
 \end{align*}
 In each step we may compute an estimate for the eigenvalue $\theta^{(j)}$ using
-\[ \theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right) \]
-where $\rho_R$ is the 
+\begin{equation}
+	\theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right)
+	\label{eqn:RitzValue}
+\end{equation}
+where $\rho_R$ is the
 \newterm{Rayleigh quotient}
 \begin{equation}
 	 \rho_R(\vec{u}) := \frac{\vec{v}^T \mat{A} \vec{v}}{\vec{v}^T \vec{v}},
@@ -153,62 +196,259 @@ we can even tune the Power method into a particular eigenvalue of interest.
 Spectral transformations like the ones shown in proposition \ref{prop:Spectral}
 are general and can be applied to all iterative eigensolver methods,
 not only the Power method.
-Some generalisations based on forming polynomials over the matrix $\mat{A}$
-exist as well.
-For example Chebychev polynomial filtering works similar to this
-\todoil{Check}
 
 % TODO OPTIONAL
 % Wilkinson's method
 
-\subsection{Arnoldi's method}
+\subsection{Krylov subspace based methods}
 \label{sec:Arnoldi}
-Arnoldi~\cite{Arnoldi1951}
-\todoil{Do later if time}
+Applying the Power method~(see section \ref{sec:Power})
+effectively amounts to generating a sequence of vectors
+\begin{equation}
+	\vec{v}, \mat{A} \vec{v}, \mat{A}^2 \vec{v}, \ldots
+	\label{eqn:PowerSequence}
+\end{equation}
+starting from an initial guess $\vec{v}$.
+Given that the eigenvalue of largest magnitude of $\mat{A}$ is not degenerate,
+the above sequence will approach the eigenvector corresponding to this
+extremal eigenvalue.
+In each iteration the Power method does, however,
+only keep a single of the vectors in \eqref{eqn:PowerSequence}
+and throws away all information encoded in the history of steps.
+An alternative approach which avoids doing so is
+to explicitly keep all vectors in \eqref{eqn:PowerSequence},
+which leads to the construction of a Krylov subspace~\cite{Arbenz2010}
+\begin{equation}
+	\mathcal{K}_j = \left\{\vec{v}, \mat{A} \vec{v}, \mat{A}^2 \vec{v},
+	\ldots, \mat{A}^j \vec{v} \right\}.
+	\label{eqn:KrylovSubspace}
+\end{equation}
+A large number of iterative methods both for solving eigenproblems
+as well as linear problems
+can be boiled down to an iterative construction of such a
+Krylov subspace followed by a projection of the original problem
+into this subspace for solving it approximately.
+A key step to exploit the notion of Krylov subspaces
+is the construction of an orthogonal basis for $\mathcal{K}_j$.
+The Arnoldi algorithm~\cite{Arnoldi1951}
+was devised to achieve this in a very efficient manner
+by exploiting the fact that each vector \eqref{eqn:KrylovSubspace}
+is related to its predecessor by an application of the problem matrix $\mat{A}$.
+Alongside with the construction of the basis the Arnoldi algorithm
+\emph{at the same time} constructs the projection of $\mat{A}$
+into the Krylov subspace itself.
+Since this matrix is both smaller and has a much simpler form%
+\footnote{It is a so-called upper Hessenberg matrix,
+	\ie only the upper triangle and a single subdiagonal in the lower
+	triangle are non-zero.}
+it can be diagonalised by direct methods rather efficiently
+using a shifted QR factorisation.
+This leads to the Arnoldi method for diagonalising
+non-symmetric real matrices,
+where one first uses the Arnoldi procedure to construct a sufficiently
+good Krylov subspace,%
+\footnote{Some error estimates exist to judge this without performing
+the next step of actually diagonalising the upper Hessenberg matrix.}
+followed by a dense diagonalisation of the subspace matrix
+to yield estimates for the eigenpairs.
 
-Idea is to diagonalise in a subspace of vectors generated by the
-Power method,
-the so-called Krylov subspace.
-Naturally the subspace vectors need to be orthonormal
-this is the purpose of the Arnoldi procedure
+A modification of the Arnoldi method for symmetric matrices $\mat{A}$
+is the Lanczos method~\todo{cite},
+which implicitly exploits the fact,
+that the subspace matrix has to be tridiagonal%
+\footnote{Since $\mat{A}$ is symmetric, so is the subspace matrix
+and a symmetric upper Hessenberg matrix is tridiagonal.}
+already while constructing the Krylov subspace basis.
 
-Lanczos for symmetric matrices
-Result of applying arnoldi to real symmetric matrix
-is a tridiagonal subspace matrix,
-which can be easily diagonalised.
-To find estimates.
+Even though the basic idea of Arnoldi and Lanczos are comparatively easy,
+the implementation is still involved
+due to a range of subtleties.
+For example one can show~\cite{Arbenz2010} that the unmodified
+Lanczos procedure roughly speaking
+leads to an Arnoldi basis of poor numerical quality
+with potentially linearly dependent vectors
+exactly when achieving convergence for an eigenpair.
+Similarly both Arnoldi and Lanczos tend to have difficulties
+when reporting multiplicities.
+So if $\mat{A}$ has a triply degenerate eigenvalue $\lambda_i$
+it can happen that these algorithms only find it twice,
+even though the eigenspaces for $\lambda_{i-1}$
+and $\lambda_{i+1}$,
+\ie of the next smallest and next largest eigenvalue,
+are completely described.
+For such issues a large range of remedies have been proposed
+over the years~\cite{Arbenz2010,Saad2003},
+stressing the importance of Arnoldi methods in numerical linear algebra.
+Examples include block modifications ---
+where not a single vector, but a collection of vectors is iterated
+in the Arnoldi procedure ---
+or concepts such as implicit restart, deflation or locking.
 
-problem is multiplicities (block version)
-and loss of orthogonality (partial reorthogonalisation)
-growing subspace size (implicit restart, deflation, locking)
-
-See arbenz~\cite{Arbenz2010} for details
-
-\subsection{Davidson's method}
+\subsection{The Jacobi-Davidson algorithm}
 \label{sec:Davidson}
-Davidson~\cite{Davidson1975}
-\todoil{Do later if time}
+Related to the Krylov subspace methods
+sketched above the Jacobi-Davidson approach
+finds approximations to the eigenpairs of \eqref{eqn:DiscretisedEigenproblem}
+by constructing suitable small subspaces
+and solving the projected problem within those with dense methods.
+The algorithm used for constructing the subspace is, however,
+somewhat different%
+\footnote{One should mention that similarities to the Lanczos procedure
+	can be found, however. See \cite{Arbenz2010} for details.}.
+Let us sketch the procedure for a matrix $\mat{A} \in \R^{\Nbas \times \Nbas}$,
+where an approximation to the unknown, exact eigenpair $(\lambda_i, \vec{u}_i)$
+is desired.
+Following \citet{Davidson1975} we define the residual
+\begin{equation}
+	\vec{r}^{(j} = \mat{A} \vec{v}^{(j)} - \lambda_i \vec{v}^{(j)}
+	\label{eqn:DavidsonResidual}
+\end{equation}
+of our current approximation $\vec{v}^{(j)}$ to the eigenvector $\vec{u}_i$.
+In order to correct we employ the
+\newterm{Jacobi orthogonal component correction},
+\ie we want to add a vector $\vec{t}^{(j)} \perp \vec{v}^{(j)}$ to our
+subspace, such that
+\[
+	\mat{A} \left(\vec{v}^{(j)} + \vec{t}^{(j)}\right) = \lambda_i \left(\vec{v}^{(j)} + \vec{t}^{(j)}\right).
+\]
+In other words we attempt to find the vector missing from the subspace,
+such that it is able to span the exact solution,
+which implies that it would be able to find it in the next dense
+eigensolve in the subspace.
 
-Also a subspace method but different procedure to create subspace
-essentially the idea is to use the information encoded in the residuals
-to grow the subpace
-by solving a correction equation.
-For solving the correction equation no exact solvtion is required
-This leads to the idea of a preconditioner.
+Since $\lambda_i$ is in general not known at the $j$-th step of the algorithm,
+$\vec{t}^{(j)}$ cannot be found exactly in practice.
+Instead one employs the value returned by the Rayleigh quotient
+\eqref{eqn:RayleighQuotient},
+\ie
+$\theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right)$
+instead of $\lambda_i$ to make progress.
+Incorporating the condition $\vec{t}^{(j)} \perp \vec{v}^{(j)}$ leads to the
+\newterm{correction equation}
+\begin{equation}
+	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \cc{\left(\vec{v}^{(j)}\right)} \right)
+	\left(\mat{A} \vec{v}^{(j)} - \theta^{(j)} \mat{I}_{\Nbas}\right)
+	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \cc{\left(\vec{v}^{(j)}\right)} \right)
+	\vec{t}^{(j)}
+	= - \vec{r}^{(j)}.
+	\label{eqn:JacobiDavidsonCorrectionEquation}
+\end{equation}
+For a decent convergence this equation does not need to be solved exactly,
+but since a vector $\vec{t}^{(j)}$ is required
+in each iteration,
+it needs to be solved many times.
+In practice this implies that one either
+employs preconditioning techniques~\cite{Saad2003,Saad2011,Arbenz2010,Grossmann1992}
+to speed up the performance of iterative solvers
+required for solving \eqref{eqn:JacobiDavidsonCorrectionEquation}
+or one does not employ the exact matrix $\mat{A}$
+or a combination of both.
 
-mention and explain preconditioning in this context
+In the original paper \citet{Davidson1975}
+assumed $\mat{A}$ to be diagonal-dominant
+and thus only used the diagonal
+\[ \mat{D}_A = \diag\left( A_{11} A_{22} \ldots A_{\Nbas,\Nbas} \right) \]
+for the correction in \eqref{eqn:JacobiDavidsonCorrectionEquation}.
+This leads to the identification
+\[
+	\vec{t}^{(j)} = \left( \mat{D}_A - \theta^{(j)} \mat{I}_{\Nbas} \right)^{-1} \vec{r}^{(j)},
+\]
+which is trivially computed elementwise as
+\[
+	\left(t^{(j)}\right)_i = \frac{\left(r^{(j)}\right)_i}{A_{ii} - \theta^{(j)}}.
+\]
+This is the basis of many diagonalisation routines
+employed in quantum-chemistry packages nowadays.
 
 \subsection{Generalised eigenvalue problems}
 \label{sec:GeneralisedEigenvalueProblem}
-Give some hints how such algorithms
-could be adapted for a generalised eigenvalue problem.
+Many eigenproblems occurring in quantum chemistry are in fact
+not of the form \eqref{eqn:DiscretisedEigenproblem},
+but are so-called \newterm{generalised eigenproblems},
+\begin{equation}
+	\mat{A} \vec{u}_i = \lambda_i \mat{S} \vec{u}_i
+	\label{eqn:GeneralisedEigenproblem}
+\end{equation}
+where the right-hand side contains a
+real, positive-definite matrix $\mat{S} \in \R^{\Nbas\times\Nbas}$ as well.
+These typically arise because the
+basis set $\{\varphi_\mu\}_{\mu \in \Ibas}$
+used for the discretisation is not orthogonal.
+This is in fact the usual case for the basis sets
+employed to numerically
+solve the Hartree-Fock problem~(see section \vref{sec:HFIntro}),
+one of the central aspects of this thesis.
 
-\todoil{Copy stuff from status\_Sturmians}
+One way to deal with \eqref{eqn:GeneralisedEigenproblem} is to reduce
+it to a normal eigenproblem by formally inverting $\mat{S}$ and writing
+\[
+	\left( \mat{S}^{-1} \mat{A} \right) \vec{u}_i = \lambda_i \vec{u}_i.
+\]
+A normal eigenproblem with the problem matrix $\mat{S}^{-1} \mat{A}$ results.
+In iterative methods this amounts to replacing all occurrences
+of the matrix-vector product $\mat{A}\vec{x}$ by the expression
+\[ \vec{y} = \mat{S}^{-1} \mat{A} \vec{x}, \]
+which can be computed by solving the linear system
+\[ \mat{S} \vec{y} = \mat{A} \vec{x} \]
+by a preconditioned iterative method.
+This is still hardly ever done in practice,
+since even for a real symmetric, positive-definite $\mat{S}$
+and a real symmetric $\mat{A}$,
+the matrix $\mat{S}^{-1} \mat{A}$ might not be symmetric
+and less advantageous solution algorithms need to be employed.
 
-\begin{itemize}
-	\item $S^{-1/2}$
-	\item Choleski
-	\item Change orthogonalisation
-\end{itemize}
+% TODO OPTIONAL
+% 
+%Another way is to exploit the fact that $\mat{S}$
+%is symmetric and compute the Choleski factorisation~\cite{Arbenz2010} of $\mat{S}$,
+%\ie to find lower-triangular matrix $\mat{L}$ which satisfy
+%\[ \mat{S} = \mat{L} \rtp{\mat{L}}. \]
+%Since $\mat{S}$ is non-singular, so is $\mat{L}$ and
+%we can write \eqref{eqn:GeneralisedEigenproblem} as
+%\[
+%	\left( \mat{L}^{-1} \mat{A} \left(\rtp{\mat{L}}\right)^{-1} \right)
+%		\left( \rtp{\mat{L}} \vec{u}_i \right)
+%		= \lambda_i \left( \rtp{\mat{L}} \vec{u}_i \right).
+%\]
+%At first this does not look like a big improvement,
+%but since triangular matrices are cheap to invert~\todo{cite}
+%
+%such that the
+%symmetric matrix $\left( \mat{L}^{-1} \mat{A} \left(\rtp{\mat{L}}\right)^{-1} \right)$
+%can be diagonalised using a normal diagonalisation algorithm.
+
+An alternative approach to avoid this
+is to try to modify the iterative procedures towards supporting the generalised
+eigenproblems straight away.
+By properly following the algebra one finds that
+appropriate formulations of the algorithms in the setting of generalised
+eigenproblems can be achieved by replacing the explicit or implicit
+occurrences of the orthonormality condition
+\[ \rtp{\vec{u}}_i \vec{u}_j = \delta_{ij} \]
+by
+\[  \rtp{\vec{u}}_i \vec{u}_j = S_{ij} \]
+instead.
+In other words only the way the orthonormalisation of the subspace vectors
+is performed has to be changed
+and some occurrences of the identity matrix,
+like in \eqref{eqn:JacobiDavidsonCorrectionEquation},
+replaced by $\mat{S}$ instead.
+
+Yet another option is to orthogonalise the basis before performing
+the discretisation and thus avoid the appearence of the generalised
+eigenproblem all together.
+
+
+% TODO OPTIONAL
+%\subsection{Other algorithms and further approaches}
+%See \cite{Saad2003,Arbenz2010}
+%
+%Some generalisations based on forming polynomials over the matrix $\mat{A}$
+%exist as well.
+%For example Chebychev polynomial filtering works similar to this
+%\todoil{Check}
+
+
+% https://www.math.tu-berlin.de/fachgebiete_ag_modnumdiff/fg_modellierung_simulation_und_optimierung_in_natur_und_ingenieurswissenschaften/v_menue/mitarbeiter/prof_dr_reinhold_schneider/publikationen/
 
 
