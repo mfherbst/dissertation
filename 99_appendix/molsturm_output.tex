@@ -1,0 +1,28 @@
+\chapter{Example of \molsturm input and ouptut}
+\label{apx:MolsturmIO}
+
+Script for \ADC(2) calculation using \molsturm and \adcman
+and a cc-pVTZ basis
+
+
+\begin{figure}[htpb]
+	\centering
+	\begin{minipage}{0.58\textwidth}
+	\lstinputlisting{molsturm_input.py}
+	\end{minipage}
+	\caption[\python script for computing 5 singlet excitations at \ADC(2) level]{
+		\python script for computing 5 singlet excitations at \ADC(2) level
+	}
+	\label{fig:molsturmInput}
+\end{figure}
+
+\begin{figure}[htpb]
+	\centering
+	\begin{minipage}{0.58\textwidth}
+	\lstinputlisting{molsturm_output.out}
+	\end{minipage}
+	\caption{
+		Result of running the script of figure \ref{fig:molsturmInput}
+	}
+	\label{fig:molsturmOutput}
+\end{figure}

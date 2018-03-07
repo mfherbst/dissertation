@@ -5,7 +5,9 @@ add_inputs(
         cbs_uhf.tex
         rmso_Gaussian.tex
         cs_convergence.tex
+	molsturm_output.tex
 )
+add_inputs(molsturm_output.out molsturm_input.py)
 
 #
 # Build tables

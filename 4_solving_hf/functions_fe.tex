@@ -853,7 +853,7 @@ of the Laplace operator $\Delta$ for solving the Poission equations
 which is after all still linear in $\Nbas$.
 
 Many iterative diagonalisation algorithms,
-like Arnoldi's method~(see section \ref{sec:Arnoldi})
+like the Lanczos method~(see section \ref{sec:Arnoldi})
 or Davidson's method~(see section \ref{sec:Davidson})
 do not make explicit reference the elements of the matrix to be diagonalised.
 Much rather they only require a way to perform the matrix-vector product.
@@ -889,7 +889,7 @@ one still needs to solve the Poisson equations \eqref{eqn:ExchangePoissonEqns}
 a lot of times.
 Already for each matrix-vector application
 $\Nelec$ Poission-solves are required.
-For both Davidson and Arnoldi one usually needs around 50 iterations,
+For both Davidson and Lanczos one usually needs around 50 iterations,
 with a couple of hundred matrix-vector products to be computed.
 If we further need around 30 \SCF steps,
 this alltogether makes some 1000 Poisson-solves
