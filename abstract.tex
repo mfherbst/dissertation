@@ -57,22 +57,19 @@ The adequacy of standard \SCF algorithms with respect to a contraction-based
 setting is reviewed
 and for the example of the optimal damping algorithm
 an appropriate approximate scheme is constructed.
-\todoil{In what sense approximate}
+\todoil{In what sense approximate \ldots da fehlt das warum}
 
-\todoil{Use synonym to potential, also in lazyten potential and caveat section}
 With respect to recent trends in the development of modern computer hardware
-the potential of contraction-based approaches is evaluated
-and one drawback,
-\todoil{Specify unituitive, explain}
-namely the arising unintuitive contraction expressions,
-is identified.
-\todoil{of a ???}
-To overcome this the data structure of a lazy matrix is introduced,
-which is a generalisation to the usual matrix concept,
+the potentials and drawbacks of contraction-based approaches are evaluated.
+One drawback, namely the typically more involved and harder-to-read code,
+is identified and a data structure named lazy matrix is introduced
+to overcome this.
+Lazy matrices are a generalisation of the usual matrix concept,
 suitable for encapsulating contraction expressions.
-From the user perspective such objects still look like matrices,
-such that programming contraction-based algorithms
-becomes similarly convenient and intuitive.
+Such objects still look like matrices from the user perspective,
+including the possibility to perform operations like matrix sums and products.
+As a result programming contraction-based algorithms
+becomes similarly convenient to working with normal matrices.
 An implementation of lazy matrices in the \lazyten linear algebra library
 is presented followed by examples
 demonstrating the applicability in the context of the \HF problem.
