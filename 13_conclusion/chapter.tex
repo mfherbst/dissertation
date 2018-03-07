@@ -21,7 +21,7 @@ investigating the convergence properties
 of quantum-chemical calculations
 based on Coulomb-Sturmians,
 a basis function type which got few attention so far.
-First results of a Coulomb-Sturmian-based excited states
+First results of Coulomb-Sturmian-based excited states
 calculation employing the algebraic-diagrammatic construction scheme
 of the polarisation propagator were reported.
 
@@ -42,104 +42,105 @@ of functional analysis to the finite-dimensional regime of linear algebra.
 
 % ------------------------------------
 
-In the light of this chapter \ref{ch:qchem}
+In the light of this section \ref{sec:ElectronicSchrödinger}
 discussed the spectral properties
-of the electronic Schrödinger equation in section \ref{sec:ElectronicSchrödinger} and
-turned the attention towards common quantum-chemical methods
+of the electronic Schrödinger equation and
+described common quantum-chemical methods
 for solving this equation numerically.
 Both the mathematical formulation of Full-CI in section \ref{sec:FCI}
 as well as Hartree-Fock~(\HF) in section \ref{sec:HFIntro} were discussed.
-In section \ref{sec:DiscreteHF}
-a discretisation ansatz based on spinors of
-single-particle basis functions was employed
-to derive multiple discretised formulations of \HF.
-The arising numerical and physical properties were contrasted
-and the self-consistent field~(\SCF) procedure
-was introduced in remark \ref{rem:PropertiesDiscretised}
-as a scheme to solve the \HF problem.
+In section \ref{sec:DiscreteHF} multiple formulations of \HF were given
+and their numerical and physical properties were contrasted.
+In remark \ref{rem:PropertiesDiscretised}
+the self-consistent field~(\SCF) procedure
+as a scheme to solve the \HF problem was introduced.
 The physical aspects missing in an \HF treatment of the electronic
 structure was discussed in section \ref{sec:FailureHF}
 and common Post-\HF methods to correct for these were
-discussed in sections \ref{sec:TruncatedCI} to \ref{sec:ExcitedStates}.
-%An alternative to \HF in the form of density-functional theory
-%was briefly mentioned in \ref{sec:DFT}.
+reviewed in sections \ref{sec:TruncatedCI} to \ref{sec:ExcitedStates}.
 
 % ------------------------------------
 
-A detailed discussion with regards to possible basis function types,
-which could be employed to discretise the \HF problem,
+A detailed discussion with regards to the basis function types,
+which can be employed to discretise the \HF problem,
 was provided in section \ref{sec:BasisTypes}.
 For this section \ref{sec:BasisDesiredProperties}
-provided a summary of the desirable properties of basis functions
-in the context of quantum-chemical calculations,
-followed by section \ref{sec:LocalEnergy},
-where the local energy as a measure
-for the ability of a basis to represent an eigenstate
-of the Schrödinger operator was introduced.
+summarised a list of desirable properties
+and section \ref{sec:LocalEnergy}
+outlined the approach taken for
+assessing the ability of a basis set to represent the physical
+features of the wave function in this work.
+Four basis functions were thereafter considered in detail,
+namely (1) Slater-type orbitals in section \ref{sec:STO},
+(2) Gaussian-type orbitals in section \ref{sec:cGTO},
+(3) finite elements in section \ref{sec:FE}
+and (4) Coulomb-Sturmians in section \ref{sec:BasisCS}.
 
-Four basis functions were considered in detail.
-First Slater-type orbitals were discussed in section \ref{sec:STO},
-followed by contracted Gaussian-type orbitals
-in section ~\ref{sec:cGTO}.
-In contrast to these rather common approaches 
-finite elements were presented in section \ref{sec:FE}.
-Finite elements are piecewise polynomials defined on a real-space grid.
-Whilst these on the one hand show very interesting properties,
-like % todo
-, they suffer from % todo
-For these the most problematic aspect
-was the representation of the exchange term of the Hartree-Fock equations.
-It was argued that storing the discretised form of this term as a matrix in memory
-is not feasible
-
-is not feasible due to the very demanding numerical structure.
-As a remedy a contraction-based ansatz was discussed,
-where one avoids storing matrices in memory
-and instead constructs an algorithm based
-on matrix-vector product expressions alone.
-As the final basis type section \ref{sec:BasisCS} reviewed Coulomb-Sturmians.
-These are exponential-type basis functions,
-which are related to Slater-type orbitals.
-In the presented analysis they showed to be able to represent both
-the nuclear cusp as well the exponential decay behaviour.
-Their integral expressions are much simpler to evaluate
-compared to Slater-type orbitals making them a promising alternative to these.
-It was discussed how a contraction-based ansatz
-towards the \SCF can lead to an improved computational scaling for
-Coulomb-Sturmians as well.
-
-In section \ref{sec:BasisTakeaway}
-the common features of all discussed basis functions
-were summarised and the basis types contrasted.
-It was indicated that a contraction-based \SCF scheme
-would be able to support discretisations based on all basis functions.
-Motivated by this thought
-common \SCF algorithms were reviewed in section \ref{sec:SCFAlgorithms}.
+In contrast to the first two
+both finite elements,
+which are piecewise polynomials defined on a real-space grid,
+as well as Coulomb-Sturmians,
+which are the analytic solutions to a Schrödinger-like equation,
+are rather uncommon approaches,
+which have been found to show deviating numerical demands.
+For finite elements, for example,
+the matrix representation of the exchange matrix term of the Hartree-Fock equations
+was shown to be rather expensive to compute.
+An alternative contraction-based ansatz for \HF was discussed,
+where storing the Fock matrix in memory is avoided
+and instead only matrix-vector product applications are performed.
+It would be shown that this scheme would reduce
+the formal computational scaling
+for the exchange term in the context of finite elements.
+For Coulomb-Sturmians such a contraction-based \SCF
+ansatz similarly opened the possibilities for performance improvements.
+Even though both Coulomb-Sturmians as well as Slater-type
+orbitals are exponential basis functions
+and their functional form is very similar,
+it was seen that their integral expressions are much simpler
+and fit very well into the context of a contraction-based \SCF.
+Section \ref{sec:BasisTakeaway} summarised our discussion of the basis
+function types and section \ref{sec:SCFAlgorithms}
+reviewed common \SCF algorithms
+with respect to their ability to support the contraction-based \SCF.
 For the case of the optimal damping algorithm~\cite{Cances2000a}
-section \ref{sec:tODA} gave a modification
-to approximately carry some advantageous
+section \ref{sec:tODA} gave an approximate modification
+to carry some advantageous
 properties to the contraction-based setting.
 
 % ---------------------------------------------------------------------
+\todoil{Draft from here}
 
-A detailed discussion of contraction-based methods was
-presented in chapter \ref{ch:LazyMatrices}.
-In section \ref{sec:ContractionPotentialCaveat}
-we evaluated their potential and drawbacks
-with reference to current trends in the development
-of computer hardware.
+In chapter \ref{ch:LazyMatrices} contraction-based methods
+were formally introduced and in section \ref{sec:ContractionPotentialCaveat}
+their potentials and drawbacks were evaluated
+with reference to current trends in the development of computer hardware.
 The increasing gap between processor and memory performance
-was outlined and used to outline the
-advantages of recomputing data instead of storing them in main memory.
-It was mentioned that another issue with contraction-based methods
-namely their need to write harder to read code
-is overcome by using lazy matrices.
-Lazy matrices were introduced as a concept to write contraction-based
-methods at a high level domain-specific language.
-They are in contrast to stored matrices where all data has to be in dense memory.
-produce the same interface as matrices,
-but evaluation is lazy,
-\ie only performed when needed.
+was outlined and used to rationalise that recomputing data
+may be advantageous even over storing it in main memory.
+Another issue with contraction-based methods,
+namely their need to write more involved and harder-to-read code,
+was discussed.
+As a remedy lazy matrices were introduced as a data structure
+to write contraction-based
+methods at a high level, in the sense of a domain-specific language.
+
+% put into:   it was discussed that thing
+
+In contrast to the usual, stored matrices,
+where all data has to be in dense memory,
+lazy matrices are a generalisation,
+able to encapsulate arbitrary contraction expressions.
+
+They are designed to produce the same interface as stored matrices,
+\ie support all kinds of matrix-matrix and matrix-vector operations.
+The important difference is that
+evaluation is lazy,
+\ie only performed when needed,
+and performs via building and working on an expression tree.
+
+
+
 Whilst the primary application for lazy matrices in this thesis was the quantum-chemical
 program package \molsturm,
 lazy matrices are more general and could be used for other problems
