@@ -52,82 +52,6 @@ Nevertheless this guess method is typically only used
 if other options are not available.
 An advantage is, however, that it can always be done.
 
-\subsection{Superposition of atomic densities}
-The idea of the superposition of atomic densities~(SAD)~\cite{Lenthe2006}
-is that molecules are to a very large extend just a collection of atoms,
-such that the molecular electron density
-can be obtained approximately
-just by adding the densities of all constituting atoms together.
-If atom-centered basis functions are used this process is almost trivial.
-Let us illustrate the procedure by
-a chemical system made up of $M$ atoms labelled $1, 2, \ldots, M$.
-We first perform atomic \ROHF
-calculations on each atom
-using the same basis set we want to employ for the molecular calculation,
-but only the basis functions of the atom in question.
-This yields converged atomic \SCF density matrices
-$\mat{D}_1, \mat{D}_2, \ldots \mat{D}_M$.
-In the SAD guess method as described in \cite{Lenthe2006}
-the trial density matrix $\tilde{\mat{D}}$
-is the sum of all density matrix $\mat{D}_1^\alpha$, $\mat{D}_1^\beta$,
-$\mat{D}_2^\alpha$ after they have been projected from the atomic
-basis onto the basis used for the molecular calculation.
-If we compose the basis of the molecular system
-in the usual manner, \ie
-by pasting together
-all basis functions a basis set defines for each atom,
-in the order atom by atom,
-$\tilde{\mat{D}}$ would be block-diagonal
-\[
-	\tilde{\mat{D}} = \mm{
-		\mat{D}_1^\alpha + \mat{D}_1^\beta & 0         & \cdots & 0 \\
-		0         & \mat{D}_2^\alpha + \mat{D}_2^\beta & \cdots & 0 \\
-		\vdots    & \vdots    & \ddots & \vdots \\
-		0         & 0         & \cdots & \mat{D}_M^\alpha + \mat{D}_M^\beta
-	}.
-\]
-Replicating $\tilde{\mat{D}}$ twice on the $\alpha$ and the $\beta$
-block we can construct the trial density matrix
-\[
-	\mat{D}^\text{t} =
-	\mm{\tilde{\mat{D}} & 0 \\ 0 & \tilde{\mat{D}}}
-\]
-and with it a trial Fock matrix
-$\mat{F}^\text{t} = \mat{F}\!\left[\mat{D}^\text{t}\right]$.
-A diagonalisation
-\[
-	\mat{F}^\text{t} \mat{C}^{(0)} = \mat{C}^{(0)} \mat{E}^\text{t}
-\]
-finally yields the initial coefficients $\mat{C}^{(0)}$
-along with some trial energies along the diagonal matrix $\mat{E}^\text{t}$.
-
-\noindent
-A few remarks about the SAD guess method:
-\begin{itemize}
-	\item 
-	This whole procedure costs roughly as much as a single \SCF step
-	plus the time needed for the atomic calculation,
-	which is typically negligible.
-	\item Furthermore many quantum-chemistry programs
-		store precomputed atomic densities $\mat{D}_1, \mat{D}_2, \ldots$
-		for their supported basis functions
-		and all relevant elements of the periodic table,
-		such that the cost of the SAD guess procedure
-		is typically even lower in practice.
-	\item The quality of the guess is in general rather good~\cite{Lenthe2006}.
-	\item
-	Since $\mat{D}^\text{t} \not\in \mathcal{P}$,
-	the orbital energies $\mat{E}^\text{t}$
-	obtained from the diagonalisation
-	of $\mat{F}^\text{t}$ are not variational with respect to the
-	overall \HF problem.
-	At least one further \SCF step is therefore required.
-	\item For molecular \UHF and \ROHF calculations,
-		one might want to perturb the $\alpha$ and $\beta$
-		parts of $\mat{D}^\text{t}$ slightly in order to enforce
-		breaking the spin symmetry in the $\alpha$ and $\beta$ blocks.
-\end{itemize}
-
 \subsection{Guesses by projection}
 \label{sec:GuessProject}
 A common procedure in many discretisation approaches
@@ -237,3 +161,79 @@ to drive the EH guess:
 The trial basis set $\{\phi_i\}_{i=1,\ldots,N_\text{trial}}$
 in their approach is just the combination of all atomic STO-3G orbitals
 and the diagonal elements $H_{ii}^\text{EH}$ the corresponding STO-3G orbital energies.
+
+\subsection{Superposition of atomic densities}
+The idea of the superposition of atomic densities~(SAD)~\cite{Lenthe2006}
+is that molecules are to a very large extend just a collection of atoms,
+such that the molecular electron density
+can be obtained approximately
+just by adding the densities of all constituting atoms together.
+If atom-centered basis functions are used this process is almost trivial.
+Let us illustrate the procedure by
+a chemical system made up of $M$ atoms labelled $1, 2, \ldots, M$.
+We first perform atomic \ROHF
+calculations on each atom
+using the same basis set we want to employ for the molecular calculation,
+but only the basis functions of the atom in question.
+This yields converged atomic \SCF density matrices
+$\mat{D}_1, \mat{D}_2, \ldots \mat{D}_M$.
+In the SAD guess method as described in \cite{Lenthe2006}
+the trial density matrix $\tilde{\mat{D}}$
+is the sum of all density matrix $\mat{D}_1^\alpha$, $\mat{D}_1^\beta$,
+$\mat{D}_2^\alpha$ after they have been projected from the atomic
+basis onto the basis used for the molecular calculation.
+If we compose the basis of the molecular system
+in the usual manner, \ie
+by pasting together
+all basis functions a basis set defines for each atom,
+in the order atom by atom,
+$\tilde{\mat{D}}$ would be block-diagonal
+\[
+	\tilde{\mat{D}} = \mm{
+		\mat{D}_1^\alpha + \mat{D}_1^\beta & 0         & \cdots & 0 \\
+		0         & \mat{D}_2^\alpha + \mat{D}_2^\beta & \cdots & 0 \\
+		\vdots    & \vdots    & \ddots & \vdots \\
+		0         & 0         & \cdots & \mat{D}_M^\alpha + \mat{D}_M^\beta
+	}.
+\]
+Replicating $\tilde{\mat{D}}$ twice on the $\alpha$ and the $\beta$
+block we can construct the trial density matrix
+\[
+	\mat{D}^\text{t} =
+	\mm{\tilde{\mat{D}} & 0 \\ 0 & \tilde{\mat{D}}}
+\]
+and with it a trial Fock matrix
+$\mat{F}^\text{t} = \mat{F}\!\left[\mat{D}^\text{t}\right]$.
+A diagonalisation
+\[
+	\mat{F}^\text{t} \mat{C}^{(0)} = \mat{C}^{(0)} \mat{E}^\text{t}
+\]
+finally yields the initial coefficients $\mat{C}^{(0)}$
+along with some trial energies along the diagonal matrix $\mat{E}^\text{t}$.
+
+\noindent
+A few remarks about the SAD guess method:
+\begin{itemize}
+	\item 
+	This whole procedure costs roughly as much as a single \SCF step
+	plus the time needed for the atomic calculation,
+	which is typically negligible.
+	\item Furthermore many quantum-chemistry programs
+		store precomputed atomic densities $\mat{D}_1, \mat{D}_2, \ldots$
+		for their supported basis functions
+		and all relevant elements of the periodic table,
+		such that the cost of the SAD guess procedure
+		is typically even lower in practice.
+	\item The quality of the guess is in general rather good~\cite{Lenthe2006}.
+	\item
+	Since $\mat{D}^\text{t} \not\in \mathcal{P}$,
+	the orbital energies $\mat{E}^\text{t}$
+	obtained from the diagonalisation
+	of $\mat{F}^\text{t}$ are not variational with respect to the
+	overall \HF problem.
+	At least one further \SCF step is therefore required.
+	\item For molecular \UHF and \ROHF calculations,
+		one might want to perturb the $\alpha$ and $\beta$
+		parts of $\mat{D}^\text{t}$ slightly in order to enforce
+		breaking the spin symmetry in the $\alpha$ and $\beta$ blocks.
+\end{itemize}

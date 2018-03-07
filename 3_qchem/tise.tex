@@ -1,16 +1,18 @@
 \section{Many-body Schrödinger equation}
 \label{sec:ManyBodyTISE}
-\defineabbr{BO}{BO\xspace}{Born-Oppenheimer approximation, see section \vref{sec:BO}}
+\defineabbr{BO}{BO\xspace}{Born-Oppenheimer approximation}
 \nomenclature{$\Psi$}{State of a (many body) quantum system,
 	typically the \emph{exact} ground state solution to the many-electron,
-	electronic TISE, see section \vref{sec:BO}}
-\nomenclature{$\Nelec$}{Total number of electrons}
-\nomenclature{$M$}{Number of nuclei}
+	electronic TISE, see section \ref{sec:BO}.}
+\nomenclature{$\Nelec$}{Total number of electrons.}
+\nomenclature{$M$}{Number of nuclei.}
 \nomenclature{$\Op{H}_{\Nelec}$}{Electronic Hamiltonian
-	for a $\Nelec$-electron system, see section \vref{sec:BO}}
+	for a $\Nelec$-electron system, see section \ref{sec:BO}.}
 \nomenclature{$\vec{x}$}{Vector in $\R^{3 \Nelec}$,
 which typically specifies the positions of all electrons of the system.}
-\nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of an electron in space}
+\nomenclature{$\vec{r}$}{Vector in $\R^3$, which specifies the position of an electron in space.}
+\nomenclature{$\mat{M}$}{Matrix with elements denoted as $M_{ij}$.}
+\nomenclature{$\mathcal{I}$}{Index set.}
 
 Let us consider a chemical system consisting of $M$ nuclei and $\Nelec$ electrons.
 We take the nuclei to be located at mass-scaled\footnote{
@@ -153,7 +155,7 @@ namely the \newterm{electronic Hamiltonian}
 This operator is constructed form the full many-body Hamiltonian
 by neglecting the nuclear kinetic energy operator $\Op{T}_n$ completely.
 Introducing the short hand notation
-\nomenclature{$r_{ij}$}{Short hand for $\norm{\vec{r}_i - \vec{r}_j}_2$}
+\nomenclature{$r_{ij}$}{Short hand for $\norm{\vec{r}_i - \vec{r}_j}_2$.}
 \begin{align*}
 r_{AB} &\equiv \norm{\vec{R}_A - \vec{R}_B}_2, &
 r_{iA} &\equiv \norm{\vec{r}_i - \vec{R}_A}_2, &

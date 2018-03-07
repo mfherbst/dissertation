@@ -2,13 +2,13 @@
 \label{sec:FCI}
 \defineabbr{FCI}{FCI\xspace}{Full configuration interaction}
 \nomenclature{$\Phi$}{Slater determinant $\bigwedge_{i=1}^{\Nelec} \psi_i$
-or many-electron basis function}
+or many-electron basis function.}
 \nomenclature{$\psi_i$}{One-particle function,
-typically $i$-th eigenfunction of the Fock operator, i.e.~a Hartree-Fock orbital}
+typically $i$-th eigenfunction of the Fock operator, i.e.~a Hartree-Fock orbital.}
 \nomenclature{$\Ibas$}{Index set of the one-particle basis functions.
 	Typically a set of multi-indices of quantum numbers.}
 \nomenclature{$\Nbas$}{Cardinality of $\Ibas$, i.e.~the number of one-particle basis functions.}
-\nomenclature{$\varphi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\varphi_\mu\}_{\mu \in \Ibas}$}
+\nomenclature{$\varphi_\mu$}{$\mu$-th one-particle basis function of the one-particle basis $\{\varphi_\mu\}_{\mu \in \Ibas}$.}
 
 \nomenclature{$\Iocc$}{Index set of occupied SCF orbitals.}
 \nomenclature{$\Ivirt$}{Index set of virtual, i.e. unoccupied, SCF orbitals.}
@@ -234,8 +234,6 @@ regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 	after the next remark.
 \end{rem}
 
-\defineabbr{FCI}{FCI\xspace}{Full configuration interaction,
-	see section \vref{sec:FCI}}
 \newcommand{\Nfci}{N_\text{FCI}}
 \begin{rem}[Full CI]
 	\label{rem:FCI}
@@ -342,7 +340,7 @@ which we will discuss in the next remark.
 Nevertheless the computational cost scales exponentially
 and allows only treatment of extremely small systems.
 
-\defineabbr{ERI}{ERI\xspace}{Electron repulsion integrals}
+\defineabbr{ERI}{ERI\xspace}{Electron repulsion integral}
 \newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
 \newcommand{\eriPh}[2]{\left\langle #1 \middle| #2 \right\rangle}
 \newcommand{\eriMu}[2]{\left( #1 \middle| #2 \right)}
@@ -479,8 +477,8 @@ and allows only treatment of extremely small systems.
 \begin{figure}
 	\centering
 	\includeimage{3_qchem/fci_matrix}
-	\caption[Schematic sketch of the he \FCI matrix]{
-		Schematic sketch of upper left part of the \FCI matrix $\mat{A}_\text{FCI}$.
+	\caption[Sketch of the the \FCI matrix]{
+		Sketch of the upper left part of the \FCI matrix $\mat{A}_\text{FCI}$.
 		The identified blocks denote the
 		interaction of equivalent classes of excited determinants
 		under the electronic Hamiltonian $\Op{H}_{\Nelec}$.

@@ -9,7 +9,7 @@
 \addcontentsline{toc}{chapter}{Abstract}
 
 For the calculation of electronic structures of molecules
-state-of-the art methods predominantly employ Gaussian-shaped basis functions.
+state-of-the-art methods predominantly employ Gaussian basis functions.
 The algorithms employed inside existing code packages
 are consequently often highly optimised keeping
 only their numerical requirements in mind.
@@ -28,42 +28,45 @@ thus allowing to leverage existing functionality as much as possible.
 In order to arrive at this point,
 the mathematical background of quantum mechanics
 as well as some numerical techniques are reviewed.
-Care is taken to emphasise the often overlooked peculiarities when
+Care is taken to emphasise the often overlooked subtleties when
 discretising an infinite-dimensional spectral problem
 in order to obtain a finite-dimensional eigenproblem.
-Common quantum-chemical methods such as Full-CI
-and Hartree-Fock are discussed providing insight
+Common quantum-chemical methods such as full configuration interaction
+and \HF are discussed providing insight
 into their mathematical properties.
-Different formulations of Hartree-Fock are derived
-and appropriate self-consistent field~(\SCF)
-solution schemes formulated.
+Different formulations of \HF are contrasted
+and appropriate \SCF solution schemes formulated.
 
 Next discretisation approaches based on four different types of basis functions
-are contrasted
+are compared
 both with respect to the computational challenges as well as
 their ability to describe the physical features of the wave function.
-Next to Slater-type orbitals and contracted Gaussian-type orbitals,
-the discussion considers finite elements,
+Next to (1) Slater-type orbitals and (2) Gaussian-type orbitals,
+the discussion considers (3) finite elements,
 which are piecewise linear polynomials on a real-space grid,
-as well as Coulomb-Sturmians,
-which are the analytical solution to a Schrödinger-like equation.
-An algorithmic approach based on matrix-vector contraction expressions is suggested,
+as well as (4) Coulomb-Sturmians,
+which are the analytical solutions to a Schrödinger-like equation.
+A novel algorithmic approach based on matrix-vector contraction expressions is suggested,
 which is able to incorporate the numerical requirements of all cases considered.
 It is shown that this ansatz not only allows to formulate
 \SCF algorithms in a basis-function independent way,
-but furthermore even amounts to improve the theoretically achievable
+but furthermore improves the theoretically achievable
 computational scaling for finite-element-based discretisations
-as well as Coulomb-Sturmian-based discretisations.
+as well as performance improvements for Coulomb-Sturmian-based discretisations.
 The adequacy of standard \SCF algorithms with respect to a contraction-based
 setting is reviewed
 and for the example of the optimal damping algorithm
 an appropriate approximate scheme is constructed.
+\todoil{In what sense approximate}
 
+\todoil{Use synonym to potential, also in lazyten potential and caveat section}
 With respect to recent trends in the development of modern computer hardware
 the potential of contraction-based approaches is evaluated
 and one drawback,
+\todoil{Specify unituitive, explain}
 namely the arising unintuitive contraction expressions,
 is identified.
+\todoil{of a ???}
 To overcome this the data structure of a lazy matrix is introduced,
 which is a generalisation to the usual matrix concept,
 suitable for encapsulating contraction expressions.
@@ -72,7 +75,7 @@ such that programming contraction-based algorithms
 becomes similarly convenient and intuitive.
 An implementation of lazy matrices in the \lazyten linear algebra library
 is presented followed by examples
-demonstrating the applicability in the context of the Hartree-Fock problem.
+demonstrating the applicability in the context of the \HF problem.
 
 Building on top of the aforementioned concepts the design of \molsturm is outlined.
 It is shown how a combination of lazy matrices and a contraction-based \SCF scheme
@@ -85,7 +88,7 @@ how the readily scriptable interface of \molsturm
 can be employed to implement and assess novel quantum-chemical methods
 or to combine the features of \molsturm with existing third-party packages.
 
-The final chapter of the thesis discusses an application of \molsturm
+Finally the thesis discusses an application of \molsturm
 towards the investigation of the convergence properties
 of Coulomb-Sturmian-based quantum-chemical calculations.
 First results for the convergence
@@ -97,12 +100,12 @@ maximal angular momentum in order to achieve convergence
 of the discretisation of the angular part of the wave function.
 Some modifications required for a treatment at correlated level are suggested,
 followed by a discussion of the effect of the Coulomb-Sturmian exponent.
-A routine for obtaining an optimal exponent is presented
+An algorithm for obtaining an optimal exponent is presented
 and some optimal exponents for the atoms of the
 second and the third period of the periodic table at \HF level are given.
-Furthermore the first result of a Coulomb-Sturmian-based excited
+Furthermore the first results of a Coulomb-Sturmian-based excited
 states calculation based on the algebraic-diagrammatic construction
-scheme for the polarisation propagator is presented.
+scheme for the polarisation propagator are presented.
 
 
 %
