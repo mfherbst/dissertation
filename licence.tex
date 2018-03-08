@@ -1,8 +1,12 @@
-\newpage
+% Make sure this sits on the *left* page
+\clearpage
+\ifodd\value{page}\hbox{}\newpage\fi
+
 \thispagestyle{plain}
 \
 \vfill
 \section*{Licensing and redistribution}
+\phantomsection
 \addcontentsline{toc}{chapter}{Licensing and redistribution}
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0
@@ -19,6 +23,7 @@ please include a reference to this URL along with my name and email address
 (\texttt{info@michael-herbst.com}).
 
 \section*{Source code repository}
+\phantomsection
 \addcontentsline{toc}{chapter}{Source code repository}
 This thesis was generated using \LaTeX, \python and \molsturm.
 The full source code is available

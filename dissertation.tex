@@ -45,17 +45,16 @@
 %---------------------------------------------------
 
 \begin{document}
-\input{title}
 \pagenumbering{roman}	%Use Roman until after preamble
 
+\input{title}
 \input{licence}
 \input{dedication}
 \input{abstract}
 \input{contents}
 \input{nomenclature}
 
-
-\newpage
+\cleardoublepage
 \pagenumbering{arabic}
 \subimport{0_intro/}     {chapter}
 

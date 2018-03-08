@@ -87,9 +87,11 @@ def make_table(data, period, label, continued=False):
     ret.append(r"    pos=tbph,")
     ret.append(r"    botcap,")
     ret.append(r"    cap=" + shortcap + ",")
-    ret.append(r"     label=tab:" + label + ",")
+    ret.append(r"    label=tab:" + label + ",")
     if continued:
         ret.append(r"    continued,")
+    else:
+        ret.append(r"    label=tab:" + label + ",")
     ret.append(r"]{" + colstring + "}{}{")
 
     # Add headings
