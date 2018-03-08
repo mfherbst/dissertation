@@ -5,9 +5,7 @@
 	to describe complex data-processing situations
 	the capability for describing data.
 }{Grace Hopper~(1906--1992)}
-\todoil{Draft version}
 
-% more citations
 \noindent
 The present thesis devised a self-consistent field~(\SCF)
 scheme for solving the Hartree-Fock~(\HF) problem
@@ -17,7 +15,7 @@ quantum-chemical method development framework \molsturm.
 This was shown to be easily extensible and flexible enough
 to perform calculations
 employing any kind of basis function.
-The applicability of \molsturm was demonstrated by the means
+The features of \molsturm was demonstrated by the means
 of examples as well as an application of the package for
 investigating the convergence properties
 of quantum-chemical calculations
@@ -34,7 +32,7 @@ and sketched important results of functional analysis
 and spectral theory.
 In chapter \ref{ch:numeigen} the Ritz-Galerkin ansatz
 for treating spectral problems numerically
-was discussed, including the ideas of common algorithms
+was discussed, followed by the ideas of common algorithms
 to solve the arising eigenproblems.
 The emphasis in both chapters
 was put on discussing the material from a quantum-chemical perspective,
@@ -49,15 +47,15 @@ discussed the spectral properties
 of the electronic Schrödinger equation and
 described common quantum-chemical methods
 for solving this equation numerically.
-Both the mathematical formulation of Full-CI in section \ref{sec:FCI}
-as well as Hartree-Fock~(\HF) in section \ref{sec:HFIntro} were discussed.
+Both the mathematical formulation of (1) Full-CI, in section \ref{sec:FCI},
+as well as (2) \HF, in section \ref{sec:HFIntro}, were discussed.
 In section \ref{sec:DiscreteHF} multiple formulations of \HF were given
 and their numerical and physical properties were contrasted.
 In remark \ref{rem:PropertiesDiscretised}
 the self-consistent field~(\SCF) procedure
 as a scheme to solve the \HF problem was introduced.
 The physical aspects missing in an \HF treatment of the electronic
-structure was discussed in section \ref{sec:FailureHF}
+structure were mentioned in section \ref{sec:FailureHF}
 and common Post-\HF methods to correct for these were
 reviewed in sections \ref{sec:TruncatedCI} to \ref{sec:ExcitedStates}.
 
@@ -69,9 +67,9 @@ was provided in section \ref{sec:BasisTypes}.
 For this section \ref{sec:BasisDesiredProperties}
 summarised a list of desirable properties
 and section \ref{sec:LocalEnergy}
-outlined the approach taken for
+outlined the approach taken in this work for
 assessing the ability of a basis set to represent the physical
-features of the wave function in this work.
+features of the wave function.
 Four basis functions were thereafter considered in detail,
 namely (1) Slater-type orbitals in section \ref{sec:STO},
 (2) Gaussian-type orbitals in section \ref{sec:cGTO},
@@ -84,14 +82,14 @@ which are piecewise polynomials defined on a real-space grid,
 as well as Coulomb-Sturmians,
 which are the analytic solutions to a Schrödinger-like equation,
 are rather uncommon approaches,
-which have been found to show deviating numerical demands.
+which have been found to show rather unusual numerical demands as well.
 For finite elements, for example,
-the matrix representation of the exchange matrix term of the Hartree-Fock equations
+the matrix representation of the exchange matrix term of the \HF equations
 was shown to be rather expensive to compute.
 An alternative contraction-based ansatz for \HF was discussed,
 where storing the Fock matrix in memory is avoided
 and instead only matrix-vector product applications are performed.
-It would be shown that this scheme would reduce
+It was shown that this scheme would reduce
 the formal computational scaling
 for the exchange term in the context of finite elements.
 For Coulomb-Sturmians such a contraction-based \SCF
@@ -117,20 +115,20 @@ were formally introduced and in section \ref{sec:ContractionPotentialCaveat}
 their potentials and drawbacks were evaluated.
 The trend of an increasing gap between processor and memory performance
 was outlined and used to rationalise that recomputing data
-can sometimes be advantageous even over storing it in main memory.
+can sometimes be advantageous, even over storing it in main memory.
 A typical challenge with contraction-based methods,
 namely their tendency to lead to more involved and harder-to-read code,
 was identified
 and lazy matrices were introduced as a data structure
 to tackle this problem.
-It was discussed how lazy matrices as generalisation
+It was discussed how lazy matrices as a generalisation
 to the conventional matrices,
 allow to encapsulate arbitrary contraction expressions,
 but still maintain the high-level interface of matrices.
 This was achieved by employing lazy evaluation,
 which means that operations on lazy matrices are only
 evaluated when needed
-and instead cached inside an expression tree.
+and otherwise cached inside an expression tree for later evaluation.
 Whilst the primary application for lazy matrices in this thesis was the quantum-chemical
 program package \molsturm,
 lazy matrices are more general and could be used for other problems
@@ -152,7 +150,7 @@ It was stressed that linking to third-party code
 both on the level of the integral library as well
 as the Post-\HF layer is easy.
 As a result \molsturm can be best thought of as a mediator
-between integral library and Post-\HF method.
+between integral libraries and Post-\HF methods.
 The current features of \molsturm
 were summarised in section \ref{sec:MolsturmState}.
 
@@ -184,11 +182,10 @@ was to allow full control over all aspects
 of the execution of \molsturm by a detailed set of parameters
 for the \SCF as well as the linear algebra back end.
 The returned data structures were described
-with emphasis on the compatibility
-with standard \python packages.
+and their compatibility with standard \python packages outlined.
 It was mentioned how this in turn
 makes it very easy to implement Post-\HF methods,
-automate calculations or the analysis of results.
+automate calculations or analyse results.
 This has been demonstrated by examples
 presented in section \ref{sec:MolsturmExamples}.
 Furthermore
@@ -207,7 +204,7 @@ and the correctness of \molsturm verified in each of these steps.
 
 % ------------------------------------
 
-As an application of \molsturm its link to the
+As an application of \molsturm and its link to the
 Coulomb-Sturmian integral library \sturmint was used
 in chapter \ref{ch:CSQChem} to perform an initial investigation
 of the convergence properties of Coulomb-Sturmian-based
