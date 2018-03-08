@@ -2,11 +2,11 @@
 \todoil{Draft version}
 \label{sec:DiagAlgos}
 
-This section discusses the key ideas of a few algorithms suitable for obtaining
-approximations to eigenpairs of a matrix $\mat{A}$ numerically.
+This section discusses the key ideas of a few algorithms for obtaining
+approximations to the eigenpairs of a matrix $\mat{A}$.
 Whilst the regime of quantum mechanics is a complex-valued Hilbert space,
 in this thesis
-we will only consider combinations of operators and discretisation basis
+we will only consider combinations of operators and discretisation bases
 $\{\varphi_\mu\}_{\mu \in \Ibas}$,
 which have the property that
 \[ \forall \mu, \nu \in \Ibas: \quad a(\varphi_\mu, \varphi_\nu) \in \R. \]
@@ -22,15 +22,13 @@ These methods directly attempt to perform a transformation
 \[ \rtp{\mat{O}} \mat{A} \mat{O} = \mat{L} = \diag(\lambda_1, \lambda_2, \ldots, \lambda_{\Nbas}), \]
 where $\mat{O} \in \R^{\Nbas\times\Nbas}$ is an orthogonal matrix.
 Typically this is performed in steps by inspecting the elements of $\mat{A}$
-and gradually building both $\mat{O}$ as well as matrix-matrix product
+and gradually building both $\mat{O}$ as well as the matrix-matrix product
 $\rtp{\mat{O}} \mat{A} \mat{O}$
 using techniques such as Householder reflectors~\cite{Arbenz2010}
 or Givens rotation~\cite{Arbenz2010}.
-In either case this requires random access into the memory of $\mat{A}$
-and may even be destructive,
-\ie overwrite the elements of $\mat{A}$ with other data.
+In either case this requires random access into the memory of $\mat{A}$.
 This is one of the reasons why
-direct methods are typically only suitable for small matrices,
+direct methods are typically only suitable for either small matrices,
 where $\Nbas$ is at most on the order of $1000$,
 or matrices with special structure,
 like being tridiagonal or banded.
@@ -39,37 +37,37 @@ QR factorisation~\cite{Arbenz2010,Saad2003}
 as well as Cuppen's divide and conquer algorithm~\cite{Arbenz2010,Saad2003}.
 They generally yield \emph{all} eigenvalues of a matrix at once
 and little or no
-extra work is required to further obtain all eigenvectors as well.
+extra work is required to additionally obtain all eigenvectors as well.
 
 \subsection{Iterative diagonalisation methods}
 In contrast to direct methods are \newterm{iterative diagonalisation methods},
-where abstractly speaking the matrix $\mat{A}$ is probed iteratively
+where, abstractly speaking, the matrix $\mat{A}$ is probed iteratively
 in order to gather more and more information
-about the eigenpairs of interest until convergence is achieved.
+about the eigenpairs of interest.
 The way this is done in practice is to repetitively form
 the matrix-vector product
 \[ \vec{y} = \mat{A}\vec{x} \]
 of the problem matrix $\mat{A}$
-with suitably constructed trial vectors $\vec{x}$
-and use the resulting vector $\vec{y}$
+with suitably constructed trial vectors $\vec{x}$.
+The resulting vector $\vec{y}$ is then used
 to improve upon the approximation for the eigenpairs as well as to
 build the $\vec{x}$ for the next step.
 This implies that random access into $\mat{A}$
 is not required for such methods and thus specific storage schemes
 or well-crafted algorithms going beyond a typical matrix-vector product
-for forming $\vec{y}$ can be employed.
+can be employed for forming $\vec{y}$.
 The latter aspect is most important in the context of this thesis,
 see chapter \vref{ch:NumSolveHF} and chapter \vref{ch:LazyMatrices}.
 
-Iterative methods are typically badly suited for
+Iterative methods are typically not ideal for
 computing many or all eigenpairs of a matrix $\mat{A}$,
 which is in contrast to direct methods.
-They do work, however, much better than direct methods
+They do perform, however, much better than direct methods
 if only few eigenpairs are desired
 and it is well-known \emph{where} in the spectrum they are located.
-An example of a case where they work very well
-would be if some of the largest eigenvalues of $\mat{A}$ would be required
-or some of the ones closest to an estimated value $\sigma$.
+Examples for cases where they tend to work well
+is if one requires some of the largest eigenvalues of $\mat{A}$
+or some of those, which are closest to an estimated value $\sigma$.
 Some important iterative methods are sketched in the following sections.
 
 \subsection{The power method}
@@ -77,31 +75,31 @@ Some important iterative methods are sketched in the following sections.
 The simplest iterative approach to obtain a single extremal eigenvalue
 from a particular matrix $\mat{A}$ is the power method.
 Starting from a random initial vector $\vec{v}^{(0)} \in \R^{\Nbas}$,
-the algorithms only consists of applying the matrix $\mat{A}$
-repetitively to the vector, \ie
-\begin{align*}
-	\vec{v}^{(1)} &= \mat{A} \vec{v}^{(0)} \\
-	\vec{v}^{(2)} &= \mat{A} \vec{v}^{(1)} = \mat{A}^2 \vec{v}^{(0)} \\
-	\vec{v}^{(3)} &= \mat{A} \vec{v}^{(2)} = \mat{A}^3 \vec{v}^{(0)} \\
+the algorithm only consists of applying the matrix $\mat{A}$
+repetitively to the current vector, \ie
+\begin{equation}
+\begin{aligned}
+	\vec{v}^{(1)} &= \mat{A} \vec{v}^{(0)}, \\
+	\vec{v}^{(2)} &= \mat{A} \vec{v}^{(1)} = \mat{A}^2 \vec{v}^{(0)}, \\
+	\vec{v}^{(3)} &= \mat{A} \vec{v}^{(2)} = \mat{A}^3 \vec{v}^{(0)}, \\
 	&\vdots \\
 	\vec{v}^{(j)} &= \mat{A} \vec{v}^{(j-1)} = \mat{A}^j \vec{v}^{(0)}.
-\end{align*}
-In each step we may compute an estimate for the eigenvalue $\theta^{(j)}$ using
-\begin{equation}
-	\theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right)
-	\label{eqn:RitzValue}
+\end{aligned}
+	\label{eqn:PowerScheme}
 \end{equation}
-where $\rho_R$ is the
-\newterm{Rayleigh quotient}
+In each step we may compute an estimate $\theta^{(j)}$ for the eigenvalue by
+the expression
 \begin{equation}
-	 \rho_R(\vec{u}) := \frac{\vec{v}^T \mat{A} \vec{v}}{\vec{v}^T \vec{v}},
+	\theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right) \equiv
+	\frac{\vec{v}^T \mat{A} \vec{v}}{\vec{v}^T \vec{v}},
 	\label{eqn:RayleighQuotient}
 \end{equation}
+where $\rho_R$ is the \newterm{Rayleigh quotient},
 the discretised version of \eqref{eqn:CourantFischer}.
 In well-behaved cases this algorithm will find an approximation for
 the largest eigenvalue in $\theta^{(i)}$
 and an approximation for the corresponding eigenvector as
-\[ \frac{1}{\norm{\vec{v}^{(i)}}_2}  \vec{v}^{(i)}. \]
+\[ \frac{\vec{v}^{(i)}}{\norm{\vec{v}^{(i)}}_2}. \]
 To understand this
 let us write $\vec{v}^{(0)}$ as an expansion in the exact
 eigenvectors \linebreak $\vec{u}_1, \vec{u}_2, \ldots, \vec{u}_{\Nbas}$:
@@ -114,15 +112,16 @@ Without loss of generality%
 floating point arithmetic. After a single application of $\mat{A}$,
 this is cured and we are back to the case we consider here.}
 we can normalise $\vec{v}^{(0)}$ such that $\alpha_{\Nbas} = 1$.
-If we apply $\mat{A}$ to \eqref{eqn:Vexpansion} we obtain
+Keeping this in mind the application of $\mat{A}$ to \eqref{eqn:Vexpansion}
+results in
 \[
 	\mat{A} \vec{v}^{(0)} = \lambda_{\Nbas} \left( \vec{u}_{\Nbas} + \sum_{i=1}^{\Nbas}
 	\frac{\lambda_k}{\lambda_{\Nbas}}
-	\alpha_i \vec{u}_i \right)
+	\alpha_i \vec{u}_i \right).
 \]
-or after the $j$-th step and subsequent normalisation
+After the $j$-th step and subsequent normalisation we hence get
 \[
-	\frac{1}{\norm{\vec{v}^{(j)}}_2} \vec{v}^{(j)} =
+	\frac{\vec{v}^{(j)}}{\norm{\vec{v}^{(j)}}_2} =
 	\vec{u}_{\Nbas} + \bigO\left(
 	\left( \frac{\lambda_{\Nbas-1}}{\lambda_{\Nbas}} \right)^j
 	\right).
@@ -139,16 +138,18 @@ Similarly $\theta^{(j)}$ converges against $\lambda_{\Nbas}$ in this case.
 
 \subsection{Spectral transformations}
 \label{sec:ShiftInvert}
-With the power method at hand the question is now how one could
-generalise this approach in order to obtain an eigenpair at the lower end of the
-spectrum or somewhere between both extremes.
-This is the purpose of so-called spectral transformations.
+With the power method at hand to obtain the largest eigenvalue,
+the question is now,
+how one could generalise this approach
+for getting the lowest eigenvalue or even one directly from the middle
+of the spectrum.
+This is the purpose of so-called \newterm{spectral transformations}.
 
 \begin{prop}
 	\label{prop:Spectral}
 	Given a symmetric matrix $\mat{A} \in \R^{\Nbas \times \Nbas}$,
 	the following holds for each eigenpair
-	$(\lambda_i, \vec{u}_i)) \in \R \times \R^{\Nbas}$:
+	$(\lambda_i, \vec{u}_i) \in \R \times \R^{\Nbas}$:
 	\begin{enumerate}[label=(\alph*)]
 		\item If $\mat{A}$ is invertible,
 			$\vec{u}_i$ is an eigenvector of $\mat{A}^{-1}$ with eigenvalue
@@ -165,18 +166,19 @@ This is the purpose of so-called spectral transformations.
 	\begin{proof}
 		All can be shown in a single line:
 		\begin{enumerate}[label=(\alph*)]
-			\item Since $\mat{I}_{\Nbas} = \mat{A}^{-1} \mat{A}$
-				by definition we have
+			\item By definition $\mat{I}_{\Nbas} = \mat{A}^{-1} \mat{A}$
+				and thus we have
 				\[ \frac{1}{\lambda_i} \vec{u}_i
 					= \frac{1}{\lambda_i} \mat{I}_{\Nbas} \vec{u}_i
 					= \frac{1}{\lambda_i} \mat{A}^{-1} \mat{A} \vec{u}_i
+					= \frac{1}{\lambda_i} \mat{A}^{-1} \lambda_i \vec{u}_i
 					= \mat{A}^{-1} \vec{u}_i.
 				\]
-			\item Direct calculation leads
+			\item Direct calculation shows
 				\[ \left( \mat{A} - \sigma \mat{I}_{\Nbas} \right) \vec{u}_i
 					= \mat{A} \vec{u}_i - \sigma \vec{u}_i
 					= \lambda_i \vec{u}_i - \sigma \vec{u}_i
-					= \left( \lambda_i - \sigma  \right) \vec{u}_i
+					= \left( \lambda_i - \sigma  \right) \vec{u}_i.
 				\]
 			\item Follows from (a) and (b).
 		\end{enumerate}
@@ -184,76 +186,82 @@ This is the purpose of so-called spectral transformations.
 \end{prop}
 
 Proposition \ref{prop:Spectral} provides us with a toolbox for
-changing the spectrum of a matrix without changing its eigenvectors.
-If we are interested in obtaining the lowest eigenvalue of a matrix $\mat{A}$
-using the power method,
-we essentially only need to apply it to $\mat{A}^{-1}$ instead
-of  $\mat{A}$, since the largest eigenvector of $\mat{A}^{-1}$ will be
-the smallest of $\mat{A}$.
+changing the spectrum of a matrix in a desired way without changing its eigenvectors.
+For example if we are interested in obtaining
+the lowest eigenvalue of a matrix $\mat{A}$ using the power method,
+we essentially only need to apply the scheme \eqref{eqn:PowerScheme}
+to the inverse%
+\footnote{Usually the inverse is computed iteratively as well, see discussion
+	in section \ref{sec:GeneralisedEigenvalueProblem}.}
+$\mat{A}^{-1}$ instead of $\mat{A}$.
+Since the largest eigenvector of $\mat{A}^{-1}$ will be the smallest of $\mat{A}$,
+this yields the required result.
 Similarly by proposition \ref{prop:Spectral}(c)
-we can even tune the power method into a particular eigenvalue of interest.
-
-Spectral transformations like the ones shown in proposition \ref{prop:Spectral}
-are general and can be applied to all iterative eigensolver methods,
-not only the power method.
+we can tune the power method into a particular eigenvalue of interest
+by guessing an appropriate shift $\sigma$.
+Such spectral transformations are not restricted to the Power method,
+since the equivalent effect can be achieved for other iterative
+methods by passing them an appropriate matrix.
 
 % TODO OPTIONAL
 % Wilkinson's method
 
 \subsection{Krylov subspace based methods}
 \label{sec:Arnoldi}
-Applying the power method~(see section \ref{sec:Power})
+Applying the power method
 effectively amounts to generating a sequence of vectors
 \begin{equation}
-	\vec{v}, \mat{A} \vec{v}, \mat{A}^2 \vec{v}, \ldots
+	\vec{v}, \, \mat{A} \vec{v}, \, \mat{A}^2 \vec{v}, \, \ldots,
 	\label{eqn:PowerSequence}
 \end{equation}
 starting from an initial guess $\vec{v}$.
 Given that the eigenvalue of largest magnitude of $\mat{A}$ is not degenerate,
 the above sequence will approach the eigenvector corresponding to this
-extremal eigenvalue.
+extremal eigenvalue~(see discussion in section \ref{sec:Power}).
 In each iteration the power method does, however,
 only keep a single of the vectors in \eqref{eqn:PowerSequence}
-and throws away all information encoded in the history of steps.
-An alternative approach which avoids doing so is
-to explicitly keep all vectors in \eqref{eqn:PowerSequence},
-which leads to the construction of a Krylov subspace~\cite{Arbenz2010}
+and throws away all information encoded in the history of the iteration.
+An alternative approach which avoids doing so, is
+to explicitly keep all vectors in \eqref{eqn:PowerSequence}.
+This leads to the construction of a Krylov subspace~\cite{Arbenz2010}
 \begin{equation}
-	\mathcal{K}_j = \left\{\vec{v}, \mat{A} \vec{v}, \mat{A}^2 \vec{v},
+	\mathcal{K}_j = \left\{\vec{v},\, \mat{A} \vec{v},\, \mat{A}^2 \vec{v},
 	\ldots, \mat{A}^j \vec{v} \right\}.
 	\label{eqn:KrylovSubspace}
 \end{equation}
 A large number of iterative methods both for solving eigenproblems
 as well as linear problems
-can be boiled down to an iterative construction of such a
-Krylov subspace followed by a projection of the original problem
-into this subspace for solving it approximately.
+can be boiled down to an iterative construction of such a Krylov subspace.
+Once or while it is found the original problem matrix $\mat{A}$
+is projected onto this subspace, yielding $\tilde{\mat{A}} \in \R^{j \times j}$.
+
 A key step to exploit the notion of Krylov subspaces
 is the construction of an orthogonal basis for $\mathcal{K}_j$.
 The Arnoldi algorithm~\cite{Arnoldi1951}
-was devised to achieve this in a very efficient manner
-by exploiting the fact that each vector \eqref{eqn:KrylovSubspace}
-is related to its predecessor by an application of the problem matrix $\mat{A}$.
+was devised to achieve this in a very efficient manner.
+It exploits the fact that each vector \eqref{eqn:KrylovSubspace}
+is related to its predecessor by an application of the problem matrix $\mat{A}$
+to produce a simple recursion scheme minimising the work needed in each step.
 Alongside with the construction of the basis the Arnoldi algorithm
-\emph{at the same time} constructs the projection of $\mat{A}$
-into the Krylov subspace itself.
-Since this matrix is both smaller and has a much simpler form%
+\emph{at the same time} constructs $\tilde{\mat{A}}$,
+the projection of $\mat{A}$ into the Krylov subspace.
+Since $\tilde{\mat{A}}$ is both smaller and has a much simpler form%
 \footnote{It is a so-called upper Hessenberg matrix,
 	\ie only the upper triangle and a single subdiagonal in the lower
 	triangle are non-zero.}
-it can be diagonalised by direct methods rather efficiently
-using a shifted QR factorisation.
+it can be diagonalised by a shifted QR factorisation,
+a direct method.
 This leads to the Arnoldi method for diagonalising
 non-symmetric real matrices,
 where one first uses the Arnoldi procedure to construct a sufficiently
-good Krylov subspace,%
+good Krylov subspace%
 \footnote{Some error estimates exist to judge this without performing
-the next step of actually diagonalising the upper Hessenberg matrix.}
+the next step of actually diagonalising the upper Hessenberg matrix.},
 followed by a dense diagonalisation of the subspace matrix
 to yield estimates for the eigenpairs.
 
 A modification of the Arnoldi method for symmetric matrices $\mat{A}$
-is the Lanczos method~\todo{cite},
+is the Lanczos method~\cite{Lanczos1950},
 which implicitly exploits the fact,
 that the subspace matrix has to be tridiagonal%
 \footnote{Since $\mat{A}$ is symmetric, so is the subspace matrix
@@ -264,9 +272,10 @@ Even though the basic idea of Arnoldi and Lanczos are comparatively easy,
 the implementation is still involved
 due to a range of subtleties.
 For example one can show~\cite{Arbenz2010} that the unmodified
-Lanczos procedure roughly speaking
+Lanczos procedure
 leads to an Arnoldi basis of poor numerical quality
 with potentially linearly dependent vectors
+roughly speaking
 exactly when achieving convergence for an eigenpair.
 Similarly both Arnoldi and Lanczos tend to have difficulties
 when reporting multiplicities.
@@ -287,10 +296,10 @@ or concepts such as implicit restart, deflation or locking.
 \subsection{The Jacobi-Davidson algorithm}
 \label{sec:Davidson}
 Related to the Krylov subspace methods
-sketched above the Jacobi-Davidson approach
+sketched above, the Jacobi-Davidson approach
 finds approximations to the eigenpairs of \eqref{eqn:DiscretisedEigenproblem}
 by constructing suitable small subspaces
-and solving the projected problem within those with dense methods.
+and solving the projected problem with dense methods.
 The algorithm used for constructing the subspace is, however,
 somewhat different%
 \footnote{One should mention that similarities to the Lanczos procedure
@@ -313,41 +322,41 @@ subspace, such that
 \]
 In other words we attempt to find the vector missing from the subspace,
 such that it is able to span the exact solution,
-which implies that it would be able to find it in the next dense
-eigensolve in the subspace.
+which implies that it would be able to find it the next time
+we solve the projected problem in the subspace.
 
 Since $\lambda_i$ is in general not known at the $j$-th step of the algorithm,
 $\vec{t}^{(j)}$ cannot be found exactly in practice.
 Instead one employs the value returned by the Rayleigh quotient
-\eqref{eqn:RayleighQuotient},
-\ie
-$\theta^{(j)} = \rho_R\left(\vec{v}^{(j)}\right)$
+\eqref{eqn:RayleighQuotient}
 instead of $\lambda_i$ to make progress.
 Incorporating the condition $\vec{t}^{(j)} \perp \vec{v}^{(j)}$ leads to the
 \newterm{correction equation}
 \begin{equation}
-	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \cc{\left(\vec{v}^{(j)}\right)} \right)
+	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \vec{v}^{(j)\ast} \right)
 	\left(\mat{A} \vec{v}^{(j)} - \theta^{(j)} \mat{I}_{\Nbas}\right)
-	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \cc{\left(\vec{v}^{(j)}\right)} \right)
+	\left(\mat{I}_{\Nbas} - \vec{v}^{(j)} \vec{v}^{(j)\ast}\right)
 	\vec{t}^{(j)}
 	= - \vec{r}^{(j)}.
 	\label{eqn:JacobiDavidsonCorrectionEquation}
 \end{equation}
-For a decent convergence this equation does not need to be solved exactly,
-but since a vector $\vec{t}^{(j)}$ is required
-in each iteration,
-it needs to be solved many times.
-In practice this implies that one either
+Since a vector $\vec{t}^{(j)}$ is required
+in each iteration, it needs to be solved many times.
+Fortunately it does, however, not need to be solved exactly.
+In practice one therefore
 employs preconditioning techniques~\cite{Saad2003,Saad2011,Arbenz2010,Grossmann1992}
-to speed up the performance of iterative solvers
-required for solving \eqref{eqn:JacobiDavidsonCorrectionEquation}
-or one does not employ the exact matrix $\mat{A}$
-or a combination of both.
+to speed up the performance of the iterative procedures
+needed to solve \eqref{eqn:JacobiDavidsonCorrectionEquation}.
+An alternative is to avoid using the \emph{exact} matrix $\mat{A}$
+in favour of an approximation,
+which makes solving \eqref{eqn:JacobiDavidsonCorrectionEquation} easier.
+A combination of both is possible as well.
 
 In the original paper \citet{Davidson1975}
 assumed $\mat{A}$ to be diagonal-dominant
 and thus only used the diagonal
 \[ \mat{D}_A = \diag\left( A_{11} A_{22} \ldots A_{\Nbas,\Nbas} \right) \]
+instead of the full $\mat{A}$
 for the correction in \eqref{eqn:JacobiDavidsonCorrectionEquation}.
 This leads to the identification
 \[
@@ -374,28 +383,31 @@ real, positive-definite matrix $\mat{S} \in \R^{\Nbas\times\Nbas}$ as well.
 These typically arise because the
 basis set $\{\varphi_\mu\}_{\mu \in \Ibas}$
 used for the discretisation is not orthogonal.
-This is in fact the usual case for the basis sets
-employed to numerically
-solve the Hartree-Fock problem~(see section \vref{sec:HFIntro}),
-one of the central aspects of this thesis.
+For the typical basis sets employed to numerically solve the Hartree-Fock
+problem,
+one of the central aspects of this thesis,
+this is the usual case~(see section \vref{sec:BasisTypes}).
 
 One way to deal with \eqref{eqn:GeneralisedEigenproblem} is to reduce
-it to a normal eigenproblem by formally inverting $\mat{S}$ and writing
+it to a normal eigenproblem by formally inverting $\mat{S}$
+and multiplying from the right-hand side.
+This leads to
 \[
-	\left( \mat{S}^{-1} \mat{A} \right) \vec{u}_i = \lambda_i \vec{u}_i.
+	\left( \mat{S}^{-1} \mat{A} \right) \vec{u}_i = \lambda_i \vec{u}_i,
 \]
-A normal eigenproblem with the problem matrix $\mat{S}^{-1} \mat{A}$ results.
+a normal eigenproblem with the problem matrix $\mat{S}^{-1} \mat{A}$.
 In iterative methods this amounts to replacing all occurrences
 of the matrix-vector product $\mat{A}\vec{x}$ by the expression
-\[ \vec{y} = \mat{S}^{-1} \mat{A} \vec{x}, \]
-which can be computed by solving the linear system
+\[ \vec{y} = \mat{S}^{-1} \mat{A} \vec{x}. \]
+In this expression the vector $\vec{y}$ can be computed by solving the linear system
 \[ \mat{S} \vec{y} = \mat{A} \vec{x} \]
-by a preconditioned iterative method.
-This is still hardly ever done in practice,
-since even for a real symmetric, positive-definite $\mat{S}$
+using an inner preconditioned iterative method.
+Whilst this would work,
+this approach is hardly ever followed in practice.
+The reason is that even for a real symmetric, positive-definite $\mat{S}$
 and a real symmetric $\mat{A}$,
-the matrix $\mat{S}^{-1} \mat{A}$ might not be symmetric
-and less advantageous solution algorithms need to be employed.
+the matrix $\mat{S}^{-1} \mat{A}$ might not be symmetric,
+which would imply that less advantageous solution algorithms need to be employed.
 
 % TODO OPTIONAL
 % 
@@ -426,13 +438,12 @@ eigenproblems can be achieved by replacing the explicit or implicit
 occurrences of the orthonormality condition
 \[ \rtp{\vec{u}}_i \vec{u}_j = \delta_{ij} \]
 by
-\[  \rtp{\vec{u}}_i \vec{u}_j = S_{ij} \]
-instead.
+\[  \rtp{\vec{u}}_i \vec{u}_j = S_{ij}. \]
 In other words only the way the orthonormalisation of the subspace vectors
-is performed has to be changed
-and some occurrences of the identity matrix,
+is performed as well as some expressions in which the identity matrix
+occurs,
 like in \eqref{eqn:JacobiDavidsonCorrectionEquation},
-replaced by $\mat{S}$ instead.
+need to be changed.
 
 Yet another option is to orthogonalise the basis before performing
 the discretisation and thus avoid the appearence of the generalised
