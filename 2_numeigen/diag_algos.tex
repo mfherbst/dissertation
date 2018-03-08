@@ -72,10 +72,10 @@ would be if some of the largest eigenvalues of $\mat{A}$ would be required
 or some of the ones closest to an estimated value $\sigma$.
 Some important iterative methods are sketched in the following sections.
 
-\subsection{Power method}
+\subsection{The power method}
 \label{sec:Power}
 The simplest iterative approach to obtain a single extremal eigenvalue
-from a particular matrix $\mat{A}$ is the Power method.
+from a particular matrix $\mat{A}$ is the power method.
 Starting from a random initial vector $\vec{v}^{(0)} \in \R^{\Nbas}$,
 the algorithms only consists of applying the matrix $\mat{A}$
 repetitively to the vector, \ie
@@ -139,7 +139,7 @@ Similarly $\theta^{(j)}$ converges against $\lambda_{\Nbas}$ in this case.
 
 \subsection{Spectral transformations}
 \label{sec:ShiftInvert}
-With the Power method at hand the question is now how one could
+With the power method at hand the question is now how one could
 generalise this approach in order to obtain an eigenpair at the lower end of the
 spectrum or somewhere between both extremes.
 This is the purpose of so-called spectral transformations.
@@ -186,23 +186,23 @@ This is the purpose of so-called spectral transformations.
 Proposition \ref{prop:Spectral} provides us with a toolbox for
 changing the spectrum of a matrix without changing its eigenvectors.
 If we are interested in obtaining the lowest eigenvalue of a matrix $\mat{A}$
-using the Power method,
+using the power method,
 we essentially only need to apply it to $\mat{A}^{-1}$ instead
 of  $\mat{A}$, since the largest eigenvector of $\mat{A}^{-1}$ will be
 the smallest of $\mat{A}$.
 Similarly by proposition \ref{prop:Spectral}(c)
-we can even tune the Power method into a particular eigenvalue of interest.
+we can even tune the power method into a particular eigenvalue of interest.
 
 Spectral transformations like the ones shown in proposition \ref{prop:Spectral}
 are general and can be applied to all iterative eigensolver methods,
-not only the Power method.
+not only the power method.
 
 % TODO OPTIONAL
 % Wilkinson's method
 
 \subsection{Krylov subspace based methods}
 \label{sec:Arnoldi}
-Applying the Power method~(see section \ref{sec:Power})
+Applying the power method~(see section \ref{sec:Power})
 effectively amounts to generating a sequence of vectors
 \begin{equation}
 	\vec{v}, \mat{A} \vec{v}, \mat{A}^2 \vec{v}, \ldots
@@ -212,7 +212,7 @@ starting from an initial guess $\vec{v}$.
 Given that the eigenvalue of largest magnitude of $\mat{A}$ is not degenerate,
 the above sequence will approach the eigenvector corresponding to this
 extremal eigenvalue.
-In each iteration the Power method does, however,
+In each iteration the power method does, however,
 only keep a single of the vectors in \eqref{eqn:PowerSequence}
 and throws away all information encoded in the history of steps.
 An alternative approach which avoids doing so is
