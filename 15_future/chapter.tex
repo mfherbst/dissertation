@@ -79,8 +79,8 @@ scheme for dealing with the arising expression tree.
 Some work in this direction has already been performed by others,
 both in the context of quantum-chemical calculations
 as well as in general~\cite{Baumgartner2005,Solomonik2014,%
-Peise2015,Calvin2015,Calvin2015arxiv,Xerus,Kristensen2016array,Kristensen2016streaming}
-\todoil{Cite libtensor}
+Peise2015,Calvin2015,Calvin2015arxiv,Xerus,Kristensen2016array,%
+Kristensen2016streaming,Libtensor}
 and the hope is to incorporate or reuse some of these aspects.
 A good first step in either case would be an even closer integration
 with the Bohrium~\cite{Kristensen2016array,Kristensen2016streaming} package,
@@ -197,17 +197,23 @@ is therefore required to reach more general conclusions.
 
 Secondly most of the presented investigation has concentrated on the \HF
 level with some minor modifications suggested mostly based on {\MP}2 results.
-Whilst these two methods are certainly used in electronic structure theory,
+Whilst these two methods are both used in electronic structure theory,
 more methods should be added to reach a representative set.
 Most notably {\MP}2 as a perturbative approach
-for modelling electron correlation effects
-is very different from
+for modelling electron correlation effects is very different from
 configuration-interaction-based
 or coupled-cluster-based approaches
 --- both with respect to the way the physics is described
 as well as the numerics.
 Further convergence studies for example employing the latter kind of methods
 would be required.
+\todoil{
+Additionally one should note,
+that \MP approaches building on top of a unrestricted \HF ground state
+are known to have convergence issues~\cite{Knowles1985,Handy1975},
+such that perhaps a restricted open-shell \HF approach should be employed
+to describe the reference state for {\MP}2.
+}
 
 Thirdly the full flexibility towards constructing \CS basis sets has not yet
 been exploited in our discussion in section \vref{sec:CSconvergenceHF}.
@@ -242,11 +248,11 @@ Originating from the completeness of the Coulomb-Sturmians
 at least three interesting applications in the context of modelling
 excitation processes come to mind. Namely
 (1) methods where the continuum needs to be modelled,
-like Fano-Stieltjes~\todo{cite},
+like Fano-Stieltjes~\cite{Feshbach1958,Feshbach1962,Santra2002},
 (2) cases where modelling both the core and the valence shell is required,
-like core-valence excitations~\todo{cite},
+like core-valence excitations~\cite{Wenzel2014,Wenzel2016},
 (3) the modelling of expanded bound states,
-like the determination of Rydberg-like states~\todo{cite}.
+like the determination of Rydberg-like states~\cite{Kaufmann1989,Riss1993}.
 
 \subsection{Avoiding the Coulomb-Sturmian exponent as a parameter}
 An unfavourable aspect of the \CS basis sets
