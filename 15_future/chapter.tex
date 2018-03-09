@@ -72,7 +72,7 @@ such that the contraction between tensors would first be
 stored as a tensor expression tree to be evaluated at a later point.
 
 Undoubtedly already the design of such a library is challenging
-and would probably needed to be performed in steps,
+and would probably be needed to be performed in steps,
 gradually generalising the lazy matrix concept towards them.
 Another question is how to find a suitable evaluation
 scheme for dealing with the arising expression tree.
@@ -109,8 +109,8 @@ where calculations based on contracted Gaussian basis sets
 and Coulomb-Sturmian basis sets can be performed.
 Furthermore, as mentioned in section \vref{sec:MolsturmState}
 and demonstrated in chapter \vref{ch:CSQChem},
-not only \HF, but Full-CI(\FCI) and
-methods based on the algebraic-diagrammatic construction scheme(\ADC)
+not only \HF, but Full-CI (\FCI) and
+methods based on the algebraic-diagrammatic construction scheme (\ADC)
 are available
 via interfaces to \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}.
 For properly employing these Post-\HF features on more than
@@ -145,7 +145,7 @@ inside the \contraction-based setting of \molsturm.
 \label{sec:ExtensionInterfaces}
 Given the modular structure of \molsturm
 interfacing to further quantum-chemistry libraries or program packages
-can likely be achieved in the future to extend the scope of the package.
+can be easily achieved to extend the scope of the package.
 A good example is the \texttt{libxc}~\cite{Lehtola2018} library,
 which offers a range of exchange-correlation functionals.
 Implementing an interface to this library inside appropriate
@@ -183,7 +183,7 @@ The simplest example for Sturmian-type basis functions are Coulomb-Sturmians.
 An initial investigation of such basis functions presented
 in chapter \ref{ch:CSQChem} looks overall promising,
 but the obtained results are not yet sufficient to provide definitive
-construction schemes for \CS basis sets
+construction schemes for Coulomb-Sturmian~(\CS) basis sets
 or general estimates for the overall accuracy.
 There are three ways this could be improved.
 
@@ -244,19 +244,23 @@ first results for computing excited state energies of atoms based on \ADC.
 A more detailed analysis of the convergence properties
 could help to proceed with the application of \CS-based \ADC
 calculations in order to compute the spectra of atoms.
-Originating from the completeness of the Coulomb-Sturmians
-at least three interesting applications in the context of modelling
-excitation processes come to mind. Namely
+Due to the completeness of the Coulomb-Sturmians
+and their possibility to describe both core region as well as
+the exponential decay,
+a range of interesting applications for the modelling
+of excitation processes come to mind.
+Three of them are 
 (1) methods where the continuum needs to be modelled,
 like Fano-Stieltjes~\cite{Feshbach1958,Feshbach1962,Santra2002},
 (2) cases where modelling both the core and the valence shell is required,
-like core-valence excitations~\cite{Wenzel2014,Wenzel2016},
+like core-valence excitations~\cite{Wenzel2014,Wenzel2016}
+as well as
 (3) the modelling of expanded bound states,
 like the determination of Rydberg-like states~\cite{Kaufmann1989,Riss1993}.
 
 \subsection{Avoiding the Coulomb-Sturmian exponent as a parameter}
 An unfavourable aspect of the \CS basis sets
-employed in chapter \ref{ch:CSQChem} of the thesis is
+employed in chapter \ref{ch:CSQChem} of this thesis is
 the Coulomb-Sturmian exponent $\kexp$.
 As was discussed in section \ref{sec:kexp}
 this parameter has indeed an influence on the results obtained
@@ -265,7 +269,7 @@ If not, than unphysical behaviour can result.
 In my calculations I have, for example, found cases
 where changing $\kexp$ could change the obtained \SCF minimum
 for \HF.
-Furthermore there is some indication,
+Furthermore there is some indication
 that the ordering of excited states in \ADC calculations
 depends on $\kexp$ in some cases.
 Using the algorithm described in section \ref{sec:DetermineKopt},
@@ -317,9 +321,9 @@ unsuccessfully to implement a \HF scheme based on finite-elements,
 a piecewise polynomial basis based on a real-space grid,
 see section \vref{sec:FE}.
 Recent advances of the field~\cite{Frediani2015,Toivanen2015,Davydov2015,Boffi2016}
-seems promising and
+seem promising and
 implementing a grid-based basis into \molsturm
-would an interesting test case with respect to the aspired generality
+would constitute an interesting test case with respect to the aspired generality
 of \molsturm's \SCF scheme.
 A link to the finite-element library \texttt{deal.ii}~\cite{Arndt2017}
 could provide the relevant back end to perform the computations.

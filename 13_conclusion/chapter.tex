@@ -15,7 +15,7 @@ quantum-chemical method development framework \molsturm.
 This was shown to be easily extensible and flexible enough
 to perform calculations
 employing any kind of basis function.
-The features of \molsturm was demonstrated by the means
+The features of \molsturm were demonstrated by the means
 of examples as well as an application of the package for
 investigating the convergence properties
 of quantum-chemical calculations
@@ -23,7 +23,7 @@ based on Coulomb-Sturmians,
 a basis function type which got few attention so far.
 First results of Coulomb-Sturmian-based excited states
 calculation employing the algebraic-diagrammatic construction scheme
-of the polarisation propagator were reported.
+for the polarisation propagator were reported.
 
 % ------------------------------------
 
@@ -70,13 +70,13 @@ and section \ref{sec:LocalEnergy}
 outlined the approach taken in this work for
 assessing the ability of a basis set to represent the physical
 features of the wave function.
-Four basis functions were thereafter considered in detail,
+Four basis function types were thereafter considered in detail,
 namely (1) Slater-type orbitals in section \ref{sec:STO},
 (2) Gaussian-type orbitals in section \ref{sec:cGTO},
 (3) finite elements in section \ref{sec:FE}
 and (4) Coulomb-Sturmians in section \ref{sec:BasisCS}.
 
-In contrast to the first two
+In contrast to the first two,
 both finite elements,
 which are piecewise polynomials defined on a real-space grid,
 as well as Coulomb-Sturmians,
@@ -121,7 +121,7 @@ namely their tendency to lead to more involved and harder-to-read code,
 was identified
 and lazy matrices were introduced as a data structure
 to tackle this problem.
-It was discussed how lazy matrices as a generalisation
+It was discussed how lazy matrices, as a generalisation
 to the conventional matrices,
 allow to encapsulate arbitrary contraction expressions,
 but still maintain the high-level interface of matrices.
@@ -144,7 +144,7 @@ Section \ref{sec:MolsturmDesign} discussed
 the design of the \molsturm program package.
 In particular it was indicated how it was achieved
 that \molsturm has become such a flexible quantum-chemistry framework,
-where novel methods,
+where novel methods
 can be readily implemented and tested.
 It was stressed that linking to third-party code
 both on the level of the integral library as well
@@ -156,7 +156,7 @@ were summarised in section \ref{sec:MolsturmState}.
 
 The interplay between \SCF algorithm and integral library
 was further detailed in section \ref{sec:GscfGint}.
-We mentioned how a combination of a contraction-based \SCF ansatz
+It was mentioned how a combination of a contraction-based \SCF ansatz
 with the lazy matrices of \lazyten
 has made it possible to separate the code describing
 the \SCF algorithms from the integral back end.
@@ -204,9 +204,9 @@ and the correctness of \molsturm verified in each of these steps.
 
 % ------------------------------------
 
-As an application of \molsturm and its link to the
-Coulomb-Sturmian integral library \sturmint was used
-in chapter \ref{ch:CSQChem} to perform an initial investigation
+In chapter \ref{ch:CSQChem} the link of \molsturm
+to the Coulomb-Sturmian integral library \sturmint was used
+in order to perform an initial investigation
 of the convergence properties of Coulomb-Sturmian-based
 quantum-chemical calculations.
 The main focus was on \HF calculations of atoms
