@@ -900,12 +900,10 @@ the caching of important intermediate results.
 Beyond the multigrid preconditioning we already mentioned
 in the context of the Coulomb term \eqref{eqn:PoissionFE},
 other options for preconditioning include
-an incomplete Choleski factorisation
-\todo{cite}
+an incomplete Choleski factorisation~\cite{Lin1999}
 of the discretised form of $\Delta$
 or potentially even an exact sparse inversion
-using libraries like UMFPACK
-\todo{cite}.
+using libraries like UMFPACK~\cite{Davis2004}
 Even though such approaches are comparatively costly,
 they are extremely good preconditioners up to the point,
 where solving the Poisson equations \eqref{eqn:ExchangePoissonEqns}

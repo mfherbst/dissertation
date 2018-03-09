@@ -324,12 +324,11 @@ Even for systems with hundreds of atoms one typically only needs
 in the order of thousands of basis functions.
 In other words, both building the Fock matrix
 as well as diagonalising it can be performed using direct methods%
-\todoil{put citations to those methods in footnote 9}\noindent
 \footnote{%
 	A standard procedure would be to reduce the matrix to
 	tridiagonal form using Householder reflections
 	and then use Cuppen's divide and conquer~\cite{Arbenz2010}
-	or an algorithm based on relatively robust representations.
+	or multiple relatively robust representations~\cite{Dhillon2006}.
 }.
 Ignoring the basis sets suffering from over-completeness for a second,
 the numerical structure of a \cGTO-based Fock matrix
