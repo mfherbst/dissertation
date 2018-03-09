@@ -69,9 +69,9 @@ suitable for encapsulating contraction expressions.
 Such objects still look like matrices from the user perspective,
 including the possibility to perform operations like matrix sums and products.
 As a result programming contraction-based algorithms
-becomes similarly convenient to working with normal matrices.
+becomes similarly convenient as working with normal matrices.
 An implementation of lazy matrices in the \lazyten linear algebra library
-is presented followed by examples
+is presented followed by an example
 demonstrating the applicability in the context of the \HF problem.
 
 Building on top of the aforementioned concepts the design of \molsturm is outlined.
@@ -98,7 +98,7 @@ in order to achieve convergence
 of the discretisation of the angular part of the wave function.
 Some modifications required for a treatment at correlated level are suggested,
 followed by a discussion of the effect of the Coulomb-Sturmian exponent.
-An algorithm for obtaining an optimal exponent is presented
+An algorithm for obtaining an optimal exponent is devised
 and some optimal exponents for the atoms of the
 second and the third period of the periodic table at \HF level are given.
 Furthermore the first results of a Coulomb-Sturmian-based excited
@@ -113,53 +113,53 @@ scheme for the polarisation propagator are presented.
 \phantomsection
 \addcontentsline{toc}{chapter}{Zusammenfassung}
 \markboth{\leftheadstyle{Zusammenfassung}}{}
-\todoil{Draft, still needs to be formulated better}
 
 Für die Berechnung elektronischer Zustände in Molekülen
-verwenden aktuelle Methoden vor allem Gaußfunktionen als Basisfunktionen.
+verwenden aktuelle Methoden vor allem Gaußfunktionen.
 Die Algorithmen, welche in den bestehenden Quantenchemiepaketen
 verwendet werden sind dementsprechend oft sehr stark
-auf jene zugeschnitten,
-wobei sie lediglich die numerischen Anforderungen jeder im Blick behalten.
-Dies ist ein Hindernis für die Betrachtung neuartiger Methoden,
+auf diesen Funktionstyp und dessen numerische Anforderungen angepasst.
+Für die Betrachtung neuartiger Methoden,
 welche andere Basisfunktionen verwenden wollen,
-da die Anforderungen unterschiedlich sein können.
-Im Gegensatz  dazu entwickelt diese Doktorarbeit
+ist dies ein Hindernis,
+da die Anforderungen durchaus unterschiedlich sein können.
+Im Gegensatz dazu entwickelt diese Doktorarbeit
 das schlanke Programmpacket \molsturm,
-wessen Struktur explizit so entwickelt wurde,
-dass es Berechnungen
-basierend auf der Hartree-Fock~(\HF) Methode der selbstkonsistenten Felder~(\SCF)
-basierend auf mehreren Basisfunktionstypen durchführen kann.
-Weiter wird gezeigt wie \molsturm
+welches explizit so gestaltet wurde,
+dass es für Berechnungen auf Basis einer Lösung des Hartree-Fock-Problems~(\HF)
+mehrere Basisfunktionstypen verwenden kann.
+Weiter wird gezeigt wie \molsturm,
+sowohl auf der Ebene der Integralbibliotheken
+als auch auf der Ebene eines weiteren Post-\HF-Schrittes,
 auf einfache Weise mit bestehenden anderen Programmen
-verbunden werden kann,
-sowohl auf der ebene der Integralbibliotheken als auch auf der ebene der Post-\HF
-Methoden.
-Auf diesem Weg kann bestehende Funktionalität anderer Programme
-soweit als möglich weiter eingesetzt werden.
+verbunden werden kann.
+Auf diesem Weg kann die Funktionalität anderer Programme
+soweit als möglich aus \molsturm heraus verwendet werden
+ohne diese neu zu schreiben.
 
-Zunächst wird der mathematische Hintergrund der Quantenmechanik
+Zunächst werden der mathematische Hintergrund der Quantenmechanik
 und einige numerische Techniken rezensiert.
-Dabei wird insbesondere auf die oft unterschlagenen Feinheiten
-eingegangen,
-welche beim diskretisieren eines unendlich-dimensionalen Spektralproblemes
-zu einem endlich-dimensionalen Eigenproblem entstehen.
+Dabei wird insbesondere auf die oft unterschlagenen Feinheiten eingegangen,
+welche beim Diskretisieren eines unendlich-dimensionalen Spektralproblemes
+hin zu einem endlich-dimensionalen Eigenwertproblem entstehen.
 Häufig verwendete quantenchemische Methoden
-wie die vollständige Interaktion von Konfigurationen~(full configuration interaction)
-oder \HF werden diskutiert
-und dabei wird besonders auf deren mathematische Eigenschaften
-eingegangen.
+wie die vollständige Interaktion der Konfigurationen~(full configuration interaction)
+oder \HF werden diskutiert.
+Dabei wird besonders auf deren mathematische Eigenschaften eingegangen.
 Unterschiedliche Formulierungen von \HF werden miteinander verglichen
-und passende \SCF Lösungsagorithmen angegeben.
+und
+Lösungsalgorithmen auf Basis des Verfahrens des
+selbstkonsistenten Feldes~(self-consistent field, \SCF) angegeben.
 
-Im weiteren werden Diskretisierungsansätze basierend auf vier verschiedenen
+Im Weiteren werden Diskretisierungsansätze basierend auf vier verschiedenen
 Basisfunktionstypen miteinander verglichen,
 wobei sowohl auf Herausforderungen in Bezug auf die Berechnung
 der entstehenden Ausdrücke
-als auch auf die Fähigkeit der Basen
+eingegangen wird,
+als auch auf die Fähigkeit der Basen,
 die physikalischen Eigenschaften der Wellenfunktion zu beschreiben.
-Neben (1) Orbitalen vom Slatertyp und (2) Gaußorbitalen
-behandelt die vorgestelle Diskussion
+Neben (1) Orbitalen vom Slatertyp und (2) Gaußorbitale
+behandelt die vorgestellte Diskussion
 (3) finite Elemente,
 abschnittsweise Polynome, welche auf einem Gitter definiert sind,
 sowie (4) Coulomb-Sturmfunktionen~(Coulomb-Sturmians),
@@ -169,89 +169,84 @@ Ein neuartiger Algorithmus basierend auf Matrix-Vektor-Kontraktionsausdrücken
 wird entwickelt,
 welcher die numerischen Anforderungen aller betrachteten Fälle abdecken kann.
 Es wird gezeigt, dass mittels dieses Ansatzes
-nicht nur \SCF Algorithmen in einer basisfunktionsunabhängigen Weise
+nicht nur \SCF-Algorithmen in einer basisfunktionsunabhängigen Weise
 formuliert werden können,
-sondern ebenfalls,
-dass die theoretisch mögliche algorithmische Komplexität
+sondern auch,
+dass dadurch die algorithmische Komplexität
 für Diskretisierungen basierend auf finiten Elementen
-dadurch reduziert werden kann.
-Weiterhin wird gezeigt,
-dass damit
-Effizienzverbesserungen für Diskretisierungen basierend auf Coulomb-Sturmfunktionen
+reduziert werden könnte.
+Weiterhin wird angedeutet,
+dass damit Effizienzverbesserungen
+für Diskretisierungen basierend auf Coulomb-Sturmfunktionen
 möglich sind.
-Die Eignung üblicherweise verwendeter \SCF Algorithmen
-auf eine derartige, kontraktionsbasierte~(contraction-based)
+Die Eignung üblicherweise verwendeter \SCF-Algorithmen
+auf eine derartige kontraktionsbasierte~(contraction-based)
 Formulierung wird geprüft
 und für das Beispiel des Algorithmus der optimalen Dämpfung~(optimal damping algorithm)
 wird eine näherungsweise Änderung vorgeschlagen,
 die diesen auf die kontraktionsbasierte Formulierung bringt.
 
-In Bezug auf die jüngsten Entwicklungen bei moderner
-Computerhardware
+In Bezug auf die Veränderungen bei aktuell verfügbarer Computerhardware
 wird auf die Möglichkeiten und Nachteile
-von kontraktionsbasierten Methoden eingegangen.
+kontraktionsbasierter Methoden eingegangen.
 Ein Hindernis bei der Entwicklung kontraktionsbasierter Methoden
 ist oft, dass die daraus entstehenden Programmcodes
-oft schwerer lesbar sind.
+schwerer lesbar sind.
 Um dieses Problem zu umgehen wird die Datenstruktur
 einer bequeme Matrix~(lazy matrix) eingeführt.
 Bequeme Matrizen sind eine Verallgemeinerung des üblichen Matrixkonzeptes,
 welche als eine Art Behältnis für Kontraktionsausdrücke aufgefasst
 werden können.
-Aus Sicht eines Benutzers dieser Datenstruktur
-sehen diese allerdings immer noch wie gewöhnliche Matrizen aus,
-sodass die üblichen Summenoperationen oder Produktoperationen
-in gleicher Weise wie bei gewöhnlichen Matrizen verwendet werden können.
-Das Ergebnis ist,
+Von außen, aus Sicht eines Benutzers bequemer Matrizen,
+sehen diese weiterhin wie gewöhnliche Matrizen aus,
+beispielsweise können diese in üblicher Weise
+miteinander addiert oder multipliziert werden.
+Die Folge ist,
 dass man kontraktionsbasierte Algorithmen auf die gleiche Art und Weise
 implementieren kann,
-wie man es mit gewöhnlichem Matrizen auch würde.
-Eine Implementierung des Konzepts der bequemen Matrizen in der
-Bibliothek \lazyten wird vorgestellt.
-Ebenso werden Beispiele gezeigt,
-welche die Eignung von bequemen Matrizen für das \HF Problem demonstrieren.
+wie man es mit gewöhnlichen Matrizen auch würde.
+Eine Implementierung des Konzepts der bequemen Matrizen
+wird in Form von der Bibliothek \lazyten vorgestellt.
+Ebenso wird ein Beispiel gegeben,
+welche die Eignung von bequemen Matrizen im Kontext der
+Lösung des \HF Problems demonstriert.
 
 Basierend auf den oben erwähnten Konzepten wird die Programmstruktur
 von \molsturm diskutiert.
-Es wird dargelegt wie durch eine Kombination der bequemen Matrizen
-und einem kontraktionsbasierten \SCF-Verfahren
-der Programmcode,
-welcher das \SCF-Verfahren selbst beschreibt,
-von jedem Programmcode, welcher die Diskretisierung und die Basisfunktionen
-betrifft,
-getrennt wurde.
-Im weiteren wird darauf eingegangen,
-wie ein neuer Basisfunktionstyp
-in \molsturm implementiert werden kann,
-sodass nur Änderungen an einer einzigen Stelle notwendig sind.
+Es wird dargelegt, wie durch die Anwendung der bequemen Matrizen
+innerhalb eines kontraktionsbasierten \SCF-Verfahrens
+eine Trennung des Programmcodes,
+welcher das \SCF-Verfahren selbst beschreibt
+von jedem Programmcode, welcher die Diskretisierung und die Basisfunktionen betrifft,
+erreicht werden konnte.
+Im Weiteren wird darauf eingegangen,
+wie ermöglicht wurde, dass ein neuer Basisfunktionstyp
+in \molsturm dadurch implementiert werden kann,
+dass nur an einer einzigen, klar definierten Stelle
+Änderungen durchgeführt werden müssen.
 Darüber hinaus wird mittels einiger Beispiele besprochen,
-wie über eine einfache, skriptbare~(scriptable) Schnittstelle
-neuartige Quantenchemiemethoden
-einfach implementiert und getestet werden können
-oder wie \molsturm mit der Funktionalität in bestehenden Programmen Dritter
-verbunden werden kann.
+wie \molsturm über eine einfache, skriptbare~(scriptable) Schnittstellen
+das einfache Implementieren und Testen neuer Quantenchemiemethoden
+ermöglicht oder wie \molsturm mit der Funktionalität
+bestehender Programme Drietter verbunden werden kann.
 
 Zuletzt wird eine Anwendung von \molsturm
-auf eine Untersuchung der Konvergenzeigenschaften
-von Quantenchemierechnungen basierend auf Coulomb-Sturmfunktionen
-vorgestellt.
+die eine Untersuchung der Konvergenzeigenschaften
+von Quantenchemierechnungen basierend auf Coulomb-Sturmfunktionen vorgestellt.
 Erste Ergebnisse für die Konvergenz der Grundzustandsenergie auf \HF-Niveau
-werden für die Atome der zweiten und dritten Periode
-des Periodensystems vorgestellt.
-Im besonderen wird auf die maximal notwendige
-Drehimpulsquantenzahl eingegangen
+werden für die Atome der zweiten und dritten Periode des Periodensystems vorgestellt.
+Im Besonderen wird auf die maximale Drehimpulsquantenzahl eingegangen,
+welche benötigt wird,
 um eine Konvergenz des Winkelanteils der Wellenfunktion
-zu erreichen.
-Einige Anpassungen
-für die Beschreibung mittels Korrelationsmethoden werden vorgestellt,
-gefolgt von einer Diskussion des Effektes des Exponenten
-der Coulomb-Sturmfunktionen.
-Ein Algorithmus um den optimalen Exponenten zu finden
-wird vorgestellt und einige optimale Exponenten für die Beschreibung der Atome
+auf \HF-Niveau zu erreichen.
+Mögliche Änderungen dieses Ergebnisses im Hinblick auf die Beschreibung
+der Atome mittels Korrelationsmethoden werden kurz angedeutet
+und der Effekt des Exponenten der Coulomb-Sturmfunktionen
+auf die Grundzustandsenergie diskutiert.
+Ein Algorithmus zur Bestimmung des optimales Exponenten wird konstruiert
+und einige optimale Exponenten für die Beschreibung der Atome
 der zweiten und dritten Periode des Periodensystems
-auf \HF-Niveau werden vorgestellt.
-Des weiteren werden erste Ergebnisse einer Berechnung angeregter
-Zustände mittels des
-algebraisch-diagrammatischen Konstruktionsschemas
-für den Polarisationspropagator
-basierend auf Coulomb-Sturmfunktionen vorgestellt.
+auf \HF-Niveau werden angegeben.
+Des Weiteren werden erste Ergebnisse einer Berechnung angeregter Zustände
+mittels des algebraisch-diagrammatischen Konstruktionsschemas
+für den Polarisationspropagator basierend auf Coulomb-Sturmfunktionen vorgestellt.
