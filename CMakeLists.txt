@@ -66,7 +66,8 @@ add_subdirectory(8_molsturm)
 add_subdirectory(10_results)
 add_subdirectory(13_conclusion)
 add_subdirectory(15_future)
-add_subdirectory(99_appendix)
+add_subdirectory(42_appendix)
+add_subdirectory(99_acknowledgements)
 
 add_latex_document(dissertation.tex
 	INPUTS ${MFH_LATEX_INPUTS}
