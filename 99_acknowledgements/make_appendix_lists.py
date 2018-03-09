@@ -51,7 +51,7 @@ PROOF_READERS = [
 ]
 
 
-def random_store(names, path, add_and=True):
+def random_store(names, path, add_and=True, extra_comma=False):
     random.shuffle(names)
     last = names[-1]
     names = names[:-1]
@@ -65,11 +65,14 @@ def random_store(names, path, add_and=True):
         f.write(last_but_one)
         f.write(last)
 
+        if extra_comma:
+            f.write(",")
+
 
 def main():
     random_store(SCIENCE_DEBATES, "list_science_debates.tex", add_and=False)
     random_store(CHAOS_PEOPLE, "list_chaos.tex", add_and=False)
-    random_store(PROOF_READERS, "list_proof.tex")
+    random_store(PROOF_READERS, "list_proof.tex", extra_comma=True)
 
 
 if __name__ == "__main__":
