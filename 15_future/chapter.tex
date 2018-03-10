@@ -154,18 +154,21 @@ inside \molsturm's \contraction-based \SCF as well,
 such that density-functional theory calculations
 could be performed.
 Furthermore a better link to \pyscf~\cite{Sun2017}
-would allow to perform configuration-interaction,
-coupled-cluster and density matrix renormalisation group
-using this library directly from \molsturm.
+would allow to perform configuration-interaction
+and coupled-cluster calculations as well as calculations
+employing the density matrix renormalisation group approach
+directly from \molsturm.
 The modular structure of \psifour makes it another good candidate
 for quickly extending the number of available methods
 on top of \molsturm's \SCF.
 On top of that data exchange with existing quantum-chemistry-related softwares
-could be simplified by supporting some wide-spread file formats in \molsturm,
+could be even further simplified by supporting
+some wide-spread file formats in \molsturm,
 \eg \texttt{MolPro}'s FCIDUMP~\cite{Knowles1989},
 the \texttt{molden}~\cite{Schaftenaar2000} format
 as well as routines for dumping plotting data
 in \texttt{Gaussian}~\cite{Frisch2016} cube or VTK~\cite{Avila2010} files.
+\todoil{Prospect: What's in it for the user (different basis functions can be used for it)}
 % TODO OPTIONAL
 % \subsection{Partial rewrite in \python}
 
@@ -337,6 +340,7 @@ could provide the relevant back end to perform the computations.
 %the advantages of both implementations best.
 
 \section{Fuzzing of integral back ends}
+\todoil{Be more clear here: We do not need the full \SCF for fuzzing}
 The common-ground \SCF of \molsturm where existing integral libraries
 can be easily incorporated,
 opens for the possibility to test the correctness

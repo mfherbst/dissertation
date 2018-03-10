@@ -473,7 +473,7 @@ representations of \HF.
 
 \begin{rem}[Discretised \HF variational problem]
 	\label{rem:HFDiscreteVariational}
-	Assume a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$
+	Assume a one-particle basis \linebreak $\{\varphi_\mu\}_{\mu\in\Ibas}$
 	consisting of $\Nbas = \abs{\Ibas}$
 	basis functions taken from a dense subspace of $H^1(\R^3,\C)$.
 	The space
@@ -845,14 +845,16 @@ yields the discretised \HF equations
 where the elements of the \newterm{Fock matrix} $\matFfull$
 are computed by applying the sesquilinear form
 \begin{equation}
+	\begin{aligned}
 	a_\Theta(\phi,\chi)
-		= \int_{\R^3} \braket{\phi(\vec{r})}{ \left(\Op{F}_\Theta \chi\right)\!(\vec{r})}_2
-			\D \vec{r}
-		= \int_{\R^3}
+		&= \int_{\R^3} \braket{\phi(\vec{r})}{ \left(\Op{F}_\Theta \chi\right)\!(\vec{r})}_2
+			\D \vec{r} \\
+		&= \int_{\R^3}
 			\cc{\left(\phi^\alpha(\vec{r})\right)}
 				\left(\Op{F}_\Theta\chi\right)^\alpha\!(\vec{r})
 			+ \cc{\left(\phi^\beta(\vec{r})\right)}
 				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r})
+	\end{aligned}
 	\label{eqn:SesquilinearFormFock}
 \end{equation}
 to all pairs of basis spinors $(\phi, \chi)$ with
