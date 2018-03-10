@@ -4,9 +4,9 @@
 %%
 %% The original source files were:
 %%
-%% merlin.mbs  (with options: `head,exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
-%% english.mbs  (with options: `exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
-%% merlin.mbs  (with options: `tail,exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
+%% merlin.mbs  (with options: `head,exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,vnum-x,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
+%% english.mbs  (with options: `exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,vnum-x,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
+%% merlin.mbs  (with options: `tail,exlang,ay,nat,seq-no,seq-no,nm-init,ed-au,blkyear,yr-par,xmth,yr-par,tit-it,atit-u,jttl-rm,vol-bf,vnum-x,volp-com,jpg-1,num-xser,bkpg-x,edpar,bkedcap,english,pp,ed,abr,xedn,and-xcom,nfss,,{}')
 %% ----------------------------------------
 %% *** Michael F. Herbst english ***
 %% 
@@ -756,16 +756,6 @@ FUNCTION {format.vol.num.pages}
     }
   if$
   bolden
-  number "number" bibinfo.check duplicate$ empty$ 'skip$
-    {
-      swap$ duplicate$ empty$
-        { "there's a number but no volume in " cite$ * warning$ }
-        'skip$
-      if$
-      swap$
-      "(" swap$ * ")" *
-    }
-  if$ *
   eid empty$
     { format.journal.pages }
     { format.journal.eid }
