@@ -285,9 +285,9 @@ which approaches $E_0$ from above.
 \label{sec:CC}
 
 The main idea of coupled-cluster theory
-is to employ a more elaborate ansatz for generating a limited amount
-of excited determinants with the overall aim to
-reach a size-consist method.
+is to employ a more elaborate ansatz for the ground-state wave function
+with the overall aim to
+reach a size-consistent method.
 In this work coupled-cluster only plays a minor role.
 This section will therefore be limited to the absolutely necessary
 steps to get the rough idea.
@@ -337,23 +337,24 @@ is implicitly taken to have sensible limits.
 
 If we allow all possible excitations in \eqref{eqn:ExcitationCC},
 \ie do not truncate the sum,
-the set of all possible coupled-cluster wave functions $\Psi^\text{CC}$
-is exactly equivalent to the space of all Slater determinants
-$\tilde{Q}(\Op{H}_{\Nelec})$,
-which was defined in \eqref{eqn:FormDomainAllFunctions}.
+the space spanned by all possible coupled-cluster wave functions $\Psi^\text{CC}$
+is exactly equivalent to the space of all Slater determinants,
+namely the form domain%
+\footnote{Recall the definition in \eqref{eqn:FormDomainAllFunctions}.}
+$\tilde{Q}(\Op{H}_{\Nelec})$.
 Without truncation \CC is thus equivalent to \FCI,
 moreover the exponential ansatz in this case just provides
 an alternative to the standard parametrisation of $\tilde{Q}(\Op{H}_{\Nelec})$
 in terms of the CI expansion~(see remark \vref{rem:Determinants}).
 
-In the corresponding discretised setting
+In the corresponding discretised setting,
 $\Phi_0$ is the solution to the discretised
 \HF problem~(section \vref{sec:DiscreteHF}).
 In a similar fashion to full CI one would expect
 a good ansatz for obtaining a \CC approximation to
 the ground state of the electronic Schrödinger equation
 to use the Ritz-Galerkin ansatz of remark \vref{rem:DiscreteFormulation}.
-In other words one would attempt to solve the variational minimisation problem
+In other words, one would attempt to solve the variational minimisation problem
 \begin{equation}
 E_0 \leq E_0^\text{CC} = \inf_{\{t_\mu\}_{\mu}} \frac{\braket{\exp(\op{T}) \Phi_0}{\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0}_{\Nelec}}
 	{\braket{\exp(\op{T}) \Phi_0}{\exp(\op{T}) \Phi_0}_{\Nelec}},
@@ -371,14 +372,14 @@ in the resulting system of equations.
 
 For this reason one usually employs a different projection approach,
 which shall only be sketched here%
-\footnote{Notice, that we drop some mathematical rigour here,
-	since $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$ is only defined properly
+\footnote{Notice, that some mathematical rigour is dropped here.
+	Since $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$ is only defined properly
 	if $\Phi_0 \in H^2(\C^{3\Nelec}, \C^{2\Nelec})$,
 	which is not true in general.
 	Even in the discretised case one may choose a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$,
 	where some functions are not members of $H^2(\C^{3\Nelec}, \C)$,
 	such that $\Phi_0 \not\in H^2(\C^{3\Nelec}, \C^{2\Nelec})$ is possible.
-}
+}.
 If one plugs the exponential ansatz directly into the electronic Schrödinger equation
 \eqref{eqn:ElectronicSchrödinger} for the ground state one obtains
 \begin{equation}
@@ -406,14 +407,14 @@ one for each $\mu$.
 In truncated \CC methods, where only some of the terms of \eqref{eqn:ExcitationCC} are kept,
 we can use \eqref{eqn:ExcitationCCsum} to generate exactly one equation
 for each amplitude $\mu$.
-In other words the $\mu$ in \eqref{eqn:CCamplitudes} is just taken to run over the same
+In other words, the $\mu$ in \eqref{eqn:CCamplitudes} is just taken to run over the same
 index range as in the expansion \eqref{eqn:ExcitationCCsum} for the truncated
 excitation operator $\op{T}$.
 
 \defineabbr{CCD}{CCD\xspace}{Coupled cluster doubles}
 Numerically solving for the \CC amplitudes in \eqref{eqn:CCamplitudes}
 amounts to a root-finding problem,
-where the parameters is the set of all amplitudes $\{t_\mu\}_{\mu}$.
+where the parameters are the set of all amplitudes $\{t_\mu\}_{\mu}$.
 This is typically approached by minimising the residuals
 \begin{equation}
 	r_\mu = \mbra{\Phi_\mu} \Op{H}_T \mket{\Phi_0}_{\Nelec}
@@ -424,8 +425,8 @@ Even though this problem is easier compared to the
 variational \CC ansatz,
 the working equations resulting from the expressions \eqref{eqn:CCresidual}
 are typically all but simple.
-For example let us consider the simplest coupled-cluster ansatz, where
-\[ \op{T} = \op{T}_2 = \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab} \]
+For example, let us consider one of the simplest coupled-cluster approaches, where
+\[ \op{T} = \op{T}_2 = \sum_{\substack{i<j \\a<b}} t_{ij}^{ab} \op{\tau}_{ij}^{ab}, \]
 called coupled-cluster doubles~(\CCD).
 A proper derivation~\cite{Hurley1976,Bartlett1978,Crawford2007,Hodecker2016}
 starting from \eqref{eqn:CCamplitudes}
@@ -466,14 +467,14 @@ antisymmetrised \ERI tensor from remark \vref{rem:ERI},
 the amplitudes $t_{ij}^{eb}$ and elements of the Fock matrix $\mat{f}$ in the \SCF orbital basis.
 This latter matrix is defined as
 \[ \mat{f} = \tp{\mat{C}_F} \mat{F} \mat{C}_F \in \C^{\Norb\times\Norb}.\]
-If the canonical \HF ansatz of \eqref{eqn:HFequations} is used $\mat{f}$ will be diagonal
+If the canonical \HF ansatz of \eqref{eqn:HFequations} is used, $\mat{f}$ will be diagonal
 and equivalent to $\diag(\varepsilon_1, \varepsilon_2, \ldots, \varepsilon_{\Norb})$.
 The corresponding \CCD energy expression
 \begin{equation}
 	E_\text{CCD} = \frac14 \sum_{ijab} \eriAsym{ij}{ab} t_{ij}^{ab}.
 	\label{eqn:CCDenergy}
 \end{equation}
-can be computed by simplifying \eqref{eqn:CCenergy}.
+can be obtained by simplifying \eqref{eqn:CCenergy}.
 Since the rank-4 tensor $t_{ij}^{ab}$ occurs in the expression for the
 $\op{T}_2$ excitation operator,
 this tensor is usually called the $T_2$-amplitudes tensor as well.
@@ -486,7 +487,7 @@ the expressions for the working equations \eqref{eqn:CCresidual}
 are even more involved.
 In turn these methods become rather expensive as well,
 \eg CCSD scales as $\bigO(\Nbas^6)$ and CCSDT as $\bigO(\Nbas^8)$.
-Nevertheless \CC methods are very popular and widely adopted in quantum-chemistry.
+Nevertheless \CC methods are very popular and widely adopted in quantum chemistry.
 Firstly because they converge systematically towards the \FCI energy
 as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
 and secondly because \emph{all} \CC methods are size-consistent
@@ -518,9 +519,9 @@ For example for Hartree-Fock, there is configuration-interaction singles~(CIS)
 or time-dependent \HF~(TDHF) and
 for coupled-cluster there
 are the equation-of-motion and linear-response coupled-cluster theories.
-Last but not least the algebraic-diagrammatic construction scheme~(\ADC)
-of the polarisation propagator at various orders~\cite{Schirmer1982,Trofimov1999}
-is formulated
-on top of a Møller-Plesset ground state
-and can thus be thought of as an \MP for excited states.
+Last but not least, the algebraic-diagrammatic construction scheme~(\ADC)
+for the polarisation propagator at various orders~\cite{Schirmer1982,Trofimov1999}
+can be seen as a CI-like scheme on top of a Møller-Plesset ground state.
+Its excited states are generally in good agreement with the \MP
+description of the ground state.
 \todoil{Find one citation lr and eom cc}
