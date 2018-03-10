@@ -39,7 +39,7 @@ def plot_local_energy_overview():
     plt.ylabel(common.ELLABEL)
     plt.ylim(-1.5, 0.5)
 
-    plt.plot(r, -0.5*np.ones_like(locen), label="exact")
+    plt.plot(r, -0.5*np.ones_like(locen), label=r"exact, $k_\text{exp} = 1.0$")
     plt.legend(loc='upper right')
 
 
@@ -108,11 +108,12 @@ def plot_relative_error(log=False):
             plt.plot(r, err, label=label)
             extra = ""
 
+    plt.plot(r, np.zeros_like(err), label=r"exact, $k_\text{exp} = 1.0$")
     plt.xlabel(common.XLABEL)
     plt.ylabel(extra + common.RELABEL)
     plt.ylim(-0.2, 0.2)
 
-    plt.legend()
+    plt.legend(loc='upper left')
 
 
 def main():

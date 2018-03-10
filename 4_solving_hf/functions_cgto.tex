@@ -355,20 +355,21 @@ For larger systems, the structure generally gets
 worse due to interactions between the atoms,
 but if a proper description of the core region or the tail is not required
 $\mat{F}$ stays numerically manageable and almost diagonal-dominant.
-This allows to additionally employ
+This allows further to employ
 iterative eigensolver methods like Davidson's method~(see section \vref{sec:Davidson})
-to efficiently obtain eigenpairs of the Fock matrix if not all are required.
+to efficiently obtain eigenpairs of the Fock matrix if only a
+selected part is required.
 
-Since for most cases in chemistry the core-like region
-and the long-range tail are not extremely important
+Since for most cases in chemistry the region close to the nucleus
+and the long-range tail are not extremely important,
 both obtaining and diagonalising Fock matrices
 from a \cGTO discretisation is straightforward.
-Even though {\cGTO}s are physically not the most sensible basis function type
+Even though {\cGTO}s are physically not the most sensible basis function type,
 this has historically made \cGTO-based methods
 the most predominant approach to describe
-a chemical systems within decent accuracy
+a chemical system within decent accuracy
 such that these methods are now implemented in countless quantum-chemistry packages.
-In light of this it is remarkable,
+In light of this, it is remarkable,
 that only in \citeyear{Bachmayr2014}
 error bounds were rigorously derived by \citet{Bachmayr2014} for some special
 kinds of Gaussian basis sets
@@ -377,8 +378,8 @@ and these results are not employed on a daily basis.
 I personally consider it a problem
 that selecting the \cGTO basis set for performing a calculation is often done
 based on habit rather than proper scientific evaluation
-in light of the chemical problem at hand.
+with respect to the chemical problem at hand.
 I do not dare to estimate how many published works
-draw conclusions based on calculations,
+draw conclusions based on calculations
 where a more appropriately chosen basis
-could have given a totally different picture.
+could have given a different picture.
