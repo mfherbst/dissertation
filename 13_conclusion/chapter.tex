@@ -14,14 +14,24 @@ and utilised it in order to design and implement the
 quantum-chemical method development framework \molsturm.
 This was shown to be easily extensible and flexible enough
 to perform calculations
-employing any kind of basis function.
-The features of \molsturm were demonstrated by the means
+employing any kind of basis function type.
+The features of \molsturm were demonstrated
+by means of a 
+
+\todoil{Name examples}
+\ce{H2} dissociation curve in section \ref{sec:ex:data},
+coupled-cluster doubles in section \ref{sec:ex:ccd},
+gradient-free optimisation in section \ref{sec:ex:geo}
+
+
+
+by the means
 of examples as well as an application of the package for
 investigating the convergence properties
 of quantum-chemical calculations
 based on Coulomb-Sturmians,
 a basis function type which got few attention so far.
-First results of Coulomb-Sturmian-based excited states
+Initial results of Coulomb-Sturmian-based excited states
 calculation employing the algebraic-diagrammatic construction scheme
 for the polarisation propagator were reported.
 
@@ -62,7 +72,7 @@ reviewed in sections \ref{sec:TruncatedCI} to \ref{sec:ExcitedStates}.
 % ------------------------------------
 
 A detailed discussion with regards to the basis function types,
-which can be employed to discretise the \HF problem,
+which can be employed to discretise the \HF problem
 was provided in section \ref{sec:BasisTypes}.
 For this section \ref{sec:BasisDesiredProperties}
 summarised a list of desirable properties
@@ -78,9 +88,9 @@ and (4) Coulomb-Sturmians in section \ref{sec:BasisCS}.
 
 In contrast to the first two,
 both finite elements,
-which are piecewise polynomials defined on a real-space grid,
+% which are piecewise polynomials defined on a real-space grid,
 as well as Coulomb-Sturmians,
-which are the analytic solutions to a Schrödinger-like equation,
+% which are the analytic solutions to a Schrödinger-like equation,
 are rather uncommon approaches,
 which have been found to show rather unusual numerical demands as well.
 For finite elements, for example,
@@ -97,7 +107,7 @@ ansatz similarly opened the possibilities for performance improvements.
 Even though both Coulomb-Sturmians as well as Slater-type
 orbitals are exponential basis functions
 and their functional form is very similar,
-it was seen that their integral expressions are much simpler
+it was found that their integral expressions are much simpler
 and fit very well into the context of a contraction-based \SCF.
 Section \ref{sec:BasisTakeaway} summarised our discussion of the basis
 function types and section \ref{sec:SCFAlgorithms}

@@ -85,10 +85,10 @@ how the readily scriptable interface of \molsturm
 can be employed to implement and assess novel quantum-chemical methods
 or to combine the features of \molsturm with existing third-party packages.
 
-Finally the thesis discusses an application of \molsturm
+Finally, the thesis discusses an application of \molsturm
 towards the investigation of the convergence properties
 of Coulomb-Sturmian-based quantum-chemical calculations.
-First results for the convergence
+Results for the convergence
 of the ground-state energies at \HF level
 are reported for atoms of the second and the third period
 of the periodic table.
@@ -120,21 +120,21 @@ Die Algorithmen, welche in den bestehenden Quantenchemiepaketen
 verwendet werden sind dementsprechend oft sehr stark
 auf diesen Funktionstyp und dessen numerische Anforderungen angepasst.
 Für die Betrachtung neuartiger Methoden,
-welche andere Basisfunktionen verwenden wollen,
+welche andere Basisfunktionen verwenden,
 ist dies ein Hindernis,
 da die Anforderungen durchaus unterschiedlich sein können.
 Im Gegensatz dazu entwickelt diese Doktorarbeit
-das schlanke Programmpacket \molsturm,
+das Programmpacket \molsturm,
 welches explizit so gestaltet wurde,
 dass es für Berechnungen auf Basis einer Lösung des Hartree-Fock-Problems~(\HF)
 mehrere Basisfunktionstypen verwenden kann.
-Weiter wird gezeigt wie \molsturm,
+Weiter wird gezeigt, wie Anbindungen von \molsturm
+an andere Programme,
 sowohl auf der Ebene der Integralbibliotheken
-als auch auf der Ebene eines weiteren Post-\HF-Schrittes,
-auf einfache Weise mit bestehenden anderen Programmen
-verbunden werden kann.
-Auf diesem Weg kann die Funktionalität anderer Programme
-soweit als möglich aus \molsturm heraus verwendet werden
+als auch auf der Ebene eines nachfolgenden Post-\HF-Schrittes,
+auf einfache Weise möglich ist.
+Auf diesem Weg wird die Funktionalität anderer Programme
+soweit als möglich aus \molsturm heraus verwendet werden,
 ohne diese neu zu schreiben.
 
 Zunächst werden der mathematische Hintergrund der Quantenmechanik
@@ -158,7 +158,7 @@ der entstehenden Ausdrücke
 eingegangen wird,
 als auch auf die Fähigkeit der Basen,
 die physikalischen Eigenschaften der Wellenfunktion zu beschreiben.
-Neben (1) Orbitalen vom Slatertyp und (2) Gaußorbitale
+Neben (1) Orbitalen vom Slatertyp und (2) Gaußorbitalen
 behandelt die vorgestellte Diskussion
 (3) finite Elemente,
 abschnittsweise Polynome, welche auf einem Gitter definiert sind,
@@ -167,14 +167,12 @@ welche die analytischen Lösungen einer der Schrödingergleichung
 ähnlichen Differenzialgleichung sind.
 Ein neuartiger Algorithmus basierend auf Matrix-Vektor-Kontraktionsausdrücken
 wird entwickelt,
-welcher die numerischen Anforderungen aller betrachteten Fälle abdecken kann.
+welcher die numerischen Anforderungen aller betrachteten Fälle abdeckt.
 Es wird gezeigt, dass mittels dieses Ansatzes
 nicht nur \SCF-Algorithmen in einer basisfunktionsunabhängigen Weise
-formuliert werden können,
-sondern auch,
+formuliert werden können, sondern auch,
 dass dadurch die algorithmische Komplexität
-für Diskretisierungen basierend auf finiten Elementen
-reduziert werden könnte.
+für Diskretisierungen basierend auf finiten Elementen reduziert wird.
 Weiterhin wird angedeutet,
 dass damit Effizienzverbesserungen
 für Diskretisierungen basierend auf Coulomb-Sturmfunktionen
@@ -193,13 +191,13 @@ Ein Hindernis bei der Entwicklung kontraktionsbasierter Methoden
 ist oft, dass die daraus entstehenden Programmcodes
 schwerer lesbar sind.
 Um dieses Problem zu umgehen wird die Datenstruktur
-einer bequeme Matrix~(lazy matrix) eingeführt.
+einer bequemen Matrix~(lazy matrix) eingeführt.
 Bequeme Matrizen sind eine Verallgemeinerung des üblichen Matrixkonzeptes,
 welche als eine Art Behältnis für Kontraktionsausdrücke aufgefasst
 werden können.
 Von außen, aus Sicht eines Benutzers bequemer Matrizen,
 sehen diese weiterhin wie gewöhnliche Matrizen aus,
-beispielsweise können diese in üblicher Weise
+beispielsweise können sie in üblicher Weise
 miteinander addiert oder multipliziert werden.
 Die Folge ist,
 dass man kontraktionsbasierte Algorithmen auf die gleiche Art und Weise
@@ -208,7 +206,7 @@ wie man es mit gewöhnlichen Matrizen auch würde.
 Eine Implementierung des Konzepts der bequemen Matrizen
 wird in Form von der Bibliothek \lazyten vorgestellt.
 Ebenso wird ein Beispiel gegeben,
-welche die Eignung von bequemen Matrizen im Kontext der
+welches die Eignung von bequemen Matrizen im Kontext der
 Lösung des \HF Problems demonstriert.
 
 Basierend auf den oben erwähnten Konzepten wird die Programmstruktur
@@ -247,6 +245,7 @@ Ein Algorithmus zur Bestimmung des optimales Exponenten wird konstruiert
 und einige optimale Exponenten für die Beschreibung der Atome
 der zweiten und dritten Periode des Periodensystems
 auf \HF-Niveau werden angegeben.
-Des Weiteren werden erste Ergebnisse einer Berechnung angeregter Zustände
+Des Weiteren werden erste Ergebnisse einer Berechnung elektronisch
+angeregter Zustände
 mittels des algebraisch-diagrammatischen Konstruktionsschemas
 für den Polarisationspropagator basierend auf Coulomb-Sturmfunktionen vorgestellt.

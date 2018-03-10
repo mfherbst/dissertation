@@ -11,16 +11,26 @@ so captivating that it becomes impossible for them to devote
 their care to their own material profit.}
 {Marie Skłodowska Curie~(1867--1934)}
 
+\todo[caption={},inline]{
+	Make sure it comes across:
+	\begin{itemize}
+		\item \molsturm easy to extend
+		\item lazy tensors are more than just high-level syntax
+		\item They are also decisions about computation taken at runtime
+		\item and avoiding the need to store anything
+	\end{itemize}
+}
+
 \noindent
 With the availability of the \molsturm program package in its
-current state a flexible research tool
+current state, a flexible research tool
 for the development and the investigation of novel quantum-chemical methods
 has become available.
 Especially the aspect to quickly incorporate third-party packages
 for performing Post-Hartree-Fock~(Post-\HF) methods
 or to link to new integral back ends
 opens the door for many further research directions.
-But also on the level of the algorithms and data structure used
+Yet also on the level of the algorithms and data structure used
 inside \molsturm further improvements can be achieved.
 Most prominently, the \lazyten lazy matrix library is only
 in a preliminary state right now,
@@ -48,7 +58,7 @@ which implies that it only supports the implementation of algorithms
 involving matrix-matrix and matrix-vector operations.
 As soon as higher-order tensor contractions are required,
 these need to be hidden inside the contraction expression.
-Effectively this implies
+Effectively, this implies
 that they are either to be implemented manually
 or by explicit appropriate calls to some linear algebra package.
 Already at the level of the \SCF of \molsturm we run into this limitation,
@@ -60,7 +70,7 @@ hard-coded contraction schemes of the \ERI tensor with
 the coefficient matrices in the required manner to form $\mat{J}$ and $\mat{K}$,
 which is certainly not ideal.
 
-In the future such issues could be tackled
+In the future, such issues could be tackled
 by extending \lazyten towards lazy tensors as well.
 Similarly to lazy matrices,
 such lazy tensor objects would no longer be directly mapped to flat data,
@@ -71,7 +81,7 @@ again a lazy evaluation scheme would be employed,
 such that the contraction between tensors would first be
 stored as a tensor expression tree to be evaluated at a later point.
 
-Undoubtedly already the design of such a library is challenging
+Undoubtedly, already the design of such a library is challenging
 and would probably be needed to be performed in steps,
 gradually generalising the lazy matrix concept towards them.
 Another question is how to find a suitable evaluation
@@ -118,7 +128,7 @@ very simple test calculations
 a major drawback at the moment is performance
 at the level of the \SCF as well as the level of the interface itself.
 
-To some extend the improvements
+To some extent, the improvements
 of \lazyten directly lead to angles for tackling these problems as well.
 For example a generalisation of \lazyten to lazy tensors
 would allow to use lazy tensors as data structures on the level of \molsturm's
@@ -198,7 +208,7 @@ differ compared to the main group elements.
 An analysis with respect to the fourth period and beyond
 is therefore required to reach more general conclusions.
 
-Secondly most of the presented investigation has concentrated on the \HF
+Secondly, most of the presented investigation has concentrated on the \HF
 level with some minor modifications suggested mostly based on {\MP}2 results.
 Whilst these two methods are both used in electronic structure theory,
 more methods should be added to reach a representative set.
@@ -211,14 +221,14 @@ as well as the numerics.
 Further convergence studies for example employing the latter kind of methods
 would be required.
 \todoil{
-Additionally one should note,
+Additionally one should note
 that \MP approaches building on top of a unrestricted \HF ground state
 are known to have convergence issues~\cite{Knowles1985,Handy1985},
 such that perhaps a restricted open-shell \HF approach should be employed
 to describe the reference state for {\MP}2.
 }
 
-Thirdly the full flexibility towards constructing \CS basis sets has not yet
+Thirdly, the full flexibility towards constructing \CS basis sets has not yet
 been exploited in our discussion in section \vref{sec:CSconvergenceHF}.
 There is no reason why one should define a basis set
 by limiting the angular quantum numbers $l$ and $m$ to the same maximum for all
@@ -236,7 +246,7 @@ to \CS basis sets and vice versa.
 
 In general a detailed comparison of the results obtained
 from employing Coulomb-Sturmians as well as \cGTO discretisations seems appropriate.
-An interesting questions is for example the required basis sizes for both
+An interesting question is, for example, the required basis sizes for both
 discretisation types to reach a certain accuracy
 in the description of the ground or excited-state energies
 at various levels of theory.
@@ -272,7 +282,7 @@ If not, than unphysical behaviour can result.
 In my calculations I have, for example, found cases
 where changing $\kexp$ could change the obtained \SCF minimum
 for \HF.
-Furthermore there is some indication
+Furthermore, there is some indication
 that the ordering of excited states in \ADC calculations
 depends on $\kexp$ in some cases.
 Using the algorithm described in section \ref{sec:DetermineKopt},
@@ -341,13 +351,13 @@ could provide the relevant back end to perform the computations.
 
 \section{Fuzzing of integral back ends}
 \todoil{Be more clear here: We do not need the full \SCF for fuzzing}
-The common-ground \SCF of \molsturm where existing integral libraries
+The common-ground \SCF of \molsturm, where existing integral libraries
 can be easily incorporated,
 opens for the possibility to test the correctness
 of existing integral libraries by comparing the results of
 random or semi-random \SCF calculations based on different integral libraries
 against another.
-Due to the \python interface of \molsturm such a process could
+Due to the \python interface of \molsturm, such a process could
 even be completely automatised.
 Such fuzzing approaches have already been applied with huge success
 in the context of hardening security-critical software~\cite{Fuzzing}
