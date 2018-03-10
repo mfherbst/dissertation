@@ -13,6 +13,7 @@ SCIENCE_DEBATES = [
     "Dr.~Tim~Stauch",
     "Manuel~Hodecker",
     "Maximilian~Scheurer",
+    "Jie~Han",
     "Dr.~Tobias~Setzer",
     #
     "Dr.~Klaus~Birkelund",
