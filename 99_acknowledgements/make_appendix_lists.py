@@ -47,11 +47,11 @@ PROOF_READERS = [
     "Dr.~James~Avery",
     #
     # tentative:
-    "Reena~Sen",
-    "Mikael~Scott",
-    "Dr.~Jim~Dengler",
-    "Carine~Dengler",
-    "Andreas~Fink",
+    # "Reena~Sen",
+    # "Mikael~Scott",
+    # "Dr.~Jim~Dengler",
+    # "Carine~Dengler",
+    # "Andreas~Fink",
 ]
 
 
