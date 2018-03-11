@@ -83,7 +83,8 @@ further down this chapter.
 	\item Instead of phase space vectors $\clphase \in \R^{2d}$,
 		in \QM a particular state of the system is represented
 		by functions $\Psi : \R^d \to \C$
-		living in a complex separable Hilbert space $\hilbert$.
+		mapping from space coordinates to a complex number.
+		These originate from a complex separable Hilbert space $\hilbert$.
 	\item A classical observable $F$ is represented by a
 		self-adjoint operator $\Op{F}$ on the Hilbert space $\hilbert$ in \QM.
 	\item For each classical observable one may construct an equivalent
@@ -114,7 +115,7 @@ further down this chapter.
 	\item The measured values of an observable $F$
 		are the eigenvalues $\lambda_k$ of $\Op{F}$ \emph{only}.
 	\item Assume that we can find a complete and countable
-		set of eigenpairs $\{ (\lambda_\mu, \psi_\mu) \}_{\mu \in \mathcal{I}}$
+		set of eigenpairs $\{ (\lambda_\mu, \Psi_\mu) \}_{\mu \in \mathcal{I}}$
 		for the operator%
 		\footnote{We will see in section \vref{sec:spectral}
 		that this is \emph{not} always possible.
@@ -126,12 +127,12 @@ further down this chapter.
 		One may then compute the expectation value of a measurement
 		on a normalised%
 		\footnote{unit normalised, \ie $\braket{\Psi}{\Psi}_\hilbert = 1$}
-		state as
+		state $\Psi$ as
 		\begin{equation}
 			\langle \Op{F} \rangle
 				= \braket{\Psi}{\Op{F} \, \Psi}_\hilbert
 				= \sum_{\mu\in\mathcal{I}} \lambda_\mu \,
-							\abs{\braket{\psi_\mu}{\Psi}_\hilbert}^2,
+							\abs{\braket{\Psi_\mu}{\Psi}_\hilbert}^2,
 			\label{eqn:QMExpectation}
 		\end{equation}
 		where $\braket{\slot}{\slot}_\hilbert$ is the inner product
@@ -185,13 +186,13 @@ In the Schrödinger picture it is the other way round, i.e. $\Psi$ may change ov
 and the operators are static.
 Both pictures are related by a unitary transformation
 in the Hilbert space $\hilbert$
-governed by the Stone-von Neumann theorem.
+governed by the Stone-von Neumann theorem\cite{Neumann1931,Neumann1932,Stone1932}.
 
 The equivalent expression to \eqref{eqn:HeisenbergEqnMotion}
 in the Schrödinger picture is the \newterm{time-dependent Schrödinger equation}%
 ~\cite{Shankar1994,Mueller2000}
 \begin{equation}
-	\Op{H} \tilde{\Psi} = \I \hbar \frac{\partial}{\partial t} \tilde{\Psi}.
+	\Op{H} \Psi = \I \hbar \frac{\partial}{\partial t} \Psi.
 	\label{eqn:TDSE}
 \end{equation}
 Similar to \eqref{eqn:HeisenbergEqnMotion} the key operator governing the
@@ -262,7 +263,7 @@ in atomic units takes the simple form
 	\Op{H} = -\frac12 \Delta - \frac{Z}{r}.
 	\label{eqn:OpHydrogen}
 \end{equation}
-We will from now work exclusively in these units.
+From now on we will work exclusively in these units.
 \begin{table}
 	\centering
 	\begin{tabular}{lllll}

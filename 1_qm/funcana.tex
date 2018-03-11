@@ -8,7 +8,7 @@ In this work we will neglect Banach spaces
 and focus on Hilbert spaces only
 due to their exceptional importance in the mathematical structure
 of quantum mechanics, see the previous section \ref{sec:IntroQM}.
-After some general reminders, we will take a closer look
+After some general remarks, we will take a closer look
 at the Lebesgue space $L^2(\R^d, \C)$
 as well as Sobolev spaces in the context of \QM.
 
@@ -16,7 +16,7 @@ In this section we assume familiarity with the concept of a vector space
 as well as some intuitive understanding of the Lebesgue integral.
 For a more detailed discussion developing such concepts
 by generalising standard Euclidean geometry,
-see a related work by the author~\cite{DiracNotation}.
+see~\cite{DiracNotation}.
 
 \subsection{Definition of Hilbert spaces}
 \label{sec:Hilbert}
@@ -25,10 +25,11 @@ see a related work by the author~\cite{DiracNotation}.
 Hilbert spaces are generalising some concepts of
 two- or three-dimensional Euclidean space to
 larger vector spaces of possibly infinite dimensions.
-Most notably taking limits or computing length and angles
-is possible in the same natural way as for Euclidean geometry,
+Most notably taking limits or computing lengths and angles
+is possible in the same way as for Euclidean geometry,
 thus allowing to perform vector calculus or
 to numerically approximate in a sound way.
+\todoil{Which field \ldots clearify or move statement}ü
 For our treatment the field $\F$ can be typically identified
 with the field of all complex numbers $\C$ or the real numbers $\R$.
 
@@ -126,7 +127,7 @@ tend towards an element, which is from $V$ \emph{as well}.
 	\label{exmp:QdenseR}
 	To make the concept of completeness more clear,
 	let us consider a counterexample.
-	For this let us leave the setting of vector spaces for a second
+	For this let us leave the setting of vector spaces
 	and more broadly think about sequences defined on sets of numbers%
 	\footnote{This is fine, since completeness is in fact a property on
 		so-called metric spaces, which are related to normed vector
@@ -237,7 +238,7 @@ Denseness is therefore one of the fundamental properties required for approximat
 
 \begin{rem}
 	\label{rem:HilbertApproximation}
-A consequence of remark \vref{rem:HilbertCd} is that we can
+A consequence of remark \ref{rem:HilbertCd} is that we can
 numerically approximate all separable Hilbert spaces rather naturally.
 For example by restricting the sum in \eqref{eqn:HilbertBasisExpansion}
 to only a finite number of $d$ basis functions,
@@ -256,7 +257,7 @@ regardless of the structure of $\hilbert$.
 The Hilbert space of square-integrable complex-valued functions.
 }
 
-Now that we have the required jargon at hand,
+Now that we have the required basic concepts at hand,
 let us discuss the question which Hilbert space to take for quantum mechanics.
 In section \ref{sec:IntroQM} we said that the state functions
 $\Psi : \R^d \to \C$ are taken from a complex, separable Hilbert space.
@@ -266,7 +267,7 @@ of the quantum-mechanical state $\Psi$,
 which associates the meaning of a probability density
 with the square
 of the state function $\abs{\Psi(x_1, x_2, \ldots x_d)}^2$
-at each point in space $(x_1, \ldots x_N)$.
+at each point in space $(x_1, \ldots x_d)$.
 A more detailed analysis in light of this probabilistic meaning of $\Psi$
 suggests to take these functions from the Hilbert space of square-integrable functions
 $L^2(\R^d, \C)$,
@@ -340,15 +341,19 @@ denoted as $\norm{\slot}_{L^2}$ and we can define:
 		See~\cite{Werner2011}
 	\end{proof}
 \end{prop}
-In other words $L^2(\R^d, \C)$ truely satisfies all the requirements
+In other words $L^2(\R^d, \C)$ truly satisfies all the requirements
 for being a suitable Hilbert space of \QM
 as introduced in section \vref{sec:IntroQM}.
 
-Notice, however, that we did not  introduce the most general theory of \QM
+\begin{rem}
+	\todoil{Here spinor and spin are introduced rather ad hoc,
+	a reader without knowledge in any quantum or relativistic
+	physics will find this hard}
+We did not introduce the most general theory of \QM
 in this section, but only  \emph{non-relativistic, spin-free} \QM.
 In a fully relativistic \QM treatment
 each state is not a function returning
-a single complex value, but much rather a function returning a \newterm{spinor},
+a single complex value, but rather a function returning a \newterm{spinor},
 which for relativistic \QM has $4$ spin components per particle.
 In other words for an $N$-particle system
 the corresponding space would be $L^2(\R^{3N}, \C^{4N})$.
@@ -368,6 +373,7 @@ Hilbert spaces are isometrically isomorphic.
 This implies that all of the properties we have showed or will show based
 on the Hilbert space $L^2(\R^d, \C)$ can be generalised
 to $L^2(\R^d, \C^s)$ with $s \geq 1$ with ease.
+\end{rem}
 
 \subsection{Sobolev spaces}
 \label{sec:Sobolev}
@@ -383,18 +389,18 @@ which allows taking a certain number of derivatives.
 As it turns out the appropriate treatment for the numerical solution
 of partial differential equations,
 does not require the usual or \newterm{strong derivatives},
-much rather weak derivatives are sufficient.
+weak derivatives are sufficient.
 These are defined as such:
 
 \begin{defn}
 	A function $f \in L^2(\R^d, \C)$ has a \newterm{weak partial derivative}
 	$g \in L^2(\R^d, \C)$ with respect to $x_i$ if
-	\[ \forall \varphi \in C^\infty_0(\R^d): \quad \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
+	\[ \forall \varphi \in C^\infty_0(\R^d, \C): \quad \braket{g}{\varphi}_{L^2} = - \braket{f}{\frac{\partial}{\partial x_i}\varphi}_{L^2}, \]
 	where $C^\infty_0(\R^d, \C)$ is the space of all
 	infinitely differentiable complex-valued functions with compact support.
 	To denote the weak derivative
 	one may write $g = \frac{\partial}{\partial x_i} f$ like in the strong case.
-	It can further be shown that if $f$ has a classical, strong derivative
+	It can further be shown that if $f$ has a strong derivative
 	then it also has a weak derivative, which coincides with the strong derivative.
 	For ease of notation we also write
 	\[ D^{\vec{\alpha}} f = \frac{\partial^{\norm{\vec{\alpha}}_1}}{ \prod_{i=1}^d \partial x_i^{\alpha_i} }, \]
@@ -440,7 +446,7 @@ we can assume that the $k$-th derivative of this function remains square-integra
 These spaces will become rather important in the next section \vref{sec:spectral},
 where we will need them to define self-adjoint operators upon them.
 As a summary the relationships between the spaces we discussed
-in this section have been summarised in \fig \vref{fig:sobolevRelations}.
+in this section have been summarised in figure \vref{fig:sobolevRelations}.
 Note, that by definition
 \[ L^2(\R^d, \C) = H^0(\R^d, \C) = H^0_0(\R^d, \C). \]
 
@@ -579,8 +585,9 @@ of which we only present a slightly specialised form here.
 \end{thm}
 This embedding theorem allows to get an idea what is to be expected about
 the smoothness of a function in $H^k$.
-Interestingly the smaller the dimensionality the more smooth such a function
+Interestingly the smaller the dimensionality the smoother such a function
 has to be.
+\todoil{One gets lost in the mathematics by now \ldots add some forward references}
 
 % TODO OPTIONAL
 %\subsection{Representation theorems}

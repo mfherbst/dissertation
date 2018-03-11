@@ -1,5 +1,6 @@
 \section{Takeaway}
 \label{sec:SpectralTakeAway}
+\todoil{Cold give a short forecast to the upcoming work}
 Many observations of the one-particle hydrogen-like Schrödinger operator $\Op{H}$
 of section \vref{sec:HydrogenAtom}
 generalise to the more complicated many-body atomic and molecular Hamiltonians
@@ -12,27 +13,39 @@ Their essential spectrum is non-trival,
 but luckily one can show~\cite{Zhislin1959,Zhislin1960,Reed1978,Teschl2014} that
 \[ \forall \lambda \in \sigma_{\text{disc}}(\Op{H}),
 	\mu \in \sigma_{\text{ess}}(\Op{H}) \quad \lambda < \mu, \]
-\ie that the discrete spectrum always sits below the essential spectrum.
+\ie that the discrete spectrum always is located below the essential spectrum.
 
 In remark \vref{rem:NumericalEssentialSpectrum} we discussed
 that the essential spectrum cannot be approximated reliably
 by a finite-dimensional Hilbert space with only compact operators.
-Our best shot is therefore to follow a numerical approach,
+Our best ansatz is therefore to follow a numerical approach,
 which aims at the description of the low end of the spectrum.
 This thus avoids $\sigma_{\text{ess}}(\Op{H})$
 and allows to obtain good approximations to at least a few
 eigenpairs corresponding to the discrete spectrum $\sigma_{\text{disc}}(\Op{H})$,
 \ie~bound states.
 
-In practice this is hardly a restriction.
-Originating from the laws of thermodynamics
-a sensible quantum-mechanical description of a system
+Even though this is a restriction, one gets by for many cases.
+The rationale for this are the laws of thermodynamics,
+which imply that a sensible quantum-mechanical description of a system
 typically only requires the lowest energy state,
 \ie~the \newterm{ground state}, and the next few \newterm{excited state}s
 following most closely in energy.
-Care only needs to be taken to choose a sensible approximation
+Assuming this is the case,
+care only needs to be taken to choose a sensible approximation
 method and a large enough approximation space.
 Otherwise one cannot be sure whether the obtained eigenstates
 are approximations to true discrete states
 or spurious states originating from discretising scattering states
 of the continuum.
+
+This assumption does, however, break down for a couple of cases,
+such as plasma states,
+strong field physics or similar.
+But even without extreme energies, the description of certain
+processes such as resonances or Rydberg-like states
+requires the description of high-energy bound states,
+which can be embedded inside the continuum,
+\ie where the corresponding eigenvalues are part of the essential spectrum.
+This makes a numerical modelling challenging.
+We will mostly ignore this aspect.

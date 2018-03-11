@@ -11,10 +11,11 @@ do not show all the nice properties we would like to rely on.
 For example one might not be able to find eigenfunctions
 for all eigenvalues and the ones one is able to determine
 might not amount to span the Hilbert space completely.
-For this reason we will hint at techniques for the Hilbert space
-$L^2(\R^d, \C)$ and a few of the relevant operators of \QM,
+For this reason we will hint at techniques
+relevant to the Hilbert space $L^2(\R^d, \C)$
+and a few of the relevant operators of \QM,
 which will allow us to recover at least part of the eigenspectrum
-using the numerical methods discussed in chapter \vref{ch:numeigen}.
+with the numerical methods discussed in chapter \vref{ch:numeigen}.
 
 \subsection{Bounded and self-adjoint operators}
 
@@ -55,9 +56,9 @@ is the notion of bounded and unbounded operators.
 	An operator $\Op{A}$ on $\hilbert$ is \newterm{bounded} iff
 	\[ \opnorm{\Op{A}} < \infty, \]
 	\ie if it has finite operator norm.
-	A bounded operator is also sometimes referred to as \newterm{continuous}%
+	A bounded operator is referred to as \newterm{continuous}%
 	\footnote{In fact this is a consequence from the fact that a bounded linear operator
-	between normed vector spaces is always continuous.}.
+	between normed vector spaces is always continuous.} as well.
 \end{defn}
 In our example of $\hilbert = L^2(\R^d, \C)$ an operator is hence bounded
 if its action on a square-integrable function yields another function,
@@ -144,11 +145,11 @@ Using the identification of the previous remark,
 we may define the terms symmetric and self-adjoint.
 \begin{defn}
 	\label{def:SymmetricOperator}
-	An operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric}%
-	\footnote{In Physics textbooks this is sometimes called Hermitian.}
+	An operator $\Op{A}$ on $\hilbert$ is called \newterm{symmetric}
 	if
 	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
 \end{defn}
+In Physics textbooks a symmetric operator is usually called Hermitian.
 
 \begin{defn}
 	Let $\Op{A}$ be a linear operator on $\hilbert$ with (dense) domain $D(\Op{A})$
@@ -173,11 +174,12 @@ we may define the terms symmetric and self-adjoint.
 \end{defn}
 
 \begin{rem}
-	For a \emph{bounded} linear operator $\Op{A}$ with $D(\Op{A}) = \hilbert$%
+	For a \emph{bounded} linear operator $\Op{A}$ with $D(\Op{A}) = \hilbert$
+	one can find%
 	\footnote{Since $D(\Op{A})$ in our treatment is dense in $\hilbert$,
 	one can always find a unique, bounded extension of $\Op{A}$ with complete
 	domain $\hilbert$ if $\Op{A}$ if bounded}
-	one can find a definition for the adjoint,
+	a definition for the adjoint,
 	which is more usual in the literature of quantum physics.
 
 	\noindent
@@ -206,7 +208,8 @@ we may define the terms symmetric and self-adjoint.
 	by choosing an appropriate operator extension.
 	We will discuss this 
 	is section \vref{sec:SpectrumLaplace} and \vref{sec:HydrogenAtom}
-	considering the spectrum of the Laplace \eqref{eqn:LaplaceOperatorHydrogen}
+	considering the spectrum of the Laplace operator
+	\eqref{eqn:LaplaceOperatorHydrogen}
 	and the hydrogen-like operator \eqref{eqn:OpHydrogen}.
 \end{rem}
 
@@ -276,6 +279,7 @@ but not surjective.
 Therefore one may find points in the spectrum, which are not eigenvalues.
 This is expressed more formally in the next definition.
 
+\todoil{In this and the next decomposition, how does this relate to resonance states?}
 \begin{defn}
 	If $\Op{A}$ is self-adjoint, we can decompose
 	$\sigma(\Op{A}) = \sigma_P(\Op{A}) \, \dot{\cup} \, \sigma_C(\Op{A})$
@@ -308,7 +312,7 @@ if enough time has passed.
 The decomposition of the spectrum into point and continuous spectrum
 is not the only possibility.
 Especially from the point of view of numerical modelling
-the following, alternative approach is more helpful
+the following, an alternative approach is more helpful
 as we shall see later.
 
 \begin{defn}
@@ -343,7 +347,7 @@ why only modelling the discrete spectrum can be done easily by
 approximative, numerical methods.
 For this we need to discuss the special case of
 compact, self-adjoint operators in more detail.
-Already if an operator is compact,
+If an operator is compact,
 its spectrum has a particularly simple form.
 \begin{prop}
 	\label{prop:CompactSpectrum}
@@ -369,6 +373,8 @@ In other words the continuous spectrum of a compact operator
 may at most contain the value $0$ --- even in infinite dimensions.
 Furthermore there is a nice result for the eigenfunctions of a compact, self-adjoint
 operator:
+\todoil{There is something missing here \ldots look it up in Helffer,
+most especially no reference to the eigenfuctions!}
 \begin{prop}
 	\label{prop:CompactBasis}
 	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
@@ -458,7 +464,7 @@ which are important for our treatment of \QM.
 
 \subsection{The Laplace operator}
 \label{sec:SpectrumLaplace}
-Let us consider first the $d$-dimensional analogue of the Laplace operator
+Let us first consider the $d$-dimensional analogue of the Laplace operator
 introduced in \eqref{eqn:LaplaceOperatorHydrogen}.
 In Cartesian coordinates it reads
 \begin{equation}
@@ -469,6 +475,8 @@ Since this operator is essentially a scaled form of the kinetic energy operator 
 (see \eqref{eqn:OpHydrogen}),
 we expect it to be self-adjoint and have real eigenvalues.
 
+%TODO OPTIONAL some reasoning about this would be great,
+%     explaining it in more detail
 As it turns out, however,
 the naive choice of taking the domain of the operator to be the full
 quantum-mechanical Hilbert space $D(\Delta) = L^2(\R^d, \C)$
@@ -492,7 +500,7 @@ let us now consider the Laplace operator on the surface of the unit sphere
 	\set{S}^2 := \left\{ \vec{r} \in \R^3 \, \middle| \, x^2 + y^2 + z^2 = 1 \right\}.
 \]
 For this it is most convenient to consider
-the spherical polar coordinate system,
+the spherical coordinate system,
 \ie instead of parametrising the vector $\vec{r}$ as a
 Cartesian column vector $(x, y, z)^T$,
 we specify it as $(r, \theta, \varphi)$ with
@@ -501,15 +509,15 @@ we specify it as $(r, \theta, \varphi)$ with
 \end{align*}
 The condition for the unit sphere than reduces to $r\stackrel{!}{=}1$.
 
-Since the sphere is no longer a Euclidean geometry
-but much rather a curved manifold
+Since the sphere has no longer a Euclidean geometry
+but a curved manifold
 the operator equivalent to \eqref{eqn:LaplaceOperatorD} takes
 the deviating functional form
 \newcommand{\laplaceSphere}{\Delta_{\set{S}^2}}
 \begin{equation}
-	\laplaceSphere  u = \frac{1}{\sin \theta} \frac{\partial}{\partial \varphi}
-\left( \sin \varphi \frac{\partial u}{\partial \varphi}  \right)
-+ \frac{1}{(\sin \varphi)^2} \frac{\partial^2}{\partial \theta^2} u
+	\laplaceSphere  u = \frac{1}{\sin \theta} \frac{\partial}{\partial \theta}
+\left( \sin \theta \frac{\partial u}{\partial \theta}  \right)
++ \frac{1}{(\sin \theta)^2} \frac{\partial^2}{\partial \varphi^2} u
 	\label{eqn:LaplaceBeltramiS}
 \end{equation}
 in spherical polar coordinates.
@@ -598,9 +606,9 @@ in contrast with \eqref{eqn:Laplace}
 suggests a product ansatz
 \[ \Psi_{nlm}(\vec{r}) = R_{nl}(r) Y_l^m(\theta, \phi). \]
 %
-With \eqref{eqn:LaplaceSphericalHarmonic} this yields to the radial equation
+With \eqref{eqn:LaplaceSphericalHarmonic} this yields the radial equation
 \begin{equation}
-	\left( - \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2} - \frac{Z}{r} - E \right) R_{nl}(r) = 0
+	\left( - \frac{1}{2r^2} \laplaceRadial + \frac{l (l+1)}{2 r^2} - \frac{Z}{r} - E_\mu \right) R_{nl}(r) = 0
 	\label{eqn:HydrogenRadial}
 \end{equation}
 which has the solutions~\cite{Mueller2000}
@@ -622,11 +630,11 @@ The normalisation constant is
 \[ N_{nl} = \frac{2 \left( \frac{Z}{n} \right)^{3/2}}{(2l+1)!} \sqrt{ \frac{(l+n)!}{n (n-l-1)!}} \]
 and the corresponding energy eigenvalues are
 \begin{equation}
-	E_{nlm} = - \frac{Z^2}{2n^2}.
+	E_{\mu} = - \frac{Z^2}{2n^2}.
 	\label{eqn:HydrogenEnergyLevels}
 \end{equation}
 
-If one walks through the derivation properly,
+If one follows through the derivation properly,
 one notices that the quantum numbers $n$, $l$ and $m$ are integer and need to satisfy
 the following conditions:
 \begin{align}
@@ -650,13 +658,13 @@ which implies
 \end{equation}
 From the functional form of $R_{nl}$ and $Y_l^m$ it is clear,
 that all eigenstates $\Psi_{nlm}$ are infinitely differentiable everywhere
-except $r = 0$.
+except at $r = 0$.
 See \cite{Kato1957} and references therein for details.
 The polynomial in $r$ in front of the exponential factor of the radial part $R_{nl}$
 has exponents in $r$ in the range $[l, n-1]$
 such that the eigenstate with $l = n-1 = 0$, i.e.~$\Psi_{1s}$ is the least smooth.
 This implies $\Psi_{nlm} \in H^2(\R^3, \C)$ and thus
-$\mathcal{H}_\text{H}$ is a (true) subspace
+$\mathcal{H}_\text{H}$ is a (true) subspace%
 \footnote{
 	This is a true subspace, \ie non-identical to $H^2(\R^3, \C)$,
 	since the scattering states are not part of it.
