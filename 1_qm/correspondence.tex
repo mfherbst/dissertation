@@ -69,18 +69,17 @@ We will now introduce (non-relativistic)
 quantum mechanics~(QM) in a rather pragmatic manner,
 namely by stating a summary what changes in the \QM formulation
 compared to the classical one.
-The full mathematical details are not yet stated at this point.
+The full mathematical details are not yet stated at this point
+and not all terms defined.
 The reader should take this overview as a motivation
 for a more detailed treatment of the mathematical concepts
 further down this chapter.
-\todoil{There are 6 points to consider}
-\todoil{Use no numbers but letters (a, b, c)}
 
 \nomenclature{$\hilbert$}{Arbitrary Hilbert space,
 	typically the Hilbert space of quantum mechanics, which $L^2(\R^d, \C^s)$
 	for $d$ spatial and $s$ spin dimensions.
 }
-\begin{enumerate}
+\begin{enumerate}[label=(\alph*)]
 	\item Instead of phase space vectors $\clphase \in \R^{2d}$,
 		in \QM a particular state of the system is represented
 		by functions $\Psi : \R^d \to \C$
@@ -120,7 +119,7 @@ further down this chapter.
 		\footnote{We will see in section \vref{sec:spectral}
 		that this is \emph{not} always possible.
 		A more general treatment of spectral theory involving
-		\textit{spectral projectors} allows to reformulate 6. for cases
+		\textit{spectral projectors} allows to reformulate point (f) for cases
 		where such eigenpairs cannot be found.
 		See \cite{Helffer2013} for details.}
 		$\Op{F}$, where $\mathcal{I}$ is an appropriate index set.
@@ -266,18 +265,17 @@ in atomic units takes the simple form
 We will from now work exclusively in these units.
 \begin{table}
 	\centering
-	\todoil{Source for the values}
 	\begin{tabular}{lllll}
 		\toprule
 		symbol & name & atomic unit of & value in SI units \\
 		\midrule
 		$\hbar$ & Planck constant & action & $\unit[1.055\E{-34}]{Js}$ \\
 		$e$ & elementary charge & charge & $\unit[1.602\E{-19}]{C}$ \\
-		$m_e$ & electron mass & mass & $\unit[9.110\E{-31}]{kg}$ \\
+		$m_e$ & electron mass & mass & $\unit[9.109\E{-31}]{kg}$ \\
 		$a_0$ & Bohr radius & length & $\unit[5.292\E{-11}]{m}$ \\
 		$E_h$ & Hartree energy & energy & $\unit[4.360\E{-18}]{J}$ \\
 		\bottomrule
 	\end{tabular}
-	\caption{Atomic units and their relationship to SI units.}
+	\caption{Atomic units and their relationship to SI units. Values taken from \cite{CODATA2014}.}
 	\label{tab:AtomicUnits}
 \end{table}

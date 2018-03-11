@@ -269,39 +269,63 @@ of the state function $\abs{\Psi(x_1, x_2, \ldots x_d)}^2$
 at each point in space $(x_1, \ldots x_N)$.
 A more detailed analysis in light of this probabilistic meaning of $\Psi$
 suggests to take these functions from the Hilbert space of square-integrable functions
-$L^2(\R^d, \C)$, defined as such:
+$L^2(\R^d, \C)$,
+which we will define now.
 
-\begin{prop}
-	\label{prop:L2HilbertSpace}
-	Given two functions $f, g : \R^d \to \C$,
+\begin{defn}
+	\label{def:L2Norm}
+	Given two suitable%
+	\footnote{%
+		In order for the inner product \eqref{eqn:defL2InnProd}
+		to be well-defined, the integrand needs to be Lebesgue-measurable,
+		\ie $f$ and $g$ need to be chosen such that the integral
+		over $f^\ast g$ can be performed in the Lebesgue sense.%
+	}
+	functions $f, g : \R^d \to \C$,
 	we can define an inner product
 	\begin{equation}
 		\braket{f}{g}_{L^2} := \int_{\R^d} \cc{f}(\vec{x}) g(\vec{x}) \D \vec{x}
 		\label{eqn:defL2InnProd}
 	\end{equation}
-	\todoil{Fabian:\\
-		das innere product is fuer allgemeine functionen nicht wohldefiniert.
-		ich wuerde vorschlagen, schreib ``wherever well defined''
-		dazu oder erwaehne lebesgue messbarkeit.
-		Weiter wuerde ich die ``norm'' als abbildung definieren,
-		da es ja lediglich eine semi-norm ist. Dann kann man $L^2$
-		definieren mit der bemerkung, dass eine aquivalenz klasse eingefuehrt
-		wird bzgl. der die ``norm-abbildung'' $\norm{\slot}$ eine norm ist.
-	}
-	and the corresponding induced norm
+	and the corresponding induced norm function
 	\begin{equation}
-		\norm{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2},
+		\abs{f}_{L^2} := \sqrt{\braket{f}{f}_{L^2}} = \left( \int_{\R^d} \abs{f(\vec{x})}^2 \D \vec{x} \right)^{1/2},
 		\label{eqn:defL2Norm}
 	\end{equation}
 	where the integral --- in both cases --- is to be understood in the Lebesgue sense
 	and we identified
 	\[ \vec{x} \equiv (x_1, \ldots, x_d) \]
-	for ease of notation. The set%
-	\footnote{More precisely $L^2$ is constructed as a quotient group
-		over the equivalence relation of functions being identical
-		\textit{almost everywhere}. In this sense functions are considered
-		to be the same iff they differ at most on a set of Lebesgue measure zero.
-		See \cite{DiracNotation} for details.}
+	for ease of notation.
+\end{defn}
+Notice, that \eqref{eqn:defL2Norm} is not yet a norm,
+but almost\footnote{It is a so-called \textit{semi-norm}.}.
+What is missing is the norm-separates-points-condition \eqref{eqn:normPointSep}.
+The reason has to do with the subtleties
+of the Lebesgue integrals are defined.
+In fact the result of a Lebesgue integral
+\[ \int_{R^d} f \D x \]
+is unchanged if we replace the integrand $f$ by a function $f'$,
+which is identical \emph{almost everywhere}.
+This is meant to say,
+that changing $f$ at infinitely many, well-separated places in order yield $f'$
+does not change the outcome of the integration.
+More mathematically one says that the Lebesgue integral is only uniquely defined
+up to \newterm{sets of measure zero}.
+Coming back to \eqref{eqn:normPointSep},
+the problem is hence that there is more than one function satisfying
+$\abs{f}_{L^2} = 0$,
+in fact infinitely many.
+To circumvent this problem one performs a trick,
+namely one puts all functions which are equivalent almost everywhere
+in one class and henceforth only thinks of them as one entity.
+In the language of mathematics,
+we form the quotient group under the equivalence relation of functions being identical
+almost everywhere.
+Under this procedure $\abs{\slot}_{L^2}$ becomes a full norm,
+denoted as $\norm{\slot}_{L^2}$ and we can define:
+\begin{prop}
+	\label{prop:L2HilbertSpace}
+	The set
 	\[ L^2(\R^d, \C) := \big\{ f : \R^d \to \C ~\big|~ \norm{f}_{L^2} < \infty \big\}, \]
 	where the norm $\norm{\slot}_{L^2}$ stays finite
 	is the set of \newterm{square-integrable functions}.
@@ -310,14 +334,13 @@ $L^2(\R^d, \C)$, defined as such:
 		See~\cite{Adams2003}
 	\end{proof}
 \end{prop}
-
-\noindent
-Luckily one can show~\cite{Werner2011}
 \begin{prop}
 	$L^2(\R^d, \C)$ is separable.
+	\begin{proof}
+		See~\cite{Werner2011}
+	\end{proof}
 \end{prop}
-\noindent
-such that $L^2(\R^d, \C)$ truely satisfies all the requirements
+In other words $L^2(\R^d, \C)$ truely satisfies all the requirements
 for being a suitable Hilbert space of \QM
 as introduced in section \vref{sec:IntroQM}.
 
@@ -450,13 +473,10 @@ and is furthermore an important building block of the Coulomb-Sturmians%
 \begin{exmp}
 	\label{exmp:H1sH1}
 	The function $\Psi_{1s}$ of \eqref{eqn:H1sFunctionalForm} belongs to $H^1(\R^3, \C)$.
-	\todoil{
-		Loch im Beweis (Fabian):\\
--> mhhh..., ich bin mir nicht sicher ob das durchgeht. nur weil eine function nirgends gegebn unendlich strebt heisst nicht, dass sie im $L^2$ sinn beschraenkt ist. das gilt nur fuer functionen auf einer menge von endlichem mass, was $\mathbb{R}^3$ nicht ist. ich wuerde folgendes vorschlagen: $\Psi$ ist stetig also lebesgue messbar, damit ist die $L^2$ norm wohldefiniert. weiter fallen die gaussfunctionen 'schnell genug' ab (sind im schwarzraum) [referenz... wahrscheinlich auch im werner], s.d. die norm insbesondere endlich ist. dann kann man den beweis abschliessen, wie du es gemacht hast: [Due to ....].
-	}
 	\begin{proof}
-	Since the function is bounded\footnote{Does not go to infinity anywhere.},
-	we clearly have $\Psi_{1s} \in L^2(\R^3, \C)$.
+	Since the function is Riemann-integrable over $\R^3$,
+	it is Lebesgue-integrable as well
+	and as a result $\Psi_{1s} \in L^2(\R^3, \C)$.
 	Furthermore for any $\alpha \in \{x, y, z\}$:
 	\begin{equation}
 		\norm{ \frac{\partial \Psi_{1s}}{\partial \alpha} }_{L^2}
