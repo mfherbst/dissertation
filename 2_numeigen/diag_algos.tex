@@ -16,7 +16,8 @@ where $\mat{A} \in \R^{\Nbas \times \Nbas}$,
 $\lambda_i \in \R$ and $\vec{u}_i \in \R^{\Nbas}$.
 
 \subsection{Direct methods}
-One way this can be done are so-called \newterm{direct diagonalisation methods}.
+One approach to solve such eigenproblems are
+so-called \newterm{direct diagonalisation methods}.
 These methods directly attempt to perform a transformation
 \[ \rtp{\mat{O}} \mat{A} \mat{O} = \mat{L} = \diag(\lambda_1, \lambda_2, \ldots, \lambda_{\Nbas}), \]
 where $\mat{O} \in \R^{\Nbas\times\Nbas}$ is an orthogonal matrix.
@@ -39,9 +40,10 @@ and little or no
 extra work is required to additionally obtain all eigenvectors as well.
 
 \subsection{Iterative diagonalisation methods}
-In contrast to direct methods are \newterm{iterative diagonalisation methods},
-where, abstractly speaking, the matrix $\mat{A}$ is probed iteratively
-in order to gather more and more information
+Unlike direct methods, which directly access the matrix elements,
+\newterm{iterative diagonalisation methods}
+only probe the matrix $\mat{A}$ indirectly,
+namely by iteratively gathering more and more information
 about the eigenpairs of interest.
 The way this is done in practice is to repetitively form
 the matrix-vector product
@@ -55,8 +57,9 @@ This implies that random access into $\mat{A}$
 is not required for such methods and thus specific storage schemes
 or well-crafted algorithms going beyond a typical matrix-vector product
 can be employed for forming $\vec{y}$.
-The latter aspect is most important in the context of this thesis,
-see chapter \vref{ch:NumSolveHF} and chapter \vref{ch:LazyMatrices}.
+The latter aspect is most important for the contraction-based
+methods, which will be developed in chapters
+\vref{ch:NumSolveHF} and \vref{ch:LazyMatrices} of this thesis.
 
 Iterative methods are typically not ideal for
 computing many or all eigenpairs of a matrix $\mat{A}$,
@@ -64,9 +67,9 @@ which is in contrast to direct methods.
 They do perform, however, much better than direct methods
 if only few eigenpairs are desired
 and it is well-known \emph{where} in the spectrum they are located.
-Examples for cases where they tend to work well
+Examples for cases where iterative methods tend to work well
 is if one requires some of the largest eigenvalues of $\mat{A}$
-or some of those, which are closest to an estimated value $\sigma$.
+or some of those which are closest to an estimated value $\sigma$.
 Some important iterative methods are sketched in the following sections.
 
 \subsection{The power method}
@@ -99,7 +102,7 @@ In well-behaved cases this algorithm will find an approximation for
 the largest eigenvalue in $\theta^{(i)}$
 and an approximation for the corresponding eigenvector as
 \[ \frac{\vec{v}^{(i)}}{\norm{\vec{v}^{(i)}}_2}. \]
-To understand this
+To understand this,
 let us write $\vec{v}^{(0)}$ as an expansion in the exact
 eigenvectors \linebreak $\vec{u}_1, \vec{u}_2, \ldots, \vec{u}_{\Nbas}$:
 \begin{equation}
@@ -111,7 +114,7 @@ Without loss of generality%
 floating point arithmetic. After a single application of $\mat{A}$,
 this is cured and we are back to the case we consider here.}
 we can normalise $\vec{v}^{(0)}$ such that $\alpha_{\Nbas} = 1$.
-Keeping this in mind the application of $\mat{A}$ to \eqref{eqn:Vexpansion}
+Keeping this in mind, the application of $\mat{A}$ to \eqref{eqn:Vexpansion}
 results in
 \[
 	\mat{A} \vec{v}^{(0)} = \lambda_{\Nbas} \left( \vec{u}_{\Nbas} + \sum_{i=1}^{\Nbas}
@@ -158,7 +161,7 @@ This is the purpose of so-called \newterm{spectral transformations}.
 			with eigenvalue $\lambda_i - \sigma$.
 		\item If $\sigma \in \R$ is chosen such that
 			$\mat{A} - \sigma \mat{I}_{\Nbas}$
-			is invertible, than  $\vec{u}_i$ is an eigenvector
+			is invertible, then  $\vec{u}_i$ is an eigenvector
 			of $\left( \mat{A} - \sigma \mat{I}_{\Nbas} \right)^{-1}$
 			with eigenvalue $1 / (\lambda_i - \sigma)$.
 	\end{enumerate}
@@ -195,7 +198,7 @@ to the inverse%
 $\mat{A}^{-1}$ instead of $\mat{A}$.
 Since the largest eigenvector of $\mat{A}^{-1}$ will be the smallest of $\mat{A}$,
 this yields the required result.
-Similarly by proposition \ref{prop:Spectral}(c)
+Similarly, by proposition \ref{prop:Spectral}(c),
 we can tune the power method into a particular eigenvalue of interest
 by guessing an appropriate shift $\sigma$.
 Such spectral transformations are not restricted to the Power method,
@@ -218,7 +221,7 @@ Given that the eigenvalue of largest magnitude of $\mat{A}$ is not degenerate,
 the above sequence will approach the eigenvector corresponding to this
 extremal eigenvalue~(see discussion in section \ref{sec:Power}).
 In each iteration the power method does, however,
-only keep a single of the vectors in \eqref{eqn:PowerSequence}
+only keep one of the vectors in \eqref{eqn:PowerSequence}
 and throws away all information encoded in the history of the iteration.
 An alternative approach which avoids doing so, is
 to explicitly keep all vectors in \eqref{eqn:PowerSequence}.
@@ -241,10 +244,11 @@ was devised to achieve this in a very efficient manner.
 It exploits the fact that each vector \eqref{eqn:KrylovSubspace}
 is related to its predecessor by an application of the problem matrix $\mat{A}$
 to produce a simple recursion scheme minimising the work needed in each step.
-Alongside with the construction of the basis the Arnoldi algorithm
+Alongside with the construction of the basis, the Arnoldi algorithm
 \emph{at the same time} constructs $\tilde{\mat{A}}$,
 the projection of $\mat{A}$ into the Krylov subspace.
-Since $\tilde{\mat{A}}$ is both smaller and has a much simpler form%
+Since $\tilde{\mat{A}}$ is both smaller than $\mat{A}$
+and has a much simpler form%
 \footnote{It is a so-called upper Hessenberg matrix,
 	\ie only the upper triangle and a single subdiagonal in the lower
 	triangle are non-zero.}
@@ -261,7 +265,7 @@ to yield estimates for the eigenpairs.
 
 A modification of the Arnoldi method for symmetric matrices $\mat{A}$
 is the Lanczos method~\cite{Lanczos1950},
-which implicitly exploits the fact,
+which implicitly exploits the fact
 that the subspace matrix has to be tridiagonal%
 \footnote{Since $\mat{A}$ is symmetric, so is the subspace matrix
 and a symmetric upper Hessenberg matrix is tridiagonal.}
@@ -312,14 +316,14 @@ Following \citet{Davidson1975} we define the residual
 	\label{eqn:DavidsonResidual}
 \end{equation}
 of our current approximation $\vec{v}^{(j)}$ to the eigenvector $\vec{u}_i$.
-In order to correct we employ the
+In order to correct, we employ the
 \newterm{Jacobi orthogonal component correction},
 \ie we want to add a vector $\vec{t}^{(j)} \perp \vec{v}^{(j)}$ to our
 subspace, such that
 \[
 	\mat{A} \left(\vec{v}^{(j)} + \vec{t}^{(j)}\right) = \lambda_i \left(\vec{v}^{(j)} + \vec{t}^{(j)}\right).
 \]
-In other words we attempt to find the vector missing from the subspace,
+In other words, we attempt to find the vector missing from the subspace,
 such that it is able to span the exact solution,
 which implies that it would be able to find it the next time
 we solve the projected problem in the subspace.
@@ -341,8 +345,8 @@ Incorporating the condition $\vec{t}^{(j)} \perp \vec{v}^{(j)}$ leads to the
 \end{equation}
 Since a vector $\vec{t}^{(j)}$ is required
 in each iteration, it needs to be solved many times.
-Fortunately it does, however, not need to be solved exactly.
-In practice one therefore
+Fortunately, it does, however, not need to be solved exactly.
+In practice, one therefore
 employs preconditioning techniques~\cite{Saad2003,Saad2011,Arbenz2010,Grossmann1992}
 to speed up the performance of the iterative procedures
 needed to solve \eqref{eqn:JacobiDavidsonCorrectionEquation}.
@@ -431,14 +435,14 @@ which would imply that less advantageous solution algorithms need to be employed
 An alternative approach to avoid this
 is to try to modify the iterative procedures towards supporting the generalised
 eigenproblems straight away.
-By properly following the algebra one finds that
+By properly following the derivations, one finds that
 appropriate formulations of the algorithms in the setting of generalised
 eigenproblems can be achieved by replacing the explicit or implicit
 occurrences of the orthonormality condition
 \[ \rtp{\vec{u}}_i \vec{u}_j = \delta_{ij} \]
 by
 \[  \rtp{\vec{u}}_i \vec{u}_j = S_{ij}. \]
-In other words only the way the orthonormalisation of the subspace vectors
+In other words, only the way the orthonormalisation of the subspace vectors
 is performed as well as some expressions in which the identity matrix
 occurs,
 like in \eqref{eqn:JacobiDavidsonCorrectionEquation},
