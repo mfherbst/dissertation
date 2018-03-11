@@ -4,7 +4,7 @@
 \defineabbr{STO}{STO\xspace}{Slater-type orbital}
 \defineabbr{ETO}{ETO\xspace}{Exponential-type orbital, orbital with radial part of the form Polynomial in $r$ times $\exp(-\alpha r)$ with some parameter $\alpha$.}
 \defineabbr{FE}{FE\xspace}{Finite element}
-\defineabbr{ACO}{ACO\xspace}{Atom-centered orbital}
+\defineabbr{AO}{AO\xspace}{Atom-centered orbital}
 
 \section{Basis function types}
 \label{sec:BasisTypes}
@@ -181,33 +181,29 @@ the exact solution is not known and thus the relative error cannot be found.
 
 \subsection{Other types of basis functions}
 The selection of basis function types discussed so far
-already gives an overview of the functions,
+already gives a decent overview of the functions,
 which could be used for electronic structure theory calculations.
 Nevertheless there are few more basis function types,
 which should not go unmentioned.
 
 For example, in the context of electronic structure calculations
-on extended periodic systems or systems in the solid state,
+on extended periodic systems or systems in the solid state
 plane-wave and projector-augmented wave approaches%
 \cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010}
 are both extremely popular as well as very well-suited.
 Over the years there has also been an enormous amount of development
 into the direction of numerical basis functions.
 \citet{Frediani2015} provide an excellent review.
-The approaches range from a so-called fully numerical treatment,
-where, similar to the finite-element method mentioned above,
-the complete problem is treated by grid-based methods.
-This includes employing clever
+Such approaches include a fully numerical treatment employing clever
 numerical integration grids~\cite{Losilla2012DCRsp,Toivanen2015,Enkovaara2010}
 or discretisation schemes
 based on finite-differences~\cite{Kobus2013}
-or finite-elements~\cite{Tsuchida1995,Briggs1996,Pask05,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
-Some approaches~\cite{Soler2002} use a dual representation,
-where the same orbitals are both represented on a real-space grid
-as well as in the form of orbitals,
-or they only treat
-part of the electronic wave function numerically~\cite{Fischer1978,LUCAS}.
-Such methods for example employ a factorisation of the one-particle functions
+or finite-elements~\cite{Tsuchida1995,Briggs1996,%
+Pask05,Lehtovaara2009,Alizadegan2010,Avery2011PhD,Davydov2015,Boffi2016}.
+A common pattern is to only treat part of the electronic
+wave function numerically~\cite{Fischer1978,Soler2002,LUCAS}
+and, for example,
+employ a factorisation of the one-particle functions
 into a numerical radial part and a spherical harmonic function.
 Last but not least one should also mention
 wavelet-based methods~\cite{Bischoff2011,Bischoff2012,Bischoff2013,Bischoff2014,Bischoff2014a,Bischoff2017},
@@ -219,15 +215,10 @@ respective problems can be achieved.
 \subsection{Mixed bases}
 In theory there is no reason to stick to a single type of basis function
 in a discretisation.
-In fact, some of the methods mentioned before like
-the SIESTA method~\cite{Soler2002} or the projector-augmented
-plane-wave approaches~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010}
-are cases, where more than one type of basis function is employed at once.
-For example SIESTA uses two discretisations at once
---- one in terms of {\cGTO}s as well as a numerical grid ---
-and projects back and forth between them,
-whilst projector-augmented plane-wave methods use a plane-wave basis
-augmented with other types of basis functions close to the atom cores.
+For example the projector-augmented plane-wave
+approaches~\cite{Kresse1996,Kresse1999,Mortensen2005,Enkovaara2010}
+combine a plane-wave basis
+with other types of basis functions close to the atom cores.
 
 In practice, not all combinations of basis functions are feasible or sensible.
 This can be rationalised by looking at the {\cGTO} or the \CS discretisations,
@@ -242,8 +233,8 @@ In a combination of the two aforementioned basis function types,
 this would destroy their advantageous properties.
 This is not meant to say that mixture basis sets involving
 {\cGTO}s or {\CS} basis functions are not possible or helpful,
-but computing the electron repulsion integrals efficiently
-would, in my opinion, be a rather involved tasks.
+but that computing the electron repulsion integrals efficiently
+would be a rather involved tasks.
 
 \subsection{Takeaway}
 \label{sec:BasisTakeaway}
@@ -260,9 +251,9 @@ Whilst the number of basis functions of the atom-centred
 in the chemical system,
 \FE discretisations need very similar numbers of basis functions
 for atoms and molecules.
-In contrast to \ACO approaches, \FE-based discretisations
+In contrast to \AO approaches, \FE-based discretisations
 need many more basis functions, in the order of millions
-compared to hundreds for \ACO discretisations.
+compared to hundreds for \AO discretisations.
 For this reason only iterative methods
 are feasible for a \FE discretisation,
 where a \contraction-based scheme can theoretically
@@ -278,7 +269,7 @@ the \FE approach in theory comes very close to the ideal
 basis function type we sketched in \vref{sec:BasisDesiredProperties}.
 
 From a practical point of view
-the \ACO approaches are less black-box,
+the \AO approaches are less black-box,
 since more choices about the particular basis set need to be made before the calculation,
 but they are numerically much more feasible.
 Especially for \cGTO-based methods the evaluation of the integrals

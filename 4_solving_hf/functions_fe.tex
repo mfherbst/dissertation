@@ -6,7 +6,7 @@
 The Slater-type orbitals and Gaussian-type orbitals
 we introduced in the previous sections
 are examples for so-called atom-centred basis functions
-or \newterm{atom-centred orbital}s~({\ACO}s).
+or \newterm{atom-centred orbital}s~({\AO}s).
 A different ansatz in many respects
 are grid-based methods,
 where the underlying idea is to partition three-dimensional real space
@@ -36,14 +36,19 @@ on a subset $\Omega \subset \R^3$.
 Typically $\Omega$ is taken to be open.
 At the boundary $\partial\Omega$ one needs
 to impose a boundary condition in order for the solution to be unique.
-There are a couple of options, which will be contrasted later.
+Ideally we would like to model the problem as close to the complete $\R^3$
+as possible, \ie one would like to make the domain $\Omega$ as large as possible.
+In practice one needs to make a compromise,
+raising the question what kind of conditions to impose on the boundary.
+We will discuss this in more detail later in the context
+of solving the Poisson equation,
+see equations \eqref{eqn:PoissonHartreeBCDirichlet} to \eqref{eqn:PoissonHartreeBCRobin}.
 For now let us assume that $\Omega$ is large enough,
 such that the \SCF orbitals are essentially zero on $\partial\Omega$
 and we can impose a homogeneous Dirichlet boundary%
 \footnote{This implies that the \HF eigenfunctions are forced
 	to be exactly zero at the boundary $\partial\Omega$.}.
-Using this approximation
-as well as the inner product
+Using this approximation as well as the inner product
 \[ \braket{\psi}{\chi}_1 \equiv \int_\Omega \psi(\vec{r}) \chi(\vec{r})  \D \vec{r} \]
 the spin-free, real-valued \HF equations \eqref{eqn:HFequations} can be adapted to read
 %
@@ -392,7 +397,6 @@ which implies
 	\quad \Rightarrow \quad
 	O^c_{\mu\nu} = 0.
 \]
-\todoil{Read from here till the end of the section}
 Conversely, to build the matrix $\mat{O}$
 we only need to consider those elements $O_{\mu\nu}$
 where $\text{Supp}(\varphi_\mu) \cap \text{Supp}(\varphi_\nu) \neq \emptyset$.
@@ -440,12 +444,15 @@ where in the last step we introduced a quadrature for the integration
 using $\Nquadc$ quadrature points
 $\vec{\xi}_1, \vec{\xi}_2, \ldots, \vec{\xi}_{\Nquadc} \in c_0$
 with quadrature weights $w_1, w_2, \ldots, w_{\Nquadc}$.
-Assuming $\Nquadc$ to be large enough,
-this quadrature can be made exact,
+Provided that the operator $\Op{O}$ acting on $e_j$ returns a polynomial
+\footnote{This is the case for example for electrostatic Coulomb potentials
+or the kinetic energy operator.},
+the numerical integration in the last step of \eqref{eqn:FEintegralLocal}
+can be made exact using large enough $\Nquadc$,
 since $e_i$ and $e_j$ are only polynomials of order $k$.
 Notice that the only quantities in the above sum depending
 on the cell $c$ are the Jacobian and perhaps the operator $\Op{O}$.
-In other words the quadrature itself only to be defined
+In other words the quadrature itself only needs to be defined
 with respect to the reference cell
 and as a result the only required values of the shape function are those
 at the quadrature points.
@@ -460,12 +467,12 @@ this makes the computation of the matrices $\mat{T}$,
 $\mat{V}_0$ and $\mat{S}$ extremely efficient despite
 the large number of basis functions $\Nbas$ for a
 finite-element-based discretisation.
-Since we know already \emph{before} any computation
-the pairs of finite elements $(\varphi_\mu, \varphi_\nu)$
-which do not have common support,
+Since we know the sparsity pattern of
+pairs of finite elements $(\varphi_\mu, \varphi_\nu)$
+with common support
+already \emph{before} any computation,
 we can already set-up sensible storage schemes
-for these matrices,
-which do not store these zeros explicitly.
+for these matrices and thus avoid storing the known zeros.
 This leads to linear scaling in storage with respect to the number
 of finite elements as well.
 
@@ -496,10 +503,11 @@ defined by a Poisson equation
 \begin{equation}
 \label{eqn:PoissionFE}
 \begin{aligned}
-	-\Delta V^{(n)}_H(\vec{r}) &= 4\pi \rho^{(n)}(\vec{r}) &&\vec{r} \in \Omega \\
-	V^{(n)}_H(\vec{r}) &= 0 && \vec{r} \in \partial\Omega.
+	-\Delta V^{(n)}_H(\vec{r}) &= 4\pi \rho^{(n)}(\vec{r}) &&\vec{r} \in \Omega
 \end{aligned}
 \end{equation}
+with suitable boundary condition on $\partial\Omega$
+--- see discussion below.
 In this case $V^{(n)}_H(\vec{r})$ is called the \newterm{Hartree potential} as well.
 Assuming \eqref{eqn:PoissionFE} can be solved,
 we can rewrite \eqref{eqn:CoulombFE} to give
@@ -512,7 +520,8 @@ this latter integral can be evaluated in $\bigO(\Nbas)$
 time and space using the cell-wise numerical integration scheme discussed above.
 
 Solving the Poisson equation \eqref{eqn:PoissionFE}
-is a well-understood problem in numerical mathematics.
+is a well-understood problem in numerical mathematics
+consisting of just solving a linear system of equations.
 Using a combination of multigrid preconditioning~\cite{Hackbusch1985}
 and a conjugate-gradient linear solver~\cite{Grossmann1992},
 this problem can be solved in $\bigO(\Nbas)$%
@@ -524,11 +533,20 @@ this problem can be solved in $\bigO(\Nbas)$%
 	demonstrates this.
 }.
 
-A question worth addressing in this context is which boundary condition to choose.
-In \eqref{eqn:SCFproblemFE} as well as \eqref{eqn:PoissionFE}
-we used a  homogeneous Dirichlet boundary in both cases.
-Whilst this is still somewhat sensible for the \SCF orbitals,
-this can lead to issues for the Hartree potential, which only falls off as $-1/r$.
+Let us now address the pending question,
+which boundary condition to use in equations
+\eqref{eqn:SCFproblemFE} as well as \eqref{eqn:PoissionFE}.
+First we note, that for non-equally spaced grids,
+one may take the cells close to the boundary to be rather large.
+Given that both the Hartree potential $V_H^{(n)}$ as well as the
+SCF orbitals decay asymptotically,
+there is less and less change in their values to be expected.
+In other words a coarse grid will be sufficient in these regions
+and we can in fact take $\Omega$ quite large,
+say $[-100,100]^3$ or even larger.
+If we impose a homogeneous Dirichlet boundary on such a domain,
+this is still a sensible choice for the \SCF orbitals,
+but it can lead to issues for the Hartree potential, which only falls off as $-1/r$.
 So even at distances of $10^6$ Bohr from the nucleus the potential
 will is around $10^{-6}$.
 The situation can be improved by approximating the density $\rho^{(n)}(\vec{r})$
@@ -566,8 +584,8 @@ The options are
 			\alpha(\vec{r}) V_P(\vec{r}) &= \partial_n  V_P(\vec{r}) 
 		\end{align}
 \end{itemize}
-For the Poisson equation Robin boundary conditions usually
-\eqref{eqn:PoissonHartreeBCRobin} work best in practice,
+For the Poisson equation Robin boundary conditions
+\eqref{eqn:PoissonHartreeBCRobin} usually work best in practice,
 since they enforce resemblance of the gradient and the value
 of $V_P(\vec{r})$ at the same time.
 
@@ -675,7 +693,7 @@ no immediate criterion for excluding some
 pairs of finite element indices $(\mu, \nu)$ can be found
 from the derived expression.
 
-Luckily, each element $K^{(n)}_{\mu\nu}$
+Each element $K^{(n)}_{\mu\nu}$
 can be evaluated in $\bigO(k^6 \Nquadc \Nquadc' \Nelec)$
 computational time.
 To see this, let us first consider the evaluation of
@@ -729,7 +747,7 @@ and thus reduce the scaling.
 \end{figure}
 
 From the preliminary results I obtained,
-I would not expect this attempt to beneficial by its own
+I would not expect this attempt to be beneficial by its own
 and that further strategies are required.
 To illustrate this, consider figure \ref{fig:StructureFiniteElementFock},
 where both the structure of the local terms $\mat{T}+\mat{V}_0 + \mat{J}$
@@ -768,7 +786,7 @@ this is not always true.
 The trick is usually that changing the order of summation and integration
 often allows to compute the elements of a matrix like $\mat{K}$
 in a more efficient way,
-changing the overall computational scaling reduces to $\bigO(\Nbas)$.
+reducing the overall computational scaling to $\bigO(\Nbas)$.
 For easier writing of the following algebra, let
 \[ \psi_i^{(n)}(\vec{r}) = \sum_{\mu\in\Ibash} C^{(n)}_{\mu i} \varphi_\mu(\vec{r}) \]
 such that
@@ -821,11 +839,14 @@ For each $i\in\Iocc$ we can solve a Poisson equation in analogy to \eqref{eqn:Po
 \label{eqn:ExchangePoissonEqns}
 \begin{aligned}
 	- \Delta V_{\vec{x}, i}(\vec{r}) &= 4 \pi \rho_{\vec{x},i}^{(n)}(\vec{r})
-		&& \vec{r} \in \Omega \\
-	V^{(n)}_{\vec{x}, i}(\vec{r}) &= 0 && \vec{r} \in \partial\Omega
+		&& \vec{r} \in \Omega,
+	%	\\ V^{(n)}_{\vec{x}, i}(\vec{r}) &= 0 && \vec{r} \in \partial\Omega
 \end{aligned}
 \end{equation}
-defining implicitly the \newterm{exchange contraction potentials} $V^{(n)}_{\vec{x}, i}$.
+where the boundary is fixed using one of \eqref{eqn:PoissonHartreeBCDirichlet}
+to \eqref{eqn:PoissonHartreeBCRobin}.
+Solving \eqref{eqn:ExchangePoissonEqns} defines
+implicitly the \newterm{exchange contraction potentials} $V^{(n)}_{\vec{x}, i}$.
 With these potentials \eqref{eqn:ExchangeApply} becomes
 \begin{equation}
 	\left( \mat{K}^{(n)} \vec{x}  \right)_\mu
@@ -863,11 +884,13 @@ in $\Nbas$,
 the application to a vector $\vec{x}$
 can be done in $\bigO(\Nbas)$ computational time
 with this scheme.
-When it comes to storage,
-the most costly step is the discretisation
-of the Laplace operator $\Delta$ for solving the Poisson equations
-\eqref{eqn:ExchangePoissonEqns},
-which is after all still linear in $\Nbas$.
+% TODO OPTIONALA
+%  Clearify it and check whether its true.
+% When it comes to storage,
+% the most costly step is the discretisation
+% of the Laplace operator $\Delta$ for solving the Poisson equations
+% \eqref{eqn:ExchangePoissonEqns},
+% which is after all still linear in $\Nbas$.
 
 Many iterative diagonalisation algorithms,
 like the Lanczos method~(see section \ref{sec:Arnoldi})
@@ -926,27 +949,27 @@ they are extremely good preconditioners up to the point
 where solving the Poisson equations \eqref{eqn:ExchangePoissonEqns}
 reduces to a few manageable matrix-vector products.
 Since $\Delta$ is essentially equivalent to $\mat{T}$
-and occurrs both is the computation of $\matJ$
+and occurs both is the computation of $\matJ$
 as well as the equations \eqref{eqn:ExchangePoissonEqns}
 for applying $\matK$ to a vector, the costs could amortise overall.
 If one accepts storing the discretised form of $\Delta$
-as well as its approximate or exact inverse,
+as well as its sparse Choleski factorisation
+or its exact sparse inverse~\cite{Davis2004},
 one can reduce the costs even further,
 since these quantities only need to be computed
-once for each discretisation grid
-and not once per \SCF cycle.
+once for each discretisation grid and not once per \SCF cycle.
 Another problem in the proposed scheme for \FE-based \HF is numerical stability.
 In integrals like \eqref{eqn:ExchangeFromPotentials}
 the integrand is no longer a simple polynomial function,
-but could have a rather complex funcitonal form,
+but could have a rather complicated functional form,
 such that higher quadrature orders than usual
-could be neccessary.
+could be necessary.
 Furthermore, our experiments suggest,
 that the Poisson equations \eqref{eqn:ExchangePoissonEqns}
 need to be solved to high numerical accuracy
 in order to result in meaningful eigenpairs
 in the iterative diagonalisation method.
-Due to these challenges a practically useful implmentation
+Due to these challenges a practically useful implementation
 of the presented ansatz is still pending.
 
 Despite these numerical challenges

@@ -34,10 +34,11 @@ atoms of the first two periods of the periodic table.
 	\label{fig:EnergyTermsVsK}
 \end{figure}
 
+% James says good!
 In the \CS basis functions
 $\kexp$ only occurs in the radial part \eqref{eqn:RadialPartCsRepeated}.
 In the form of the exponential term $\exp(-\kexp r)$
-it influences how quickly the basis functions decay at infinity
+it influences how quickly the basis functions decay asymptotically
 and in the form of the polynomial prefactor it determines
 the curvature of the radial functions as they oscillate between the radial nodes.
 Keeping this in mind let us consider figure \vref{fig:EnergyTermsVsK},
@@ -101,7 +102,7 @@ interaction terms win, such that a convex curve
 for the plot $E_\text{HF}$ versus $\kexp$ results.
 Adding correlation effects by a treatment of the atom at {\MP}2 or \FCI level,
 does not change this overall behaviour much.
-Up to a large extend the curves are just shifted downwards by the
+Up to a large extent the curves are just shifted downwards by the
 correlation energy term.
 The shift is, however, not completely uniform.
 This can be seen if we consider the optimal \CS exponent $\kopt$,
@@ -152,7 +153,7 @@ for all values of $\kexp$.
 Instead the curves seem to bend down in the range $\kexp > 3$.
 In other words choosing a \CS exponent larger than $\kopt$
 will generally speaking lead to a smaller error
-than choosing a too large exponent%
+than choosing a too small exponent%
 \footnote{We already noted this aspect in the context of discussing
 	the local energy plots in section \vref{sec:BasisCS}.}.
 Another conclusion we can draw from figure \ref{fig:EHF_vs_k}
@@ -322,7 +323,7 @@ the energy-dependent decay of the exact wave function~\cite{Kato1951},
 which --- assuming \HF to be exact --- would manifest as well in an
 energy-dependent decay of the orbitals by themselves.
 Applying the formula
-\[ \varepsilon_i = - \frac12 k_i \qquad \Leftrightarrow \qquad k_i
+\[ \varepsilon_i = - \frac12 k_i^2 \qquad \Leftrightarrow \qquad k_i
 	= \sqrt{-2 \varepsilon_i}
 \]
 to yield the best exponent $k_i$ for describing orbital $i$ and taking the average
