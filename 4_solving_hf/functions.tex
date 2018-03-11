@@ -2,7 +2,6 @@
 \defineabbr{cGTO}{cGTO\xspace}{Contracted Gaussian-type orbital}
 \defineabbr{GTO}{GTO\xspace}{Gaussian-type orbital}
 \defineabbr{STO}{STO\xspace}{Slater-type orbital}
-\defineabbr{ETO}{ETO\xspace}{Exponential-type orbital, orbital with radial part of the form Polynomial in $r$ times $\exp(-\alpha r)$ with some parameter $\alpha$.}
 \defineabbr{FE}{FE\xspace}{Finite element}
 \defineabbr{AO}{AO\xspace}{Atom-centered orbital}
 
@@ -11,17 +10,16 @@
 This section tries to address the question,
 which classes of functions can be used
 in order to build a basis set $\{\varphi_\mu\}_{\mu\in\Ibas}$
-for solving the \HF problem in an \SCF procedure.
+for solving the \HF problem.
 For this we will first discuss some desirable properties for a basis set,
 both motivated from the aim to represent the physics of the electronic Schrödinger
 equation as good as possible
 as well as requirements from the numerical side.
 In the light of this,
 we will discuss four types of basis functions in depth,
-namely the historic Slater-type orbitals~({\STO}s),
+namely the Slater-type orbitals~({\STO}s),
 the most commonly employed contracted Gaussian-type orbitals~({\cGTO}s),
 a finite-element based discretisation method
-as an example of a fully numerical approach
 as well as so-called Coulomb-Sturmian-type orbitals.
 
 Even though we mostly concentrate on the \HF problem in this section,
@@ -43,7 +41,7 @@ this requires the basis functions $\{\varphi_\mu\}_{\mu\in\Ibas}$
 to be taken from a dense subspace of the form domain of the operator.
 For the real-valued \HF problem this is the Sobolev space $H^1(\R^3, \R)$,
 thus a hard requirement for all types of basis functions
-used for Hartree-Fock and quantum chemistry is that
+used for Hartree-Fock and quantum chemistry in general is that
 they originate from $H^1(\R^3, \R)$.
 Furthermore, in some or another sense we will need compute the elements
 of the Fock matrix $\matFfull$ \eqref{eqn:FockMatrix},
@@ -85,7 +83,7 @@ Ideally this would not bias the solution procedure,
 such that unexpected or unintuitive results can still be found.
 
 Last but not least we would like to be able to know
-how wrong our \HF results are compared to the exact electronic ground state,
+how wrong our \HF results are compared to the exact \HF ground state,
 possible even with a pointer how to increase the basis,
 such that results can be systematically improved.
 The aspired scenario would be a rigorous and tight
@@ -102,7 +100,6 @@ types I will discuss here in detail.
 
 \subsection{Local energy}
 \label{sec:LocalEnergy}
-\todo{Rephrase the introductory paragraphs \ldots less we}
 Before we start discussing individual basis types,
 let us briefly pause and think about ways to quantitatively
 judge a particular basis function type.
@@ -112,9 +109,10 @@ with the Ritz-Galerkin \HF result produced by a particular basis on the same sys
 In this chapter, we will compare against the hydrogen atom.
 Without a doubt this does not probe all aspects of the physical interactions
 happening inside the electronic structure.
-Most importantly it does miss an evaluation how a basis set deals with electron correlation.
+Most importantly it does miss an evaluation
+how a basis set deals with electron correlation.
 All results therefore need to be taken with care:
-In more complex systems the situation might be deviating.
+In more complex systems the situation will be deviating.
 
 For comparing our numerical answers in the form of the \HF
 ground-state Slater determinant $\Phi_0$
@@ -159,7 +157,7 @@ Furthermore the fluctuations of $E_L(\vec{x})$ around the exact constant value $
 provide a measure how far $\Phi_0(\vec{x})$ is off from being an
 exact eigenstate of $\Op{H}_{\Nelec}$ at a particular point $\vec{x}$.
 In this sense $E_L(\vec{x})$ can thus be seen as a \emph{local} measure
-for the accuracy of $\Phi_0(\vec{x})$.
+for the accuracy of $\Phi_0(\vec{x})$~\cite{Hoggan2009}.
 Inside regions where $E_L(\vec{x})$ is close to being constant,
 the basis $\{\varphi_\mu\}_{\mu\in\Ibas}$ provides a sensible description
 of an eigenstate of $\Op{H}_{\Nelec}$.
