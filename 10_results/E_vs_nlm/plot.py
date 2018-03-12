@@ -105,7 +105,7 @@ def plot_EHF_vs_bas(values, full_O=False, ignore_regions=[]):
             else:
                 ls = [(1, 1, "-"), (2, 2, "--")]
         elif atom == "Be":
-            ls = [(1, 1, "-"), (0, 0, ":")]
+            ls = [(0, 0, ":"), (1, 1, "-")]
         else:
             ls = [(1, 1, "-")]
 

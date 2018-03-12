@@ -8,8 +8,8 @@ starting point for our investigation of the convergence
 of Coulomb-Sturmian-based discretisations in quantum-chemical calculations.
 To reduce the complexity further,
 we will not yet consider variations of the \CS exponent $\kexp$ in this as well as
-next few sections
-and only discuss the effect of changing the maximal quantum numbers
+the next few sections.
+Instead we will only discuss the effect of changing the maximal quantum numbers
 $\nmax$, $\lmax$ and --- to a lesser extend --- $\mmax$.
 The reason for this is twofold.
 First of all already our initial discussion
@@ -19,33 +19,44 @@ showed that the effect of varying the maximal quantum numbers
 is much more pronounced compared to changing $\kexp$.
 Secondly the completeness property of the Coulomb-Sturmians
 is satisfied regardless of the value of $\kexp$
-and thus guarantees that any error resulting from a less ideal
-value of $\kexp$ will be corrected with larger basis sets.
-In other words $\kexp$ will at most have an effect on the speed of convergence.
+and thus any error resulting from a less ideal
+value of $\kexp$ can be corrected with larger basis sets.
+Notice, however,
+that the rate of convergence increasing the basis size
+does well depend on the choice of $\kexp$
+as previous work suggests~\cite{Avery2017}
+and our discussion in section \ref{sec:kexp} confirms.
+In other words a sensible value for $\kexp$ does not to be chosen
+for our analysis nonetheless.
 
 The net effect of tuning the maximal quantum numbers $\nmax$, $\lmax$ and $\mmax$
-is that one effectively selects which set of radial functions $R_{nl}$
-and which set of angular functions $Y_l^m$ is available for modelling the wave function.
+is that one effectively selects which part
+of the set of all radial functions $\{R_{nl}\}_{nl}$
+and which part of the set of all angular functions $\{Y_l^m\}_{lm}$
+is available for modelling the wave function.
 The completeness property of the Coulomb-Sturmians
-implies that both the set of all
-radial parts $R_{nl}$ as well as all angular parts $Y_l^m$ are complete bases as well.
-The former is furthermore apparent from the connection of the \CS radial equation
-to Sturm-Liouville theory~(see section \vref{sec:BasisCS})
-and the latter is a well-known property of the spherical harmonics.
-Completeness in both these sets implies
-that appropriate tuning the maximal quantum numbers $\nmax$, $\lmax$ and $\mmax$
-of the discretisation basis
-allows to converge the radial part and the angular part of the wave function separately.
-In agreement with chemical intuition
-$\lmax$ and $\mmax$ control the convergence with respect to the angular part
-and $\nmax$ controls the convergence in the radial part,
-which might seem a bit odd at first, given that the radial
-part is indexed both in $n$ \emph{and} $l$.
-The point is, however, that the recurrence relations between the
-confluent hypergeometric functions
-allow to write every radial part $R_{nl}$ with $l>0$
-as a linear combination of the functions $R_{n'0}$ with $n' \leq n$,
-such that convergence in the radial part is in fact independent from $\lmax$.
+implies that both $\{R_{nl}\}_{nl}$
+as well as $\{Y_l^m\}_{lm}$ are complete bases.
+Whilst the latter is furthermore
+a well-known property of the spherical harmonics~\cite{Avery2018},
+the former is also apparent from the connection of the \CS radial equation
+to Sturm-Liouville theory~(see section \vref{sec:BasisCS}),
+where one key result is that the eigenfunctions of a Sturm-Liouville
+differential equation form a complete basis for a weighted $L^2$-space~\cite{Avery2006}.
+Since the angular momentum quantum number $l$
+is a parameter in the \CS radial equation \eqref{eqn:CSRadial},
+not only the set $\{R_{nl}\}_{nl}$ of \emph{all} radial parts is complete,
+but also the set $\{R_{nl'}\}_{n}$, where the angular momentum $l'$ is held fixed.
+This allows to express each function $R_{nl}$ with $l>0$
+as a linear combination of the functions $\{R_{n',0}\}_{n'}$.
+As a careful analysis using the recurrence relations between the
+confluent hypergeometric functions shows using those radial parts
+with $l=0$ and $n' \leq n$ is sufficient to express $R_{nl}$.
+In other words convergence in the radial part can be completely controlled
+by the range of available principle quantum numbers $n$,
+\ie by tuning $\nmax$.
+Conversely $\lmax$ and $\mmax$ control the convergence with respect to the angular part
+in agreement with the physical interpretation given to the quantum numbers $l$ and $m$.
 
 Related to this aspect is the scaling of \CS basis set size
 with the maximal quantum numbers $\nmax$, $\lmax$ and $\mmax$.
@@ -121,9 +132,9 @@ of \cGTO basis sets.
 \end{figure}
 Without truncating the maximal angular momentum by limiting $\lmax$
 the \CS basis set effectively consists only of full shells
-of principle quantum numbers $n$ ranging from $1$ to $\nmax$.
+of principle quantum numbers $n$, ranging from $1$ to $\nmax$.
 Since the \CS functions are complete, increasing $\nmax$ is guaranteed
-to reduce the error.
+to reduce the error due to the Courant-Fischer theorem~\vref{thm:CourantFischer}.
 Figure \vref{fig:ErrorHF_vs_shell} shows this for the atoms of the second period
 by plotting the absolute error in the \HF energy
 versus the number of basis functions.
@@ -134,8 +145,8 @@ very unsuitable exponent.
 Whilst we notice a clear convergence with increasing basis set size,
 it is furthermore visible that the convergence rate drops
 for larger values of $\nmax$.
-Additionally absolute errors up to the order of $0.1$ are not great
-for basis sets with more than $80$ atoms.
+% Additionally absolute errors up to the order of $0.1$ are not great
+% for basis sets with more than $80$ basis functions.
 
 The question is now whether all employed
 basis functions are actually required
@@ -185,12 +196,12 @@ formally defined as follows.
 
 By construction $\RMSOl$ is the \RMS-averaged coefficient for a particular angular
 momentum quantum number $l$ in the occupied SCF orbitals.
-It therefore provides a measure which angular momentum quantum numbers $l$
-are required in the current basis set for describing the ground state properly.
+It therefore provides a measure of which angular momentum quantum numbers $l$
+are required in the current basis set for describing a state properly.
 Conversely values of $\RMSOl$ below the convergence threshold $\epsilonconv$
 of the \SCF procedure indicates that all \CS basis functions of this angular momentum
 value $l$ can be safely removed from the \CS basis set without
-influencing the accuracy of the \HF calculation significantly.
+influencing the accuracy of the \HF calculation above this level.
 In many cases this property of $\RMSOl$ can assist in finding a good
 value of $\lmax$ for truncating the orbital angular momentum.
 
@@ -230,7 +241,7 @@ and \vref{fig:RMSOl_period3},
 which show the variation of $\RMSOl$ vs. $l$ for the \HF ground state
 for the atoms of the second and third period
 if a $(6,5,5)$ Coulomb-Sturmian basis is employed.
-In the plot roughly two kinds of behaviour can be identified.
+In the plot two kinds of behaviour can be identified.
 The first kind applies to those atoms which are either closed-shell
 like \ce{Be}, \ce{Ne}, \ce{Mg} or \ce{Ar}
 or which have a half-filled valence sub-shell
@@ -246,10 +257,11 @@ For these atoms truncating at $\lmax = 0$ or $\lmax=1$, respectively,
 will not introduce a noticeable error as we will see in the next section.
 In contrast to this the other atoms
 \ce{B}, \ce{C}, \ce{O}, \ce{F}, \ce{Al}, \ce{Si}, \ce{S} and \ce{Cl}
-do not quite follow this trend.
+vary in a decreasing staircase pattern.
 Much rather their $\RMSOl$ value decreases only very moderately over the range
 of angular momentum quantum numbers.
 
+\todoil{Use different marks for the plots to make them easier to distinguish}
 \begin{figure}
 	\centering
 	\includeimage{10_results/rms_lf_N}
@@ -298,10 +310,11 @@ of angular momentum quantum numbers.
 	}
 	\label{fig:RMSLF_O}
 \end{figure}
-A good hint to understand this behaviour provide figures
-\ref{fig:RMSLF_N}, \vref{fig:RMSLF_C} and \vref{fig:RMSLF_O}.
-These show the \RMS-averaged value of those orbital coefficients,
-which share the same angular momentum quantum number $l$ in the corresponding
+Figures
+\ref{fig:RMSLF_N}, \vref{fig:RMSLF_C} and \vref{fig:RMSLF_O}
+provide a good hint to understand this behaviour.
+These show the \RMS-averaged value of those orbital coefficients
+that share the same angular momentum quantum number $l$ in the corresponding
 basis function.
 For the modelling of the atoms in each case
 a $(6,5,5)$ Coulomb-Sturmian basis with a near-optimal value of $\kexp$ is employed.
@@ -365,26 +378,40 @@ composed of \cGTO basis functions with $l=0$ and $l=1$,
 but much rather were linear combinations of basis functions with
 angular momentum quantum numbers in steps of $2$ apart.
 So for $s$-like \SCF orbitals $s$, $d$, $g$, \ldots basis functions
-were combined in his calculations --- exactly what we observe in figure \ref{fig:RMSLF_C}.
+were combined in his calculations ---
+exactly what we observe in figure \ref{fig:RMSLF_C}.
 Later it was found that the occurrence of higher angular momenta in
 the ground state is a general issue of
 \UHF~\cite{Fukutome1981,Cook1984,McWeeny1985}.
 \citet{Fukutome1981} provides a very detailed analysis of the
 underlying mechanisms including a discussion of the effect of
 spin symmetry breaking and \HF instabilities in \UHF and \GUHF.
-Roughly speaking for cases with an unevenly occupied electronic configuration,
+Since \molsturm does not use fractional occupation numbers in the initial
+gues for a \UHF procedure,
+the case with an unevenly occupied electronic configuration,
 like a single or two $p$ electrons,
-the initial guess for the \UHF Fock operator is
-no longer spherically but \emph{axially} symmetric~\cite{McWeeny1985}.
+leads to an initial guess for the \UHF Fock operator,
+which is no longer spherically but \emph{axially} symmetric~\cite{McWeeny1985}.
 This implies that the obtained \SCF orbitals no longer represent
 a spherically symmetric density, but an axially symmetric density instead.
-Over the turn of the \UHF iteration
-this broken spherical symmetry allows for different
-angular momenta to be combined in a single orbital,
-such that the resulting \SCF orbitals are no longer of pure
+If we used fractional occupations,
+then numerical error accumulated over the \SCF procedure
+could still lead to axially symmetric \SCF orbitals.
+The reason is the same mechanism leading
+to the Jahn-Teller effect~\cite{Jahn1937},
+namely that breaking the symmetry
+leads to a net lowering in energy for occupied \SCF orbitals,
+but to a net raise in energy for the virtual ones.
+As soon as numerical error once breaks the symmetry of the density
+into being axial, the effect amplifies over the \UHF iterations.
+
+On the level of the \SCF orbitals,
+the broken spherical symmetry allows for \CS basis functions
+of different angular momentum to be combined inside a single orbital,
+such that these are no longer of pure
 $s$, $p$, $d$, \ldots character.
 Let us give a few examples for this.
-If a spherically symmetric $s$ orbital is amend it with
+If a spherically symmetric $s$ orbital is amended with
 a fraction of $d_{z^2}$, then this effectively causes a stretching
 of the orbital along the $z$ axis,
 which makes it axially symmetric.
@@ -393,15 +420,29 @@ may be amended with $f_{xz^2}$, $f_{yz^2}$ and $f_{z^3}$
 to cause the same stretching along the $z$-axis in each of these.
 Even if all $p$ orbitals of this $p$-shell are evenly occupied in the final \HF
 ground state, the wave function is then axially symmetric.
-If such linear combinations with higher angular momenta
-lowers the total \SCF energy
+%Notice that the observed $l, l+2, l+4, \ldots$ pattern
+%of angular momenta, which are combined inside the same \SCF orbital
+%is a consequence of the parity,
+%\ie that each orbital needs to be a proper eigenfunction of the parity operator.
+
+Since such a linear combination of angular momenta lowers
+the total \SCF energy,
 the \UHF procedure for unevenly occupied electron configurations
-may well explore these due to the broken spherical symmetry.
+may well explore these.
 In contrast for evenly occupied valence shells,
 like the half-filled valence shell atoms \ce{N} and \ce{P},
-such a symmetry breaking may not occur,
-such that the pure angular momentum character of each of the orbitals is kept
+such a symmetry breaking does not help to lower
+the energy since all $p$ orbitals are occupied to the same level,
+thus it does not occur
+and the pure angular momentum character of each of the orbitals is kept
 even in an \UHF treatment.
+In other words the observed slow decrease in the $\RMSOl$ plots
+in figures \ref{fig:RMSOl_period2} and \ref{fig:RMSOl_period3}
+for the atoms with one or two unpaired electrons
+is not due to the \CS discretisation not being able to represent the system,
+but much rather due to known issue of \UHF.
+A treatment of the atoms with \ROHF should give more consistent
+results for all atoms.
 
 % coupling only to l+2 and the same m
 % so we could shrink the basis by imposing that restriction!
@@ -412,13 +453,6 @@ even in an \UHF treatment.
 % and odd l have odd parity. Linear combination of functions of even
 % and odd parity breks M_L symmetry (???)
 
-
-% Sometimes we do not only have this issue, but the SCF also does not converge to
-% a minimum but only a saddle point that way, so we need to force convergence using a DIIS.
-
-With the aforementioned detailed analysis of the \UHF procedure
-we are finally in a position to explain all features of the $\RMSOl$ plots
-in figures \ref{fig:RMSOl_period2} and \ref{fig:RMSOl_period3}.
 Conversely our discussion shows that $\RMSOl$ is a good diagnostic measure
 for understanding which angular momentum quantum numbers
 are required for an accurate quantum-chemical modelling.
@@ -492,14 +526,14 @@ example calculations
 of beryllium, nitrogen, carbon, oxygen and phosphorus
 using progressions of \CS basis sets, where $\lmax$ is limited
 to either $0$, $1$ or $2$,
-but $\nmax$ is ranged between $4$ and $12$
+but $\nmax$ is ranged between $4$ and $12$.
 In each case the relative error of the \HF energy
 with respect to the reference values in table \ref{tab:HFReference}
 are plotted against the size of the \CS basis
 and those error values corresponding to the same atom and the same $\lmax$,
 but different $\nmax$, are connected by lines.
 We will refer to such a sequence of connected error values
-by the term progression in the following.
+by the term \newterm{progression} in the following.
 As usual $\kexp$ is fixed to a sensible value for all calculations
 of the same atom
 and for beryllium we used \RHF, for the other atoms \UHF.
@@ -513,9 +547,9 @@ however, a massive improvement in convergence rate.
 For the $\lmax = 1$ progressions of nitrogen and phosphorus the same holds true.
 Choosing $\lmax = 2$ for nitrogen does not improve the obtained
 values very much
-in accordance with our the $\RMSOl$ plot~(figure \ref{fig:RMSOl_period2}).
+in accordance with the $\RMSOl$ plot~(figure \ref{fig:RMSOl_period2}).
 Since the basis now grows faster as $\nmax$ increases,
-the convergence rate is now slower, however.
+the convergence rate is slower, however.
 For oxygen and carbon the angular momentum values $l > 2$ are important
 for a proper modelling of the ground state as well.
 As such it is no surprise that the convergence of the \HF energy
@@ -524,9 +558,10 @@ with $\lmax = 1$ and $\lmax = 2$.
 Even though the convergence is initially linear as well,
 the curves bend off at some point.
 The reason for this is that the truncation of the available
-set of angular momentum quantum numbers to at most $\lmax$ causes
-an error in the discretisation of the angular part of the \HF wave function.
-At some point this error completely dominates,
+set of angular momentum quantum numbers to at most $\lmax$
+makes some of the true solution of the angular part not accessible
+to the \CS discretisation.
+At some point the resulting error completely dominates,
 such that improving the radial part by increasing $\nmax$
 does not improve the relative error by much any more.
 
@@ -583,11 +618,9 @@ in the sense that a significant drop of $\RMSOl$
 from $l$ to $l+1$ indicates
 that the \CS basis set progression with $\lmax = l$
 will allow convergence to a lower error in the \HF energy
-than $\lmax = l-1$ is able to.
+than $\lmax = l-1$ would be able to.
 Once a large enough value for $\lmax$ is chosen to converge the angular part,
-the convergence in the radial part,
-\ie the convergence in the progression of increasing $\nmax$,
-is initially linear.
+the convergence in the radial part with increasing $\nmax$ is initially linear.
 For large values of $\nmax$ the remaining error in the angular part
 will start to dominate and yet a larger $\lmax$
 has to be chosen to make further progress.

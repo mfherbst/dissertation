@@ -1,5 +1,14 @@
 \section{The effect of the Coulomb-Sturmian exponent}
 \label{sec:kexp}
+\todoil{
+	Discussion of the theory. FCI $k$ independent
+	Bluebook equations F.9, F.10 and F.18,
+	Mention better guess: Large Z approximation, Gronskinskian
+}
+% TODO OPTIONAL
+%    As better guesses:
+%    Large Z approximation
+%    One Gronskinskian & analytical calculation
 
 In our discussion about the properties of Coulomb-Sturmian basis sets
 we have  neglected the effect of the \CS exponent $\kexp$ so far.
@@ -90,7 +99,7 @@ but the changes are smaller and thus not visible.
 	\label{fig:FCI_vs_k}
 \end{figure}
 Summing up all energy contributions leads to the blue curve
-in figure \vref{fig:FCI_vs_k},
+in figure \ref{fig:FCI_vs_k},
 which shows the total Hartree-Fock energy versus
 the Coulomb-Sturmian exponent $\kexp$.
 From our discussion of the individual terms
@@ -150,12 +159,14 @@ for $(5,2,2)$ and $(6,2,2)$ the energy versus exponent curves
 become visibly flatter close to the optimal exponent (around $\kexp = 2.8$).
 The influence of increasing $\nmax$ is not the same
 for all values of $\kexp$.
-Instead the curves seem to bend down in the range $\kexp > 3$.
+Instead the curves seem to bend down in the range $\kexp > 3$,
+indicating a faster rate of convergence in this region
+compared to the range $\kexp < 2.5$.
 In other words choosing a \CS exponent larger than $\kopt$
-will generally speaking lead to a smaller error
-than choosing a too small exponent%
+will generally speaking lead to better convergence,
+thus a smaller error than choosing a too small exponent%
 \footnote{We already noted this aspect in the context of discussing
-	the local energy plots in section \vref{sec:BasisCS}.}.
+	the local energy plots in section \ref{sec:BasisCS}.}.
 Another conclusion we can draw from figure \ref{fig:EHF_vs_k}
 is that the optimal value for the exponent $\kopt$
 depends on $\nmax$ as well
@@ -242,7 +253,9 @@ Since such energy curves are
 convex~(compare figures \ref{fig:FCI_vs_k} and \ref{fig:EHF_vs_k})
 and only scalar functions of a single parameter,
 this minimisation can be performed quite effectively
-by gradient-free optimisation algorithm such as Brent's method~\cite{Brent1972}.
+by gradient-free optimisation algorithm.
+The procedure implemented in \molsturm for finding $\kopt$
+uses Brent's method~\cite{Brent1972}.
 Starting from a reasonable guess for $\kopt$ convergence to the minimum
 is usually achieved in around $10$ iterations.
 For achieving this Brent's method will require a similar number of

@@ -8,12 +8,13 @@ we denoted a Coulomb-Sturmian basis function as the product
 of radial part
 \begin{equation}
 	\label{eqn:RadialPartCsRepeated}
-	R_{nl}(r) = N_{nl} (2\kexp r)^l e^{-\kexp r}
+	R_{nl}(r) = N_{nl} \, (2\kexp r)^l e^{-\kexp r}
 	\;_1F_1\left(l+1-n \middle| 2l+2 \middle|2\kexp r\right)
 \end{equation}
 and spherical harmonic, compare equation \eqref{eqn:CSproduct}.
 It is uniquely defined by specifying both the \CS exponent $\kexp$
-as well as the quantum number triple $(n,l,m)$.
+as well as the quantum number triple $(n,l,m) \in \Itpf$,
+where $\Itpf$ is the index set defined in \eqref{eqn:AllCSTriples}.
 Since all basis functions share the same exponent $\kexp$
 a truncated \CS basis is thus uniquely defined by specifying
 the common exponent $\kexp$ as well as the set of all $(n, l, m)$
@@ -26,7 +27,10 @@ one would, however, expect Coulomb-Sturmians with smaller values of $n$
 to be the most important.
 In this work we have therefore restricted ourselves to \CS basis sets
 of the form
-\[ \big\{ (n, l, m) \, \big| \, n \le \nmax, l \le \lmax, -\mmax \le m \le \mmax \big\}, \]
+\[ \left\{ \varphi_{nlm} \, \Big| \,  (n, l, m) \in \Itpf, \   n \le \nmax,
+	\  l \le \lmax,
+	\  -\mmax \le m \le \mmax \right\},
+\]
 \ie where all three quantum numbers are bound from above.
 We will sometimes refer to such a \CS basis set by the triple
 $(\nmax, \lmax, \mmax)$ of the three maximal quantum numbers itself.
@@ -43,11 +47,11 @@ forward to the \CS context as well.
 For examples the spectroscopic terms $1s, 2s, 2p_{-1}$ and so on
 are often used to denote the Coulomb-Sturmian functions
 $\varphi_{100}$, $\varphi_{200}$, $\varphi_{2,1,-1}$.
-Additionally we will use the term \newterm{shell} to refer to the set
-\[ \{ \varphi_{n'l'm'} \, | \, n' = n \} \]
-of \CS basis functions with the same principle quantum number $n$.
-Similarly we call a \CS basis set a \newterm{complete-shell} basis set
-if it has the form
-\[ \{ \varphi_{n'l'm'} \, | \, n' \leq \nmax \}, \]
-\ie contains all \CS functions with principle quantum number
-below a certain maximum.
+%Additionally we will use the term \newterm{shell} to refer to the set
+%\[ \{ \varphi_{n'l'm'} \, | \, n' = n \} \]
+%of \CS basis functions with the same principle quantum number $n$.
+%Similarly we call a \CS basis set a \newterm{complete-shell} basis set
+%if it has the form
+%\[ \{ \varphi_{n'l'm'} \, | \, n' \leq \nmax \}, \]
+%\ie contains all \CS functions with principle quantum number
+%below a certain maximum.
