@@ -18,7 +18,11 @@ but their radial part is now given as
 \end{equation}
 with Gaussian exponent $\alpha_\mu$ and normalisation constant
 \[
-	N_\mu =  \sqrt{\frac{2^{l+2}}{(2l+1)!!}} \, \sqrt[4]{\frac{(2\alpha)^{2l+3}}{\pi}}
+	N_\mu =  \sqrt{\frac{2^{l+2}}{(2l+1)!!}} \, \sqrt[4]{\frac{(2\alpha)^{2l+3}}{\pi}},
+\]
+where
+\[
+	(2l+1)!! = (2l+1)(2l-1)(2l-3) \cdots 1
 \]
 This replacement allows to perform the
 evaluation of the integrals involved in building the Fock matrix $\mat{F}$
@@ -33,7 +37,7 @@ the product of two Gaussians may be expressed \emph{exactly} as
 	= R^\text{GTO}_\kappa\!\left( \norm{\vec{r} - \vec{R}_\kappa}\right)
 \]
 where $l_\kappa$, $\alpha_\kappa$ and $\vec{R}_\kappa$ are chosen appropriately.
-With this result the evaluation of certain \ERI integrals \eqref{eqn:ERI}
+With this result the evaluation of all \ERI integrals \eqref{eqn:ERI}
 can be done analytically~\cite{Boys1950}.
 An example would be those involving four basis functions with $l_\mu = 0$.
 All other \ERI integrals, potentially involving higher angular momentum $l_\mu$,
@@ -132,13 +136,14 @@ The authors point out, however, that a generalisation towards
 \begin{figure}
 	\centering
 	\includeimage{4_solving_hf/relative_error_cgto}
-	\caption[Relative error in the hydrogen \HF ground state
+	\caption[Relative error in the hydrogen ground state
 		for selected \cGTO bases]
-	{Relative error in the hydrogen \HF ground state
-		employing selected \cGTO basis sets.
-		% \cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
+	{Relative error in the hydrogen ground state
+		employing selected \cGTO basis sets~%
+		\cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
 		The error is plotted against
 		the relative distance of electron and proton.
+		Notice that pc-$n$ is a basis set at $n+1$-$\zeta$ level.
 	}
 	\label{fig:RelativeErrorCgto}
 \end{figure}
@@ -149,7 +154,7 @@ of the primitive {\GTO}s cannot be fully accounted for,
 even in the largest basis sets.
 To illustrate this, consider figure \ref{fig:RelativeErrorCgto}.
 In this plot the
-relative error of the hydrogen \HF ground state $\Phi_0$
+relative error of the hydrogen ground state $\Phi_0$
 with respect to the exact
 electronic ground state $\Psi_{1s}$ \eqref{eqn:FunctionGShydrogen}%
 \footnote{For hydrogen \HF is equivalent to solving the full Schrödinger equation.}
@@ -190,12 +195,13 @@ as we proceed from STO-3G to double-$\zeta$ and higher $\zeta$ levels.
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cgto}
-	\caption[Local energy of the hydrogen \HF ground state for {\cGTO} bases]{
-		Local energy $E_L(r)$ of the hydrogen atom \HF ground state
-		obtained using the indicated contracted Gaussian basis sets
-		%~\cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
+	\caption[Local energy of the hydrogen ground state for {\cGTO} bases]{
+		Local energy $E_L(r)$ of the hydrogen atom ground state
+		obtained using the indicated contracted Gaussian basis sets~%
+		\cite{Hehre1969,Dunning1989,Jensen2001,Wilson1996}.
 		$E_L(r)$ is plotted against the relative distance
 		of electron and nucleus.
+		Notice that pc-$n$ is a basis set at $n+1$-$\zeta$ level.
 	}
 	\label{fig:LocalEnergyCgto}
 \end{figure}
@@ -203,7 +209,7 @@ as we proceed from STO-3G to double-$\zeta$ and higher $\zeta$ levels.
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cgto_zoom}
-	\caption[Local energy of the hydrogen \HF ground state for {\cGTO} bases (magnified)]{
+	\caption[Local energy of the hydrogen ground state for {\cGTO} bases (magnified)]{
 		Magnified version of figure \vref{fig:LocalEnergyCgto}
 		around the origin.
 	}
@@ -223,7 +229,7 @@ where the amplitude of the fluctuations are lowest for cc-pV6Z and pc-3.
 Recall that the local energy is related to the relative residual error
 and that ideally it should be a constant.
 At intermediate distances, where the fluctuations are small,
-the \HF ground state thus agrees well with the exact ground state.
+the ground state thus agrees well with the exact ground state.
 Unsurprisingly, the parts of figure \ref{fig:LocalEnergyCgto},
 where $E_L(\vec{r})$ is almost constant,
 agree roughly with the parts of figure \ref{fig:RelativeErrorCgto}
@@ -246,7 +252,7 @@ Since the relative error is small,
 the issue is not that the function value
 of the exact ground state is missed.
 Much rather the culprit is the gradient of the approximated
-\HF ground state.
+ground state.
 
 This can be explained following \cite{Ma2005}.
 The potential term in the local energy \eqref{eqn:LocalEnergy} diverges
@@ -255,7 +261,7 @@ such that the kinetic energy term inside \eqref{eqn:LocalEnergy}
 needs to provide an equal and opposite
 divergence in order for the resulting local energy to be constant.
 Since the gradient of every {\cGTO} basis functions is zero at the origin,
-so is the gradient of the final \HF ground state,
+so is the gradient of the final ground state,
 thus the local energy goes to $-\infty$.
 Furthermore, the gradient of each individual primitive Gaussian
 goes to zero at a different rate
@@ -269,12 +275,18 @@ in the quantum Monte-Carlo community~\cite{Foulkes2001,Ma2005},
 since it can lead to problems when sampling the local energy,
 especially in diffusion Monte-Carlo.
 
+\todoil{Mention different basis sets required for Post-\HF and \DFT
+	and that properties converge faster.
+	Further typically relative energies are needed,
+	where the change at the nucleus is minimal
+}
 In \HF, \DFT and Post-\HF methods
 the failure of the {\cGTO}s to represent the nuclear cusp
 or the long-range behaviour is typically only an issue
 if either parts of the wave functions are especially important
 for a particular property.
 Examples would be the determination of Rydberg-like excited states,
+resonance processes,
 the computation electron affinities,
 the computation of X-ray absorption spectra
 or the computation of nuclear-magnetic resonance properties.
@@ -374,11 +386,13 @@ error bounds were rigorously derived by \citet{Bachmayr2014} for some special
 kinds of Gaussian basis sets
 and these results are not employed on a daily basis.
 
-I personally consider it a problem
-that selecting the \cGTO basis set for performing a calculation is often done
-based on habit rather than proper scientific evaluation
-with respect to the chemical problem at hand.
-I do not dare to estimate how many published works
-draw conclusions based on calculations
-where a more appropriately chosen basis
-could have given a different picture.
+% TODO OPTIONAL
+%   Needs more references and a better analysis
+%I personally consider it a problem
+%that selecting the \cGTO basis set for performing a calculation is often done
+%based on habit rather than proper scientific evaluation
+%with respect to the chemical problem at hand.
+%I do not dare to estimate how many published works
+%draw conclusions based on calculations
+%where a more appropriately chosen basis
+%could have given a different picture.

@@ -13,7 +13,7 @@ from a practical point of view,
 but for investigating the stability of an \SCF procedure
 they are really helpful.
 For example, one could check whether a combination of guess method
-and \SCF algorithm yields the true minimum or just a stationary
+and \SCF algorithm yields a true local minimum or just a stationary
 point of the \HF problem \eqref{eqn:HFOptCoeff}
 by trying a few random guesses and checking the resulting energies.
 
@@ -149,13 +149,13 @@ the extended Hückel method and Slater's rules~\cite{Slater1930}
 by which decent guesses for Finite-Element based density-functional theory
 calculations may be obtained.
 
-Typically the EH method works reasonably well
+Typically the EH method only works reasonably well
 for small basis sets and small molecular systems.
 This drawback is overcome if an approach related to the
 superposition of atomic densities is used for obtaining the diagonal
 elements of $\mat{H}^\text{EH}$.
-The quantum-chemistry package ORCA~\cite{ORCA} for example
-uses both the atomic orbitals as well as the orbital energies
+In the quantum-chemistry package ORCA~\cite{ORCA} for example
+one can use both the atomic orbitals as well as the orbital energies
 from pre-calculated atomic STO-3G~\cite{Hehre1969} calculations
 to drive the EH guess:
 The trial basis set $\{\phi_i\}_{i=1,\ldots,N_\text{trial}}$

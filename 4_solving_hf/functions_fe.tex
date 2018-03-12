@@ -26,7 +26,7 @@ This section only gives a short overview of the finite-element method
 in the light of the \HF problem
 with special focus on the things I have tried during my doctoral studies.
 For more details the reader is referred
-to the rich literature~\cite{Johnson1987,Grossmann1992,Bangerth2003,Brenner2008}.
+to the literature~\cite{Johnson1987,Grossmann1992,Bangerth2003,Brenner2008}.
 
 \subsubsection{Construction of a \FE grid}
 Compared to atom-centred basis functions,
@@ -317,9 +317,8 @@ around the regions,
 where the gradient of the approximated function is large.
 Both the wave function as well as the \HF orbitals
 have large gradients around the electron-nuclear cusp~\cite{Kato1957},
-which is furthermore the only discontinuity of these
-functions~\cite{Kato1951}.
-Even though the region around the core
+which is furthermore the only discontinuity of these functions~\cite{Kato1951}.
+Even though for most applications the region around the core
 is not very interesting from a chemical point of view,
 it thus consumes a large number of \FE basis functions
 for proper representation.
@@ -328,7 +327,8 @@ As a remedy most \FE-based approaches to quantum chemistry employ pseudo-potenti
 to represent the core region~\cite{Davydov2015},
 leaving only the regions of smaller gradients
 to be represented by finite elements.
-Overall this significantly reduces the number of finite elements required.
+Overall this significantly reduces the number of finite elements required,
+but in turn introduces an empirical element ruining the black-box nature.
 For simplicity we will not consider pseudo-potentials
 in the remaining discussion about finite elements,
 but our expressions can be easily modified to incorporate such.
@@ -413,7 +413,11 @@ a number of pairs $(\mu,\nu) \in \Ibash \times \Ibash$,
 which scales linearly with the number of finite elements $\Nbas$.
 Furthermore, the cell contributions $O^c_{\mu\nu}$ to $\mat{O}$
 are independent from one another,
-such that $\mat{O}$ can be determined by an embarrassingly parallel MapReduce step.
+such that $\mat{O}$ can be determined
+by an embarrassingly parallel MapReduce step,
+\ie one first distributes the computation of the $O^c_{\mu\nu}$ in
+batches over a number of workers~(Map)
+and then accumulates the result of each in one place~(Reduce).
 
 By construction for each finite element
 $\varphi_\mu$ one can find a shape function $e_i$
@@ -444,7 +448,7 @@ where in the last step we introduced a quadrature for the integration
 using $\Nquadc$ quadrature points
 $\vec{\xi}_1, \vec{\xi}_2, \ldots, \vec{\xi}_{\Nquadc} \in c_0$
 with quadrature weights $w_1, w_2, \ldots, w_{\Nquadc}$.
-Provided that the operator $\Op{O}$ acting on $e_j$ returns a polynomial
+Provided that the operator $\Op{O}$ acting on $e_j$ returns a polynomial%
 \footnote{This is the case for example for electrostatic Coulomb potentials
 or the kinetic energy operator.},
 the numerical integration in the last step of \eqref{eqn:FEintegralLocal}
@@ -524,14 +528,15 @@ is a well-understood problem in numerical mathematics
 consisting of just solving a linear system of equations.
 Using a combination of multigrid preconditioning~\cite{Hackbusch1985}
 and a conjugate-gradient linear solver~\cite{Grossmann1992},
-this problem can be solved in $\bigO(\Nbas)$%
-\footnote{
-	The freely available
-	example program \url{http://dealii.org/developer/doxygen/deal.II/step_16.html}
-	distributed alongside
-	the \texttt{deal.ii} finite-element library~\cite{Arndt2017,Bangerth2007}
-	demonstrates this.
-}.
+this problem can be solved in $\bigO(\Nbas)$.%
+% TODO OPTIONAL
+%\footnote{
+%	The freely available
+%	example program \url{http://dealii.org/developer/doxygen/deal.II/step_16.html}
+%	distributed alongside
+%	the \texttt{deal.ii} finite-element library~\cite{Arndt2017,Bangerth2007}
+%	demonstrates this.
+%}.
 
 Let us now address the pending question,
 which boundary condition to use in equations
@@ -736,7 +741,7 @@ and thus reduce the scaling.
 		{Structure of the local terms $\mat{T}+\mat{V}_0 + \mat{J}$
 		and the Fock matrix $\mat{F}$
 		for a finite-element-based \HF treatment
-		of the beryllium atom
+		of the beryllium atom in three dimensions
 		in a small \FE basis of around 7000 basis functions.
 		The Pulay error of the depicted Fock matrix
 		is around $0.1$.
@@ -910,8 +915,9 @@ such methods tend to perform better~\cite{Kronbichler2012}
 than their traditional counterparts.
 For reasons which will become more clear in the next chapter,
 I will refer to efforts,
-where storing matrix data is avoided as much as possible,
-as \contraction-based methods instead.
+where storing matrix data is avoided
+in favour of a matrix-vector contraction expression
+as contraction-based methods instead.
 
 For achieving a finite-element-based \HF
 this seems to be a very promising ansatz as well.

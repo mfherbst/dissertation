@@ -168,10 +168,10 @@ if more and more \CS functions are included.
 	\centering
 	\includeimage{4_solving_hf/relative_error_cs}
 	\caption[
-		Relative error in the hydrogen \HF ground state
+		Relative error in the hydrogen ground state
 		for selected \CS basis sets.
 	]
-	{Relative error in the hydrogen \HF ground state
+	{Relative error in the hydrogen ground state
 		for selected \CS basis sets.
 		The error is plotted against
 		the relative distance of electron and proton.
@@ -194,12 +194,13 @@ required values, however.
 Due to the completeness of the \CS basis
 this is not an issue, since a large enough basis will recover the error
 for each $\kexp$.%
+\todoil{Again convergence bit}
 %
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs}
-	\caption[Local energy of the hydrogen \HF ground state for {\CS} bases]{
-		Local energy $E_L(r)$ of the hydrogen atom \HF ground state
+	\caption[Local energy of the hydrogen ground state for {\CS} bases]{
+		Local energy $E_L(r)$ of the hydrogen atom ground state
 		of selected Coulomb-Sturmian basis sets.
 		$E_L(r)$ is plotted against the relative distance
 		of electron and nucleus.
@@ -212,7 +213,7 @@ for each $\kexp$.%
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs_zoom}
-	\caption[Local energy of the hydrogen \HF ground state for {\cGTO}s (magnified)]{
+	\caption[Local energy of the hydrogen ground state for {\cGTO}s (magnified)]{
 		Magnified version of figure \vref{fig:LocalEnergyCS}
 		around the origin.
 		The orange curve theoretically goes to $-\infty$ as well,
@@ -416,7 +417,6 @@ where $I_{\mu\mu'}$ is the electron repulsion kernel in terms of the $2\kexp$-fu
 \end{equation}
 Using the expansion of the Coulomb operator
 in terms of spherical harmonics~\cite{Avery2018}
-\todoil{Citation?}
 \[ \frac{1}{r_{12}} = \sum_{l''=0}^\infty
 	\frac{r^{l''}_<}{r_>^{l'' + 1}} \frac{4\pi}{2l'' + 1}
 	\sum_{m''=-{l''}}^{l''} Y_{l''}^{m''}(\uvec{r}_1)
@@ -469,7 +469,8 @@ $r_1$ and $r_2$.
 For the required polynomial powers $\alpha, \beta$ the integrals
 \[ \int_0^\infty \int_0^\infty r_1^\alpha r_2^\beta \exp(-r_1) \exp(-r_2)
 	\frac{r^{l}_<}{r_>^{l + 1}} \, \D r_1  \D r_2 \]
-can then be precomputed and stored as a vector.
+can then be precomputed and stored as a vector,
+but this equation is less numerically stable than \eqref{eqn:CSeriKernelSmall}.
 At runtime one only needs to form the dot product of the precomputed vector
 with the appropriate vector of polynomial coefficients
 to yield the value for $I^{(l)}_{nn'}$.
@@ -507,7 +508,6 @@ this yields
 	\label{eqn:CScoefficientExpression}
 \end{equation}
 The angular part of the latter expression can be written in terms of
-\todoil{Citation}
 Clebsch-Gordan coefficients, which are precomputed and stored%
 \footnote{Due to the sparsity and symmetry properties
 	of the Clebsch-Gordan coefficients even for a large value
@@ -660,7 +660,9 @@ Whilst \CS discretisations on the one hand
 do not require \contraction-based methods to be feasible,
 they still allow for improved contraction if such methods are employed.
 
-While Coulomb-Sturmians can only be used for simulating atoms,
+While Coulomb-Sturmians are not yet used for molecules
+due to their difficulties with respect to computing the \ERI tensor
+in this context,
 a range of more generalised Sturmian-type basis functions exist%
 ~\cite{Hoggan2009,Avery2011},
 which can be applied, for example, to molecular systems as well.
@@ -671,7 +673,9 @@ but both the mathematical machinery as well as the numerics are more involved.
 more general Sturmian-type basis functions.
 Generalised Sturmian-type orbitals are an active field of research%
 ~\cite{%
-	Gruzdev1990,Avery2003,Avery2006,Hoggan2009,%
+	Gruzdev1990,%
+	Aquilanti1996,Aquilanti1997,Aquilanti1998,Aquilanti2001,Aquilanti2003,%
+	Avery2003,Avery2004,Avery2006,Hoggan2009,%
 	Randazzo2010,Mitnik2011,%
 	Avery2011,Avery2011PhD,%
 	Avery2013,Avery2015,Randazzo2015,Granados2016,Abdouraman2016,%
