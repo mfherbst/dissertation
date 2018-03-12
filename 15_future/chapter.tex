@@ -18,7 +18,7 @@ for the development and the investigation of novel quantum-chemical methods
 has become available.
 The possibility to easily extend the present functionality
 by linking to existing third-party packages,
-opens the door to rapidly try novel combinations of basis function types
+opens the door to rapidly test novel combinations of basis function types
 and existing quantum-chemical methods.
 In this way one could seek to find alternatives for cases,
 which are challenging to describe using Gaussian-type basis functions.
@@ -32,10 +32,10 @@ like nuclear magnetic resonance properties~\cite{Guell2008,Hoggan2009}.
 From this respect interesting candidates are Sturmian-type basis functions,
 which are exponential-type orbitals,
 obtained as analytic solutions to Schrödinger-like equations.
-On the one hand such functions are able to properly represent
+Such functions are able to properly represent
 the physical features of the wave function,
 see section \ref{sec:BasisCS},
-and on the other hand they lead to feasible integrals
+and they lead to feasible integrals
 in the Hartee-Fock~(\HF) self-consistent field~(\SCF) procedure.
 Furthermore they are complete
 and thus able to model continuum-like states as well.
@@ -43,10 +43,10 @@ See section \ref{sec:newSturmian} for a more
 detailed discussion with respect to
 quantum-chemical calculations employing Sturmian-type orbitals.
 
-On the other hand, a framework where multiple basis function types
-are available via the some common interface allows to
-implement a novel method only once and then subsequently
-test it employing a range of basis function types.
+Additionally, \molsturm is a framework with an interface
+in which a novel method only needs to be implemented
+once and can subsequently be
+used with different types of basis functions.
 This was already discussed in section \vref{sec:ex:ccd}
 where a coupled-cluster doubles~(CCD) code building on top of \molsturm was shown.
 Already at the present state, such a user code can
@@ -57,7 +57,7 @@ Section \ref{sec:newMolsturm} provides some direction
 how performance could be improved.
 
 Another aspect of such a framework is
-that potentially links to different libraries and programs
+that links to different libraries and programs
 providing the \emph{same} quantum-chemical methods can be achieved.
 In this way implementations with deviating algorithmic details
 can be compared directly.
@@ -157,7 +157,7 @@ inside \lazyten leading to performance improvements in the \SCF of \molsturm.
 Additionally the modular structure of \molsturm
 makes it fast to interface to
 further quantum-chemistry libraries or program packages.
-A Direction worth pursuing is the \texttt{libxc}~\cite{Lehtola2018} library,
+An effort worth pursuing is the \texttt{libxc}~\cite{Lehtola2018} library,
 which offers a range of exchange-correlation functionals.
 Implementing an interface to this library inside appropriate
 lazy matrix objects would allow to construct the Kohn-Sham matrix
@@ -229,14 +229,6 @@ calculations.
 %
 \section{Investigation of Sturmian-type discretisations}
 \label{sec:newSturmian}
-\todoil{Diesen Absatz komplett entfernen?}
-The original purpose of the \molsturm package has been to devise a program
-which could be used for quantum-chemical calculations
-employing Sturmian-type basis functions.
-The package has outgrown this purpose in the current design,
-but investigating the properties
-of Sturmian-type basis functions is still of interest
-as discussed above.
 
 \subsection{Convergence properties of Coulomb Sturmian basis sets}
 The simplest example for Sturmian-type basis functions are Coulomb-Sturmians.
