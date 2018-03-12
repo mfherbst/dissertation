@@ -12,7 +12,7 @@ The main motivation for \citet{Shull1959} to look into alternative
 exponential functions was that they wanted to construct one-electron basis functions,
 which could be used to compute the spectra of many-electron atoms.
 From previous approaches it was known that a
-proper representation of the cusps of the wave function
+proper representation of the wave function
 required the inclusion of the continuum
 if hydrogen-like orbital functions were used.
 This was, however, exceedingly difficult in practice~\cite{Avery2006}.
@@ -88,6 +88,15 @@ In analogy one therefore commonly uses the spectroscopic terminology
 $1s$, $2s$, $2p$, $\ldots$
 to describe the respective triples
 of quantum numbers $(n, l, m)$ for Coulomb-Sturmians as well.
+Originating from the same arguments as discussed in section \ref{sec:HydrogenAtom}
+the full range of possible triples is
+\begin{equation}
+	\Itpf \equiv \left\{ (n, l, m) \, \Big| \, n,l,m \in \set{Z}
+		\quad \text{with} \quad
+		n > 0, \  0 \leq l < n,\  -l \leq m \leq l\right\}
+	\label{eqn:AllCSTriples}
+\end{equation}
+
 Given that both {\STO}s as well as \CS functions are exponential type orbitals
 of the form radial part times spherical harmonic,
 their radial parts \eqref{eqn:CSradialSolution} and \eqref{eqn:STOradial}
@@ -230,7 +239,8 @@ for a few selected Coulomb-Sturmian basis sets.
 The labels of the plots both indicate the $\kexp$ value as well as the
 triple  $(\nmax, \lmax, \mmax)$, which is a short hand for indicating
 the finite basis set
-\[ \left\{ \varphi^\text{CS}_{nlm} \, \middle| \, n \leq \nmax, l \leq \lmax, \abs{m} \leq \mmax \right\} \]
+\[ \left\{ \varphi^\text{CS}_{nlm} \, \Big| \, (n,l,m) \in \Itpf \
+	n \leq \nmax, \ l \leq \lmax, \ \abs{m} \leq \mmax \right\} \]
 of \CS functions.
 The best $\kexp$ value for hydrogen is $1.0$,
 which would in fact give the exact ground state in the $\varphi^\text{CS}_{1s}$ function.
