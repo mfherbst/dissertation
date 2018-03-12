@@ -6,6 +6,7 @@
 	the capability for describing data.
 }{Grace Hopper~(1906--1992)}
 
+\todoil{Nochmal durchgehen}
 \noindent
 The present thesis devised a self-consistent field~(\SCF)
 scheme for solving the Hartree-Fock~(\HF) problem
@@ -13,10 +14,10 @@ based on matrix-vector contraction expressions.
 It was subsequently utilised in order to design and implement the
 quantum-chemical method development framework \molsturm,
 where novel methods can be readily implemented and tested.
-Further \molsturm was used to investigate the convergence properties
+Furthermore \molsturm was used to investigate the convergence properties
 of quantum-chemical calculations
 based on Coulomb-Sturmians,
-a basis function type which got few attention so far.
+a basis function type which got little attention so far.
 Initial results of Coulomb-Sturmian-based excited states
 calculation employing the algebraic-diagrammatic construction scheme
 for the polarisation propagator were reported
@@ -34,7 +35,7 @@ to solve the arising eigenproblems.
 The emphasis in both chapters
 was put on discussing this established mathematical
 material from a quantum-chemical perspective,
-but to indicate the often overlooked peculiarities,
+while indicating the often overlooked peculiarities,
 which occur when transforming from the infinite-dimensional regime
 of functional analysis to the finite-dimensional regime of linear algebra.
 
@@ -79,9 +80,8 @@ whereas discretisations employing Gaussian-type orbitals
 satisfy physical correctness
 for feasible integrals.
 The well-known conclusion
-that unsuitable Gaussian basis sets can yield to missed or wrongfully
-described electronic structures
-was emphasised.
+that suitable Gaussian basis sets need to be used to correctly
+describe electronic structures was emphasised.
 
 In contrast to the first two,
 both finite elements,
@@ -99,14 +99,14 @@ For finite elements, for example,
 the matrix representation of the exchange matrix term of the \HF equations
 was shown to be rather expensive to compute.
 Building on the idea of matrix-free methods~\cite{Kronbichler2012},
-an novel, contraction-based ansatz for \HF was introduced
+a novel, contraction-based ansatz for \HF was introduced
 to compensate for this.
 In this approach the difference is that storing the Fock matrix in memory
 is avoided and instead only matrix-vector product applications are performed.
 An analysis of the computational complexity
 for the exchange term in the context of finite elements was presented,
-which showed that the contraction-based scheme
-would reduce the formal computational scaling from $\bigO(\Nbas^2)$
+which showed that a contraction-based scheme
+reduces the formal computational scaling from $\bigO(\Nbas^2)$
 to $\bigO(\Nbas)$ with $\Nbas$ being the number of finite elements.
 For Coulomb-Sturmians such a contraction-based \SCF ansatz
 allowed to exploit the available selection rules in the integral kernels
@@ -141,7 +141,7 @@ was identified
 and lazy matrices were introduced in section \ref{sec:lazymat}
 as a data structure to tackle this problem.
 It was discussed how lazy matrices, as a generalisation
-to the conventional matrices,
+of conventional matrices,
 allow to encapsulate arbitrary contraction expressions,
 but still maintain the high-level interface of matrices.
 This was achieved by employing lazy evaluation,
@@ -170,14 +170,13 @@ on the one hand
 enables to write \SCF algorithms
 without making explicit reference to the basis function type,
 whilst on the other hand
-the integral back end still has the full
+still allowing the integral back end full
 control over the way integral data is produced and consumed.
 Thus the code describing
-the \SCF algorithms is independent from the code
+the \SCF algorithms has become independent from the code
 dealing with the discretisation details.
-By means of a suitable integral abstraction layer
-implementing additional integral back ends or basis function types
-is very easy.
+On top of that a suitable integral abstraction layer
+has made implementing additional integral back ends or basis function types very easy.
 In this way a connection from \molsturm
 to \libint~\cite{Libint2_231,Libint2} and \libcint~\cite{Sun2015}
 for Gaussian-type integrals
@@ -187,23 +186,23 @@ for Coulomb-Sturmian-type integrals has been achieved.
 The test suite and the testing strategy
 of \molsturm were outlined in section \ref{sec:MolsturmTestSuite}.
 Together with the modularised design of the program
-this makes sure that even if changes to the \SCF scheme
+this ensures that even if changes to the \SCF scheme
 were needed in the future,
 code could be amended in steps
 and the correctness of \molsturm verified in each of these steps.
 
-The key aspect of the design of the \python interface of \molsturm
-was to enable full control over the algorithmic details
+The key aspects of the design of the \python interface of \molsturm
+were to enable full control over the algorithmic details
 via a detailed set of parameters on the one hand and
 to return computed \SCF results in a readily usable data structure on the other.
-It was discussed that in this way
+It was discussed how in this way
 many aspects of the \SCF as well as the linear algebra back end,
 like the employed diagonalisation algorithms,
 can be altered directly from the interface and without changing any code.
 It was pointed out this is
 of significance when developing methods based on novel basis functions,
 since the best numerical approach might not be clear in the beginning.
-Utilising \molsturm one may experiment in such cases
+In such cases \molsturm allows for experimenting
 directly from \python scripts or even interactively.
 
 By means of three examples,
@@ -257,7 +256,7 @@ Both an ansatz for estimating the optimal exponent $\kopt$,
 \ie the exponent leading to the minimal energy,
 as well as
 an algorithm for finding the value of $\kopt$ systematically,
-were developed in section \ref{sec:DetermineKo}.
+were developed in section \ref{sec:DetermineKopt}.
 Following the relationship of Coulomb-Sturmians and Slater-type orbitals
 an analogy between the optimal exponent and
 the effective nuclear charge was indicated in section \ref{sec:ValuesKopt}

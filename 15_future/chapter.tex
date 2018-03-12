@@ -16,17 +16,32 @@ With the availability of the \molsturm program package in its
 current state, a flexible research tool
 for the development and the investigation of novel quantum-chemical methods
 has become available.
-Especially the possibility to easily extend the present functionality%
-~(see section \vref{sec:MolsturmState})
+The possibility to easily extend the present functionality
 by linking to existing third-party packages,
 opens the door to rapidly try novel combinations of basis function types
 and existing quantum-chemical methods.
-In this way one could seek to find alternatives
-for cases where the usual Gaussian-type basis functions have problems,
-see section \ref{sec:SturmianExcited} for examples,
-or evaluate the properties of novel basis functions
-with respect to the methods available from \molsturm,
-see sections \ref{sec:newSturmian} and \ref{sec:newFE}.
+In this way one could seek to find alternatives for cases,
+which are challenging to describe using Gaussian-type basis functions.
+Examples are the description of extended states,
+potentially embedded in the continuum,
+like autoionising or resonance states~\cite{Feshbach1958,Feshbach1962,Riss1993,Santra2002}
+or the computation of properties involving a description
+of the wave function close to the nuclei,
+like nuclear magnetic resonance properties~\cite{Guell2008,Hoggan2009}.
+
+From this respect interesting candidates are Sturmian-type basis functions,
+which are exponential-type orbitals,
+obtained as analytic solutions to Schrödinger-like equations.
+On the one hand such functions are able to properly represent
+the physical features of the wave function,
+see section \ref{sec:BasisCS},
+and on the other hand they lead to feasible integrals
+in the Hartee-Fock~(\HF) self-consistent field~(\SCF) procedure.
+Furthermore they are complete
+and thus able to model continuum-like states as well.
+See section \ref{sec:newSturmian} for a more
+detailed discussion with respect to
+quantum-chemical calculations employing Sturmian-type orbitals.
 
 On the other hand, a framework where multiple basis function types
 are available via the some common interface allows to
@@ -38,99 +53,22 @@ Already at the present state, such a user code can
 directly utilise all basis function types available in \molsturm,
 \ie Coulomb-Sturmians as well as Gaussian-type orbitals,
 but the performance is far from optimal.
-The main reason for this is a limitations of the \lazyten lazy matrix library,
-namely that it right now can only deal with vectors and matrices,
-but not more general tensors,
-which are typically required in Post-\HF methods such as CCD.
-For this reason all quantities in the \python interface
-of \molsturm are full blocks of data,
-destroying all sparsity inherent to the basis function type.
-This limitation should be lifted in the future,
-see section \ref{sec:GeneraliseLazyten}.
-Further aspects where \molsturm can be improved are discussed
-in section \ref{sec:newMolsturm}.
+Section \ref{sec:newMolsturm} provides some direction
+how performance could be improved.
 
-\section{Generalisation of \lazyten}
-\label{sec:GeneraliseLazyten}
-The lazy matrices of \lazyten are a key component of \molsturm,
-being both the language in which the self-consistent field~(\SCF)
-algorithms are implemented
-as well as the data structure
-mediating the call to the integral libraries.
-Many performance improvements of \lazyten will therefore
-directly affect \molsturm as well and are thus worth pursuing.
-Additionally \lazyten is a package on its own,
-such that all aspect mentioned here could make it more
-applicable to a broader context than just
-quantum-chemical method development.
+Another aspect of such a framework is
+that potentially links to different libraries and programs
+providing the \emph{same} quantum-chemical methods can be achieved.
+In this way implementations with deviating algorithmic details
+can be compared directly.
+One application of this would be to verify the correctness
+of integral back ends, see section \ref{sec:Fuzzing} for details.
 
-Currently the \lazyten library is limited to lazy matrices,
-which implies that it only supports the implementation of algorithms
-involving matrix-matrix and matrix-vector operations.
-As soon as higher-order tensor contractions are required,
-these need to be hidden inside the lazy matrix data structures.
-Effectively, this implies
-that they are either to be implemented manually
-or by appropriate calls to some third-party tensor library.
-Already at the level of the \SCF
-this limitation is apparent,
-namely when the Coulomb matrix $\mat{J}$
-and the exchange matrix $\mat{K}$ are formed
-from the electron repulsion integral~(\ERI) tensor
-$\eriMu{\mu\nu}{\kappa\lambda}$, see section \vref{sec:DiscreteHF}.
-Right now this is solved by implementing two
-hard-coded contraction schemes of the \ERI tensor with
-the coefficient matrices resulting in $\mat{J}$ and $\mat{K}$.
-
-In the future, such issues could be tackled
-by extending \lazyten towards lazy tensors as well.
-Similarly to lazy matrices,
-such lazy tensor objects would no longer be
-directly mapped to flat data,
-but allow the encapsulation of arbitrary expressions
-for computing contractions with itself or other tensors.
-For the evaluation of operations between lazy tensors
-again a lazy evaluation scheme would be employed,
-such that the contraction between tensors would first be
-stored as a tensor expression tree and only evaluated when needed.
-The prospect of the proposed ansatz is
-that an object like the \ERI tensor
-could be represented as a single entity in \molsturm,
-irrespective of the precise structure,
-which is sensible for a particular basis function type.
-In this way a unified treatment
-of a dense, stored \ERI tensor,
-like it is the case for Gaussian-type basis functions
-or an object consisting of a more elaborate contraction,
-like for Coulomb-Sturmians \eqref{eqn:CSeriContraction},
-is possible.
-In line with the lazy matrices the advantage of such a
-generalisation would be that the computational details
-are well-separated from the user code,
-allowing for a dynamic change of algorithms
-reacting to the requirements of basis function types
-or the hardware the program runs on.
-
-Undoubtedly, already the design of such a library is challenging
-and would need to proceed in steps,
-gradually generalising the lazy matrix concept towards
-such lazy tensors
-by means of real-world examples.
-A good testbed for this are the Post-\HF methods of quantum chemistry.
-
-Another question is how to find a suitable evaluation
-scheme for dealing with the arising expression tree.
-This is a topic of ongoing research
-where, both in the context of quantum-chemical calculations
-as well as a more general setting,
-enormous progress has been made~\cite{Baumgartner2005,Solomonik2014,%
-Peise2015,Calvin2015,Calvin2015arxiv,Xerus,Kristensen2016array,%
-Kristensen2016streaming,Libtensor}.
-The hope for \lazyten is that this existing effort
-could be incorporate or reused.
-
+%
+% -------------------------------------------------------------------------
+%
 \section{\molsturm program package}
-\label{sec:newMolsturm}.
+\label{sec:newMolsturm}
 After two years of development,
 \molsturm is in a state,
 where calculations based on contracted Gaussian basis sets
@@ -139,23 +77,71 @@ Furthermore, as mentioned in section \vref{sec:MolsturmState}
 and demonstrated in chapter \vref{ch:CSQChem},
 not only \HF, but Full-CI (\FCI) and
 methods based on the algebraic-diagrammatic construction scheme (\ADC)
-are available
-via interfaces to \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}.
+are available via interfaces to \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}.
 For employing these Post-\HF methods
 with more than a few tens of basis functions,
-a drawback at the moment is performance.
+a drawback at the moment is performance
+inside the \SCF procedure of \molsturm.
 
-To some extent, the improvements
-of \lazyten directly lead to angles for tackling these problems as well.
-For example a generalisation of \lazyten to lazy tensors
-would allow to use lazy tensors as data structures on the level of \molsturm's interface.
-Right now this is prevented by the \ERI tensor,
-which --- as indicated above --- cannot be represented as a lazy matrix,
-such that a costly step of copying all data from the internal
-representation to the data structures of the interface results.
-On the level of the \SCF the automatic parallelisation
-of the evaluation of the lazy matrix expression trees
-would help to improve the efficiency.
+One reason for this is that the \SCF scheme,
+which is currently used in \molsturm,
+only consists of a few rather simple algorithms,
+namely the Roothaan repeated diagonalisation~\cite{Roothaan1951},
+the direct inversion in the iterative subspace~(\DIIS) algorithm~\cite{Pulay1982}
+and the truncated optimal damping algorithm~(see section \ref{sec:tODA}).
+More sophisticated schemes
+like the energy \DIIS~\cite{Kudin2002}
+or a second-order \SCF scheme~\cite{Salek2007,Hoest2008}
+would be more efficient as well as more reliable.
+For this the published schemes need to be adapted,
+such that they fit into the contraction-based setting of \molsturm,
+where the Fock matrix is not stored in memory,
+but only employed in the form of a matrix-vector product,
+see section \vref{sec:SCFAlgorithms}.
+As discussed in section \vref{sec:OverviewSCF}
+such modifications are always possible in theory,
+but in practice one needs to be careful
+that the introduced changes
+keep the advantageous mathematical properties of such algorithms
+with respect to convergence and stability.
+
+Another aspect for improvement
+is the lazy matrix library \lazyten,
+which is a key component inside the contraction-based
+self-consistent field~(\SCF) of \molsturm,
+see section \vref{sec:MolsturmDesign}.
+Whenever the Fock matrix is applied to a trial vector
+inside the \SCF or the diagonalisation algorithm
+employed by the \SCF,
+a contraction expression is evaluated.
+This proceeds by working on the expression tree,
+which represents the Fock matrix,
+see section \vref{sec:lazymat}.
+In \lazyten this is currently neither parallelised,
+nor is the expression tree optimised before the computation begins.
+Both these aspects,
+\ie automatic parallelisation of linear algebra expressions
+as well as finding optimal evaluation schemes,
+is ongoing research,
+where, both in the context of quantum-chemical calculations
+as well as a more general setting,
+enormous progress has been made in recent years~\cite{Baumgartner2005,Solomonik2014,%
+Peise2015,Calvin2015,Calvin2015arxiv,Xerus,Kristensen2016array,%
+Kristensen2016streaming,Libtensor}.
+By linking to such libraries
+these advances could be incorporated or reused
+inside \lazyten leading to performance improvements in the \SCF of \molsturm.
+
+
+%For example a generalisation of \lazyten to lazy tensors
+%would allow to use lazy tensors as data structures on the level of \molsturm's interface.
+%Right now this is prevented by the \ERI tensor,
+%which --- as indicated above --- cannot be represented as a lazy matrix,
+%such that a costly step of copying all data from the internal
+%representation to the data structures of the interface results.
+%On the level of the \SCF the automatic parallelisation
+%of the evaluation of the lazy matrix expression trees
+%would help to improve the efficiency.
 
 % TODO OPTIONAL
 %\subsection{Reliable contraction-based self-consistent field algorithm}
@@ -168,12 +154,10 @@ would help to improve the efficiency.
 %or a second-order \SCF scheme~\cite{Salek2007,Hoest2008}
 %inside the \contraction-based setting of \molsturm.
 
-\subsection{Interfaces to further quantum-chemistry packages}
-\label{sec:ExtensionInterfaces}
-Given the modular structure of \molsturm
-interfacing to further quantum-chemistry libraries or program packages
-can be easily achieved to extend the scope of the package.
-A good example is the \texttt{libxc}~\cite{Lehtola2018} library,
+Additionally the modular structure of \molsturm
+makes it fast to interface to
+further quantum-chemistry libraries or program packages.
+A Direction worth pursuing is the \texttt{libxc}~\cite{Lehtola2018} library,
 which offers a range of exchange-correlation functionals.
 Implementing an interface to this library inside appropriate
 lazy matrix objects would allow to construct the Kohn-Sham matrix
@@ -184,55 +168,81 @@ would allow to perform configuration-interaction
 and coupled-cluster calculations as well as calculations
 employing the density matrix renormalisation group approach
 directly from \molsturm.
-The modular structure of \psifour makes it another good candidate
-for extending the number of available methods
-on top of \molsturm's \SCF.
+%The modular structure of \psifour makes it another good candidate
+%for extending the number of available methods
+%on top of \molsturm's \SCF.
+The prospect is to try other basis functions
+in the context of such methods
+and investigate their applicability with respect to quantum-chemical
+calculations.
 
-On top of that data exchange with existing quantum-chemistry-related software
-could be simplified even further by supporting
-some wide-spread file formats in \molsturm
-for example \texttt{Molpro}'s FCIDUMP~\cite{Knowles1989},
-as well as routines for dumping plotting data
-in \texttt{Gaussian}~\cite{Frisch2016} cube or VTK~\cite{Avila2010} files.
-The \texttt{molden}~\cite{Schaftenaar2000} format
-could be supported by means of a fitting function
-representing results,
-which are not based on Gaussian-type orbitals in the form of a minimal
-Gaussian-type basis,
-similar to the way suggested in \cite{Stewart1970}
-for Slater-type orbitals.
+%On top of that data exchange with existing quantum-chemistry-related software
+%could be simplified even further by supporting
+%some wide-spread file formats in \molsturm
+%for example \texttt{Molpro}'s FCIDUMP~\cite{Knowles1989},
+%as well as routines for dumping plotting data
+%in \texttt{Gaussian}~\cite{Frisch2016} cube or VTK~\cite{Avila2010} files.
+%The \texttt{molden}~\cite{Schaftenaar2000} format
+%could be supported by means of a fitting function
+%representing results,
+%which are not based on Gaussian-type orbitals in the form of a minimal
+%Gaussian-type basis,
+%similar to the way suggested in \cite{Stewart1970}
+%for Slater-type orbitals.
+
+%\section{Finite-element-based quantum chemistry}
+%\label{sec:newFE}
+%At the beginning of my doctoral studies I already attempted
+%unsuccessfully to implement a \HF scheme based on finite-elements,
+%a piecewise polynomial basis based on a real-space grid,
+%see section \vref{sec:FE}.
+%Recent advances of the field~\cite{Frediani2015,Toivanen2015,Davydov2015,Boffi2016}
+%seem promising and
+%implementing a grid-based basis into \molsturm
+%would constitute an interesting test case with respect to the aspired generality
+%of \molsturm's \SCF scheme.
+%A link to the finite-element library \texttt{deal.ii}~\cite{Arndt2017}
+%could provide the relevant back end to perform the computations.
+%The scheme for evaluating the exchange matrix contraction
+%expression \eqref{eqn:ExchangeFromPotentials},
+%which was proposed in section \ref{sec:FE}
+%has, however, never been implemented in practice,
+%there are many open questions regarding the numerical details.
+%Before one can proceed to perform a proper \SCF based on finite elements inside \molsturm,
+%one therefore needs to investigate questions such as
+%which quadrature scheme to employ,
+%how many quadrature points are required,
+%which finite-element order to use for the inner Poisson solves,
+%what are sensible convergence thresholds and so on.
+%All together the task remains challenging.
 
 % TODO OPTIONAL
-% \subsection{Partial rewrite in \python}
+%Last but not least the ability to treat different kinds of basis functions
+%in the same framework simplifies the construction of hybrid basis sets,
+%where possibly numerical basis functions and GTOs or STOs are combined.
+%Similarly one could employ the strengths of multiple backends for the same type of basis function
+%in the sense that one mixes and matches different backends such that one can exploit
+%the advantages of both implementations best.
 
+%
+% -------------------------------------------------------------------------
+%
 \section{Investigation of Sturmian-type discretisations}
 \label{sec:newSturmian}
-
+\todoil{Diesen Absatz komplett entfernen?}
 The original purpose of the \molsturm package has been to devise a program
 which could be used for quantum-chemical calculations
-employing Sturmian-type basis functions,
-which are a category of analytic solutions to Schrödinger-like equations.
+employing Sturmian-type basis functions.
 The package has outgrown this purpose in the current design,
-but investigating the properties of Sturmian-type basis functions is still of interest
-as they are on the one hand able to properly represent
-the physical features of the wave function,
-see section \ref{sec:BasisCS},
-and lead to feasible integrals on the other hand.
-There is further some indication~\cite{Guell2008,Hoggan2009}
-that exponential basis functions such as Sturmian-type functions
-might be advantageous
-for computing properties like the nuclear magnetic resonance~(NMR) shielding tensor.
-Additionally their completeness property
-makes them interesting for applications where both bound states
-as well as the continuum need to be represented
-like Fano-Stieltjes~\cite{Feshbach1958,Feshbach1962,Santra2002}
-or other methods to model resonance processes.
+but investigating the properties
+of Sturmian-type basis functions is still of interest
+as discussed above.
 
 \subsection{Convergence properties of Coulomb Sturmian basis sets}
 The simplest example for Sturmian-type basis functions are Coulomb-Sturmians.
-An initial investigation of such basis functions presented
-in chapter \ref{ch:CSQChem} looks overall promising,
-but the obtained results are not yet sufficient to provide definitive
+An initial investigation of such basis functions
+in chapter \ref{ch:CSQChem} looked overall promising,
+but the obtained results were not yet sufficient to provide definitive
 construction schemes for Coulomb-Sturmian~(\CS) basis sets
 or general estimates for the overall accuracy.
 There are three ways this could be improved.
@@ -240,13 +250,15 @@ There are three ways this could be improved.
 Firstly so far only main group elements of the second and third
 period of the periodic table were considered.
 Originating from the involvement of the $d$-orbitals
-the properties of the electronic structures of the transition metals does, however,
+the properties of the electronic structures of the transition metals do, however,
 differ compared to the main group elements.
 An analysis with respect to the fourth period and beyond
-is therefore required to reach more general conclusions.
+is therefore required to reach more general conclusions
+with respect to sensible \CS basis sets.
 
 Secondly, most of the presented investigation has concentrated on the \HF
-level with some minor modifications suggested mostly based on {\MP}2 results.
+level with some minor modifications suggested mostly based on
+second-order Møller-Plesset perturbation theory~({\MP}2).
 Whilst these two methods are both used in electronic structure theory,
 more methods should be added to reach a representative set.
 Most notably {\MP}2 as a perturbative approach
@@ -255,7 +267,7 @@ configuration-interaction-based
 or coupled-cluster-based approaches
 --- both with respect to the way the physics is described
 as well as the numerics.
-Further convergence studies for example employing the latter kind of methods
+Further convergence studies employing, for example, the latter kind of methods
 would be required.
 % TODO OPTIONAL
 %\to doil{
@@ -267,15 +279,15 @@ would be required.
 %}
 
 Thirdly, the full flexibility towards constructing \CS basis sets has not yet
-been exploited in our discussion in section \vref{sec:CSconvergenceHF}.
+been exploited in the discussion in section \vref{sec:CSconvergenceHF}.
 There is no reason why one should define a basis set
 by limiting the angular quantum numbers $l$ and $m$ to the same maximum for all
 principle quantum numbers $n$.
 As mentioned in section \vref{sec:DenotingCSbasis} a \CS basis set can be any
-combination of the quantum number triples $(n, l, m)$,
-such that, for example, keeping the full range of $l$ and $m$
-up to $n=5$ and then only up a maximum of $l=2$ is possible
-and should definitely be tried.
+combination of the quantum number triples $(n, l, m)$.
+Since alternative construction schemes might allow to reduce
+the required basis set size,
+they are worth considering.
 With respect to this it would also be interesting to compare the
 observed convergence properties with the typical construction schemes
 employed for contracted Gaussian~(\cGTO) basis sets~\cite{Jensen2013,Hill2013}.
@@ -291,8 +303,9 @@ at various levels of theory.
 
 \subsection{Coulomb-Sturmian-based excited states calculations}
 \label{sec:SturmianExcited}
-In section \vref{sec:SturmianADC} we already presented
-first results for computing excited state energies of atoms based on \ADC.
+In section \vref{sec:SturmianADC} first results
+for computing excited state energies of atoms based on \ADC
+were already presented.
 A more detailed analysis of the convergence properties
 could help to proceed with the application of \CS-based \ADC
 calculations in order to compute the spectra of atoms.
@@ -301,8 +314,8 @@ and their possibility to describe both core region as well as
 the exponential decay,
 a range of interesting applications for the modelling
 of excitation processes come to mind.
-Three of them are 
-(1) methods where the continuum needs to be modelled,
+Three of them are
+(1) methods where continuum-like states needs to be modelled,
 like Fano-Stieltjes~\cite{Feshbach1958,Feshbach1962,Santra2002},
 (2) cases where modelling both the core and the valence shell is required,
 like core-valence excitations~\cite{Wenzel2014,Wenzel2016}
@@ -312,18 +325,16 @@ like the determination of Rydberg-like states~\cite{Kaufmann1989,Riss1993}.
 
 \subsection{Avoiding the Coulomb-Sturmian exponent as a parameter}
 An unfavourable aspect of the \CS basis sets
-employed in chapter \ref{ch:CSQChem} of this thesis is
+employed in chapter \ref{ch:CSQChem} is
 the Coulomb-Sturmian exponent $\kexp$.
-As was discussed in section \ref{sec:kexp}
-this parameter has indeed an influence on the results obtained
-and thus needs to be set to a sensible value to obtain sensible results.
-If not, than unphysical behaviour can result.
-In my calculations I have, for example, found cases
-where changing $\kexp$ could change the obtained \SCF minimum
-for \HF.
+As was discussed in section \ref{sec:kexp},
+this parameter has indeed an influence on the results obtained.
+For example the obtained \SCF minimum could be unphysical,
+\ie with occupied orbitals of positive energies,
+if $\kexp$ is not chosen in the vicinity of the optimal exponent,
+which is the one yielding the lowest possible \HF ground state energy.
 Furthermore, there is some indication
-that the ordering of excited states in \ADC calculations
-depends on $\kexp$ in some cases.
+that the ordering of excited states in \ADC calculations depends on $\kexp$.
 Using the algorithm described in section \ref{sec:DetermineKopt},
 a route for finding an optimal value at \HF level has been sketched.
 With respect to excited states methods like \ADC,
@@ -368,56 +379,29 @@ Building on recent advances in the calculation of the \ERI integrals
 a Sturmian-based \HF suitable for molecular calculations is within reach
 and could be implemented within \sturmint~\cite{sturmintWeb}
 building on already existing infrastructure required for the Coulomb-Sturmians.
-This would make molecular Sturmian integrals available to \molsturm.
+This would make allow for performing calculations
+based on Sturmian-type basis functions for small molecules as well.
 
-\section{Finite-element-based quantum chemistry}
-\label{sec:newFE}
-At the beginning of my doctoral studies I already attempted
-unsuccessfully to implement a \HF scheme based on finite-elements,
-a piecewise polynomial basis based on a real-space grid,
-see section \vref{sec:FE}.
-Recent advances of the field~\cite{Frediani2015,Toivanen2015,Davydov2015,Boffi2016}
-seem promising and
-implementing a grid-based basis into \molsturm
-would constitute an interesting test case with respect to the aspired generality
-of \molsturm's \SCF scheme.
-A link to the finite-element library \texttt{deal.ii}~\cite{Arndt2017}
-could provide the relevant back end to perform the computations.
-Since the scheme we proposed in section \ref{sec:FE}
-for evaluating the exchange matrix contraction
-expression \eqref{eqn:ExchangeFromPotentials}
-has, however, never been implemented in practice,
-there are many open questions regarding the numerical details.
-Before one can proceed to perform a proper \SCF based on finite elements inside \molsturm,
-one therefore needs to investigate questions such as
-which quadrature scheme to employ,
-how many quadrature points are required,
-which finite-element order to use for the inner Poisson solves,
-what are sensible convergence thresholds and so on.
-All together the task remains challenging.
 
-% TODO OPTIONAL
-%Last but not least the ability to treat different kinds of basis functions
-%in the same framework simplifies the construction of hybrid basis sets,
-%where possibly numerical basis functions and GTOs or STOs are combined.
-%Similarly one could employ the strengths of multiple backends for the same type of basis function
-%in the sense that one mixes and matches different backends such that one can exploit
-%the advantages of both implementations best.
-
+%
+% -------------------------------------------------------------------------
+%
 \section{Fuzzing of integral back ends}
 \label{sec:Fuzzing}
-Using the common interface which \molsturm provides
-for accessing the implemented integral libraries
+The common interface, which \molsturm provides
+for accessing the implemented integral libraries,
 allows to test the correctness
-of the algorithms these libraries employ
+of the algorithms employed inside these libraries
 by comparing the results of
 random or semi-random input against each other.
-Due to the \python interface of \molsturm, such a process could
-even be completely automatised.
+Due to the \python interface of \molsturm this process could
+even be completely automated.
 Such fuzzing approaches have already been applied with huge success
 in the context of hardening security-critical software~\cite{Fuzzing}.
-Similarly previous a work by \citet{Knizia2011} to test
-the hardness of quantum-chemical software
-with respect to numerical instabilities by using random noise
-similarly lead to the discovery of unexpected bugs
-in the integral evaluation scheme of \texttt{Molpro}.
+With respect to quantum-chemical software
+a similar work by \citet{Knizia2011},
+which tested the hardness of quantum-chemical software
+with respect to numerical instabilities using random noise,
+lead to the discovery of unexpected bugs
+in the integral evaluation scheme of \texttt{Molpro}~\cite{Molpro},
+justifying a closer look at this subject.
