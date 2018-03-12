@@ -11,7 +11,9 @@
 					align=center,yshift=0.2cm},
 ]
 \def\outshift{0.4}
-\def\searchproblemeqn{5.53}
+
+% The equation number of the "line search problem"
+\def\searchproblemeqn{5.55}
 
 % TODO Equation numbers
 % unify symbols (tildes and _F subscripts ... also gdm
