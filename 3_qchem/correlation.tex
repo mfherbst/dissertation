@@ -1,16 +1,27 @@
 \section{Capturing electronic correlation}
 \label{sec:Correlation}
 
-In the previous chapter we talked at length about the \HF approximation for solving
+In the previous section we talked at length about the \HF approximation for solving
 the non-relativistic electronic Schrödinger equation.
 Since the search space for the variational minimisation is much more restricted compared
 to the \FCI ansatz,
 we necessarily make a larger approximation error in the \HF case.
 Nevertheless it should be noted that \HF yields a rather good rank-1
 approximation to the full Schrödinger problem,
-where around $99\%$ of the \FCI energy~\cite{Jensen2007book} in a respective basis is obtained
+where up to $99\%$ of the
+\FCI energy~\cite{Jensen2007book} in a respective basis is obtained
 at a fraction of the cost.
-One might wonder
+Unfortunately chemistry is about energy differences and not absolute energies.
+For example to a good approximation,
+chemical reactivity can be determined by looking at the
+energy barrier between reactants and products,
+\ie the difference in energy between the reactants
+and the maximal energy,
+which is obtained along the reaction path transforming them to products.
+As the difference matters
+getting $99\%$ of the absolute energy
+typically still leads to much larger errors than $1\%$ for the reaction barrier.
+One might therefore wonder
 what part of the exact physical picture \HF is missing and how one could improve on that.
 
 \subsection{What does Hartree-Fock miss?}
@@ -45,6 +56,7 @@ is no longer changing this arrangement,
 		is shown from the point of view of the red planet,
 		such that its neighbours are smeared out as thick black
 		circles over their respective orbits.
+		Adapted from \cite{Jensen2007book}.
 	}
 	\label{fig:HFplanets}
 \end{figure}
@@ -90,9 +102,10 @@ between the \HF and \FCI energies in a particular basis set
 as the \newterm{correlation energy}.
 As mentioned before $E_0^{\text{corr}}$ is typically rather small
 compared to $E_0^{\text{HF}}$.
-Nevertheless the effects of the electron-electron are very important
+Nevertheless the effects of the electron-electron interaction are very important
 for a proper description of the electronic structure of a chemical
-system and can therefore in general not be neglected~\cite{Helgaker2013,Szabo1996,Jensen2007book}.
+system and can therefore in general not be
+neglected~\cite{Helgaker2013,Szabo1996,Jensen2007book}.
 
 In practice one sometimes divides correlation effects
 into two subclasses.
@@ -107,13 +120,13 @@ For the \HF approximation,
 where only one determinant for the description of the ground state
 is available,
 this defect becomes apparent in situations
-with a low-lying excited state.
+with a low-lying excited state, for example.
 A classic example would be a molecule close to bond breaking.
 In such a case the ground state resulting from a full CI treatment
 has relevant contributions from more than one determinant.
-As a result even the best \HF ground state determinant misses a substantial
-part of the full CI ground state and thus only represents
-a rather poor approximation.
+As a result even the best restricted \HF ground state determinant misses a substantial
+part of the full CI ground state and thus represents
+a wrong description of the physics.
 In the remainder of this discussion about electron correlation
 we will ignore static correlation and assume that a single determinant
 \HF ground state is already a pretty decent description of the electronic structure.
@@ -168,9 +181,13 @@ where one assumes the individual determinants
 are normalised in a way that $c_0 = 1$.
 
 Even though truncated CI methods are conceptionally very simple,
-they are not used much any more.
+they are not used much any more for capturing dynamic correlation%
+\footnote{%
+	In contrast for dealing with statically correlated systems,
+the multi-reference CI ansatz is used excessively.}.
+\todoil{Cite MRCI review?}
 The main reason for this is the so-called \newterm{size-consistency problem}.
-Unlike \FCI or \HF the CISD energy of two molecular fragments
+Unlike \FCI the CISD energy of two molecular fragments
 is in general not additive,
 even if these fragments do not interact.
 Put more mathematically one can show~\cite{Helgaker2013} the following:
@@ -260,6 +277,7 @@ mainly because it gives a decent guess
 towards the exact energy of the electronic ground state
 at manageable computational cost%
 \footnote{Using sensible approximations linear-scaling {\MP}2 is possible.}.
+\todoil{Cite paper for this and note that lr-CC is possible, too.}
 The other \MP methods on the other hands
 are nowadays used only rarely.
 
@@ -366,7 +384,11 @@ Without truncation of \eqref{eqn:ExcitationCC}
 this is again equivalent to discretised full CI.
 Even with truncation to, for example, $\op{T} = \op{T}_1 + \op{T}_2$,
 equation \eqref{eqn:VariationalCC} is intractable to solve.
-The reason for this is the strong non-linearity of the problem,
+The reason for this is the number of parameters in the problem.
+Even with truncation the exponential ansatz
+$\exp(\op{T}) \Phi_0$ generates \emph{every} Slater determinant,
+such that \eqref{eqn:VariationalCC} yields
+a high-dimensional, non-linear problem,
 where products of the individual amplitudes $\{t_\mu\}_{\mu}$ often occur
 in the resulting system of equations.
 
@@ -492,6 +514,7 @@ Firstly because they converge systematically towards the \FCI energy
 as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
 and secondly because \emph{all} \CC methods are size-consistent
 --- unlike the truncated CI methods we mentioned above.
+\todoil{Mention CCSD(T) and linear-scaling CC}
 
 \defineabbr{ADC}{ADC\xspace}{Algebraic-diagrammatic construction}
 \subsection{Excited states methods}

@@ -39,9 +39,9 @@ Coulombic interaction potentials
 \begin{align}
 	\label{eqn:ManyBodyHamiltonianPotential}
 	\Op{V}_{nn} &= \sum_{A=1}^M \sum_{B=A}^M
-		\frac{Z_A Z_B}{\norm{\vec{R}_A - \vec{R}_B}_2} &
+		\frac{Z_A Z_B}{\norm{\vec{R}_A - \vec{R}_B}_2}, &
 	\Op{V}_{ee} &= \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec}
-		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2} \\
+		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2}, \\
 	\nonumber
 	\Op{V}_{ne} &= - \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{\norm{\vec{R}_A - \vec{r}_i}_2},
 \end{align}
@@ -49,7 +49,7 @@ respectively.
 Furthermore we used the electronic and nuclear kinetic energy operators
 \begin{align}
 	\label{eqn:ManyBodyHamiltonianKinetic}
-	\Op{T}_e &= -\frac12 \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i} &
+	\Op{T}_e &= -\frac12 \sum_{i=1}^{\Nelec} \Delta_{\vec{r}_i}, &
 	\Op{T}_n &= -\frac12 \sum_{A=1}^M \Delta_{\vec{R}_A},
 \end{align}
 with the shorthand
@@ -60,7 +60,7 @@ this operator can be made self-adjoint~\cite{Kato1951}.
 It is furthermore bounded below~\cite{Kato1951}
 with a couple of discrete states below the essential spectrum.
 
-The operator $\Op{H}_\text{MB}$ is the fundamental object
+The operator $\Op{H}^\text{MB}$ is the fundamental object
 the field of \newterm{quantum chemistry} investigates.
 Its properties allow for a full
 (non-relativistic) quantum-mechanical description
@@ -76,7 +76,7 @@ many-body Hamiltonian $\Op{H}_\text{MB}$ are determined.
 
 Let us use the vectors $\vec{x} \in \R^{3\Nelec}$ and $\vec{X} \in \R^{3M}$, defined as
 \begin{align}
-	\rtp{\vec{x}} &\equiv \left(\rtp{\vec{r}_1}, \rtp{\vec{r}_2}, \ldots, \rtp{\vec{r}_{\Nelec}}\right)
+	\rtp{\vec{x}} &\equiv \left(\rtp{\vec{r}_1}, \rtp{\vec{r}_2}, \ldots, \rtp{\vec{r}_{\Nelec}}\right),
 	&
 	\rtp{\vec{X}} &\equiv \left(\rtp{\vec{R}_1}, \rtp{\vec{R}_2}, \ldots, \rtp{\vec{R}_{M}}\right),
 	\label{eqn:DefAllCoords}
@@ -100,7 +100,12 @@ without further approximations.
 
 Let us illustrate this claim by an example.
 In water, \ce{H2O}, we have $3$ nuclei and $10$ electrons.
-The dimensionality of the problem is thus $L = 3 \cdot 13 = 39$.
+The dimensionality%
+\footnote{Some of the $39$ degrees of freedom can be factored out,
+namely the $3$ overall translations of the molecule.
+This does not change the overall picture very much and we will ignore
+this possibility in our discussion.}
+of the problem is thus $L = 3 \cdot 13 = 39$.
 In the numerical approach we introduces in section \vref{sec:Projection}
 the evaluation of the inner product
 \begin{equation}
@@ -323,7 +328,7 @@ will be neglected in this work from now on
 and we will focus only
 on approximation methods for solving \eqref{eqn:ElectronicSchrödinger} instead.
 
-For ease of notation we will usually drop the indices ``e'',
+For ease of notation we will usually drop the indices ``e'' and the
 superscripts ``elec'' from now on if we refer to electronic energies
 or the electronic part of the wave function.
 Similarly in the context of the electronic Schrödinger equation
@@ -408,12 +413,13 @@ Unfortunately we cannot ignore \eqref{eqn:AsymElecWavefunction}
 due to its tremendous impact on the mathematical structure of the emerging problems%
 ~\cite{Dirac1926,Fock1930}.
 
-\todoil{
-	I really would like to know more about the relationship
-	between Slater determinants and exterior products.
-	Go and ask someone about this.
-	The internet was not very helpful.
-}
+% TODO OPTIONAL
+%\todoil{
+%	I really would like to know more about the relationship
+%	between Slater determinants and exterior products.
+%	Go and ask someone about this.
+%	The internet was not very helpful.
+%}
 There are a couple of approaches which could be followed
 to adhere to \eqref{eqn:AsymElecWavefunction}.
 Typically one abstains from modifying the Hamiltonian $\Op{H}_{\Nelec}$
@@ -466,7 +472,7 @@ with the evaluation of a determinant, \ie
 \end{align*}
 Because of this observation $\wedgestring$
 is typically called a \newterm{Slater determinant}%
-\footnote{After John~C.~Slater, who introduced it.~\cite{Slater1929,Slater1930a}.}
+\footnote{After John~Slater, who introduced it.~\cite{Slater1929,Slater1930a}.}
 in standard quantum-chemistry textbooks~\cite{Szabo1996,Helgaker2013}.
 The functions $\psi_i \in L^2(\R^3, \C)$
 are usually called \newterm{single-particle functions},
@@ -530,7 +536,7 @@ summarised by the following proposition.
 	Let $\Op{H}_{\Nelec}$ be the $\Nelec$-electron electronic Hamiltonian
 	operator of \eqref{eqn:ElectronicHamiltonian}
 	with domain as stated in \eqref{eqn:ElectronicHamiltonianDomain}.
-	Let further $Z_\text{tot} := \sum_{A=1}^M Z_A$ denote the total nuclear charge.
+	Let further $Z_\text{tot} \equiv \sum_{A=1}^M Z_A$ denote the total nuclear charge.
 	\begin{itemize}
 		\item If $\Nelec \leq Z_\text{tot}$, \ie we consider a \emph{neutral}
 			or \emph{positively charged} system, then
@@ -591,7 +597,7 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	Note, that we can be sure that $E^{\Nelec-1}_0$
 	exists, because the $(\Nelec-1)$-electron system
 	is positively charged.
-	This behaviour is easy to understand phyiscally.
+	This behaviour is easy to understand physically.
 	As soon as the energy $E^{\Nelec-1}_0$ is reached
 	our $\Nelec$-electron system can always
 	separate into a stable system with $\Nelec-1$
@@ -670,6 +676,6 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	if they are located in the same energy range
 	as they are in the essential spectrum.
 	So our numerical treatment will always yield
-	an apparent ground state.
-	Whether it is physical or not.
+	an apparent ground state,
+	whether it is physical or not.
 \end{rem}

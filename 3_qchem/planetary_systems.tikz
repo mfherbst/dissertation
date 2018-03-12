@@ -8,7 +8,7 @@
 		thick,radius=2.7cm] (0,0) circle;
 	\draw [gray,decorate,thick,radius=1.5cm] (0,0) circle;
 	\draw [gray,decorate,
-		decoration={amplitude=.2mm,segment length=4mm},
+		decoration={amplitude=.2mm,segment length=3mm},
 		thick,radius=0.6cm] (0,0) circle;
 	\filldraw [draw=orange,fill=orange,radius=0.2cm] (0,0) circle; 
 

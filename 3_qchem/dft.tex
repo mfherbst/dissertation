@@ -71,13 +71,17 @@ In this expression $E_{xc}$ is the \newterm{exchange-correlation functional},
 which depends only on the density function $\rho$.
 This term is supposed to describe the non-local
 many-body effects not yet contained in the other terms,
-which is both the exchange interaction as well as correlation effects.
-The crux with Kohn-Sham \DFT is that its exact functional form is again unknown,
+which is threefold,
+(1) the part of the kinetic energy missed by the non-interacting electrons,
+(2) the exchange interaction as well as (3) correlation effects.
+The crux with Kohn-Sham \DFT is that its exact functional form is unknown,
 such that one has to live with approximations.
 Which exchange-correlation functional is sensible for a particular
 problem depends very much on the context of the chemical system,
 the property one is interested in and is still subject of debate
 in quantum-chemical literature.
+Notice, however, that if the exact exchange-correlation functional was to be found,
+\eqref{eqn:KSEnergyFunctional} would yield the exact ground-state energy.
 
 Following the original Levy constrained search,
 we want to find the density corresponding to the minimal energy,
@@ -133,3 +137,11 @@ Algorithmically both for Kohn-Sham \DFT as well as \HF the same type of problem
 needs to be solved, such that all of the numerical procedures
 discussed in the next chapters for \HF could be applied to Kohn-Sham \DFT
 with only very few changes.
+
+Even though the mathematical problem of the Kohn-Sham \DFT ansatz is related
+to \HF, one should mention that \DFT in combination with modern
+exchange-correlation functionals~%
+\cite{Tsuneda2014,Grimme2011,Perdew2005,Perdew1996,Becke1993,Lee1988}
+is much more exact than \HF
+for common applications of quantum-chemical calculations
+and is thus by far the most widely used method of quantum chemistry.

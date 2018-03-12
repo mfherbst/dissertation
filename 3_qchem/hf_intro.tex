@@ -32,8 +32,7 @@ the dimensionality
 of the matrix $\mat{A}_\text{FCI}$ becomes simply too large.
 In this section we discuss the opposite end of the scale and
 only consider one-dimensional subspaces of the form domain
-\todoil{Check the next expression \ldots the wedge could be somewhere elese}
-\[ Q(\Op{H}_{\Nelec}) = \bigwedge_{i=1}^{\Nelec} H^1(\R^3, \C) \cap L^2(\R^3, \C) \]
+\[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C) \]
 for solving the electronic problem.
 Formally by the Courant-Fischer theorem \eqref{thm:CourantFischer}
 the ground state electronic energy $E_0$ can be obtained by
@@ -41,7 +40,7 @@ a variational minimisation over all subspaces of dimension $1$.
 In other words
 \begin{align}
 	\label{eqn:GroundStateVariational}
-	E_0 &= \inf_{\Psi \in \mathcal{W}_{\Nelec}} \braket{\Psi}{\Op{H}_{\Nelec} \Psi}_{\Nelec} \\
+	E_0 &= \inf_{\Psi \in \mathcal{W}_{\Nelec}} \braket{\Psi}{\Op{H}_{\Nelec} \Psi}_{\Nelec}, \\
 \intertext{where}
 	\label{eqn:NormalisedFormDomain}
 	\mathcal{W}_{\Nelec} &= \left\{ \Psi \in Q(\Op{H}_{\Nelec})
@@ -54,7 +53,7 @@ If we restrict the search to only run over the space
 	\mathcal{R}^1_{\Nelec} = \left\{ \bigwedge_{i=1}^{\Nelec} \psi_i
 	\, \middle| \,
 	\psi_i \in H^1(\R^3, \C),
-	\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+	\braket{\psi_i}{\psi_j}_1 = \delta_{ij},
 	\quad \forall \, 1\leq i,j\leq \Nelec
 	\right\}
 	\label{eqn:RankOneSubspace}
@@ -97,7 +96,7 @@ approximate the electronic ground state.
 Mathematically speaking the set of Slater determinants
 $\mathcal{R}^1_{\Nelec}$
 is exactly the set of all elements from $\mathcal{W}_{\Nelec}$,
-which are of tensor rank 1.
+which are of rank 1.
 For this reason one sometimes refers to the Hartree-Fock
 ground state $\Phi_0$
 as a \textbf{rank-1 approximation} to the exact
@@ -125,7 +124,7 @@ electronic ground state.
 				{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2
 		- \frac12 \int_{\R^3}\int_{\R^3}
 			\frac{\abs{\gamma_\Theta(\vec{r}_1, \vec{r}_2)}^2}
-				{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2
+				{\norm{\vec{r}_1 - \vec{r}_2}_2} \D\vec{r}_1 \D\vec{r}_2,
 		\end{aligned}
 		\label{eqn:HFEnergyFunctional}
 	\end{equation}
@@ -148,8 +147,8 @@ electronic ground state.
 			\, \middle| \,
 			\Theta \in \left(H^1(\R^3, \C)\right)^{\Nelec}, \,
 			\forall i,j \,
-			\braket{\psi_i}{\psi_j}_1 = \delta_{ij}.
-		\right\}
+			\braket{\psi_i}{\psi_j}_1 = \delta_{ij}
+		\right\}.
 		\label{eqn:HFMO}
 	\end{equation}
 	The minimiser $\Theta^0$, \ie the tuple for which the minimum
@@ -185,16 +184,16 @@ and generalise the formalism.
 	\end{align}
 	The operator $\op{s}_z$ has two eigenstates
 	\begin{align*}
-		\uparrow &\equiv \mm{1\\0} & \downarrow &\equiv \mm{0\\1}
+		\uparrow &\equiv \mm{1\\0} & \downarrow &\equiv \mm{0\\1},
 	\end{align*}
 	which are called \newterm{spin-up} and \newterm{spin-down}, respectively.
 
 	One way to incorporate spin into our present treatment
 	is the \newterm{spinor} formalism,
 	where a one-particle function is now written as a function of two
-	\newterm{spin component}s
+	\newterm{spin component}\textbf{s}
 	\begin{equation}
-		\psi(\vec{r}) \equiv \mm{\psi^\alpha(\vec{r}) \\ \psi^\beta(\vec{r})}
+		\psi(\vec{r}) \equiv \mm{\psi^\alpha(\vec{r}) \\ \psi^\beta(\vec{r})},
 		\label{eqn:OneParticleSpinor}
 	\end{equation}
 	mapping each real coordinate $\vec{r}$ to a complex spinor from $\C^2$.
@@ -303,7 +302,7 @@ and generalise the formalism.
 	One is to minimise according to \eqref{eqn:HFMO}
 	and then use appropriate projections in order to yield the required
 	eigenstates with respect to $\Op{S}_z$ and $\Op{S}^2$.
-	We will not consider this approach in this work any further.
+	%We will not consider this approach in this work any further.
 	The other ansatz is to impose conditions
 	on the ansatz space \eqref{eqn:SpinAnsatzSpace},
 	such that the resulting \HF ground states
@@ -344,7 +343,7 @@ These are summarised in the following.
 \begin{thm}[Mathematical properties of \HF]
 	\label{thm:MathematicalHF}
 	Assume $\Nelec \leq \sum_{A=1}^M Z_A$, \ie a neutral or positively charged chemical system.
-	\begin{enumerate}
+	\begin{enumerate}[label=(\alph*)]
 		\item A minimiser
 			\begin{equation}
 				\Theta^0 = \left(\psi_1^0, \psi_2^0, \ldots, \psi_{\Nelec}^0 \right)
@@ -395,7 +394,7 @@ These are summarised in the following.
 		\item Due to the elliptic regularity theorem~\cite{Lieb1977}
 			\[ \psi_i^0 \in H^2(\R^3,\C^2) \cap C^\infty(\R^3 \backslash \{\vec{R}_A\}_{A=1,\ldots,M},\C^2), \]
 			which implies that a solution to \eqref{eqn:EulerLagrangeHF}
-			will always be sooth everywhere but the nuclei and globally in $H^2(\R^3,\C^2)$.
+			will always be smooth everywhere but the nuclei and globally in $H^2(\R^3,\C^2)$.
 		\item The Fock operator $\Op{F}_{\Theta^0}$ as defined in \eqref{eqn:FockOperator}
 			is a self-adjoint operator on $L^2(\R^3,\C^2)$
 			with domain $D(\Op{F}_{\Theta^0}) = H^2(\R^3,\C^2)$
@@ -433,15 +432,16 @@ Theorem \ref{thm:MathematicalHF} provides the mathematical
 justification for the \HF procedure as it is performed
 in almost every quantum-chemistry program these days
 for neutral or positively charged system.
-I am not aware of a mathematical statement making
-the guarantee that \HF gives a sensible ground state for negatively charged systems.
+A similar mathematical statement making
+a guarantee that \HF gives a sensible ground state for negatively charged systems
+is not known to me.
 In fact one can even show that no solution to the \HF problem \eqref{eqn:HFMO}
 exists for negative ions with $\Nelec > 2Z_\text{tot} + M$~\cite{Cances2000}.
 This holds for example for \ce{H^{2-}}.
 To the best of my knowledge there is furthermore no
 uniqueness proof for the solution \eqref{eqn:HFTheoremMinimiser}
 in the infinite-dimensional setting up to today,
-not even for the resulting ground state density~\cite{Cances2000}.
+not even for the resulting ground state density.
 
 \subsection{Discretised Hartree-Fock}
 \label{sec:DiscreteHF}
@@ -573,9 +573,9 @@ representations of \HF.
 	and the other functions with zero $\alpha$-component follow thereafter
 	or
 	\begin{align*}
-		\psi_i^\beta  &= 0 \ \forall i \in \{1,\ldots,\NelecA\}
+		\psi_i^\beta  &= 0 \quad \forall i \in \{1,\ldots,\NelecA\}
 		&&\text{and}&
-		\psi_i^\alpha  &= 0 \ \forall i \in \{\NelecA+1,\ldots,\Nelec\}.
+		\psi_i^\alpha  &= 0 \quad \forall i \in \{\NelecA+1,\ldots,\Nelec\}.
 	\end{align*}
 	Applying these conditions
 	to the generalised unrestricted Hartree-Fock ansatz \eqref{eqn:HFDiscretisationAnsatz}
@@ -681,8 +681,8 @@ representations of \HF.
 		\mathcal{C} = \left\{
 			\mm{\mat{C}^\alpha & 0 \\ 0 & \mat{C}^\beta}
 			\, \middle| \,
-			\mat{C}^\alpha \in \C^{\Nbas\times\NelecA},
-			\mat{C}^\beta \in \C^{\Nbas\times\NelecB},
+			\mat{C}^\alpha \in \C^{\Nbas\times\NelecA}, \,
+			\mat{C}^\beta \in \C^{\Nbas\times\NelecB}, \,
 			\tp{\mat{C}} \mat{S} \mat{C} = \mat{I}_{\Nelec}
 			\right\}.
 		\label{eqn:HFStiefel}
@@ -809,6 +809,7 @@ which is the square root of the sum of all elements squared.}
 	Much rather they are \textbf{manifolds},
 	\ie geometrical objects which locally look like vector spaces,
 	but globally show less structure.
+	\todoil{Define Stiefel and Grassman manifolds}
 	More precisely $\mathcal{C}$ is a subset of a Stiefel manifold
 	and $\mathcal{P}$ is a subset of a Grassmann manifold.
 	This aspect becomes apparent
@@ -853,7 +854,7 @@ are computed by applying the sesquilinear form
 			\cc{\left(\phi^\alpha(\vec{r})\right)}
 				\left(\Op{F}_\Theta\chi\right)^\alpha\!(\vec{r})
 			+ \cc{\left(\phi^\beta(\vec{r})\right)}
-				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r})
+				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r}) \D \vec{r}
 	\end{aligned}
 	\label{eqn:SesquilinearFormFock}
 \end{equation}
@@ -863,14 +864,15 @@ to all pairs of basis spinors $(\phi, \chi)$ with
 \]
 This matrix is Hermitian and block-diagonal%
 \footnote{This is true even in the case of generalised unrestricted Hartree-Fock.}
-\todoil{
-	Note:
-	It seems
-	GUHF and UHF are only different if there is spin-orbit coupling or so in place,
-	because otherwise one may always take the coefficients to be block-diagonal
-	without loss of generality \ldots maybe.
-	Think about it.
-}
+% TODO OPTIONAL
+%\todoil{
+%	Note:
+%	It seems
+%	GUHF and UHF are only different if there is spin-orbit coupling or so in place,
+%	because otherwise one may always take the coefficients to be block-diagonal
+%	without loss of generality \ldots maybe.
+%	Think about it.
+%}
 \[ \matF = \mm{\mat{F}^\alpha & 0 \\ 0 & \mat{F}^\beta} \]
 and can be written as
 \begin{equation}
@@ -954,11 +956,11 @@ satisfies exactly the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
 such that
 \newcommand{\matFzfull}{\mat{F}\!\!\left[\mat{C}_0\tp{\mat{C}_0}\right]}
 \[
-	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \tilde{\mat{E}}
+	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \widetilde{\mat{E}}
 \]
 where
 \[
-	\tilde{\mat{E}} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
+	\widetilde{\mat{E}} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
 		\varepsilon_{\Nelec}) \in \R^{\Nelec \times \Nelec}.
 \]
 This condition can be equivalently expressed as~\cite{Pulay1982}
@@ -1010,20 +1012,22 @@ to solve \eqref{eqn:HFDiscreteEquations}
 expression \eqref{eqn:PulayError} is called the \newterm{Pulay error}
 after Peter Pulay~\cite{Pulay1982}.
 
-\todoil{Instead of number 5. 7. and so on use letters (a)}
 There are two more aspects of theorem \ref{thm:MathematicalHF} worth pointing out.
-From the unfilled shell property (7.) $\varepsilon_{\Nelec} < \varepsilon_{\Nelec+1}$,
+From the unfilled shell property (g) $\varepsilon_{\Nelec} < \varepsilon_{\Nelec+1}$,
 we can deduce that there is always a gap between the
 highest occupied orbital~(HOMO) and the lowest unoccupied orbital~(LUMO)
 in a converged \HF result.
-Together with (5.), we see that only eigenfunctions $\psi_i$
+Together with (e), we see that only eigenfunctions $\psi_i$
 with negative orbital energy eigenvalue $\varepsilon_i$ may be part of $\mat{C}$
 in the converged case.
-Secondly the smoothness property (3.) makes sure that
-all solutions of the \HF equations are numerically easy to model,
-such that even numerical basis functions like finite elements
-should be able to model the \HF equations with good convergence
-provided that appropriate care is taken with respect to the positions of the nuclei.
+Secondly the smoothness property (c) makes sure that
+all solutions of the \HF equations are numerically easy to model.
+Especially for numerical basis functions like finite elements,
+where the rate of convergence depends on the smoothness of the function,
+this is important such that the problem can be modelled
+employing a reasonable number of basis functions.
+Furthermore care needs to be taken to place the grid points
+in a way that the nuclei sit \emph{on} a grid point and not in between.
 \end{rem}
 
 In this section we discussed roughly three ways to view the \HF
@@ -1107,7 +1111,8 @@ We will discuss this further in section \vref{sec:IssuesUHF}.
 Our discussion of Hartree-Fock up to this point
 leads to numerical problems taking place in complex arithmetic,
 since both the coefficient matrix $\mat{C}$
-as well as the Fock matrix $\mat{F}$ are complex-valued.
+as well as the Fock matrix $\mat{F}$
+are so far taken to have complex entries.
 Whilst doing this is possible,
 it is typically nevertheless
 avoided by reducing

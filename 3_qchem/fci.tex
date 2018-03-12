@@ -49,7 +49,8 @@ Since $H^1(\R^{3\Nelec}, \C)$ is separable, we can find a countable basis set
 	\label{eqn:OneParticleBasis}
 \end{equation}
 where we used the abbreviated notation
-$\braket{\slot}{\slot}_1 = \braket{\slot}{\slot}_{L^2(\R^3, \C)}$.
+$\braket{\slot}{\slot}_1 \equiv \braket{\slot}{\slot}_{L^2(\R^3, \C)}$
+for the one-particle inner product.
 Taking the properties of the wedge product \eqref{eqn:PropertiesExteriorProduct}
 into account allows to deduce the equivalent construction
 \begin{equation}
@@ -142,7 +143,8 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 	for each $i \in \Iocc$ and each $a \in \Ivirt$
 	a so-called singly \newterm{excited determinant}
 	\[
-		\Phi_i^a = \psi_1 \wedge \psi_2 \wedge \cdots \psi_a \cdots \wedge \psi_{\Nelec}
+		\Phi_i^a = \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge
+			\cdots \wedge \psi_{\Nelec}
 	\]
 	by replacing the $i$-th function of the Slater determinant
 	wedge string
@@ -150,10 +152,12 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 	without changing the order.
 	Analogously one may define doubly or higher excited determinants
 	\begin{align*}
-		\Phi_{ij}^{ab} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \cdots \psi_b
+		\Phi_{ij}^{ab} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge
+			\cdots \wedge \psi_b
 			\wedge \cdots \wedge \psi_{\Nelec} \\
-		\Phi_{ijk}^{abc} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \cdots \psi_b
-			\cdots \psi_c \wedge \cdots \wedge \psi_{\Nelec}
+		\Phi_{ijk}^{abc} &= \psi_1 \wedge \psi_2 \wedge \cdots \wedge \psi_a \wedge
+			\cdots \wedge \psi_b \wedge
+			\cdots \wedge \psi_c \wedge \cdots \wedge \psi_{\Nelec}
 	\end{align*}
 	where%
 	\footnote{%
@@ -187,14 +191,15 @@ $\tilde{Q}(\Op{H}_{\Nelec})$.
 	all functions in $\set{B}_1$ are orthonormal to each other.
 	In other words $\set{B}_{\Nelec}$ is an orthonormal
 	basis for $\tilde{Q}(\Op{H}_{\Nelec})$.
-	\todo[inline, caption={}]{
-		This following statement might not be true,
-		since $\braket{\slot}{\slot}_{\Nelec}$
-		might not be equivalent to the Hilbertian inner product!
-		\begin{center}
-		Since it is countable, $\tilde{Q}(\Op{H}_{\Nelec})$ is separable.
-		\end{center}
-	}
+% TODO OPTIONAL
+%	\todo[inline, caption={}]{
+%		This following statement might not be true,
+%		since $\braket{\slot}{\slot}_{\Nelec}$
+%		might not be equivalent to the Hilbertian inner product!
+%		\begin{center}
+%		Since it is countable, $\tilde{Q}(\Op{H}_{\Nelec})$ is separable.
+%		\end{center}
+%	}
 \end{rem}
 The set $\set{B}_{\Nelec}$ is sometimes called the \newterm{$\Nelec$-particle basis}
 or \newterm{many-particle basis}
@@ -264,7 +269,7 @@ regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 	As usual we take
 	\begin{align}
 		\label{eqn:CondOccIndex}
-		i, j, k, l, \ldots &\in \Iocc &&\text{with}& i&<j<k<l<\cdots \\
+		i, j, k, l, \ldots &\in \Iocc &&\text{with}& i&<j<k<l<\cdots, \\
 		\label{eqn:CondVirtIndex}
 		a, b, c, d, \ldots &\in \Ivirt &&\text{with}& a&<b<c<d<\cdots
 	\end{align}
@@ -276,13 +281,13 @@ regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 	\item Construct the full CI matrix $\mat{A}_\text{FCI} \in \C^{\Nfci \times \Nfci}$
 		consisting of elements
 		\begin{equation}
-			a(\Phi_1, \Phi_2)
-			= \mbra{\Phi_1}
+			a(\Phi_I, \Phi_J)
+			= \mbra{\Phi_I}
 			\Op{T}_e + \Op{V}_{ne} + \Op{V}_{ee}
-			\mket{\Phi_2}_{\Nelec}
+			\mket{\Phi_J}_{\Nelec}
 			\label{eqn:FCIMatrixElements}
 		\end{equation}
-		for all combinations $\Phi_1, \Phi_2 \in \set{B}_{\Nelec}^{(n)}$.
+		for all combinations $\Phi_I, \Phi_J \in \set{B}_{\Nelec}^{(n)}$.
 		There are
 		\[ \Nfci = \binom{\Nbas}{\Nelec} \leq \Nbas^{\Nelec} \]
 		such Slater determinants.
@@ -328,18 +333,19 @@ all configurations into account, explaining the name full CI.
 
 Even though \FCI allows to compute the solution of the electronic
 Schrödinger equation up to arbitrary accuracy,
-it is not employed a lot in practice.
+it is only employed for the simplest problems or for benchmark purposes.
 The main reason for this is its enormous computational cost.
 Already for a small molecules like water with only
-$\Nelec = 10$ electrons and a rather small def2-sv(p)\cite{Schaefer1992} basis set
+$\Nelec = 10$ electrons and a rather small def2-SV(P)\cite{Schaefer1992} basis set
 $\set{B}_1^{(n)}$ with $\Nbas = 18$ basis functions this makes $\Nfci = 43758$
 and thus around $\Nfci^2 = 2\E{9}$ entries in $\mat{A}_\text{FCI}$
-in an extremely na\"{i}ve implementation.
+in an extremely na\"{i}ve implementation,
+where known zero entries are stored as well.
 Of course this can be improved by exploiting some symmetries
 or the rather sparse structure of $\mat{A}_\text{FCI}$,
 which we will discuss in the next remark.
 Nevertheless the computational cost scales exponentially
-and allows only treatment of extremely small systems.
+and allows only treatment of small systems.
 
 \defineabbr{ERI}{ERI\xspace}{Electron repulsion integral}
 \newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
