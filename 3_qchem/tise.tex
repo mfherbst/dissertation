@@ -651,7 +651,6 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	\end{itemize}
 \end{rem}
 
-\todoil{Rephrase}
 \begin{rem}[Consequences for a numerical treatment]
 	\label{rem:ElectronicTISENumerical}
 	From proposition \ref{prop:ZhislinYafaev}
@@ -668,14 +667,14 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	If the ion is stable,
 	then at least its ground state can be approximated
 	numerically via remark \ref{rem:ApproxBottomDiscrete}.
-	If it is not, we might not even be able to get
-	its ground state.
-	The problem is, as usual, that in the numerical treatment
+	If it is not, we might not even be able to get its ground state.
+	The problem is, that in a variational numerical treatment
 	we cannot easily distinguish between approximations
-	to bound states and approximations to continuous states
-	if they are located in the same energy range
-	as they are in the essential spectrum.
-	So our numerical treatment will always yield
-	an apparent ground state,
-	whether it is physical or not.
+	to bound states and approximations to continuum states
+	if they are located in the same energy range.
+	So if the lowest-energy bound state is embedded inside the continuum,
+	both are inside the essential spectrum.
+	A variational treatment will converge to the bottom end
+	of the essential spectrum~(see theorem \ref{thm:CourantFischer}),
+	which might not be the lowest-energy bound state in this case.
 \end{rem}
