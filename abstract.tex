@@ -44,13 +44,13 @@ Next discretisation approaches based on four different types of basis functions
 are compared
 both with respect to the computational challenges as well as
 their ability to describe the physical features of the wave function.
-Next to (1) Slater-type orbitals and (2) Gaussian-type orbitals,
+Besides (1) Slater-type orbitals and (2) Gaussian-type orbitals,
 the discussion considers (3) finite elements,
 which are piecewise polynomials on a grid,
 as well as (4) Coulomb-Sturmians,
 which are the analytical solutions to a Schrödinger-like equation.
 A novel algorithmic approach based on matrix-vector contraction expressions is developed,
-which is able to incorporate the numerical requirements of all cases considered.
+which is able to adapt to the numerical requirements of all cases considered.
 It is shown that this ansatz not only allows to formulate
 \SCF algorithms in a basis-function independent way,
 but furthermore improves the theoretically achievable
@@ -119,8 +119,8 @@ scheme for the polarisation propagator are presented.
 \begin{otherlanguage}{ngerman}
 Für die Berechnung elektronischer Zustände in Molekülen
 verwenden aktuelle Methoden vor allem Gaußfunktionen.
-Die Algorithmen, welche in den bestehenden Quantenchemiepaketen
-verwendet werden, sind dementsprechend oft sehr stark
+Die in den bestehenden Quantenchemiepaketen verwenden Algorithmen
+sind dementsprechend oft sehr stark
 auf diesen Funktionstyp und dessen numerische Anforderungen angepasst.
 Dies ist ein Hindernis für die Verwendung
 anderer Basisfunktionen bei der Betrachtung dieser Methoden,
@@ -132,7 +132,7 @@ dass neue Basisfunktionen in der Elektronenstrukturtheorie
 auf einfache Weise eingebunden und getestet werden können.
 Ein wichtiger Bestandteil von \molsturm dafür ist
 ein Lösungsverfahren für das Hartree-Fock-Problem~(\HF),
-welches mit allen Basisfunktionstypen verwendet werden kann.
+welches mit beliebigen Basisfunktionstypen verwendet werden kann.
 
 Zunächst werden der mathematische Hintergrund der Quantenmechanik
 und einige numerische Techniken vorgestellt.
@@ -177,14 +177,13 @@ Die Eignung üblicherweise verwendeter \SCF-Algorithmen
 auf eine derartige kontraktionsbasierte~(contraction-based)
 Formulierung wird geprüft
 und für das Beispiel des Algorithmus der optimalen Dämpfung~(optimal damping algorithm)
-wird eine näherungsweise Änderung vorgeschlagen,
-die diesen auf die kontraktionsbasierte Formulierung bringt.
+wird eine zusätzliche Näherung vorgeschlagen,
+die diesen mit der kontraktionsbasierten Formulierung vereinbart.
 
 Vor dem Hintergrund aktuell verfügbarer Hardware werden das Potential
 und die Nachteile kontraktionsbasierter Methoden diskutiert.
 Ein Hindernis bei der Entwicklung kontraktionsbasierter Methoden
-ist oft, dass die daraus entstehenden Programmcodes
-schwerer lesbar sind.
+ist oft, dass die daraus entstehenden Quelltexte schwerer lesbar sind.
 Um dieses Problem zu umgehen wird die Datenstruktur
 einer ``bequemen Matrix''~(lazy matrix) eingeführt.
 Bequeme Matrizen sind eine Verallgemeinerung des üblichen Matrixkonzeptes,
@@ -196,13 +195,12 @@ beispielsweise können sie in üblicher Weise
 miteinander addiert oder multipliziert werden.
 Die Folge ist,
 dass man kontraktionsbasierte Algorithmen auf die gleiche Art und Weise
-implementieren kann,
-wie man es mit gewöhnlichen Matrizen auch würde.
+wie bei der Verwendung von gewöhnlichen Matrizen implementieren kann.
 Eine Implementierung des Konzepts der bequemen Matrizen
 wird in Form von der Bibliothek \lazyten vorgestellt.
 Ebenso wird ein Beispiel gegeben,
 welches die Eignung von bequemen Matrizen im Kontext der
-Lösung des \HF Problems demonstriert.
+Lösung des \HF-Problems demonstriert.
 
 Basierend auf den oben erwähnten Konzepten wird die Programmstruktur
 von \molsturm diskutiert.
@@ -210,13 +208,11 @@ Es wird dargelegt, wie durch die Anwendung der bequemen Matrizen
 innerhalb eines kontraktionsbasierten \SCF-Verfahrens
 eine Trennung des Programmcodes,
 welcher das \SCF-Verfahren selbst beschreibt
-von jedem Programmcode, welcher die Diskretisierung und die Basisfunktionen betrifft,
+von jenem Programmcode, welcher die Diskretisierung und die Basisfunktionen betrifft,
 erreicht werden konnte.
-Im Weiteren wird darauf eingegangen,
-wie ermöglicht wurde, dass ein neuer Basisfunktionstyp
-in \molsturm dadurch implementiert werden kann,
-dass nur an einer einzigen, klar definierten Stelle
-Änderungen durchgeführt werden müssen.
+Des Weiteren wird gezeigt,
+wie ein neuer Basisfunktionstyp in \molsturm implementiert werden kann,
+indem nur an einer einzigen, klar definierten Stelle Änderungen durchgeführt werden.
 Darüber hinaus wird mittels einiger Beispiele besprochen,
 wie \molsturm über skriptbare~(scriptable) Schnittstellen
 mit der Funktionalität bestehender Programme kombiniert werden kann,
