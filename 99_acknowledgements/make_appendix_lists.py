@@ -45,12 +45,12 @@ PROOF_READERS = [
     "Manuel~Hodecker",
     "Marvin~Hoffmann",
     "Dr.~James~Avery",
+    "Carine~Dengler",
     #
     # tentative:
     # "Reena~Sen",
     # "Mikael~Scott",
     # "Dr.~Jim~Dengler",
-    # "Carine~Dengler",
     # "Andreas~Fink",
 ]
 
