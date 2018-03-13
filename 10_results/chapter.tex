@@ -23,7 +23,7 @@ The focus will be on discussing and understanding the convergence
 properties of \CS-based calculations on atoms of
 the second and the third period of the periodic table,
 mostly at Hartree-Fock level.
-Some exemplary full CI and {\MP}2 calculations have been performed
+Some exemplary \FCI and {\MP}2 calculations have been performed
 to get an idea how the picture changes
 if correlation effects are taken into account as well.
 
@@ -34,6 +34,11 @@ where the overall aim is to yield rapid convergence
 of the ground state energies at \HF or correlated level.
 Finally we present the first results of a \CS-based
 excited states calculation at {\ADC}(2) level.
+
+For the calculations in this chapter
+we employed \molsturm~(version 0.0.3)~\cite{molsturmWeb}
+as well as its interfaces to \pyscf~(version 1.4.0)~\cite{Sun2017}
+and \adcman~(version 2.5-core\_valence)~\cite{Wormit2014}.
 
 \input{denoting_cs_basis.tex}
 \input{convergence_hf.tex}
