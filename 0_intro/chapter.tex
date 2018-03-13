@@ -11,15 +11,16 @@ of complex atomic systems without too much computation.}
 {Paul Adrien Maurice Dirac (1902--1984)}
 
 \noindent
-In the form of alchemy experimental chemistry
-has already been performed thousands of years ago.
-Only gradually,
+Experimental chemistry
+has already been performed thousands of years ago
+in the form of alchemy.
+Gradually,
 in the 17th and 18th century,
 chemistry transformed into a science,
 where new theories were developed based on
 experimental evidence rather than philosophical thought.
 The 19th century marked the appearance of thermodynamics,
-which provided a theoretical backbone
+which provided a theoretical foundation
 to quantitatively describe the physical processes of chemical reactions.
 Whilst this already allowed to deductively reach predictions,
 the full understanding of the microscopic behaviour
@@ -29,15 +30,13 @@ By now the application of quantum mechanics for the modelling of chemical proces
 has grown into a field on its own, known as quantum chemistry.
 
 Compared to experimental chemistry, quantum chemistry is thus relatively new.
-Still, as \citet{Dirac1929} already noted in \citeyear{Dirac1929}%
-~(see the quote at the beginning of the chapter),
+Still, as \citet{Dirac1929} already noted in \citeyear{Dirac1929},
 all fundamental equations of quantum chemistry,
 in the form of the mathematical formulation of quantum mechanics, are known.
 Whilst solving these equations exactly is possible for model systems,
 solving them for any chemically or physically
 interesting system can only be done using approximate methods.
-Which methods are best to be employed depends very much on
-the intended application,
+Which methods best employed depends very much on the intended application,
 \ie the complexity of the chemical system
 or the properties and behaviour to be described.
 Over the years a hierarchy of approximations has been developed for this reason,
@@ -47,11 +46,9 @@ Nowadays the modelling of chemical processes
 based on quantum-chemical arguments
 is well-established both in industry as well as research.
 
-For the various levels of theory
-at which a chemical system can be modelled,
-the aforementioned aspects of accuracy and applicability
+The aforementioned aspects of accuracy and applicability
 are to be seen in contrast to computational demand.
-Generally speaking the more specific the setting one has in mind
+Generally speaking, the more specific the setting one has in mind
 and the more accuracy can be sacrificed,
 the more computationally cheap the resulting quantum-chemical methods become.
 In electronic structure theory, for example,
@@ -83,8 +80,7 @@ increasing difficulty of the equations.
 On the other hand in order to gain insight
 into a particular research question
 not necessarily the most accurate treatment is required.
-One should mention that the sketched approach
-of a \HF calculation followed by a Post-\HF method,
+The sketched approach of a \HF calculation followed by a Post-\HF method,
 is not the only way to model chemical systems.
 An alternative route is density-functional theory~(\DFT),
 where the approach is to directly work with the electron density
@@ -110,7 +106,7 @@ In the case of \HF, for example,
 the discretised problem may be solved by repetitively diagonalising
 the arising Fock matrix.
 
-This naturally leads to the question,
+This naturally leads to the question
 which type of basis functions should be used to span the subspace
 for a modelling at \HF, \DFT or Post-\HF level.
 Most available program packages for
@@ -135,7 +131,7 @@ They are not able to represent
 all features of the electron density well.
 Most prominently they fail to describe the cusp of the electron density
 at the position of a nucleus as well as its exponential decay behaviour~\cite{Kato1957}.
-In most practical use cases one gets away with this,
+In most practical use cases this is acceptable,
 since the important quantity for understanding chemical processes
 is not the absolute energy of a molecule.
 Much rather chemistry is all about the energy differences
@@ -143,7 +139,7 @@ between the involved species or electronic configurations.
 Since changes in the electronic structure both at the nucleus as well as
 the region far from the nuclei are generally much less pronounced,
 the errors resulting from an inadequate description
-of these features tend to cancel.
+of these features tend to cancel one another.
 For cases where they do become important
 one can usually compensate by employing specialised Gaussian
 basis sets~\cite{Jensen2013,Hill2013} up to some extent.
@@ -152,7 +148,7 @@ that the accurate computation of some physical properties
 like nuclear magnetic resonance (NMR) shielding tensors~\cite{Guell2008,Hoggan2009},
 for example,
 requires a correct description of both aforementioned features.
-Additionally those specialised basis sets can lead to
+Additionally, those specialised basis sets can lead to
 numerical instabilities in the resulting linear algebra due to their overcompleteness,
 making it numerically more challenging to obtain reliable results.
 
@@ -175,10 +171,11 @@ the physical features of the electron density,
 but on the other hand lead to more feasible integrals than Slater-type orbitals.
 Their use in quantum-chemistry is, however, not well-established.
 
-There are few further aspects to consider in such a discussion about basis functions
+\todoil{Better starting sentence}
+There are a few further aspects to consider in such a discussion about basis functions
 for the modelling of electronic structures.
 First of all our discussion has ignored
-a very important feature of the electronic structure so far,
+a very important feature of the electronic structure,
 namely the electron-electron cusp.
 It has been shown that a proper modelling of this feature of the wave function
 is important in order to reach rapid convergence for Post-\HF methods~\cite{Kong2012}.
@@ -187,7 +184,7 @@ orbitals cannot properly account for this,
 since these functions have no direct notion of the electron-electron distance.
 Recent attempts to tackle this issue are so-called
 explicitly correlated methods~\cite{Kong2012}.
-These methods boil down to a change in the underlying
+In a nutshell these methods change the underlying
 basis from the usual Gaussian-type orbitals to so-called Gaussian geminals,
 where an explicit dependence on the electron-electron
 distance is directly incorporated inside the basis functions.
@@ -216,7 +213,7 @@ for the basis sets are well-established and highly suitable.
 	} \\[-0.3em]
 	\caption[Structure of Fock matrices for different discretisations]{
 		Structure of typical Fock matrices taken from a Hartree-Fock
-		calculation for beryllium when the indicated basis function types
+		calculation for beryllium if the indicated basis function types
 		were used for the discretisation.
 		The absolute values of the matrices are depicted to the same scale
 		with elements smaller than $10^{-10}$ coloured in white.
@@ -290,7 +287,7 @@ which supports experimentation at all levels.
 The \SCF process in \molsturm uses a contraction-based approach,
 where the Fock matrix is not stored in memory,
 but where matrix-vector contraction expressions are sufficient.
-As will be discussed this allows to separate the code dealing with the \SCF scheme
+As will be discussed, this allows to separate the code dealing with the \SCF scheme
 from the basis-function specific details,
 such that the \SCF code is highly general,
 but the integral back end is still in full control
@@ -351,5 +348,5 @@ and make some suggestions regarding
 sensible Coulomb-Sturmian basis sets for ground state calculations of atoms
 at \HF level.
 Finally chapter \ref{ch:Conclusion} concludes the work and
-and chapter \ref{ch:Prospects} gives
+chapter \ref{ch:Prospects} gives
 an outlook into further directions of research.
