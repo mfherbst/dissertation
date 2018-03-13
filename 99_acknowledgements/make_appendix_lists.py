@@ -46,12 +46,6 @@ PROOF_READERS = [
     "Marvin~Hoffmann",
     "Dr.~James~Avery",
     "Carine~Dengler",
-    #
-    # tentative:
-    # "Reena~Sen",
-    # "Mikael~Scott",
-    # "Dr.~Jim~Dengler",
-    # "Andreas~Fink",
 ]
 
 
