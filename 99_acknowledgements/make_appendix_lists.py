@@ -47,6 +47,7 @@ PROOF_READERS = [
     "Dr.~James~Avery",
     "Carine~Dengler",
     "Reena~Sen",
+    "Andreas~Fink",
 ]
 
 
