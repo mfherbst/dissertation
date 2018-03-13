@@ -57,7 +57,7 @@ for i in range(3, 19):  # Only Li to Ar
     mark = r"\tmark[" + sources[src]["letter"] + "," + hfmark + "]"
     rows.append([symbol, "$" + str(lit["value"]) + "$" + mark])
 
-cap = r"\HF reference values"
+cap = r"Hartree-Fock reference values"
 caption = r"Reference values used for comparison of the \CS-based results " + \
     r"and for estimating errors in the \CS values. " + \
     r"The CBS extrapolation was done with a builtin routine provided by " + \
