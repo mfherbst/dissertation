@@ -275,27 +275,38 @@ in the quantum Monte-Carlo community~\cite{Foulkes2001,Ma2005},
 since it can lead to problems when sampling the local energy,
 especially in diffusion Monte-Carlo.
 
-\todoil{Mention different basis sets required for Post-\HF and \DFT
-	and that properties converge faster.
-	Further typically relative energies are needed,
-	where the change at the nucleus is minimal
-}
 In \HF, \DFT and Post-\HF methods
 the failure of the {\cGTO}s to represent the nuclear cusp
 or the long-range behaviour is typically only an issue
 if either parts of the wave functions are especially important
 for a particular property.
-Examples would be the determination of Rydberg-like excited states,
+The reason is that the important aspect for the modelling of chemical
+properties as well as the modelling of chemical processes
+is not the absolute energy of a molecule.
+Much rather chemistry is all about relative energies
+between the involved species or electronic configurations.
+Since changes in the electronic structure both at the nucleus as well as
+the region far from the nuclei are generally much less pronounced,
+the errors resulting from an inadequate description
+of these features tend to cancel one another.
+In other words the convergence of properties
+tends to be faster than the convergence of absolute energies.
+
+Examples for cases which require
+a proper representation of the nuclear cusp or
+the long-range behaviour of the electron density
+are the determination of Rydberg-like excited states,
 resonance processes,
 the computation electron affinities,
 the computation of X-ray absorption spectra
 or the computation of nuclear-magnetic resonance properties.
-In such cases specific basis sets
+For the modelling of these processes specific basis sets
 are required~\cite{Hill2013,Jensen2013},
 which include further \cGTO basis functions
 to either sample the core region or the long-range tail more accurately.
 If such basis sets are not employed
-it may happen that the desired features are completely missed or described very inaccurately.
+it may happen that the desired features
+are completely missed or described very inaccurately.
 In this sense {\cGTO}s are not fully black-box and
 picking a reasonable basis set for a particular problem
 usually requires some idea of the electronic structure already.
@@ -309,6 +320,10 @@ become almost linearly dependent,
 yielding large off-diagonal
 overlap matrix elements $\braket{\varphi_\mu}{\varphi_\nu}_1$
 and a near-singular overlap matrix.
+This observation is typically referred to as the
+\newterm{overcompleteness} of the \cGTO basis.
+
+\todoil{Mention different basis sets required for Post-\HF and \DFT; geminals}
 
 \begin{figure}
 	\centering
@@ -341,7 +356,7 @@ as well as diagonalising it can be performed using direct methods%
 	and then use Cuppen's divide and conquer~\cite{Arbenz2010}
 	or multiple relatively robust representations~\cite{Dhillon2006}.
 }.
-Ignoring the basis sets suffering from over-completeness for a second,
+Ignoring the basis sets suffering from overcompleteness for a second,
 the numerical structure of a \cGTO-based Fock matrix
 is rather advantageous in most cases.
 Figure \vref{fig:StructureGaussianFock}, for example,
