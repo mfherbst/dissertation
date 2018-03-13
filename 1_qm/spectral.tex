@@ -373,14 +373,19 @@ In other words the continuous spectrum of a compact operator
 may at most contain the value $0$ --- even in infinite dimensions.
 Furthermore there is a nice result for the eigenfunctions of a compact, self-adjoint
 operator:
-\todoil{There is something missing here \ldots look it up in Helffer,
-most especially no reference to the eigenfuctions!}
 \begin{prop}
 	\label{prop:CompactBasis}
 	Let $\hilbert$ be a separable Hilbert space and $\Op{A}$ a compact,
-	self-adjoint operator on $\hilbert$,
-	then $\hilbert$ admits for a Hilbertian basis,
-	\ie~a basis set $\{ u_k \}_{k \in \mathcal{I}}$ with
+	self-adjoint operator on $\hilbert$.
+	The eigenfunctions of $\Op{A}$,
+	\ie the set of all functions $\{ u_k \}_{k \in \mathcal{I}} \subset \hilbert$
+	with
+	\[
+		\Op{A} u_k - \lambda_k  u_k = 0
+	\]
+	for a $\lambda_k \in \sigma(\Op{A}) \backslash \{0\}$
+	are a Hilbertian basis for $\hilbert$.
+	In other words they satsify
 	\begin{align*}
 	\braket{u_k}{u_l} &= \delta_{kl} \quad \forall \, k,l \in \mathcal{I}
 	&&\text{and}&
