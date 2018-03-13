@@ -38,7 +38,7 @@ nuclear-nuclear, electronic-electronic and nuclear-electronic
 Coulombic interaction potentials
 \begin{align}
 	\label{eqn:ManyBodyHamiltonianPotential}
-	\Op{V}_{nn} &= \sum_{A=1}^M \sum_{B=A}^M
+	\Op{V}_{nn} &= \sum_{A=1}^M \sum_{B=A+1}^M
 		\frac{Z_A Z_B}{\norm{\vec{R}_A - \vec{R}_B}_2}, &
 	\Op{V}_{ee} &= \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec}
 		\frac{1}{\norm{\vec{r}_i - \vec{r}_j}_2}, \\
@@ -61,7 +61,7 @@ It is furthermore bounded below~\cite{Kato1951}
 with a couple of discrete states below the essential spectrum.
 
 The operator $\Op{H}^\text{MB}$ is the fundamental object
-the field of \newterm{quantum chemistry} investigates.
+the field of quantum chemistry investigates.
 Its properties allow for a full
 (non-relativistic) quantum-mechanical description
 of a chemical system.
@@ -106,7 +106,7 @@ namely the $3$ overall translations of the molecule.
 This does not change the overall picture very much and we will ignore
 this possibility in our discussion.}
 of the problem is thus $L = 3 \cdot 13 = 39$.
-In the numerical approach we introduces in section \vref{sec:Projection}
+In the numerical approach we introduce in section \vref{sec:Projection}
 the evaluation of the inner product
 \begin{equation}
 	\braket{\Psi}{\Phi} \equiv \int_{\R^{3M}} \int_{\R^{3\Nelec}}
@@ -150,8 +150,8 @@ This justifies an approximative treatment,
 where we assume the motion of the electrons
 and the motion of the nuclei to happen at different timescales.
 
-For this let us consider at first
-a simplified version of \eqref{eqn:ManyBodyHamiltonian},
+For this let us consider
+a simplified version of \eqref{eqn:ManyBodyHamiltonian} at first,
 namely the \newterm{electronic Hamiltonian}
 \[
 	\Op{H}^\text{elec} \equiv \Op{H}^\text{MB} - \Op{T}_n
@@ -218,7 +218,7 @@ which consists of the following two assumptions:
 	\begin{equation}
 		\Psi^\text{MB}_I(\vec{X}, \vec{x}) \equiv \Psi^\text{MB}_{\Iel\Inu}(\vec{X}, \vec{x})
 		\simeq \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
-		\Psi^\text{nuc}_{\Inu}(\vec{x}),
+		\Psi^\text{nuc}_{\Inu}(\vec{X}),
 		\label{eqn:BOFactorisation}
 	\end{equation}
 	where the multi-indices are related by $I \equiv (\Iel, \Inu)$.
@@ -452,7 +452,7 @@ Notice for example
 	\psi_1 \wedge \psi_1 &= 0, &\psi_1 \wedge \psi_2 &= -\psi_2 \wedge \psi_1, &
 	\psi_1 \wedge (c_1 \psi_1 + c_2 \psi_2) &= c_2 \psi_1 \wedge \psi_2
 \end{align}
-for any $\psi_1, \psi_l \in L^2(\R^3, \C)$ and any $c_1, c_2 \in \C$.
+for any $\psi_1, \psi_2 \in L^2(\R^3, \C)$ and any $c_1, c_2 \in \C$.
 One may identify the application of a wedge product string like
 \[ \bigwedge_{i=1}^{\Nelec} \psi_i \equiv \wedgestring \]
 onto the electronic coordinates $\vec{x}$
@@ -499,9 +499,9 @@ and employ the domain
 for the electronic Hamiltonian $\Op{H}_{\Nelec}$.
 This makes both the operator self-adjoint and the electronic wave function
 comply with the spin statistics theorem.
-The analogous form domain in this case would be
+Applying similar arguments to section \vref{sec:FormDomain},
+we can deduce the analogous form domain of $\Op{H}_{\Nelec}$ as
 \[ Q(\Op{H}_{\Nelec}) = H^1(\R^{3\Nelec}, \C) \cap \bigwedge^{\Nelec} L^2(\R^3, \C). \]
-
 For establishing the spectral properties of $\Op{H}_{\Nelec}$,
 there is first the important HVZ theorem~\cite{Zhislin1959,Zhislin1960,Reed1978,Teschl2014}
 after Hunziker, van Winter and Zhislin.
@@ -511,6 +511,8 @@ after Hunziker, van Winter and Zhislin.
 	on the Hilbert space $L^2(\R^{3\Nelec}, \C)$
 	with the domain given in \eqref{eqn:ElectronicHamiltonianDomain}.
 	Then $\Op{H}_{\Nelec}$ is bounded from below and
+	its essential spectrum%
+	\footnote{For a definition see \vref{defn:EssentialSpectrum}.} is
 	\[ \sigma_\text{ess}\left(\Op{H}_{\Nelec}\right) = [\Sigma_{\Nelec}, +\infty) \]
 	with
 	\[ \Sigma_{\Nelec} = \left\{
@@ -522,9 +524,9 @@ after Hunziker, van Winter and Zhislin.
 	\]
 \end{thm}
 This theorem establishes a link between
-the lower bound of the essential spectrum
+the lower bound of the essential spectrum $\sigma_\text{ess}$
 of the electronic Hamiltonian of a $\Nelec$-electron system
-and the lower bound of the complete spectrum of
+and the lower bound of the complete spectrum $\sigma$ of
 a corresponding $\Nelec - 1$ electron system
 with the same nuclear arrangement.
 
@@ -622,7 +624,7 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	thus possesses a ground state.
 	In other words all bound states of this system
 	are embedded inside the continuum.
-	The system thus happily separates into a bound $(\Nelec-1)$-electron system
+	The system thus separates into a bound $(\Nelec-1)$-electron system
 	and an unbound electron at all energies:
 	This negative ion is not stable.
 	Conversely for stable negative ions
@@ -635,7 +637,7 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 
 	To summarise this remark, let us note the following
 	interesting observations,
-	which are now backed by rigorous mathematical observations:
+	which are now backed by rigorous mathematical treatment:
 	\begin{itemize}
 		\item The essential spectrum marks the energies
 			at which a chemical system is unstable,

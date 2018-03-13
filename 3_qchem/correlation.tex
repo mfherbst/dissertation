@@ -61,7 +61,8 @@ is no longer changing this arrangement,
 	\label{fig:HFplanets}
 \end{figure}
 To visualise this issue better,
-let us consider in analogy a planetary system,
+let us consider in analogy a planetary system%
+\footnote{The idea is taken from \cite{Jensen2007book}.},
 where multiple planets are revolving around a central sun.
 In the real system,
 which is depicted on the left-hand side of figure \vref{fig:HFplanets},
@@ -72,8 +73,8 @@ wiggles due to the interaction between the planets.
 In other words the motion of the planets around the sun is highly correlated.
 In contrast to this the right-hand side
 depicts the scenario drawn for the red planet in a \HF-like mean-field model.
-Its neighbours are no longer visible at their exact positions,
-much rather the red planet only amounts to interact with
+Its neighbours are no longer visible at their exact positions
+and the red planet thus only amounts to interact with
 some sort of smeared out particle density,
 where their position is averaged over their complete orbits.
 This interaction is almost as strong at all points
@@ -88,7 +89,7 @@ largely misses the description of this so-called \newterm{electron correlation}%
 	the \emph{uncorrelated} treatment of the electronic structure.
 	This is not perfectly sound in my opinion,
 	as for example the Pauli principle is fulfilled in \HF.
-	This implies for examples that two electron of the same spin
+	This implies for example that two electrons of the same spin
 	cannot occupy the same orbital,
 	which implies in turn that the motion
 	of electrons of the same spin is at least to this extend correlated.
@@ -104,7 +105,7 @@ As mentioned before $E_0^{\text{corr}}$ is typically rather small
 compared to $E_0^{\text{HF}}$.
 Nevertheless the effects of the electron-electron interaction are very important
 for a proper description of the electronic structure of a chemical
-system and can therefore in general not be
+system and can therefore not be
 neglected~\cite{Helgaker2013,Szabo1996,Jensen2007book}.
 
 In practice one sometimes divides correlation effects
@@ -508,7 +509,7 @@ the expressions for the working equations \eqref{eqn:CCresidual}
 are even more involved.
 In turn these methods become rather expensive as well,
 \eg CCSD scales as $\bigO(\Nbas^6)$ and CCSDT as $\bigO(\Nbas^8)$.
-Nevertheless \CC methods are very popular and widely adopted in quantum chemistry.
+Nevertheless, \CC methods are very popular and widely adopted in quantum chemistry.
 Firstly because they converge systematically towards the \FCI energy
 as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
 and secondly because \emph{all} \CC methods are size-consistent

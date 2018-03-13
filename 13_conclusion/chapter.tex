@@ -24,7 +24,10 @@ as an outlook to future developments.
 
 % ------------------------------------
 
-First chapter \ref{ch:QM} reviewed the mathematical background of quantum mechanics
+Chapter \ref{ch:Intro} provided an introduction into the setting
+of the thesis.
+Chapter \ref{ch:QM}
+reviewed the mathematical background of quantum mechanics
 and sketched important results of functional analysis
 and spectral theory.
 In chapter \ref{ch:numeigen} the Ritz-Galerkin ansatz
@@ -45,12 +48,13 @@ discussed the spectral properties
 of the electronic Schrödinger equation and
 described common quantum-chemical methods
 for solving this equation numerically.
-The mathematical formulation of both full CI, in section \ref{sec:FCI},
+The mathematical formulation of both full configuration interaction~(\FCI),
+in section \ref{sec:FCI},
 as well as \HF, in section \ref{sec:HFIntro}, were discussed.
 In section \ref{sec:DiscreteHF} multiple formulations of \HF were given
 and their numerical properties were compared.
 In remark \ref{rem:PropertiesDiscretised}
-the usual self-consistent field~(\SCF) procedure
+the usual \SCF procedure
 as a scheme to solve the \HF problem was introduced.
 The physical aspects missing in an \HF treatment of the electronic
 structure were mentioned in section \ref{sec:FailureHF}
@@ -62,7 +66,7 @@ reviewed in sections \ref{sec:TruncatedCI} to \ref{sec:ExcitedStates}.
 A detailed discussion of the basis function types,
 which can be employed to discretise the \HF problem
 was given in section \ref{sec:BasisTypes}.
-Section \ref{sec:BasisDesiredProperties} and section \ref{sec:LocalEnergy}
+Section \ref{sec:BasisDesiredProperties} and \ref{sec:LocalEnergy}
 first provided a summary of the desirable properties of such a discretisation,
 namely feasible resulting numerical problems on the one hand
 and a good description of the physical features of the wave function
@@ -76,7 +80,7 @@ in sections \ref{sec:STO} and \ref{sec:cGTO}.
 It was mentioned that Slater-type orbitals lead to challenging
 integrals when discretising \HF in such a basis,
 whereas discretisations employing Gaussian-type orbitals
-satisfy physical correctness
+satisfy a physical functional form
 for feasible integrals.
 The well-known conclusion
 that suitable Gaussian basis sets need to be used to correctly
@@ -89,7 +93,7 @@ as well as Coulomb-Sturmians,
 % which are the analytic solutions to a Schrödinger-like equation,
 were discussed.
 It was demonstrated how both of these basis functions have the possibility
-to represent the physics of the wave function properly,
+to represent all physical features of the wave function properly,
 such that they are promising alternatives.
 In contrast to Gaussian-type and Slater-type orbitals
 their discretisations, however,
@@ -216,7 +220,7 @@ and implementing novel methods has been demonstrated.
 Furthermore the \python interface has been used to establish
 links to selected methods
 from \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014},
-such that may be used in combination with any of the
+such that these may be used in combination with any of the
 basis function types and integral back ends implemented in \molsturm.
 As a result one can think of \molsturm as a mediator
 between integral libraries and Post-\HF methods.
@@ -243,7 +247,7 @@ It further allowed to understand that a known fundamental issue of
 the unrestricted \HF procedure
 was responsible for the slow convergence observed for the
 atoms with one or two unpaired electrons.
-At correlated level some full CI and {\MP}2 calculations
+At correlated level some full configuration interaction and {\MP}2 calculations
 were performed,
 which suggested that increasing the angular momentum quantum number
 by one is sufficient to capture

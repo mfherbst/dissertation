@@ -338,6 +338,12 @@ These are summarised in the following.
 	In other words all properties of \HF can only be stated up to
 	a unitary rotation amongst the constituents of the ground state Slater
 	determinant $\Phi_0$.
+	\todoil{Give some physical insight into this:\\
+		Unitary transformations usually describe a time-evolution.
+		Considering the TISE, does this just mean
+		that the state is invariant over time?
+		(leading to a consistent description\ldots)
+	}
 \end{rem}
 
 \begin{thm}[Mathematical properties of \HF]
@@ -433,7 +439,8 @@ justification for the \HF procedure as it is performed
 in almost every quantum-chemistry program these days
 for neutral or positively charged system.
 A similar mathematical statement making
-a guarantee that \HF gives a sensible ground state for negatively charged systems
+a guarantee that the \HF procedure
+gives a sensible ground state for negatively charged systems
 is not known to me.
 In fact one can even show that no solution to the \HF problem \eqref{eqn:HFMO}
 exists for negative ions with $\Nelec > 2Z_\text{tot} + M$~\cite{Cances2000}.
@@ -794,7 +801,13 @@ which is the square root of the sum of all elements squared.}
 		\tp{\left(\mat{C}^\alpha\right)} \mat{S}^\beta \mat{C}^\beta
 		}_\text{frob}^2
 	\end{equation}
-	where
+	where $\norm{\slot}_\text{frob}$ is the Frobenius norm defined as
+	\begin{equation}
+		\norm{\mat{M}}_\text{frob} \equiv \sqrt{
+			\sum_{i=1}^{\Nbas} \sum_{j=1}^{\Nbas} \abs{M_{ij}}^2}
+		\label{eqn:FrobeniusNorm}
+	\end{equation}
+	and
 	\[ S^2_\text{exact}
 		= \left(\frac{\NelecA - \NelecB}{2}\right)
 			\left(\frac{\NelecA - \NelecB}{2} +1\right).
@@ -809,7 +822,6 @@ which is the square root of the sum of all elements squared.}
 	Much rather they are \textbf{manifolds},
 	\ie geometrical objects which locally look like vector spaces,
 	but globally show less structure.
-	\todoil{Define Stiefel and Grassman manifolds}
 	More precisely $\mathcal{C}$ is a subset of a Stiefel manifold
 	and $\mathcal{P}$ is a subset of a Grassmann manifold.
 	This aspect becomes apparent
@@ -898,7 +910,8 @@ In analogy we define a full coefficient matrix
 	\mat{C}_F = \mm{ \vec{c}_1 & \vec{c}_2 & \cdots & \vec{c}_{\Nelec} & \cdots & \vec{c}_{\Norb}},
 	\label{eqn:DefinitionCoefficient}
 \end{equation}
-which contains all eigenvectors we solved \eqref{eqn:HFDiscreteEquations} for.
+which contains all $\Norb$
+eigenvectors we solved \eqref{eqn:HFDiscreteEquations} for.
 
 Applying the spin restrictions of unrestricted \HF
 exactly as in remark \ref{rem:HFDiscreteVariational},
@@ -972,11 +985,11 @@ This condition can be equivalently expressed as~\cite{Pulay1982}
 \end{equation}
 and is always satisfied if $\mat{C}_0$ is a minimiser.
 The reverse statement is not true, however,
-since all stationary point of the energy functional
+since all stationary points of the energy functional
 $\mathcal{E}_C$ optimised on the manifold $\mathcal{C}$
 satisfy \eqref{eqn:HFconvergenceCondition}.
 
-Nevertheless nothing stops us to pick any other $\mat{C}^{(n)} \in \mathcal{C}$
+Nevertheless, nothing stops us to pick any other $\mat{C}^{(n)} \in \mathcal{C}$
 and build the Fock matrix $\matFnfull$
 according to \eqref{eqn:FockMatrix}.
 We can solve for its eigenpairs, \ie find a matrix $\mat{C}_F^{(n+1)}$
@@ -1012,6 +1025,7 @@ to solve \eqref{eqn:HFDiscreteEquations}
 expression \eqref{eqn:PulayError} is called the \newterm{Pulay error}
 after Peter Pulay~\cite{Pulay1982}.
 
+\todoil{It looks a bit like I did this \ldots find references}
 There are two more aspects of theorem \ref{thm:MathematicalHF} worth pointing out.
 From the unfilled shell property (g) $\varepsilon_{\Nelec} < \varepsilon_{\Nelec+1}$,
 we can deduce that there is always a gap between the
@@ -1032,7 +1046,7 @@ in a way that the nuclei sit \emph{on} a grid point and not in between.
 
 In this section we discussed roughly three ways to view the \HF
 problem in the discrete setting of a finite basis set $\{\varphi_i\}_{i\in\Ibas}$.
-Firstly as a minimisation on a Stiefel manifold \eqref{eqn:HFOptCoeff},
+Firstly, as a minimisation on a Stiefel manifold \eqref{eqn:HFOptCoeff},
 where the energy is optimised with respect to the occupied orbital coefficients
 $\mat{C}$.
 The second option is to minimise on a Grassmann manifold \eqref{eqn:HFOptDens}
@@ -1080,7 +1094,7 @@ is considerably more involved.
 A first approach was published by \citeauthor{Roothaan1960}
 ~\cite{Roothaan1960,Alder1963}.
 In this celebrated work he
-distinguishes doubly occupied singly occupied and virtual orbitals.
+distinguishes doubly occupied, singly occupied and virtual orbitals.
 He then replaces the
 block-diagonal Fock matrix from \eqref{eqn:HFDiscreteEquations}
 by a specially crafted Fock matrix

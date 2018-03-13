@@ -47,7 +47,7 @@ Additionally, \molsturm is a framework with an interface
 in which a novel method only needs to be implemented
 once and can subsequently be
 used with different types of basis functions.
-This was already discussed in section \vref{sec:ex:ccd}
+This was already discussed in section \ref{sec:ex:ccd}
 where a coupled-cluster doubles~(CCD) code building on top of \molsturm was shown.
 Already at the present state, such a user code can
 directly utilise all basis function types available in \molsturm,
@@ -73,9 +73,9 @@ After two years of development,
 \molsturm is in a state,
 where calculations based on contracted Gaussian basis sets
 and Coulomb-Sturmian basis sets can be performed.
-Furthermore, as mentioned in section \vref{sec:MolsturmState}
-and demonstrated in chapter \vref{ch:CSQChem},
-not only \HF, but full CI (\FCI) and
+Furthermore, as mentioned in section \ref{sec:MolsturmState}
+and demonstrated in chapter \ref{ch:CSQChem},
+not only \HF, but full configuration interaction (\FCI) and
 methods based on the algebraic-diagrammatic construction scheme (\ADC)
 are available via interfaces to \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}.
 For employing these Post-\HF methods
@@ -97,8 +97,8 @@ For this the published schemes need to be adapted,
 such that they fit into the contraction-based setting of \molsturm,
 where the Fock matrix is not stored in memory,
 but only employed in the form of a matrix-vector product,
-see section \vref{sec:SCFAlgorithms}.
-As discussed in section \vref{sec:OverviewSCF}
+see section \ref{sec:SCFAlgorithms}.
+As discussed in section \ref{sec:OverviewSCF}
 such modifications are always possible in theory,
 but in practice one needs to be careful
 that the introduced changes
@@ -109,14 +109,14 @@ Another aspect for improvement
 is the lazy matrix library \lazyten,
 which is a key component inside the contraction-based
 self-consistent field~(\SCF) of \molsturm,
-see section \vref{sec:MolsturmDesign}.
+see section \ref{sec:MolsturmDesign}.
 Whenever the Fock matrix is applied to a trial vector
 inside the \SCF or the diagonalisation algorithm
 employed by the \SCF,
 a contraction expression is evaluated.
 This proceeds by working on the expression tree,
 which represents the Fock matrix,
-see section \vref{sec:lazymat}.
+see section \ref{sec:lazymat}.
 In \lazyten this is currently neither parallelised,
 nor is the expression tree optimised before the computation begins.
 Both these aspects,
@@ -158,7 +158,8 @@ Additionally the modular structure of \molsturm
 makes it fast to interface to
 further quantum-chemistry libraries or program packages.
 An effort worth pursuing is the \texttt{libxc}~\cite{Lehtola2018} library,
-which offers a range of exchange-correlation functionals.
+which offers a range of exchange-correlation functionals
+for density-functional theory.
 Implementing an interface to this library inside appropriate
 lazy matrix objects would allow to construct the Kohn-Sham matrix
 inside \molsturm's \SCF without any further changes,
@@ -195,7 +196,7 @@ calculations.
 %At the beginning of my doctoral studies I already attempted
 %unsuccessfully to implement a \HF scheme based on finite-elements,
 %a piecewise polynomial basis based on a real-space grid,
-%see section \vref{sec:FE}.
+%see section \ref{sec:FE}.
 %Recent advances of the field~\cite{Frediani2015,Toivanen2015,Davydov2015,Boffi2016}
 %seem promising and
 %implementing a grid-based basis into \molsturm
@@ -271,11 +272,11 @@ would be required.
 %}
 
 Thirdly, the full flexibility towards constructing \CS basis sets has not yet
-been exploited in the discussion in section \vref{sec:CSconvergenceHF}.
+been exploited in the discussion in section \ref{sec:CSconvergenceHF}.
 There is no reason why one should define a basis set
 by limiting the angular quantum numbers $l$ and $m$ to the same maximum for all
 principle quantum numbers $n$.
-As mentioned in section \vref{sec:DenotingCSbasis} a \CS basis set can be any
+As mentioned in section \ref{sec:DenotingCSbasis} a \CS basis set can be any
 combination of the quantum number triples $(n, l, m)$.
 Since alternative construction schemes might allow to reduce
 the required basis set size,
@@ -295,7 +296,7 @@ at various levels of theory.
 
 \subsection{Coulomb-Sturmian-based excited states calculations}
 \label{sec:SturmianExcited}
-In section \vref{sec:SturmianADC} first results
+In section \ref{sec:SturmianADC} first results
 for computing excited state energies of atoms based on \ADC
 were already presented.
 A more detailed analysis of the convergence properties
@@ -372,7 +373,7 @@ a Sturmian-based \HF suitable for molecular calculations is within reach
 and could be implemented within \sturmint~\cite{sturmintWeb}
 building on already existing infrastructure required for the Coulomb-Sturmians.
 This would make allow for performing calculations
-based on Sturmian-type basis functions for small molecules as well.
+based on Sturmian-type basis functions for molecules as well.
 
 
 %

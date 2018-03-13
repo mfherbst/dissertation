@@ -249,6 +249,9 @@ regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 	This leads to a procedure called \newterm{full CI}
 	or full configuration interaction~(\FCI).
 
+	\pagebreak[3]
+	\noindent
+	For $n = 1, 2, \ldots$:
 	\begin{itemize}
 	\item Take a finite-sized basis set of orthonormal one-particle functions
 	\[ \set{B}_1^{(n)} \equiv \{\psi_i\}_{i \in \Ibas} \subset U, \]
@@ -281,7 +284,8 @@ regardless of the choice of $\Phi_0$ or $\set{B}_1$.
 	\item Construct the full CI matrix $\mat{A}_\text{FCI} \in \C^{\Nfci \times \Nfci}$
 		consisting of elements
 		\begin{equation}
-			a(\Phi_I, \Phi_J)
+			\left(A_\text{FCI}\right)_{IJ}
+			= a(\Phi_I, \Phi_J)
 			= \mbra{\Phi_I}
 			\Op{T}_e + \Op{V}_{ne} + \Op{V}_{ee}
 			\mket{\Phi_J}_{\Nelec}
@@ -335,7 +339,7 @@ Even though \FCI allows to compute the solution of the electronic
 Schrödinger equation up to arbitrary accuracy,
 it is only employed for the simplest problems or for benchmark purposes.
 The main reason for this is its enormous computational cost.
-Already for a small molecules like water with only
+Already for small molecules like water with only
 $\Nelec = 10$ electrons and a rather small def2-SV(P)\cite{Schaefer1992} basis set
 $\set{B}_1^{(n)}$ with $\Nbas = 18$ basis functions this makes $\Nfci = 43758$
 and thus around $\Nfci^2 = 2\E{9}$ entries in $\mat{A}_\text{FCI}$
@@ -345,7 +349,11 @@ Of course this can be improved by exploiting some symmetries
 or the rather sparse structure of $\mat{A}_\text{FCI}$,
 which we will discuss in the next remark.
 Nevertheless the computational cost scales exponentially
-and allows only treatment of small systems.
+and allows only treatment of small systems%
+\footnote{Our water case is definitely still feasible with modern
+	\FCI techniques. A benchmark calculation from \citeyear{Rossi1999}
+	for example treated a system with $\Nfci \simeq 9.7\E{9}$~\cite{Rossi1999}.
+}
 
 \defineabbr{ERI}{ERI\xspace}{Electron repulsion integral}
 \newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
@@ -424,6 +432,8 @@ and allows only treatment of small systems.
 	is only non-zero for determinants $\Phi_1$, $\Phi_2$,
 	which differ in at most one single-particle function.
 
+	\todoil{One could make the terms the sum acts upon
+		more clear by making brakets around them.}
 	\noindent
 	On the other hand for
 	two-electron operators like $\Op{V}_{ee}$
@@ -433,16 +443,16 @@ and allows only treatment of small systems.
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_0}_{\Nelec}
 		&= \frac12 \sum_{i\in\Iocc} \sum_{j\in\Iocc}
 			  \eriMu{\psi_i\psi_i}{\psi_j\psi_j}
-			- \eriMu{\psi_j\psi_i}{\psi_i\psi_j} \\
+			- \eriMu{\psi_j\psi_i}{\psi_i\psi_j}, \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_i^a}_{\Nelec}
 		&= \sum_{j\in\Iocc}
 			  \eriMu{\psi_i\psi_a}{\psi_j\psi_j}
-			- \eriMu{\psi_j\psi_a}{\psi_i\psi_j} \\
+			- \eriMu{\psi_j\psi_a}{\psi_i\psi_j}, \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ij}^{ab}}_{\Nelec}
 		&= \eriMu{\psi_i\psi_j}{\psi_a\psi_b}
-		 - \eriMu{\psi_a\psi_j}{\psi_i\psi_b} \\
+		 - \eriMu{\psi_a\psi_j}{\psi_i\psi_b}, \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ijk}^{abc}}_{\Nelec} &= 0.
 	\end{aligned}
@@ -474,7 +484,7 @@ and allows only treatment of small systems.
 	If we pick an arbitrary reference determinant $\Op{\Phi}_0$
 	and order the $\Nelec$-electron basis as in equation \eqref{eqn:NelectronBasisFinite}
 	a banded structure as in fig. \vref{fig:StructureFCIMatrix} results.
-	Of course the dimensionality is still rather large,
+	Of course the dimensionality is still large,
 	but a combination of the iterative methods sketched
 	in section \vref{sec:DiagAlgos}
 	and a \contraction-based ansatz like the one sketched in section \vref{sec:ContractionAlgos}
@@ -502,7 +512,7 @@ and allows only treatment of small systems.
 
 The electron repulsion integral tensor introduced in \eqref{eqn:ERI}
 is a very important quantity in computational chemistry.
-We will require it at various occasions throughout the thesis.
+We will employ it at various occasions throughout the thesis.
 In the standard literature a number of deviating conventions are used
 for denoting this tensor. The following remark provides a summary.
 
