@@ -15,6 +15,7 @@ SCIENCE_DEBATES = [
     "Maximilian~Scheurer",
     "Jie~Han",
     "Dr.~Tobias~Setzer",
+    "Dr.~Thomas~Fransson",
     #
     "Dr.~Klaus~Birkelund",
     "Dr.~Mads~Kristensen",
@@ -48,6 +49,7 @@ PROOF_READERS = [
     "Carine~Dengler",
     "Reena~Sen",
     "Andreas~Fink",
+    "Dr.~Thomas~Fransson",
 ]
 
 
