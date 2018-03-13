@@ -13,9 +13,21 @@ exponential functions was that they wanted to construct one-electron basis funct
 which could be used to compute the spectra of many-electron atoms.
 From previous approaches it was known that a
 proper representation of the wave function
-required the inclusion of the continuum
+required the inclusion of the continuum~\cite{Avery2006}
 if hydrogen-like orbital functions were used.
-This was, however, exceedingly difficult in practice~\cite{Avery2006}.
+This can be rationalised by the fact that hydrogen-like orbitals
+--- except the $1s$ --- are comparatively diffuse~\cite{Avery2008}.
+Their classical turning point,
+\ie the distance $r$ where they intersect with the Coulomb potential $-Z/r$,
+increases roughly as $\bigO(n^2)$ for the $s$-like functions.
+In other words with increasing principle quantum number $n$,
+the hydrogen-like orbitals very quickly become unsuitable for the
+description of bound atomic states.
+Increasing the basis by including more hydrogen-like functions
+with an even larger $n$ allows to correct for this,
+but convergence will be slow as the included states become
+more and more continuum-like.
+
 To avoid this dilemma, \citet{Shull1959} artificially modified
 the Schrödinger equation \eqref{eqn:HydrogenComplete}
 for hydrogen-like atoms,
@@ -48,8 +60,7 @@ such that the underlying self-adjoint operator
 has the very simple point spectrum
 \[ \sigma_P(\Op{H}^\text{CS}) = \left\{ -\frac{\kexp^2}{2} \right\}, \]
 but an empty discrete spectrum,
-thus $\sigma_P(\Op{H}^\text{CS}) \subset \sigma_\text{ess}(\Op{H}^\text{CS})$,
-which such that continuum effects may be captured in a truncated basis.
+thus $\sigma_P(\Op{H}^\text{CS}) \subset \sigma_\text{ess}(\Op{H}^\text{CS})$.
 
 Since \eqref{eqn:CS} and the hydrogen-like Schrödinger equation
 \eqref{eqn:HydrogenComplete} are very similar,
@@ -93,7 +104,7 @@ the full range of possible triples is
 \begin{equation}
 	\Itpf \equiv \left\{ (n, l, m) \, \Big| \, n,l,m \in \set{Z}
 		\quad \text{with} \quad
-		n > 0, \  0 \leq l < n,\  -l \leq m \leq l\right\}
+		n > 0, \  0 \leq l < n,\  -l \leq m \leq l\right\}.
 	\label{eqn:AllCSTriples}
 \end{equation}
 
@@ -148,7 +159,9 @@ as well as \eqref{eqn:CSenergy} to rewrite the Coulomb-Sturmian radial equation
 u_{nl} = 0, \]
 which is of Sturm-Liouville form with
 \begin{align*}
-	p(r) &= 1 & q(r) &= \frac{\kexp^2}{2} + \frac{l (l+1)}{r^2} & \lambda_n w(r) = \frac{n\kexp}{r}
+	p(r) &= 1, &
+	q(r) &= \frac{\kexp^2}{2} + \frac{l (l+1)}{r^2}, &
+	\lambda_n w(r) = \frac{n\kexp}{r}
 \end{align*}
 One consequence of this is that Coulomb-Sturmians satisfy
 the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
@@ -159,12 +172,12 @@ the \newterm{potential-weighted orthonormality} condition~\cite{Avery2006}
 	\label{eqn:CoulombSturmianWeightedOrtho}
 \end{equation}
 Most importantly, however, it is possible to show
-that the countably infinite set of all Coulomb-Sturmians $\{\varphi^\text{CS}_\mu\}_{\mu}$
+that the countably infinite set of all Coulomb-Sturmians $\{\varphi^\text{CS}_\mu\}_{\mu\in\Itpf}$
 is a complete basis for $H^1(\R^3, \R)$~\cite[Theorem 2.3.4]{Avery2008}.
 In the original context of Shull and Löwdin this implies that Coulomb-Sturmians
 are not only able to represent the bound states
 of any atomic Schrödinger operator $\Op{H}_{\Nelec}$,
-but the continuum as well.
+but continuum-like states as well.
 When it comes to the discretised \HF problem~(see section \ref{sec:DiscreteHF})
 or the \FCI problem~(see remark \ref{rem:FCI}),
 this makes \CS basis functions rather promising,
@@ -172,6 +185,15 @@ since the completeness property
 provides a mathematical guarantee that the exact solution can be approximated
 arbitrarily closely
 if more and more \CS functions are included.
+Another remarkable property of the Coulomb-Sturmians
+is the ability to map the set of all Coulomb-Sturmians
+$\{ \varphi^\text{CS}_\mu\}_{\mu\in\Itpf}$
+one-to-one onto the set of all all Hyperspherical harmonics.
+This can be achieved by applying the Fock transformation
+to their Fourier transforms~\cite{Avery2006},
+which is a key ingredient to treat multi-centre integrals
+involving Sturmian-type orbitals%
+~\cite{Aquilanti1996,Aquilanti1997,Aquilanti2001,Morales2016,Avery2015,Avery2017}.
 
 \begin{figure}[t]
 	\centering
@@ -197,13 +219,21 @@ which both gives rise to a cusp at $r=0$ as well as
 an energy-dependent exponential decay at $r\to\infty$,
 they reflect the physical properties summarised in remark \vref{rem:PhysicalProperties}
 already at the level of basis functions.
-In general both the slope at the cusp as well as the decay at infinity
-of the individual basis functions will \emph{not} be exactly the physically
-required values, however.
+As mentioned above a \CS basis has exactly one exponent $\kexp$,
+which is used in all basis functions of the \CS basis.
+For atomic systems other than hydrogen,
+where multiple electrons of deviating asymptotic decays are present,
+one $\kexp$ therefore needs to be chosen to model all electrons of an atom
+and thus one needs to make a compromise.
 Due to the completeness of the \CS basis
-this is not an issue, since a large enough basis will recover the error
-for each $\kexp$.%
-\todoil{Again convergence bit}
+this is not an issue, since a large enough basis will recover the errors
+for each $\kexp$, such that in theory \emph{any} $\kexp$ could be chosen.
+In practice this is not quite the case,
+since the rate of convergence of a \CS discretisation
+does well depend on $\kexp$,
+see \cite{Avery2017} as well as section \vref{sec:kexp} for a more detailed discussion.
+A more suitable value for $\kexp$ will thus give rise
+to a better representation of the physics at a smaller sized \CS basis.
 %
 \begin{figure}[p]
 	\centering
@@ -231,19 +261,23 @@ for each $\kexp$.%
 	}
 	\label{fig:LocalEnergyCSZoom}
 \end{figure}
-%
-To illustrate this for an example consider figure \vref{fig:RelativeErrorCS},
-which shows the relative error in the hydrogen ground state
+
+We will now investigate how the error in a \CS discretisation
+changes if we move away from the optimal value for $\kexp$.
+Figure \vref{fig:RelativeErrorCS} shows the relative error in the hydrogen ground state
 versus the relative electron-nucleus distance
 for a few selected Coulomb-Sturmian basis sets.
 The labels of the plots both indicate the $\kexp$ value as well as the
 triple  $(\nmax, \lmax, \mmax)$, which is a short hand for indicating
-the finite basis set
+the finite basis
 \[ \left\{ \varphi^\text{CS}_{nlm} \, \Big| \, (n,l,m) \in \Itpf \
 	n \leq \nmax, \ l \leq \lmax, \ \abs{m} \leq \mmax \right\} \]
 of \CS functions.
-The best $\kexp$ value for hydrogen is $1.0$,
-which would in fact give the exact ground state in the $\varphi^\text{CS}_{1s}$ function.
+For the special case of hydrogen, which is considered here,
+only a single electron is present in the system.
+One can therefore choose $\kexp$ such, that the exact hydrogen ground state
+is obtained in the $\varphi^\text{CS}_{1s}$ function.
+This is the optimal exponent for hydrogen, which is $\kexp = 1.0$.
 Figure \vref{fig:RelativeErrorCS} shows, in agreement with our previous discussion,
 that both the size of the basis as well as the value for $\kexp$ has an influence
 on the relative error.
@@ -340,9 +374,12 @@ and the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrth
 implies that $s^{(l)}_{n n'} = 0$ iff $\abs{n -n'} > 1$.
 By following the algebra one can further show~\cite{Avery2015} that
 \[
-	s^{(l)}_{n,n+1} = s^{(l)}_{n+1,n} = - \frac12 \sqrt{\frac{(n-l)(n+l+1)}{n (n+1)}},
+	s^{(l)}_{n,n+1} = s^{(l)}_{n+1,n} = - \frac12 \sqrt{\frac{(n-l)(n+l+1)}{n (n+1)}}.
 \]
-making $\mat{S}$ both sparse and trivial to compute.
+This implies that $\mat{S}$ is tridiagonal in each block
+of identical angular momentum quantum number $l$,
+thus it has only three three non-zeros per row.
+
 Similarly one can directly employ the potential-weighted orthonormality \eqref{eqn:CoulombSturmianWeightedOrtho}
 to show that the nuclear attraction matrix is diagonal, namely
 \begin{equation}
@@ -373,17 +410,17 @@ which implies for the kinetic energy matrix elements
 	\label{eqn:KineticCS}
 \end{equation}
 such that they follow the same advantageous sparsity pattern as the overlap matrix.
-The one-electron integrals thus contain at most 3 non-zeros per row
-and are tridiagonal in $lmn$ or $mln$ index order.
+The one-electron integrals thus all contain at most 3 non-zeros per row
+and are tridiagonal in each block of identical angular momentum quantum number $l$.
 Due to the simplicity of the expressions of the matrix elements,
 storing these matrix terms in memory --- even in a compressed tridiagonal form ---
 is not needed,
-since recomputing the values takes a neglible number of flops.
+since recomputing the values takes a negligible number of flops.
 
 Unsurprisingly, treating the two-electron integrals is more involved.
 We follow \cite{Avery2015},
 which describes the treatment in a more general context
-and the specialised arguments presented in the documentaton of
+and the specialised arguments presented in the documentation of
 \sturmint~\cite{sturmintWeb}.
 Due to the structure of the radial part $R_{nl}(r)$
 one may write the product of two Coulomb-Sturmians as a
@@ -697,7 +734,7 @@ as well as the application of Sturmian-type functions
 for evaluating \STO integrals more efficiently~\cite{Morales2016,Avery2017}.
 Other methods include the combination of
 Sturmians and some numerical methods to yield ionising Sturmians
-to simultaneously model bound states as well as the continuum
+to simultaneously model bound states as well as the continuum-like states
 in a single basis~\cite{Randazzo2010,Mitnik2011,Randazzo2015,Granados2016,Abdouraman2016}.
 
 % TODO OPTIONAL
