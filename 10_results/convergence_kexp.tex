@@ -1,31 +1,47 @@
 \section{The effect of the Coulomb-Sturmian exponent}
 \label{sec:kexp}
-\todoil{Discussion of the theory. FCI $k$ independent,
-	Bluebook equations F.9, F.10 and F.18,
-	Mention better guess: Large Z approximation, Gronskinskian
-}
 % TODO OPTIONAL
+%	Discussion of the theory. FCI $k$ independent,
+%	Bluebook equations F.9, F.10 and F.18,
+%	Mention better guess: Large Z approximation, Gronskinskian
+%
 %    As better guesses:
 %    Large Z approximation
 %    One Gronskinskian & analytical calculation
 
 In our discussion about the properties of Coulomb-Sturmian basis sets
-we have  neglected the effect of the \CS exponent $\kexp$ so far.
+in this chapter,
+we have neglected the effect of the \CS exponent $\kexp$ so far.
 Our main argument was that a \CS basis is complete regardless of the
 value of $\kexp$,
 such that for large enough \CS basis sets
 the result will not depend on $\kexp$ anyway.
 In practice the aim is of course to yield a sensible
-discretisation of the wave function in the smallest basis possible.
-For getting the best out of a particular truncated set,
-the value of $\kexp$ can therefore not be chosen completely arbitrary.
-This section is therefore devoted to a discussion
-of some general trends regarding
-the variation of obtained energies with $\kexp$.
-Furthermore we will discuss some methodologies
-for obtaining the optimal exponent $\kopt$ with respect to minimising the \HF energy.
-These results will be presented for the
-atoms of the first two periods of the periodic table.
+discretisation of the wave function in the smallest basis possible
+and furthermore to obtain the best rate of convergence as the basis increased.
+As we will discuss in this section the value of $\kexp$
+has an influence on these matters
+and can therefore not be chosen completely arbitrarily.
+We will subsequently develop an algorithm for obtaining the optimal exponent $\kopt$
+with respect to minimising the \HF energy
+and present some results for the atoms of the first two periods
+of the periodic table.
+
+Notice that for the case of a \CS-based \FCI a reformulation of the \FCI problem exists,
+which allows to find the optimal exponent $\kexp$
+alongside the \FCI energies~\cite{Avery2006}.
+In fact this reformulation yields to an eigenproblem
+in which the obtained eigenvalues are not energies, but the optimal \CS exponents
+for each \FCI state. Via the relationship
+\[ E = - \frac{\Nelec \kexp^2}{2} \]
+the energy of each state can be found thereafter.
+This is highly advantageous, because the aforementioned explicit
+optimisation of the exponent can be avoided.
+To the best of my knowledge a related approach for the \HF problem,
+has not been found, however,
+such that at the level of \HF and Post-\HF (excluding \FCI)
+a \CS exponent $\kexp$ needs to be specified explicitly
+for performing a calculation.
 
 \begin{figure}
 	\centering
