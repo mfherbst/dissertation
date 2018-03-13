@@ -275,8 +275,8 @@ In practice {\MP}2 is still vividly employed,
 mainly because it gives a decent guess
 towards the exact energy of the electronic ground state
 at manageable computational cost%
-\footnote{Using sensible approximations linear-scaling {\MP}2 is possible.}.
-\todoil{Cite paper for this and note that lr-CC is possible, too.}
+\footnote{Using sensible approximations linear-scaling {\MP}2 is possible%
+~\cite{Zalesny2011}.}.
 The other \MP methods on the other hands
 are nowadays used only rarely.
 
@@ -513,7 +513,16 @@ Firstly because they converge systematically towards the \FCI energy
 as higher and higher excitations are considered in \eqref{eqn:ExcitationCC}
 and secondly because \emph{all} \CC methods are size-consistent
 --- unlike the truncated CI methods we mentioned above.
-\todoil{Mention CCSD(T) and linear-scaling CC}
+One particular approach named CCSD(T),
+where the triples excitations are perturbatively added on top of CCSD,
+has been named the \emph{gold standard} of chemistry
+as it generally yields highly accurate results with an expensive,
+but an acceptable scaling of $\bigO(\Nbas^7)$,
+where the most costly $\bigO(\Nbas^7)$ is not iterative.
+Recent improvements~\cite{Riplinger2013} within the framework
+of pair-natural orbital approaches,
+has brought down the apparent scaling of CCSD(T) to linear,
+allowing a CCSD(T) treatment of complete proteins.
 
 \defineabbr{ADC}{ADC\xspace}{Algebraic-diagrammatic construction}
 \subsection{Excited states methods}
