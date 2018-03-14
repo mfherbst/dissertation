@@ -138,7 +138,7 @@ tend towards an element, which is from $V$ \emph{as well}.
 	\noindent
 	It is well known that the sequence
 	\[ x_n = \sum_{k=0}^n \frac{1}{k!} \in \set{Q} \]
-	converges to Euler's number, \ie
+	converges to Euler's number $e$, \ie
 	\[ \lim_{n\to\infty} x_n = e \not\in \set{Q}. \]
 	In other words $\set{Q}$ is not complete.
 
@@ -204,9 +204,22 @@ Denseness is therefore one of the fundamental properties required for approximat
 	iff it admits a countable orthonormal basis.
 \end{defn}
 
+\todoil{Go into the subtle differences between
+	a Schauder basis (infinite liner combinations,
+	finite set) and a Hamel basis (finite linear combinations)
+	and a Hilbert basis (both infinite).
+	See wikipedia on Schauder_basis, Orthonormal_basis and Separable_space.
+}
+
 \begin{rem}
 	\label{rem:HilbertCd}
-	If a Hilbert space is separable we can find a basis set
+	If a Hilbert space is separable we can find a basis set%
+	\footnote{This remark sketches the construction of a so-called
+		\textit{Schauder basis},
+		which is related, but not identical to the concept
+		of a \textit{Hamel basis},
+		which is usually employed in finite-dimensional linear algebra.
+	}
 	$\{ \varphi_\mu \}_{\mu \in \Ibas}$
 	of at most countably infinite cardinality,
 	\ie where $\Ibas \subseteq \N$.
@@ -406,8 +419,8 @@ These are defined as such:
 	then it also has a weak derivative, which coincides with the strong derivative.
 	For ease of notation we also write
 	\[ D^{\vec{\alpha}} f = \frac{\partial^{\norm{\vec{\alpha}}_1}}{ \prod_{i=1}^d \partial x_i^{\alpha_i} }, \]
-	where $\vec{\alpha} \in \N^d$ and as usual
-	\[ \norm{\vec{\alpha}}_1 = \sum_{i=1}^d \abs{\alpha_i} \]
+	where $\vec{\alpha} \in \N^d$ and as usual for the $l_1$-norm
+	\[ \norm{\vec{\alpha}}_1 = \sum_{i=1}^d \abs{\alpha_i}. \]
 \end{defn}
 
 \noindent

@@ -29,13 +29,13 @@ Clearly the associated norm $\norm{\slot}_{\Op{A}}$ satisfies
 	\label{eqn:FormDomainNorm}
 \norm{u}_{\Op{A}}
 = \braket{u}{\Op{A} u} + (C+1) \norm{u}_{\hilbert}
-\stackrel{def. \ref{defn:SemiBounded}}{\geq} \norm{u}_{\hilbert}.
+\stackrel{\text{def.} \ref{defn:SemiBounded}}{\geq} \norm{u}_{\hilbert}.
 \end{equation}
 We now take the completion of $D(\Op{A})$ under the norm $\norm{u}_{\Op{A}}$
 and call it $Q(\Op{A})$.
 \eqref{eqn:FormDomainNorm} assures that all sequences,
-which are Cauchy in $D(\Op{A})$ wrt. $\norm{\slot}_{\hilbert}$
-are Cauchy in $Q(\Op{A})$ wrt. $\norm{\slot}_{\Op{A}}$ as well.
+which are Cauchy in $D(\Op{A})$ with respect to $\norm{\slot}_{\hilbert}$
+are Cauchy in $Q(\Op{A})$ with respect to $\norm{\slot}_{\Op{A}}$ as well.
 One can show further~\cite{Teschl2014} that such sequences
 have the same limit in $Q(\Op{A})$ irrespective of the norm used.
 
@@ -183,8 +183,7 @@ those operators,
 which will be considered in this thesis,
 always possess a discrete spectrum located below the essential spectrum.
 Furthermore we will always be interested
-in those bound states located at the lower end of the discrete spectrum
-for physical reasons.
+in those bound states located at the lower end of the discrete spectrum.
 With the aforementioned results we can
 sketch an approximation method for our setting.
 
@@ -198,7 +197,10 @@ sketch an approximation method for our setting.
 
 	Let $U \subset Q(\Op{A})$ be a dense subspace.
 	We can span a sequence of subspaces $(S_{\Nbas}) \subset Q(\Op{A})$
-	by selecting larger and larger sets $\{\varphi_\mu\}_{\mu \in \Ibas}$
+	by selecting larger and larger%
+	\footnote{Until the dimensionality of $U$ is reached
+		in case it is finite-dimensional.}
+	sets $\{\varphi_\mu\}_{\mu \in \Ibas}$
 	of $\Nbas = \abs{\Ibas}$ orthonormal basis functions $\varphi_\mu \in U$
 	as the bases.
 	Since $U$ is a dense subspace of the separable Hilbert space
@@ -313,9 +315,9 @@ with a word of warning about the essential spectrum.
 Remark \vref{rem:NumericalEssentialSpectrum}
 stated that it was difficult
 to obtain numerical approximations to the essential spectrum.
-The min-max theorem \vref{thm:CourantFischer}
+The min-max theorem \ref{thm:CourantFischer}
 provides some theoretical justification for this.
-In corollary \vref{cor:Convergence} we saw,
+In corollary \ref{cor:Convergence} we saw,
 that all eigenvalues from a Ritz-Galerkin approximation
 of $\Op{A}$ tend to $\lambda_i(\Op{A})$
 as the subspace size is increased.
@@ -326,19 +328,9 @@ In other words the methods we developed in this section
 will only help to find the bottom end of the essential spectrum,
 but no further information about it at all.
 
-Notice that for practical quantum-chemical applications
-such as the modelling of resonance processes,
-approaches such as the so-called
-\newterm{stabilisation method}~\cite{Bacic1982,Hazi1970,Riss1993}
-have been developed,
-which can be used to probe the bound states inside the continuum region.
-To the best of my knowledge a rigorous mathematical treatment,
-which assures that such methods do not miss states
-or converge to spurious, non-physical states has not been developed yet.
-
 Another consequence of corollary \ref{cor:Convergence} is
 that only a part of the eigenpairs obtained by
-diagonalising the matrix $\mat{A}^{(n)}$ of \vref{eqn:DiscretisedEigenproblem}
+diagonalising the matrix $\mat{A}^{(n)}$ of \eqref{eqn:DiscretisedEigenproblem}
 can be trusted to carry any meaning regarding
 the spectrum of the exact physical operator $\Op{A}$.
 This is because the larger eigenvalues $\lambda_i^{(n)}$
@@ -356,4 +348,16 @@ In either case the bottom end of the spectrum of $\mat{A}$
 will carry meaning about the underlying operator $\Op{A}$
 if the basis set is large enough and
 satisfies remark \vref{rem:ChoiceBasisFunction}.
+
+For practical quantum-chemical applications
+such as the modelling of resonance processes,
+bound states embedded inside the continuous spectrum are required.
+For this reason approaches such as the so-called
+\newterm{stabilisation method}~\cite{Bacic1982,Hazi1970,Riss1993}
+have been developed,
+which can be used to probe bound states inside the continuum region.
+To the best of my knowledge a rigorous mathematical treatment,
+which assures that such methods do not miss states
+or converge to spurious, non-physical states has not been developed yet,
+however.
 \end{rem}
