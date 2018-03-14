@@ -68,7 +68,7 @@ def prepare_rows(data):
     return headings, colstring, rows
 
 
-def make_table(data, period, label, continued=False):
+def make_table(data, period, label, continued=False, sideways=False):
     headings, colstring, rows = prepare_rows(data)
 
     caption = "Hartree-Fock and MP2 ground state energies " + \
@@ -91,6 +91,8 @@ def make_table(data, period, label, continued=False):
         ret.append(r"    continued,")
     else:
         ret.append(r"    label=tab:" + label + ",")
+    if sideways:
+        ret.append(r"    sideways,")
     ret.append(r"]{" + colstring + "}{}{")
 
     # Add headings
@@ -142,6 +144,7 @@ def main():
             continue
 
         data_parts = [chunk]
+        sidw = [False]
         if p == 1:
             period = "1st"
         elif p == 2:
@@ -149,10 +152,12 @@ def main():
             chunk1 = [d for d in chunk if d["m_max"] < 2]
             chunk2 = [d for d in chunk if d["m_max"] >= 2]
             data_parts = [chunk1, chunk2]
+            sidw = [False, True]
             del chunk1
             del chunk2
         elif p == 3:
             period = "3rd"
+            sidw = [True]
         else:
             period = str(p) + "th"
 
@@ -160,7 +165,7 @@ def main():
         for i, chunk in enumerate(data_parts):
             contd = i > 0
             tble = make_table(chunk, period=period, label=label,
-                              continued=contd)
+                              continued=contd, sideways=sidw[i])
 
             extra = ""
             if contd:
