@@ -309,6 +309,7 @@ of eigenvalue problems
 with a word of warning about the essential spectrum.
 
 \begin{rem}
+	\label{rem:PracticalNum}
 Remark \vref{rem:NumericalEssentialSpectrum}
 stated that it was difficult
 to obtain numerical approximations to the essential spectrum.
@@ -325,7 +326,17 @@ In other words the methods we developed in this section
 will only help to find the bottom end of the essential spectrum,
 but no further information about it at all.
 
-Another consequence of corrollary \ref{cor:Convergence} is
+Notice that for practical quantum-chemical applications
+such as the modelling of resonance processes,
+approaches such as the so-called
+\newterm{stabilisation method}~\cite{Bacic1982,Hazi1970,Riss1993}
+have been developed,
+which can be used to probe the bound states inside the continuum region.
+To the best of my knowledge a rigorous mathematical treatment,
+which assures that such methods do not miss states
+or converge to spurious, non-physical states has not been developed yet.
+
+Another consequence of corollary \ref{cor:Convergence} is
 that only a part of the eigenpairs obtained by
 diagonalising the matrix $\mat{A}^{(n)}$ of \vref{eqn:DiscretisedEigenproblem}
 can be trusted to carry any meaning regarding
@@ -346,14 +357,3 @@ will carry meaning about the underlying operator $\Op{A}$
 if the basis set is large enough and
 satisfies remark \vref{rem:ChoiceBasisFunction}.
 \end{rem}
-
-% TODO OPTIONAL
-%\to do[inline,caption={}]{
-%	Talk about resonance processes and the stabilisation method
-%	for modelling continuum states.
-%	\begin{itemize}
-%		\item \url{https://journals.aps.org/pra/abstract/10.1103/PhysRevA.1.1109}
-%		\item \url{http://pubs.acs.org/doi/abs/10.1021/j100396a027}
-%		\item In \cite{Riss1993} Reference of Hazi/Taylor 1970
-%	\end{itemize}
-%}
