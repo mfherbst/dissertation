@@ -29,7 +29,7 @@ a Hartree-Fock~(\HF) self-consistent field~(\SCF) scheme,
 which is suitable to be combined
 with any basis function type.
 
-First of all
+First
 the mathematical background of quantum mechanics
 as well as some numerical techniques are reviewed.
 Care is taken to emphasise the often overlooked subtleties when
@@ -51,7 +51,7 @@ which are piecewise polynomials on a grid,
 as well as (4) Coulomb-Sturmians,
 which are the analytical solutions to a Schrödinger-like equation.
 A novel algorithmic approach based on matrix-vector contraction expressions is developed,
-which is able to adapt to the numerical requirements of all cases considered.
+which is able to adapt to the numerical requirements of all basis functions considered.
 It is shown that this ansatz not only allows to formulate
 \SCF algorithms in a basis-function independent way,
 but furthermore improves the theoretically achievable
@@ -74,7 +74,7 @@ including the possibility to perform operations like matrix sums and products.
 As a result programming contraction-based algorithms
 becomes similarly convenient as working with normal matrices.
 An implementation of lazy matrices in the \lazyten linear algebra library
-is developed in the course of the thesis followed by an example
+is developed in the course of the thesis, followed by an example
 demonstrating the applicability in the context of the \HF problem.
 
 Building on top of the aforementioned concepts the design of \molsturm is outlined.
@@ -164,7 +164,7 @@ welche die analytischen Lösungen einer der Schrödingergleichung
 ähnlichen Differenzialgleichung sind.
 Ein neuartiger Algorithmus basierend auf Matrix-Vektor-Kontraktionsausdrücken
 wird entwickelt,
-welcher die numerischen Anforderungen aller betrachteten Fälle abdeckt.
+welcher die numerischen Anforderungen aller betrachteten Funktionen abdeckt.
 Es wird gezeigt, dass mittels dieses Ansatzes
 nicht nur \SCF-Algorithmen in einer basisfunktionsunabhängigen Weise
 formuliert werden können, sondern auch,
@@ -213,7 +213,7 @@ von jenem Programmcode, welcher die Diskretisierung und die Basisfunktionen betr
 erreicht werden konnte.
 Des Weiteren wird gezeigt,
 wie ein neuer Basisfunktionstyp in \molsturm implementiert werden kann,
-indem nur an einer einzigen, klar definierten Stelle Änderungen durchgeführt werden.
+indem nur an einer einzigen Stelle im Programmcode Änderungen durchgeführt werden.
 Darüber hinaus wird mittels einiger Beispiele besprochen,
 wie \molsturm über skriptbare~(scriptable) Schnittstellen
 mit der Funktionalität bestehender Programme kombiniert werden kann,
