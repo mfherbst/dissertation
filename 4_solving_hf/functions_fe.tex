@@ -519,7 +519,7 @@ we can rewrite \eqref{eqn:CoulombFE} to give
 	J_{\mu\nu}\!\left[\mat{C}^{(n)}\left(\mat{C}^{(n)}\right)^\dagger\right]
 	= \int_\Omega \varphi_\mu(\vec{r}_1) V^{(n)}_H(\vec{r}_1) \varphi_\nu(\vec{r}_1) \D \vec{r}_1.
 \]
-Since the Hatree potential $V^{(n)}_H$ is a local operator,
+Since the Hartree potential $V^{(n)}_H$ is a local operator,
 this latter integral can be evaluated in $\bigO(\Nbas)$
 time and space using the cell-wise numerical integration scheme discussed above.
 
@@ -922,7 +922,7 @@ as contraction-based methods instead.
 For achieving a finite-element-based \HF
 this seems to be a very promising ansatz as well.
 Already lifting the requirement to build the Fock matrix $\mat{F}$
-and intstead only employ
+and instead only employ
 iterative diagonalisation algorithms
 allows to formally reduce the scaling from $\bigO(\Nbas^2)$ to $\bigO(\Nbas)$
 --- in both storage and time.
@@ -938,7 +938,7 @@ $\Nelec$ Poisson-solves are required.
 For both Davidson and Lanczos one usually needs around 50 iterations,
 with a couple of hundred matrix-vector products to be computed.
 If we further need around 30 \SCF steps,
-this alltogether makes some 1000 Poisson-solves
+this altogether makes some 1000 Poisson-solves
 already for very small chemical systems.
 The only way this can be achieved is by
 proper approximations, proper preconditioning and
