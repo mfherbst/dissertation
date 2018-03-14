@@ -79,7 +79,7 @@ not only \HF, but full configuration interaction (\FCI) and
 methods based on the algebraic-diagrammatic construction scheme (\ADC)
 are available via interfaces to \pyscf~\cite{Sun2017} and \adcman~\cite{Wormit2014}.
 For employing these Post-\HF methods
-with more than a few tens of basis functions,
+with more than around a hundred basis functions,
 a drawback at the moment is performance
 inside the \SCF procedure of \molsturm.
 
@@ -230,6 +230,13 @@ calculations.
 %
 \section{Investigation of Sturmian-type discretisations}
 \label{sec:newSturmian}
+The original purpose of the \molsturm package has been to devise a program
+which could be used for quantum-chemical calculations
+employing Sturmian-type basis functions.
+The package has outgrown this purpose in the current design,
+but investigating the properties
+of Sturmian-type basis functions is still of interest
+as discussed above.
 
 \subsection{Convergence properties of Coulomb Sturmian basis sets}
 The simplest example for Sturmian-type basis functions are Coulomb-Sturmians.
