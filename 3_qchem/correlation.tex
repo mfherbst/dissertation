@@ -181,11 +181,15 @@ This would lead to the ansatz wave function
 where one assumes the individual determinants
 are normalised in a way that $c_0 = 1$.
 
+\pagebreak[1]
 Even though truncated CI methods are conceptionally very simple,
 they are not used much any more for capturing dynamic correlation%
 \footnote{%
-	In contrast for dealing with statically correlated systems,
-the multi-reference CI ansatz~\cite{Shamasundar2011} is used excessively.}.
+	In contrast to this statement the related
+	multi-reference CI ansatz~\cite{Shamasundar2011}
+	\emph{is} a state-of-the-art method
+	for dealing with \emph{statically} correlated systems.
+}
 The main reason for this is the so-called \newterm{size-consistency problem}.
 Unlike \FCI the CISD energy of two molecular fragments
 is in general not additive,
@@ -245,8 +249,8 @@ $\{\varphi_\mu\}_{\mu\in\Nbas}$
 one may easily derive the zeroth to second order
 energy contributions~\cite{Szabo1996}
 \begin{align*}
-	E_0^0 &= \sum_i \varepsilon_i \\
-	E_0^1 &= - \frac12 \sum_{ij} \eriAsym{ij}{ij}  \\
+	E_0^0 &= \sum_i \varepsilon_i, \\
+	E_0^1 &= - \frac12 \sum_{ij} \eriAsym{ij}{ij},  \\
 	E_0^2 &= \frac14 \sum_{ijab} \frac{\abs{\eriAsym{ij}{ab}}^2}
 						{\varepsilon_i + \varepsilon_j - \varepsilon_a - \varepsilon_b}
 \end{align*}
@@ -417,7 +421,7 @@ By a simple rearrangement this can be written as
 where we introduced the similarity-transformed Hamiltonian
 \[ \Op{H}_T = \exp(-\op{T}) \Op{H}_{\Nelec} \exp(\op{T}). \]
 For making use of equation \eqref{eqn:CCenergy}
-at all the unknown amplitudes $\{t_\mu\}_{\mu}$ still need to be found.
+at all, the unknown amplitudes $\{t_\mu\}_{\mu}$ still need to be found.
 This is done by projecting \eqref{eqn:CCschrödinger}
 onto determinants $\exp(-\op{T}) \Phi_\mu = \exp(-\op{T}) \op{\tau}_\mu \Phi_0$,
 which yields equations
@@ -523,7 +527,7 @@ where the most costly $\bigO(\Nbas^7)$ is not iterative.
 Recent improvements~\cite{Riplinger2013} within the framework
 of pair-natural orbital approaches,
 has brought down the apparent scaling of CCSD(T) to linear,
-allowing a CCSD(T) treatment of complete proteins.
+allowing to compute the energies of complete proteins on the level of CCSD(T).
 
 \defineabbr{ADC}{ADC\xspace}{Algebraic-diagrammatic construction}
 \subsection{Excited states methods}

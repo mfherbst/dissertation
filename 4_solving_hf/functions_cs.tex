@@ -22,7 +22,8 @@ Their classical turning point,
 increases roughly as $\bigO(n^2)$ for the $s$-like functions.
 In other words with increasing principle quantum number $n$,
 the hydrogen-like orbitals very quickly become unsuitable for the
-description of bound atomic states.
+description of bound atomic states,
+which are residing close to the nucleus.
 Increasing the basis by including more hydrogen-like functions
 with an even larger $n$ allows to correct for this,
 but convergence will be slow as the included states become
@@ -185,14 +186,17 @@ since the completeness property
 provides a mathematical guarantee that the exact solution can be approximated
 arbitrarily closely
 if more and more \CS functions are included.
+
 Another remarkable property of the Coulomb-Sturmians
 is the ability to map the set of all Coulomb-Sturmians
 $\{ \varphi^\text{CS}_\mu\}_{\mu\in\Itpf}$
-one-to-one onto the set of all all Hyperspherical harmonics.
+one-to-one onto the set of all hyperspherical harmonics,
+the eigenfunctions of the Laplace-Beltrami operator
+on the surface of a four-dimensional hypersphere.
 This can be achieved by applying the Fock transformation
-to their Fourier transforms~\cite{Avery2006},
-which is a key ingredient to treat multi-centre integrals
-involving Sturmian-type orbitals%
+to the Fourier-transformed Coulomb-Sturmians~\cite{Avery2006}.
+This aspect is a key ingredient to treat multi-centre integrals
+involving Sturmian-type orbitals in a numerically efficient manner%
 ~\cite{Aquilanti1996,Aquilanti1997,Aquilanti2001,Morales2016,Avery2015,Avery2017}.
 
 \begin{figure}[t]
@@ -212,6 +216,7 @@ involving Sturmian-type orbitals%
 	\label{fig:RelativeErrorCS}
 \end{figure}
 
+\pagebreak
 \noindent
 Since \CS functions contain the term
 \[ \exp(-\kexp r) = \exp\left( - \sqrt{-2E}r \right), \]
@@ -467,11 +472,11 @@ in terms of spherical harmonics~\cite{Avery2018}
 \[ \frac{1}{r_{12}} = \sum_{l''=0}^\infty
 	\frac{r^{l''}_<}{r_>^{l'' + 1}} \frac{4\pi}{2l'' + 1}
 	\sum_{m''=-{l''}}^{l''} Y_{l''}^{m''}(\uvec{r}_1)
-	\cc{\left(Y_{l''}^{m''}(\uvec{r}_2)\right)}
+	\cc{\left(Y_{l''}^{m''}(\uvec{r}_2)\right)},
 \]
 where
 \begin{align*}
-	r_< &\equiv \min(r_1, r_2) & r_> &\equiv \max(r_1, r_2)
+	r_< &\equiv \min(r_1, r_2) & r_> &\equiv \max(r_1, r_2),
 \end{align*}
 equation \eqref{eqn:CSeriKernelDef} may be rewritten as
 \begin{equation}
@@ -491,7 +496,7 @@ equation \eqref{eqn:CSeriKernelDef} may be rewritten as
 		\underbrace{Y_{l'}^{m'}(\uvec{r}_2) \cc{\left(Y_{l''}^{m''}(\uvec{r}_2)\right)}}
 		_{=\delta_{l',l''}\delta_{m',m''}}
 		\, \D \uvec{r}_2 \\
-	&= \delta_{ll'} \delta_{mm'} I^{(l)}_{nn'}
+	&= \delta_{ll'} \delta_{mm'} I^{(l)}_{nn'},
 \end{aligned}
 \label{eqn:CSeriKernel}
 \end{equation}
