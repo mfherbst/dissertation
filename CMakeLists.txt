@@ -33,7 +33,6 @@ execute_process(
 # Tex files
 add_inputs(
 	abstract.tex
-	acknowledgements.tex
 	biblio.tex
 	common_commands.tex
 	common_configure.tex

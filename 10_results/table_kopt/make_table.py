@@ -92,7 +92,7 @@ def make_table(data, period, label):
     ret = []
     ret.append(r"\ctable[")
     ret.append(r"    cap=Optimal \CS exponent for the " + period +
-               " period at Hartree-Fock level.,")
+               " period at Hartree-Fock level,")
     ret.append(r"    caption=Optimal \CS exponent for the " + period +
                r" period of the periodic table at \HF level. "
                r"Relative errors are given with respect to the "

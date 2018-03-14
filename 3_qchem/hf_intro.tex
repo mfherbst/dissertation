@@ -1,11 +1,12 @@
 \section{Single-determinant ansatz}
 \label{sec:HFIntro}
 
-\nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$/$\beta$ electrons.
+\nomenclature{$\NelecA, \NelecB$}{Number of $\alpha$ or $\beta$ electrons,
+	respectively.
 Note $\NelecA + \NelecB = \Nelec$ and $\NelecA \ge \NelecB$ by convention.}
 \nomenclature{$\Iorb$}{Index set of computed SCF orbitals, typically $\{1, \ldots \Norb\}$.}
 \nomenclature{$\Norb$}{The number of computed SCF orbitals.
-Note, that $\Norb \le \Nbas$.}
+Note that $\Norb \le \Nbas$.}
 
 \nomenclature{$\IoccA$, $\IoccB$}{Index set of occupied SCF orbitals of $\alpha$ or $\beta$ spin, respectively. Typically $\{1, \ldots, \NelecA\}$ and similar for $\IoccB$.}
 \nomenclature{$\epsilonconv$}{Convergence tolerance for an iterative process.
@@ -13,11 +14,10 @@ Note, that $\Norb \le \Nbas$.}
 
 
 \nomenclature{$\Theta$}{Tuple of all occupied one-particle SCF orbitals $(\psi_1, \psi_2, \ldots, \psi_{\Nelec})$.}
-\nomenclature{$\rho_\Theta(\vec{r})$}{
-	Electron density, see equation \eqref{eqn:HFDensityNoSpin}.}
+\nomenclature{$\rho_\Theta(\vec{r})$}{Electron density.}
 \nomenclature{$\gamma_\Theta(\vec{r}_1,\vec{r}_2)$}{
-	One-particle reduced density matrix, see equation \eqref{eqn:HFDensityNoSpin}.}
-	
+One-particle reduced density matrix.}
+
 \nomenclature{$\Op{K}$}{One-electron exchange operator.}
 \nomenclature{$\Op{J}$}{Effective Coulomb operator.}
 
@@ -459,7 +459,7 @@ not even for the resulting ground state density.
 \nomenclature{$\mat{C}$}{Matrix of occupied molecular orbital coefficients of
 	size $2\Nbas \times \Nelec$.}
 \nomenclature{$\mat{C}^\alpha$}{Matrix of occupied spin-up molecular orbital
-	coefficients of size $\Nbas \times \NelecA$.}
+	coefficients of size \linebreak $\Nbas \times \NelecA$.}
 \nomenclature{$\mat{C}_F$}{Matrix of all molecular orbital coefficients.
 	Result of the diagonalisation of $\mat{F}$.
 	Size $2\Nbas \times \Norb$.}
@@ -651,7 +651,7 @@ representations of \HF.
 				\label{eqn:Jbas}
 			\end{equation}
 			Here as usual $\eriMu{\slot \slot}{\slot \slot}$
-			denotes the electron repulsion integrals defined like \eqref{eqn:ERI}.
+			denotes the electron-repulsion integrals defined like \eqref{eqn:ERI}.
 		\item the \newterm{exchange matrix} $\matKfull$ has
 			deviating $\alpha$ and $\beta$ blocks,
 			both depending on the coefficients.
@@ -1116,7 +1116,7 @@ Instead we will treat all open-shell systems with the \UHF procedure,
 since \UHF is simpler to implement, computationally cheaper and overall more widespread.
 Nevertheless some issues,
 which appeared in our convergence analysis of our
-Coulomb-Sturmian based Hartree-Fock ansatz~(see chapter \vref{ch:CSQChem})
+Coulomb-Sturmian-based Hartree-Fock ansatz~(see chapter \vref{ch:CSQChem})
 turned out to originate from our \UHF treatment
 and could be potentially avoided in an \ROHF formalism.
 We will discuss this further in section \vref{sec:IssuesUHF}.

@@ -200,7 +200,7 @@ involving Sturmian-type orbitals%
 	\includeimage{4_solving_hf/relative_error_cs}
 	\caption[
 		Relative error in the hydrogen ground state
-		for selected \CS basis sets.
+		for selected \CS basis sets
 	]
 	{Relative error in the hydrogen ground state
 		for selected \CS basis sets.
@@ -252,7 +252,7 @@ to a better representation of the physics at a smaller sized \CS basis.
 \begin{figure}[p]
 	\centering
 	\includeimage{4_solving_hf/local_energy_cs_zoom}
-	\caption[Local energy of the hydrogen ground state for {\cGTO}s (magnified)]{
+	\caption[Local energy of the hydrogen ground state for {\CS} bases (magnified)]{
 		Magnified version of figure \vref{fig:LocalEnergyCS}
 		around the origin.
 		The orange curve theoretically goes to $-\infty$ as well,
@@ -441,7 +441,7 @@ Since
 \cc{\varphi}_{\mu_2}(\vec{r}) \varphi_{\mu_1}(\vec{r}) \]
 it follows that the conjugated product requires the related
 expansion coefficients $\csC^\mu_{\mu_2,\mu_1}$.
-With this the electron repulsion integral tensor in Mulliken index \eqref{eqn:ERI}
+With this the electron-repulsion integral tensor in Mulliken index \eqref{eqn:ERI}
 ordering may be written as the contraction
 \begin{equation}
 	\eriMu{\mu_1\mu_2}{\mu_3\mu_4}
@@ -451,7 +451,7 @@ ordering may be written as the contraction
 		I_{\mu\mu'} \, \csC^{\mu'}_{\mu_3,\mu_4}
 	\label{eqn:CSeriContraction}
 \end{equation}
-where $I_{\mu\mu'}$ is the electron repulsion kernel in terms of the $2\kexp$-functions
+where $I_{\mu\mu'}$ is the electron-repulsion kernel in terms of the $2\kexp$-functions
 \begin{equation}
 	I_{\mu\mu'} \equiv
 	\int_{\R^3} \int_{\R^3}
@@ -668,9 +668,11 @@ and not already contracted into a density matrix.
 \begin{figure}
 	\centering
 	\includeimage[width=\textwidth]{4_solving_hf/fock_sturmian}
-	\caption[Structure of the Fock matrix for a Coulomb-Sturmian based SCF]
-		{Structure of the Fock matrix for a Coulomb-Sturmian based SCF
-		for the beryllium atom starting from using a $(5,1,1)$
+	\caption[Structure of the Fock matrix for a Coulomb-Sturmian-based
+		Hartree-Fock]
+		{Structure of the Fock matrix for a Coulomb-Sturmian-based
+			Hartree-Fock calculation
+		of the beryllium atom starting from using a $(5,1,1)$
 		Coulomb-Sturmian basis in $mln$ order
 		and a Sturmian exponent of $\kexp = 1.99$.
 		The three figures show left to right the Fock matrix

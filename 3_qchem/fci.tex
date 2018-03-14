@@ -355,12 +355,12 @@ and allows only treatment of small systems%
 	for example treated a system with $\Nfci \simeq 9.7\E{9}$~\cite{Rossi1999}.
 }
 
-\defineabbr{ERI}{ERI\xspace}{Electron repulsion integral}
+\defineabbr{ERI}{ERI\xspace}{Electron-repulsion integral}
 \newcommand{\eriAsym}[2]{\left\langle #1 \middle|\middle| #2 \right\rangle}
 \newcommand{\eriPh}[2]{\left\langle #1 \middle| #2 \right\rangle}
 \newcommand{\eriMu}[2]{\left( #1 \middle| #2 \right)}
 \nomenclature{$(ij|kl)$}{%
-	Electron repulsion integrals in chemist's or Mulliken notation,
+	Electron-repulsion integrals in chemist's or Mulliken notation,
 	see definition in remark \vref{rem:ERI}.
 }
 \begin{rem}[Structure of the \FCI matrix]
@@ -458,7 +458,7 @@ and allows only treatment of small systems%
 	\end{aligned}
 		\label{eqn:SlaterCondonCoulomb}
 	\end{equation}
-	where the \newterm{electron repulsion integrals}~(ERIs)
+	where the \newterm{electron-repulsion integrals}~(ERIs)
 	in Mulliken's indexing convention are given by the expression
 	\begin{equation}
 		\eriMu{\psi_i \psi_j}{\psi_k \psi_l}
@@ -510,7 +510,7 @@ and allows only treatment of small systems%
 	\label{fig:StructureFCIMatrix}
 \end{figure}
 
-The electron repulsion integral tensor introduced in \eqref{eqn:ERI}
+The electron-repulsion integral tensor introduced in \eqref{eqn:ERI}
 is a very important quantity in computational chemistry.
 We will employ it at various occasions throughout the thesis.
 In the standard literature a number of deviating conventions are used
@@ -519,7 +519,7 @@ for denoting this tensor. The following remark provides a summary.
 \begin{rem}[Formulation of the repulsion integrals]
 	\label{rem:ERI}
 	In equation \eqref{eqn:ERI} we already met
-	the electron repulsion integal $\eriMu{\psi_i \psi_j}{\psi_k \psi_l}$
+	the electron-repulsion integral $\eriMu{\psi_i \psi_j}{\psi_k \psi_l}$
 	in \textbf{Mulliken notation}.
 	Alternative names for this indexing convention are
 	\textbf{shell pair notation} or \textbf{chemists' notation}.
@@ -547,7 +547,7 @@ for denoting this tensor. The following remark provides a summary.
 	like in \eqref{eqn:SlaterCondonCoulomb},
 	where the indices are only slightly permuted.
 	For this reason one typically defines an
-	\newterm{antisymmetrised electron repulsion tensor}
+	\newterm{antisymmetrised electron-repulsion tensor}
 	with elements
 	\[ \eriAsym{ij}{kl} \equiv
 		\eriAsym{\psi_i \psi_j}{\psi_k \psi_l}
