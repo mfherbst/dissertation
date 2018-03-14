@@ -44,7 +44,7 @@ def plot_morse_fit(dist, ene):
 
   # Plot data and Morse using 100 sampling points:
   x = np.linspace(np.min(dist), np.max(dist), 100)
-  plt.plot(dist, ene, "+", label="MP2")
+  plt.plot(dist, ene, "+", label="UMP2")
   plt.plot(x, morse(x, *popt),
            label="Morse potential")
 
