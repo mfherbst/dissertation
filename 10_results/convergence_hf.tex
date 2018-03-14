@@ -22,11 +22,11 @@ is satisfied regardless of the value of $\kexp$
 and thus any error resulting from a less ideal
 value of $\kexp$ can be corrected with larger basis sets.
 Notice, however,
-that the rate of convergence increasing the basis size
+that the rate of convergence with increasing the basis size
 does well depend on the choice of $\kexp$
 as previous work suggests~\cite{Avery2017}
 and our discussion in section \ref{sec:kexp} confirms.
-In other words a sensible value for $\kexp$ does not to be chosen
+In other words a sensible value for $\kexp$ does need to be chosen
 for our analysis nonetheless.
 
 The net effect of tuning the maximal quantum numbers $\nmax$, $\lmax$ and $\mmax$
@@ -50,7 +50,7 @@ but also the set $\{R_{nl'}\}_{n}$, where the angular momentum $l'$ is held fixe
 This allows to express each function $R_{nl}$ with $l>0$
 as a linear combination of the functions $\{R_{n',0}\}_{n'}$.
 As a careful analysis using the recurrence relations between the
-confluent hypergeometric functions shows using those radial parts
+confluent hypergeometric functions shows, employing those radial parts
 with $l=0$ and $n' \leq n$ is sufficient to express $R_{nl}$.
 In other words convergence in the radial part can be completely controlled
 by the range of available principle quantum numbers $n$,
@@ -377,7 +377,7 @@ for both these systems were not only
 composed of \cGTO basis functions with $l=0$ and $l=1$,
 but much rather were linear combinations of basis functions with
 angular momentum quantum numbers in steps of $2$ apart.
-So for $s$-like \SCF orbitals $s$, $d$, $g$, \ldots basis functions
+So for $s$-like \SCF orbitals $s$, $d$, $g$, \ldots \,basis functions
 were combined in his calculations ---
 exactly what we observe in figure \ref{fig:RMSLF_C}.
 Later it was found that the occurrence of higher angular momenta in
@@ -386,30 +386,37 @@ the ground state is a general issue of
 \citet{Fukutome1981} provides a very detailed analysis of the
 underlying mechanisms including a discussion of the effect of
 spin symmetry breaking and \HF instabilities in \UHF and \GUHF.
-Since \molsturm does not use fractional occupation numbers in the initial
-guess for a \UHF procedure,
-the case with an unevenly occupied electronic configuration,
-like a single or two $p$ electrons,
-leads to an initial guess for the \UHF Fock operator,
-which is no longer spherically but \emph{axially} symmetric~\cite{McWeeny1985}.
+
+Let us try to understand the occurrence of this behaviour
+in the context of our calculations.
+For the case with an unevenly occupied electronic configuration,
+like a single or two unpaired electrons,
+a very na\"{i}ve guess for \UHF,
+that is without using fractional occupation numbers,
+is not spherically but \emph{axially} symmetric~\cite{McWeeny1985}.
 This implies that the obtained \SCF orbitals no longer represent
 a spherically symmetric density, but an axially symmetric density instead.
-If we used fractional occupations,
-then numerical error accumulated over the \SCF procedure
+This is carried forward over the iterations,
+such that for the final \UHF ground state spherical symmetry is broken.
+If we were to use fractional occupations,
+then numerical error,
+which accumulates over the \SCF procedure,
 could still lead to axially symmetric \SCF orbitals.
-The reason is the same mechanism leading
-to the Jahn-Teller effect~\cite{Jahn1937},
+The reason is the same mechanism leading to the Jahn-Teller effect~\cite{Jahn1937},
 namely that breaking the symmetry
-leads to a net lowering in energy for occupied \SCF orbitals,
-but to a net raise in energy for the virtual ones.
-As soon as numerical error once breaks the symmetry of the density
-into being axial, the effect amplifies over the \UHF iterations.
+allows to change the geometry,
+such that overall the energy of the occupied \SCF orbitals is net lowered,
+and the energy of the virtual orbitals overall raised.
+As soon as numerical error amounts to break the spherical
+symmetry once,
+the effect will amplify over the \UHF iterations
+and thus lead to the same axially symmetric \UHF ground state.
 
 On the level of the \SCF orbitals,
 the broken spherical symmetry allows for \CS basis functions
 of different angular momentum to be combined inside a single orbital,
 such that these are no longer of pure
-$s$, $p$, $d$, \ldots character.
+$s$, $p$, $d$, \ldots \,character.
 Let us give a few examples for this.
 If a spherically symmetric $s$ orbital is amended with
 a fraction of $d_{z^2}$, then this effectively causes a stretching
@@ -429,7 +436,7 @@ Since such a linear combination of angular momenta lowers
 the total \SCF energy,
 the \UHF procedure for unevenly occupied electron configurations
 may well explore these.
-In contrast for evenly occupied valence shells,
+In contrast, for evenly occupied valence shells,
 like the half-filled valence shell atoms \ce{N} and \ce{P},
 such a symmetry breaking does not help to lower
 the energy since all $p$ orbitals are occupied to the same level,
@@ -440,7 +447,7 @@ In other words the observed slow decrease in the $\RMSOl$ plots
 in figures \ref{fig:RMSOl_period2} and \ref{fig:RMSOl_period3}
 for the atoms with one or two unpaired electrons
 is not due to the \CS discretisation not being able to represent the system,
-but much rather due to known issue of \UHF.
+but much rather due to a known issue of \UHF.
 A treatment of the atoms with \ROHF should give more consistent
 results for all atoms.
 
