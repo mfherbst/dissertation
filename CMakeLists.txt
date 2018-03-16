@@ -22,13 +22,16 @@ add_custom_packages(
 	mfhTex/mfh/MFHtheoremdefs.sty
 )
 
-# Obtain the current commit id
-execute_process(
-	COMMAND git rev-parse HEAD
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	OUTPUT_VARIABLE GIT_COMMIT
-	OUTPUT_STRIP_TRAILING_WHITESPACE
+# Dump info about the git repo status
+add_custom_target(
+	make_gitcommit
+        COMMAND
+        ${CMAKE_CURRENT_LIST_DIR}/cmake/make_gitcommit.sh
+        COMMAND
+        ${CMAKE_COMMAND} -E touch "${MFH_LATEX_TOUCHFILE}"
 )
+add_depends(make_gitcommit)
+
 
 # Tex files
 add_inputs(
