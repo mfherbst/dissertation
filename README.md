@@ -27,7 +27,7 @@ make pdf
 Note, however, that the build process automatically executes
 some `python` scripts during the build, which implicitly rely
 on the presence of
-[version 0.0.3 of molsturm](https://github.com/molsturm/molsturm/releases/tag/v0.0.3)
+[version 0.0.3 of `molsturm`](https://github.com/molsturm/molsturm/releases/tag/v0.0.3)
 together with [`gint`](https://molsturm.org/gint),
 [`sturmint`](https://molsturm.org/sturmint) and
 [`libint`](https://github.com/evaleev/libint).
