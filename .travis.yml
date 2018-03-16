@@ -11,8 +11,8 @@ addons:
       - texlive-latex-extra
       - texlive-pictures
       - texlive-science
+      - texlive-lang-german
       - pgf
-      #
       - texlive-fonts-recommended
       - texlive-fonts-extra
       - lmodern
