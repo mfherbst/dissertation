@@ -83,11 +83,6 @@ def plot_error_vs_n(data,
         p = plt.plot(ns, excitation_energies[k], "x-", label=label)
         plt.plot([11], ccpvtz[k], "+", color=p[0].get_color())
         plt.plot([12], literature[k], "+", color=p[0].get_color())
-        print(k)
-        print(ns)
-        print(excitation_energies[k])
-        print(ccpvtz[k])
-        print("----")
 
     xticks = ["$({},1,1)$".format(n) for n in ns] + ["cc-pVTZ", "Exp."]
     plt.xticks(range(ns[0], 13), xticks, size="small")
