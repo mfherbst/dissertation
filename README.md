@@ -1,10 +1,20 @@
 # Dissertation
 [![Build Status](https://travis-ci.com/mfherbst/dissertation.svg?token=mMrhPoF738uUamSScbrZ&branch=master)](https://travis-ci.com/mfherbst/dissertation)
 
-This repository contains the TeX and python source code to build my PhD thesis.
-The whole thing is heavily work in progress right now of course ;).  
+This repository contains the `LaTeX` and `python` source code to build by PhD thesis
+titled **Development of a modular
+quantum-chemistry framework
+for the investigation of novel
+basis functions**.  
 
-[Download recent version](https://github.com/mfherbst/dissertation/releases/download/recent/dissertation.pdf)
+Either you [build the pdf](#building) for yourself
+or you download the the
+[latest version](https://github.com/mfherbst/dissertation/releases/latest),
+where all known errors have been corrected.
+Alternatively you can download the version
+[printed and published](https://github.com/mfherbst/dissertation/releases/download/v1.0.0/dissertation.pdf)
+and live with the typos and errors,
+which were already discovered by now.
 
 ## Building
 Should be as simple as
@@ -17,7 +27,7 @@ make pdf
 Note, however, that the build process automatically executes
 some `python` scripts during the build, which implicitly rely
 on the presence of
-[version 0.1.0 of molsturm](https://github.com/molsturm/molsturm/releases/tag/v0.1.0)
+[version 0.0.3 of molsturm](https://github.com/molsturm/molsturm/releases/tag/v0.0.3)
 together with [`gint`](https://molsturm.org/gint),
 [`sturmint`](https://molsturm.org/sturmint) and
 [`libint`](https://github.com/evaleev/libint).
@@ -27,9 +37,9 @@ in your path
 ... or you try what is explained in the next section.
 
 ## Build the thesis without `molsturm`
-The continuous integration system I employ for testing the latex builds
-does not install molsturm. Much rather it uses some statically generated data
-to get around this.
+The continuous integration system, which is employed to build
+the published pdfs does not install `molsturm`.
+Much rather it uses some statically generated data to get around this.
 If you want to do the same, this is roughly what you need to do
 ```sh
 # Checkout repos
