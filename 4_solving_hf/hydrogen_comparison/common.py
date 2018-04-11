@@ -12,7 +12,8 @@ RELABEL = r"relative error"
 
 
 def hydrogen_local_energy(basis, coefficients,
-                          r=np.linspace(0, 10, 1000), dr=5e-6):
+                          r=np.linspace(0, 10, 1000), dr=5e-6,
+                          mirror=True):
     """
     params:
         basis         The basis object from molsturm describing the basis
@@ -41,10 +42,11 @@ def hydrogen_local_energy(basis, coefficients,
     ddf = (-fp2 + 16*fp1 - 30*f + 16*fm1 - fm2) / (12*dr*dr)
 
     # Make functional values symmetric (because they have to)
-    r = np.concatenate((-r[::-1], r))
-    f = np.concatenate((f[::-1], f))
-    df = np.concatenate((df[::-1], df))
-    ddf = np.concatenate((ddf[::-1], ddf))
+    if mirror:
+        r = np.concatenate((-r[::-1], r))
+        f = np.concatenate((f[::-1], f))
+        df = np.concatenate((df[::-1], df))
+        ddf = np.concatenate((ddf[::-1], ddf))
 
     # Notice: Radial laplacian is d2f/dr2 + 2/r * df/dr
     kin_part = - 1/2 * (ddf + 2*df/np.abs(r))
@@ -52,7 +54,8 @@ def hydrogen_local_energy(basis, coefficients,
     return r, locen
 
 
-def hydrogen_relative_error(basis, coefficients, r=np.linspace(0, 10, 1000)):
+def hydrogen_relative_error(basis, coefficients, r=np.linspace(0, 10, 1000),
+                            mirror=True):
     def exact_1s(r):
         """Return the exact function value of the 1s orbital"""
         return np.sqrt(1./np.pi) * np.exp(-r)
@@ -65,8 +68,10 @@ def hydrogen_relative_error(basis, coefficients, r=np.linspace(0, 10, 1000)):
         return np.einsum("b,br->r", coefficients, raw)
 
     rel_err = (orbital_1s(r) - exact_1s(r)) / exact_1s(r)
-    r = np.concatenate((-r[::-1], r))
-    rel_err = np.concatenate((rel_err[::-1], rel_err))
+
+    if mirror:
+        r = np.concatenate((-r[::-1], r))
+        rel_err = np.concatenate((rel_err[::-1], rel_err))
     return r, rel_err
 
 
