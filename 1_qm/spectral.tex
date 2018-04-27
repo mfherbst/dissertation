@@ -43,7 +43,7 @@ is always dense in it.
 \begin{prop}
 	The inner product of $\hilbert$ induces the so-called operator norm
 	\[ \opnorm{\Op{A}} := \sup_{\substack{u \in D(\Op{A}),\\ u\neq0}}
-		\frac{\norm{A u}_\hilbert}{\norm{u}_{\hilbert}}. \]
+		\frac{\norm{\Op{A} u}_\hilbert}{\norm{u}_{\hilbert}}. \]
 	\begin{proof}
 		See \cite[Satz II.1.4]{Werner2011}
 	\end{proof}
@@ -59,6 +59,7 @@ is the notion of bounded and unbounded operators.
 	A bounded operator is referred to as \newterm{continuous}%
 	\footnote{In fact this is a consequence from the fact that a bounded linear operator
 	between normed vector spaces is always continuous.} as well.
+	Operators, which are not bounded are \newterm{unbounded operators}.
 \end{defn}
 In our example of $\hilbert = L^2(\R^d, \C)$ an operator is hence bounded
 if its action on a square-integrable function yields another function,
@@ -70,24 +71,60 @@ is not square-integrable.
 It should therefore not come as a surprise that
 operators containing derivatives
 --- like the kinetic energy operator of \QM ---
-are not bounded in general.
-Instead they are typically unbounded operators,
-which we will define in the following.
+are in general not bounded.
 
+An alternative way to think about unbounded operators
+is accessible via the concept of an \newterm{operator extension}.
 \begin{defn}
 	Let $\Op{A}$ and $\Op{B}$ be operators on $\hilbert$.
-	$\Op{B}$ is an \newterm{extension} of $\Op{A}$ if
+	$\Op{B}$ is an extension of $\Op{A}$ if
 	\mbox{$D(\Op{A}) \subset D(\Op{B})$}
 	and if $\forall u \in D(\Op{A}): \ \Op{A}u = \Op{B}u$.
 \end{defn}
 
-\begin{defn}
-	An operator $\Op{A}$ on $\hilbert$ which does not possess
-	a bounded extension is called an \newterm{unbounded operator} on $\hilbert$.
-\end{defn}
-% TODO OPTIONAL
-%\to doil{Think how this can be possible, e.g. that the operator by itself is not bounded,
-%	but the extension is}
+\begin{prop}
+	Let $\Op{A}$ be an operator on $\hilbert$.
+	The following statements are equivalent:
+	\begin{itemize}
+		\item $\Op{A}$ is unbounded.
+		\item $\Op{A}$ does not possess a bounded extension.
+	\end{itemize}
+	\begin{proof} ~
+		\begin{itemize}
+			\item[$\Rightarrow$] Since $\Op{A}$ is unbounded,
+				there exists a $x \in D(\Op{A})$ with
+				\[ \nexists \, \alpha \in \R: \quad \norm{\Op{A} x}_\hilbert = \alpha \norm{x}_{\hilbert}. \]
+				For any extension $\Op{B}$ by construction $x \in D(\Op{B})$ and
+				$\Op{B} x = \Op{A} x$, such that for this $x$
+				\[ \nexists \, \beta\in \R: \quad \norm{\Op{B} x}_\hilbert = \beta \norm{x}_{\hilbert}. \]
+				Thus any such $\Op{B}$ is unbounded.
+			\item[$\Leftarrow$]
+				For  $D(\Op{A}) = \hilbert$ the statement is trivial
+				and w.l.o.g we assume $D(\Op{A}) \neq \hilbert$.
+				Further we proceed by
+				proving the equivalent statement,
+				that each bounded operator
+				$\Op{A}$ possesses at least one bounded extension.
+
+				Given $\Op{A}$ with $D(\Op{A}) \subsetneq \hilbert$ we can choose a $v \in \hilbert$
+				with $v \perp D(\Op{A})$ and $\norm{v} = 1$.
+				An extension $\Op{B}$ of $\Op{A}$ can be defined pointwise
+				\[ \Op{B} u \equiv \Op{A} \big(u - v \braket{v}{u}\big) \]
+				with $u \in D(\Op{B}) = D(\Op{A}) \oplus \{v\}$.
+				For any $u \in D(\Op{B}$ by construction
+				$u - v \braket{v}{u} \in D(\Op{A})$
+				such that we can find a $\alpha \in \R$ satisfying
+				\begin{align*}
+					\norm{\Op{B} u}
+					&= \norm{\Op{A} (u - v \braket{v}{u})}
+					= \alpha \norm{u - v \braket{v}{u}} \\
+					&\leq \alpha \left(\norm{u} + \norm{v}^2 \norm{u} \right)
+					= 2 \alpha \norm{u}.
+				\end{align*}
+				In other words $\Op{B}$ is a bounded extension of $\Op{A}$.
+		\end{itemize}
+	\end{proof}
+\end{prop}
 
 There also exists a middle ground,
 namely so-called \newterm{semi-bounded operator}s, defined as such:
@@ -234,7 +271,6 @@ of eigenvalues and eigenvectors in finite dimensions.
 
 \newcommand{\shiftop}{(\Op{A} - \lambda \id_{\hilbert})}
 \nomenclature{$\id_{\hilbert}$}{Identity operator on the Hilbert space $\hilbert$.}
-\pagebreak
 \begin{defn}
 	\label{defn:Spectrum}
 	Let $\Op{A}$ be a self-adjoint%
