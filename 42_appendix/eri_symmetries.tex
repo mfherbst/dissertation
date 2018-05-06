@@ -38,7 +38,7 @@ There is 4-fold symmetry in Mulliken convention
 \intertext{and 4-fold symmetry in physicist's convention as well}
 %
 	\label{propEriPhShellPair}
-	\eriPh{\iicol\kkcol}{\jjcol\llcol} &= 
+	\eriPh{\iicol\kkcol}{\jjcol\llcol} &=
 	\eriPh{\kkcol\iicol}{\llcol\jjcol} && \text{Swap shell pairs} \\
 	\label{propEriPhBothShellPair}
 	&= \cc{\eriPh{\jjcol \llcol}{\iicol \kkcol}} &&\text{Swap inside \textit{both} shell pairs} \\
@@ -114,52 +114,29 @@ the ERI tensor shows an 8-fold symmetry as well:}
 	&= \eriPh{\llcol \jjcol}{\kkcol \iicol}
 	&& \text{\eqref{propEriPhRealShellPair} and \eqref{propEriPhRealBothShellPair}}
 %
-\intertext{For the antisymmetrised ERI tensor and \textbf{real functions} we get 16-fold symmetry:}
+	\intertext{For the antisymmetrised ERI tensor and \textbf{real functions} we \emph{still}
+	get only an 8-fold symmetry:}
 %
 	\label{propEriAsymRealShellPair}
-	\eriAsym{\iicol \kkcol}{\jjcol \llcol}
-	&= \eriAsym{\kkcol \iicol}{\llcol \jjcol}
-	&& \text{Swap shell pairs} \\
-	\label{propEriAsymRealFirstShellPair}
-	&= \eriAsym{\jjcol \kkcol}{\iicol \llcol}
-	&& \text{Swap inside \textit{first} shell pair} \\
-	\label{propEriAsymRealSecondShellPair}
-	&= \eriAsym{\iicol \llcol}{\jjcol \kkcol}
-	&& \text{Swap inside \textit{second} shell pair} \\
+	\eriAsym{\iicol\kkcol}{\jjcol\llcol} &=
+	\eriAsym{\kkcol\iicol}{\llcol\jjcol}
+		&&\text{Swap shell pairs} \\
 	\label{propEriAsymRealBothShellPair}
 	&= \eriAsym{\jjcol \llcol}{\iicol \kkcol}
-	&& \text{Swap inside \textit{both} shell pairs} \\
-	\nonumber
-	&= \eriAsym{\llcol \iicol}{\kkcol \jjcol}
-	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealFirstShellPair}} \\
-	\nonumber
-	&= \eriAsym{\kkcol \jjcol}{\llcol \iicol}
-	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealSecondShellPair}} \\
+		&&\text{Swap inside \textit{both} shell pairs} \\
 	\nonumber
 	&= \eriAsym{\llcol \jjcol}{\kkcol \iicol}
-	&& \text{\eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealBothShellPair}} \\
-	%
+		&&\text{Both the above} \\
 	\label{propEriAsymRealAsym}
-	&= -\eriAsym{\kkcol\iicol}{\jjcol\llcol}        &&\text{Antisymmetry} \\
+	&= -\eriAsym{\kkcol\iicol}{\jjcol\llcol}
+		&&\text{Antisymmetry} \\
 	\nonumber
-	&= - \eriAsym{\iicol \kkcol}{\llcol \jjcol}
-	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealShellPair}} \\
+	&= -\eriAsym{\iicol\kkcol}{\llcol\jjcol}
+		&&\text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealShellPair}} \\
 	\nonumber
-	&= - \eriAsym{\kkcol \jjcol}{\iicol \llcol}
-	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealFirstShellPair}} \\
+	&= -\eriAsym{\llcol \jjcol}{\iicol \kkcol}
+		&&\text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealBothShellPair}} \\
 	\nonumber
-	&= - \eriAsym{\llcol \iicol}{\jjcol \kkcol}
-	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealSecondShellPair}} \\
-	\nonumber
-	&= - \eriAsym{\llcol \jjcol}{\iicol \kkcol}
-	&& \text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealBothShellPair}} \\
-	\nonumber
-	&= - \eriAsym{\iicol \llcol}{\kkcol \jjcol}
-	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealFirstShellPair}} \\
-	\nonumber
-	&= - \eriAsym{\jjcol \kkcol}{\llcol \iicol}
-	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealSecondShellPair}} \\
-	\nonumber
-	&= - \eriAsym{\jjcol \llcol}{\kkcol \iicol}
-	&& \text{\eqref{propEriAsymRealAsym}, \eqref{propEriAsymRealShellPair} and \eqref{propEriPhRealBothShellPair}}
+	&= -\eriAsym{\jjcol \llcol}{\kkcol \iicol}
+		&&\text{\eqref{propEriAsymRealAsym} and \eqref{propEriAsymRealBothShellPair}}.
 \end{align}
