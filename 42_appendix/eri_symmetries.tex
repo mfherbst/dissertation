@@ -8,9 +8,9 @@
 \newcommand{\llcol}{\textcolor{ orange!92!white}{l}}
 
 In accordance with \eqref{eqn:ERI} of remark \vref{rem:EvalFCIMatrix}
-we define the ERIs in physicist's indexing convention and in Mulliken convention
+we define the ERIs in Mulliken notation as well as the physicist's indexing convention
 \begin{align*}
-	\eriPh{\iicol\jjcol}{\kkcol\llcol} &= \int_\Omega \int_\Omega
+	\eriMu{\iicol\jjcol}{\kkcol\llcol} &= \int_\Omega \int_\Omega
 		\cc{\psi_{\iicol}}\left(\vec{r}_1\right)
 		\cc{\psi_{\jjcol}}\left(\vec{r}_1\right)
 		\frac{1}{r_{12}}
@@ -18,7 +18,7 @@ we define the ERIs in physicist's indexing convention and in Mulliken convention
 		\psi_{\llcol} \left(\vec{r}_2\right)
 		\D \vec{r}_1
 		\D \vec{r}_2 \\
-	&= \eriMu{\iicol\kkcol}{\jjcol\llcol}
+	&= \eriPh{\iicol\kkcol}{\jjcol\llcol}
 \end{align*}
 and the antisymmetrised repulsion integrals
 \[ \eriAsym{\iicol\jjcol}{\kkcol\llcol}
@@ -117,7 +117,7 @@ the ERI tensor shows an 8-fold symmetry as well:}
 \intertext{For the antisymmetrised ERI tensor and \textbf{real functions} we get 16-fold symmetry:}
 %
 	\label{propEriAsymRealShellPair}
-	\eriPh{\iicol \kkcol}{\jjcol \llcol}
+	\eriAsym{\iicol \kkcol}{\jjcol \llcol}
 	&= \eriAsym{\kkcol \iicol}{\llcol \jjcol}
 	&& \text{Swap shell pairs} \\
 	\label{propEriAsymRealFirstShellPair}
