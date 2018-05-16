@@ -145,7 +145,7 @@ def plot_EHF_vs_bas(values, full_O=False, ignore_regions=[]):
                          color=p[i].get_color(), size=8)
 
     plt.xlabel(r"Number of basis functions $N_\text{bas}$")
-    plt.ylabel(r"Relative error in $E_\text{HF}$")
+    plt.ylabel(r"Relative error of $E_\text{HF}$")
     plt.legend(ncol=2)
 
 

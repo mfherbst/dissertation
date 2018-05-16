@@ -25,9 +25,10 @@ def plot_overview():
     plt.xlabel(common.XLABEL)
     plt.ylabel(common.ELLABEL)
 
-    plt.plot(r, -0.5*np.ones_like(locen), label="exact")
-    plt.legend(loc='upper right')
     plt.ylim(-5, 5)
+    if -0.5 not in plt.yticks()[0]:
+        plt.yticks(list(plt.yticks()[0]) + [-0.5])
+    plt.legend(loc='upper right')
 
 
 def plot_closeup():
@@ -46,9 +47,9 @@ def plot_closeup():
     plt.xlabel(common.XLABEL)
     plt.ylabel(common.ELLABEL)
 
-    plt.plot(r, -0.5*np.ones_like(locen), label="exact")
-    plt.legend(loc='lower right')
     plt.ylim(-5, 5)
+    if -0.5 not in plt.yticks()[0]:
+        plt.yticks(list(plt.yticks()[0]) + [-0.5])
 
 
 def plot_relative_error(log=False):

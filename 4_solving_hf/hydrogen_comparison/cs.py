@@ -38,6 +38,8 @@ def plot_local_energy_overview():
     plt.xlabel(common.XLABEL)
     plt.ylabel(common.ELLABEL)
     plt.ylim(-1.5, 0.5)
+    if -0.5 not in plt.yticks()[0]:
+        plt.yticks(list(plt.yticks()[0]) + [-0.5])
 
     plt.plot(r, -0.5*np.ones_like(locen), label=r"exact, $k_\text{exp} = 1.0$")
     plt.legend(loc='upper right')
@@ -72,6 +74,8 @@ def plot_local_energy_closeup():
     plt.xlabel(common.XLABEL)
     plt.ylabel(common.ELLABEL)
     plt.ylim(-1.5, -0.25)
+    if -0.5 not in plt.yticks()[0]:
+        plt.yticks(list(plt.yticks()[0]) + [-0.5])
 
     plt.legend()
 
