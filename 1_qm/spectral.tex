@@ -9,7 +9,7 @@ We will see that most operators, including the ones required for
 atomic physics and quantum chemistry,
 do not show all the nice properties we would like to rely on.
 For example one might not be able to find eigenfunctions
-for all eigenvalues and the ones one is able to determine
+for all values of the spectrum and the ones one is able to determine
 might not amount to span the Hilbert space completely.
 For this reason we will hint at techniques
 relevant to the Hilbert space $L^2(\R^d, \C)$
@@ -186,6 +186,7 @@ we may define the terms symmetric and self-adjoint.
 	if
 	\[ \forall (u, v) \in D(\Op{A}) \times D(\Op{A}): \qquad \braket{\Op{A} u}{v} = \braket{u}{\Op{A} v} \]
 \end{defn}
+\noindent
 In Physics textbooks a symmetric operator is usually called Hermitian.
 
 \begin{defn}
@@ -349,13 +350,13 @@ if enough time has passed.
 The decomposition of the spectrum into point and continuous spectrum
 is not the only possibility.
 Especially from the point of view of numerical modelling
-the following, an alternative approach is more helpful
+the following, alternative approach is more helpful
 as we shall see later.
 
 \begin{defn}
 	\label{defn:EssentialSpectrum}
 	For any self-adjoint%
-	\footnote{Again only closed is strictly required.}
+	\footnote{Again only closed is strictly speaking required.}
 	operator,
 	we can decompose \linebreak
 	$\sigma(\Op{A}) = \sigma_\text{disc}(\Op{A}) \, \dot{\cup} \, \sigma_\text{ess}(\Op{A})$
@@ -447,7 +448,7 @@ weak and strong convergence are equivalent.
 
 \begin{rem}
 With proposition \ref{prop:FiniteDimCompact}
-we can reduce the setting of self-adjoint operators on a finite-dimensional
+we can reduce the setting of self-adjoint operators $\Op{A}$ on a finite-dimensional
 Hilbert space to the following:
 \begin{itemize}
 	\item In remark \vref{rem:HilbertCd} we said that the vectors

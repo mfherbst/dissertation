@@ -318,7 +318,7 @@ but almost\footnote{It is a so-called \textit{semi-norm}.}.
 What is missing is the norm-separates-points-condition \eqref{eqn:normPointSep}.
 The reason for this has to do with the subtleties of Lebesgue integration,
 namely that the result of a Lebesgue integral
-\[ \int_{R^d} f \D x \]
+\[ \int_{\R^d} f \D x \]
 is unchanged if we replace the integrand $f$ by a function $f'$,
 which is identical \emph{almost everywhere}.
 This is meant to say,
@@ -326,7 +326,7 @@ that changing $f$ at infinitely many, well-separated places in order yield $f'$
 does not change the outcome of the integration.
 More mathematically one says that the Lebesgue integral is only uniquely defined
 up to \newterm{sets of measure zero}.
-Coming back to \eqref{eqn:normPointSep},
+Returning to \eqref{eqn:normPointSep},
 the problem is hence that there is more than one function satisfying
 $\abs{f}_{L^2} = 0$,
 in fact infinitely many.
@@ -346,13 +346,13 @@ denoted as $\norm{\slot}_{L^2}$ and we can define:
 	is the set of \newterm{square-integrable functions}.
 	It forms a Hilbert space over the field $\C$.
 	\begin{proof}
-		See~\cite{Adams2003}
+		See~\cite{Adams2003}.
 	\end{proof}
 \end{prop}
 \begin{prop}
 	$L^2(\R^d, \C)$ is separable.
 	\begin{proof}
-		See~\cite{Werner2011}
+		See~\cite{Werner2011}.
 	\end{proof}
 \end{prop}
 In other words $L^2(\R^d, \C)$ truly satisfies all the requirements
@@ -369,7 +369,8 @@ in this section, but only  \emph{non-relativistic, spin-free} \QM.
 In a fully relativistic \QM treatment
 each state is not a function returning
 a single complex value, but rather a function returning a \newterm{spinor},
-which for relativistic \QM has $4$ spin components per particle.
+which for relativistic \QM and so-called spin-$\sfrac12$ particles has $4$
+spin components per particle.
 In other words for an $N$-particle system
 the corresponding space would be $L^2(\R^{3N}, \C^{4N})$.
 This work does not treat relativistic \QM at all,
@@ -454,7 +455,8 @@ A full family of such spaces exist. We will only present two kinds here.
 	The completion of $C^\infty_0(\R^d, \C)$
 	with respect to the norm $\norm{\slot}_{H^k}$
 	is the Sobolev space $H^k_0(\R^d, \C)$.
-	It is a proper subspace of $H^k$ and a Hilbert space as well~\cite{Adams2003}.
+	It is a proper subspace of $H^k(\R^d, \C)$
+	and a Hilbert space as well~\cite{Adams2003}.
 \end{defn}
 Colloquially speaking if a function is a member of $H^k(\R^d, \C)$ or $H^k_0(\R^d, \C)$,
 we can assume that the $k$-th derivative of this function remains square-integrable.
