@@ -34,8 +34,8 @@ Clearly the associated norm $\norm{\slot}_{\Op{A}}$ satisfies
 We now take the completion of $D(\Op{A})$ under the norm $\norm{u}_{\Op{A}}$
 and call it $Q(\Op{A})$.
 \eqref{eqn:FormDomainNorm} assures that all sequences,
-which are Cauchy in $D(\Op{A})$ with respect to $\norm{\slot}_{\hilbert}$
-are Cauchy in $Q(\Op{A})$ with respect to $\norm{\slot}_{\Op{A}}$ as well.
+which are Cauchy in $Q(\Op{A})$ with respect to $\norm{\slot}_{\Op{A}}$
+are Cauchy in $\hilbert$ with respect to $\norm{\slot}_{\hilbert}$ as well.
 One can show further~\cite{Teschl2014} that such sequences
 have the same limit in $Q(\Op{A})$ irrespective of the norm used.
 
@@ -98,8 +98,9 @@ in a sequence of subspaces of $Q(\Op{A})$.
 		\forall v \in Q(\Op{A}) \quad \inf_{v^{(n)} \in S_n} \norm{v - v^{(n)}}_{Q(\Op{A})} \xrightarrow{n\to \infty} 0,
 		\label{eqn:CondSubspaces}
 	\end{equation}
-	obtain a sequence of approximate eigenspectra $\sigma^{(n)}(\Op{A})$
-	by solving --- for each $n$ --- the variational problem
+	one may obtain a sequence of approximate eigenspectra $\sigma^{(n)}(\Op{A})$
+	by solving --- \linebreak
+	for each $n$ --- the variational problem
 	\begin{equation}
 		\label{eqn:varProblem}
 		\left\{
@@ -115,7 +116,8 @@ in a sequence of subspaces of $Q(\Op{A})$.
 For ease of our discussion let $\Op{A}^{(n)}$ denote the self-adjoint
 operator on a particular $S_n$, which is defined by the variational problem
 \eqref{eqn:varProblem}, \ie which satisfies
-\[ \forall (u^{(n)}, v^{(n)}) \in S_n \times S_n \quad \braket{\Op{A}^{(n)} u^{(n)}}{v^{(n)}}_\hilbert = a(u^{(n)}, v^{(n)}). \]
+\[ \forall (u^{(n)}, v^{(n)}) \in S_n \times S_n
+\quad \braket{u^{(n)}}{\Op{A}^{(n)} v^{(n)}}_\hilbert = a(u^{(n)}, v^{(n)}). \]
 Since $S_n$ is finite-dimensional, $\Op{A}^{(n)}$ is compact%
 \footnote{See proposition \vref{prop:FiniteDimCompact}.}
 and thus it will have a discrete spectrum $\sigma(\Op{A}^{(n)})$.
@@ -250,15 +252,15 @@ sketch an approximation method for our setting.
 	with elements
 	\begin{align}
 		\label{eqn:DiscretisationExpression}
-		A_{\mu\nu} &= a(\varphi_\mu, \varphi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\varphi_\mu}{v^{(n)}_i} = C^{(n)}_{\mu i}
+		A_{\mu\nu}^{(n)} &= a(\varphi_\mu, \varphi_\nu) & \big(c^{(n)}_i\big)_\mu &= \braket{\varphi_\mu}{v^{(n)}_i} = C^{(n)}_{\mu i}
 	\end{align}
 	we can write \eqref{eqn:DiscretisedEigenproblemHalfWay}
-	as the matrix eigenvalue problem
+	as the matrix eigenvalue problem\footnote{Recall that the functions $\{\varphi_\mu\}_{\mu \in \Ibas}$ were chosen orthonormal.}
 	\begin{equation}
 		\left\{
 			\begin{aligned}
 				\text{Search $(\lambda_i^{(n)}, \vec{c}^{(n)}_i) \in \R \times \C^{\Nbas}$}& \text{ such that}\\
-				\mat{A} \vec{c}^{(n)}_i &= \lambda_i^{(n)} \vec{c}^{(n)}_i \\
+				\mat{A}^{(n)} \vec{c}^{(n)}_i &= \lambda_i^{(n)} \vec{c}^{(n)}_i \\
 				\norm{\vec{c}^{(n)}_i}_{\C^{\Nbas}} &= 1
 		\label{eqn:DiscretisedEigenproblem}
 		\end{aligned}
@@ -280,7 +282,8 @@ for solving the discretised problem \eqref{eqn:DiscretisedEigenproblem}.
 		to construct a dense subspace of $Q(\Op{A})$
 		if an infinitely large basis set is chosen,
 		since this is needed in order to satisfy \eqref{eqn:CondSubspaces}.
-		Some basis function types even admit to span $Q(\Op{A})$ itself.
+		Some basis function types even admit to span $Q(\Op{A})$ itself
+		in the sense of a Hilbert space basis (\ie a Schauder basis).
 		We shall call these \newterm{complete}.
 	\item It should be numerically feasible to solve \eqref{eqn:DiscretisedEigenproblem}.
 		In other words \emph{both} computing $\mat{A}$

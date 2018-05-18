@@ -11,7 +11,7 @@ which have the property that
 \[ \forall \mu, \nu \in \Ibas: \quad a(\varphi_\mu, \varphi_\nu) \in \R. \]
 As a result all matrices in \eqref{eqn:DiscretisedEigenproblem} will be real and symmetric.
 In this section we will therefore only consider eigenproblems of the type
-\[ \mat{A} \vec{u}_i = \lambda_i \vec{u}_i \]
+\[ \mat{A} \vec{u}_i = \lambda_i \vec{u}_i, \]
 where $\mat{A} \in \R^{\Nbas \times \Nbas}$,
 $\lambda_i \in \R$ and $\vec{u}_i \in \R^{\Nbas}$.
 
@@ -143,7 +143,7 @@ Similarly $\theta^{(j)}$ converges against $\lambda_{\Nbas}$ in this case.
 With the power method at hand to obtain the largest eigenvalue,
 the question is now,
 how one could generalise this approach
-for getting the lowest eigenvalue or even one directly from the middle
+for getting the smallest eigenvalue or even one directly from the middle
 of the spectrum.
 This is the purpose of so-called \newterm{spectral transformations}.
 

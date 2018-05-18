@@ -84,9 +84,10 @@ This requires an appropriate inner product.
 	\begin{align}
 		\braket{\Psi}{\Xi}_{\Nelec} \equiv \det \mat{G}
 		\qquad
-		\text{where } G_{ij} = \braket{\psi_i}{\xi_j}_{L^2(\R^3, \C)} \forall i,j \in 1,\ldots,\Nelec.
+		\text{where\footnotemark } G_{ij} = \braket{\psi_i}{\xi_j}_{L^2(\R^3, \C)} \forall i,j \in 1,\ldots,\Nelec,
 		\label{eqn:InnerProductFormDomain}
 	\end{align}
+	\footnotetext{In this $\mat{G}$ is the so-called Gramian matrix.}
 	The inner product for other elements from $\tilde{Q}(\Op{H}_{\Nelec})$
 	is then constructed in accordance
 	with the axioms shown in definition \vref{def:InnerProduct}.
@@ -481,7 +482,7 @@ and allows only treatment of small systems%
 	Originating from the two-electron Coulomb term $\Op{V}_{ee}$
 	all entries $a(\Phi_1, \Phi_2)$ where the determinants
 	differ by more than two functions vanish.
-	If we pick an arbitrary reference determinant $\Op{\Phi}_0$
+	If we pick an arbitrary reference determinant $\Phi_0$
 	and order the $\Nelec$-electron basis as in equation \eqref{eqn:NelectronBasisFinite}
 	a banded structure as in fig. \vref{fig:StructureFCIMatrix} results.
 	Of course the dimensionality is still large,
