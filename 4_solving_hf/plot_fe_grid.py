@@ -48,7 +48,7 @@ def make_cell_label(cells, i):
 
 
 def plot_grid(cells):
-    keys = list(cells.keys())
+    keys = sorted(list(cells.keys()))
     for i, k in enumerate(keys):
         if i > 0:
             half = keys[i-1] + (keys[i] - keys[i-1]) / 2
@@ -59,20 +59,21 @@ def plot_grid(cells):
 
 
 def plot_ticks(ax, cells, subticks=0):
-    keys = list(cells.keys())
+    keys = sorted(list(cells.keys()))
     keys_minor = []
 
     for i, k in enumerate(keys):
         if i > 0:
             extra = np.linspace(keys[i-1], keys[i], subticks + 1, endpoint=False)
             keys_minor += extra[1:].tolist()
-    plt.xticks(keys, list(cells.values()))
+    plt.xticks(list(cells.keys()), list(cells.values()))
     ax.set_xticks(keys_minor, minor=True)
     ax.set_xticklabels(len(keys_minor) * [""], minor=True)
+    plt.yticks([0.0, 0.5, 1.0])
 
 
 def linear_element(cells, n, x):
-    keys = list(cells.keys())
+    keys = sorted(list(cells.keys()))
     center = keys[n]
     lower = keys[n-1] if n > 0 else keys[0]
     upper = keys[n+1] if n < len(cells) - 1 else keys[-1]
@@ -87,7 +88,7 @@ def linear_element(cells, n, x):
 
 
 def quadratic_element(cells, n, k, x):
-    keys = list(cells.keys())
+    keys = sorted(list(cells.keys()))
 
     ret = np.zeros_like(x)
     if k == 2:
