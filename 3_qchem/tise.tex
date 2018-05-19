@@ -192,7 +192,7 @@ Without going into details at the moment,
 let us assume that $\Op{H}^\text{elec}$ becomes self-adjoint
 inside a suitable domain.
 With appropriate multi-indices $\Iel$
-we can thus find its eigenpairs $(E_{\Iel}, \Psi^\text{elec}_{\Iel})$
+we can thus find its eigenpairs $(E^\text{elec}_{\Iel}, \Psi^\text{elec}_{\Iel})$
 via the \newterm{electronic Schrödinger equation}
 \begin{equation}
 	\Op{H}^\text{elec}(\vec{X}) \Psi^\text{elec}_{\Iel}(\vec{X}, \vec{x})
@@ -401,11 +401,11 @@ relativistic \QM or quantum field theory~\cite{Shankar1994},
 one still needs to include it \textit{ad hoc} in non-relativistic \QM as well
 such that above observations can be explained~\cite{Pauli1925,Shankar1994,Straumann2004}.
 
-Notice that a proper inclusion of spin in non-relativistic \QM
+Notice, that a proper inclusion of spin in non-relativistic \QM
 requires two modifications.
 First we need each wave function to include an extra spin degree of freedom%
 ~\cite{Pauli1925}.
-Secondly we need to make sure that \eqref{eqn:AsymElecWavefunction}
+Secondly, we need to make sure that \eqref{eqn:AsymElecWavefunction}
 is always satisfied~\cite{Dirac1926}.
 We will defer the first modification to remark \vref{rem:Spin}
 in order to yield a simpler mathematical treatment for now.
@@ -559,7 +559,7 @@ If we are either concerned with a neutral or positively charged
 $\Nelec$-electron system or a negatively charged system
 with at least a single discrete eigenvalue, we can define a \newterm{ground-state energy}
 \begin{equation}
-	E^{\Nelec}_0 = \min \sigma\left(\Op{H}_{\Nelec}\right) = \Sigma_{\Nelec}.
+	E^{\Nelec}_0 = \min \sigma\left(\Op{H}_{\Nelec}\right) = \Sigma_{\Nelec+1}.
 	\label{eqn:GroundStateEnergy}
 \end{equation}
 The energies of the discrete spectrum are ordered as usual
@@ -578,13 +578,13 @@ term ``ground state'' to refer to the state or states corresponding
 to the lowest eigenvalue of $\sigma_P\left(\Op{H}_{\Nelec}\right)$
 and ``excited states'' for the other eigenfunctions of $\Op{H}_{\Nelec}$.
 Note, however, that for negatively charged systems
-the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is possible%
+the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) \leq E^{\Nelec}_0$} is possible%
 ~(see proposition \ref{prop:ZhislinYafaev}),
 \ie that the lowest-energy bound state is already embedded inside the continuum.
 
 \begin{rem}[Physical interpretation of the spectrum]
 	In this remark we will summarise the results,
-	which can be deduced from the HVZ theorem \vref{thm:HVZ}
+	which can be deduced from the HVZ theorem \ref{thm:HVZ}
 	and from proposition \vref{prop:ZhislinYafaev}.
 
 	% TODO OPTIONAL
@@ -610,7 +610,8 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	as the ionisation energy.
 	Note, that embedded inside the emerging continuum
 	at energies beyond $E^{\Nelec-1}_0$
-	may still be bound states of the $(\Nelec-1)$-electron system.
+	may still be bound states of the $(\Nelec-1)$-electron system
+	or the $\Nelec$-system.
 	In other words in general we have
 	\[ \sigma_C\left(\Op{H}_{\Nelec}\right)
 		\subsetneq \sigma_\text{ess}\left(\Op{H}_{\Nelec}\right). \]
@@ -624,7 +625,7 @@ the case \mbox{$\inf \sigma\left(\Op{H}_{\Nelec}\right) < E^{\Nelec}_0$} is poss
 	thus possesses a ground state.
 	In other words all bound states of this system
 	are embedded inside the continuum.
-	The system thus separates into a bound $(\Nelec-1)$-electron system
+	The system thus may separate into a bound $(\Nelec-1)$-electron system
 	and an unbound electron at all energies:
 	This negative ion is not stable.
 	Conversely for stable negative ions

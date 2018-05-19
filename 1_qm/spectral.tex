@@ -529,7 +529,7 @@ quantum-mechanical Hilbert space $D(\Delta) = L^2(\R^d, \C)$
 is not helpful as this operator cannot be made self-adjoint.
 Only upon using the Sobolev space domain $D(\Delta) = H^2(\R^d, \C)$,
 we get a self-adjoint operator $\Delta$.
-Its spectrum is $\sigma(\Delta) = \sigma_C(\Delta) = [0, \infty)$%
+Its spectrum is $\sigma(\Delta) = \sigma_C(\Delta) = (-\infty, 0]$%
 ~\cite[example 3.2.2]{Davies2007}.
 In other words it is a semi-bounded operator with no eigenvalues and no
 discrete spectrum at all.
@@ -638,7 +638,7 @@ determined by solving the Schrödinger equation \eqref{eqn:TISE}
 	( \Op{H} - E_{\mu} ) \Psi_\mu = 0,
 	\label{eqn:HydrogenComplete}
 \end{equation}
-where $\Psi \in H^2(\R^3, \C)$ and $E \in \R^-$.
+where $\Psi_\mu \in H^2(\R^3, \C)$ and $E_\mu \in (-\infty, 0)$.
 Without jumping ahead too far let us assume that the state
 $\Psi_\mu$
 may be uniquely identified by three quantum numbers $\mu \equiv (n, l, m)$.
@@ -694,7 +694,7 @@ the set of all solutions
 \[
 	\{\Psi_{nlm} \}_{n,l,m \text{ satisfy \eqref{eqn:HydrogenIndexCondition}}}
 \]
-forms the orthonormal basis for a Hilbert space $\mathcal{H}_\text{H}$.
+forms the orthonormal basis for a Hilbert space we will denote as $\mathcal{H}_\text{H}$.
 
 We saw in examples \vref{exmp:H1sH2} and \vref{exmp:H1sH1}
 that $\exp(-r) \in H^2(\R^3, \C)$,
@@ -710,7 +710,7 @@ except at $r = 0$.
 See \cite{Kato1957} and references therein for details.
 The polynomial in $r$ in front of the exponential factor of the radial part $R_{nl}$
 has exponents in $r$ in the range $[l, n-1]$
-such that the eigenstate with $l = n-1 = 0$, i.e.~$\Psi_{1s}$ is the least smooth.
+such that the eigenstate with $l = n-1 = 0$, i.e.~$\Psi_{1s}$, is the least smooth.
 This implies $\Psi_{nlm} \in H^2(\R^3, \C)$ and thus
 $\mathcal{H}_\text{H}$ is a (true) subspace%
 \footnote{
