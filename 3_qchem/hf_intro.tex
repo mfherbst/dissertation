@@ -423,11 +423,11 @@ These are summarised in the following.
 			if the Fock operator has $(\Nelec+1)$ negative eigenvalue (counting multiplicities)
 			otherwise set $\varepsilon_{\Nelec+1} = 0$.
 			The \textbf{no unfilled-shell} property
-			\[ \varepsilon_{\Nelec} < \varepsilon_{\Nelec+1} \]
+			\[ \varepsilon_{\Nelec} < \varepsilon_{\Nelec+1} \leq 0\]
 			is satisfied~\cite{Bach1994}.
 	\end{enumerate}
 \end{thm}
-The proofs for these results in the general setting are somewhat involved
+The proofs for these results in the general setting are rather involved
 and can be found in the cited works.
 % TODO OPTIONAL Skipped for time reasons
 % To sketch the required steps appendix \vref{apx:HFTheoremFinite}
@@ -437,10 +437,9 @@ Theorem \ref{thm:MathematicalHF} provides the mathematical
 justification for the \HF procedure as it is performed
 in almost every quantum-chemistry program these days
 for neutral or positively charged system.
-A similar mathematical statement making
+I am unaware of a similar mathematical statement making
 a guarantee that the \HF procedure
-gives a sensible ground state for negatively charged systems
-is not known to me.
+gives a sensible ground state for negatively charged systems.
 In fact one can even show that no solution to the \HF problem \eqref{eqn:HFMO}
 exists for negative ions with $\Nelec > 2Z_\text{tot} + M$~\cite{Cances2000}.
 This holds for example for \ce{H^{2-}}.
@@ -560,7 +559,8 @@ representations of \HF.
 	Instead one typically selects a target eigenvalue $M_S$
 	of the projected spin operator $\Op{S}_z$ \emph{before}
 	performing the \HF procedure.
-	From this value and $\Nelec$ one determines two parameters
+	From this value $M_S$ as well as the number of electrons
+	$\Nelec$ one determines two parameters
 	$\NelecA$ and $\NelecB$,
 	the number of spin-up and the number of spin-down electrons,
 	such that
@@ -641,7 +641,8 @@ representations of \HF.
 			\begin{equation}
 				J_{\mu\nu}^\alpha\!\left[\mat{C}\mat{C}^\dagger\right]
 					= J_{\mu\nu}^\beta\!\left[\mat{C}\mat{C}^\dagger\right]
-					= \sum_{\sigma\in\{\alpha\beta\}}
+					= \sum_{\lambda, \kappa\in\Ibas}
+						\sum_{\sigma\in\{\alpha\beta\}}
 						\sum_{i=1}^{N_\text{elec}^\sigma}
 						C^\sigma_{\lambda i}
 						\cc{\left(C^\sigma_{\kappa i}\right)}
@@ -650,14 +651,15 @@ representations of \HF.
 				\label{eqn:Jbas}
 			\end{equation}
 			Here as usual $\eriMu{\slot \slot}{\slot \slot}$
-			denotes the electron-repulsion integrals defined like \eqref{eqn:ERI}.
+			denotes the electron-repulsion integrals as defined in \eqref{eqn:ERI}.
 		\item the \newterm{exchange matrix} $\matKfull$ has
-			deviating $\alpha$ and $\beta$ blocks,
+			\emph{deviating} $\alpha$ and $\beta$ blocks,
 			both depending on the coefficients.
 			For $\sigma \in \{\alpha\beta\}$ their elements are
 			\begin{equation}
 				K_{\mu\nu}^\sigma\!\left[\mat{C}\mat{C}^\dagger\right]
-					= - \sum_{i=1}^{N_\text{elec}^\sigma}
+					= - \sum_{\lambda, \kappa\in\Ibas}
+						\sum_{i=1}^{N_\text{elec}^\sigma}
 						C^\sigma_{\lambda i}
 						\cc{\left(C^\sigma_{\kappa i}\right)}
 						\eriMu{\varphi_{\kappa} \varphi_{\nu}}
@@ -772,7 +774,7 @@ which is the square root of the sum of all elements squared.}
 	spin-up component
 	and the $\beta$-block describing the spin-down component.
 	Apart from the exchange matrix $\matK$,
-	the density matrix $\mat{D}$ as well as the coefficient matrix $\mat{C}$
+	the density matrix $\mat{D}$ as well as the coefficient matrix $\mat{C}$,
 	all matrices arising in remark \ref{rem:HFDiscreteVariational}
 	have identical entries in both blocks.
 	Inside the \HF energy functional
@@ -863,9 +865,9 @@ are computed by applying the sesquilinear form
 			\D \vec{r} \\
 		&= \int_{\R^3}
 			\cc{\left(\phi^\alpha(\vec{r})\right)}
-				\left(\Op{F}_\Theta\chi\right)^\alpha\!(\vec{r})
+				\left(\Op{F}_\Theta\chi\right)^\alpha\!\!(\vec{r})
 			+ \cc{\left(\phi^\beta(\vec{r})\right)}
-				\left(\Op{F}_\Theta\chi\right)^\beta\!(\vec{r}) \D \vec{r}
+				\left(\Op{F}_\Theta\chi\right)^\beta\!\!(\vec{r}) \,\D \vec{r}
 	\end{aligned}
 	\label{eqn:SesquilinearFormFock}
 \end{equation}
@@ -1192,10 +1194,10 @@ is more general than just the Hartree-Fock problem
 and can be applied to many other spectral problems of quantum physics
 in order to yield equivalent real-valued versions for a numerical treatment.
 One should stress, however,
-that the operator under consideration really needs to satisfy
-the condition that it maps vectors from a real vector space
-to to vectors from a real vector space
-on top of being Hermitian.
+that the operator under consideration not only needs to be Hermitian,
+but it further
+needs to map functions from a real Hilbert space
+to functions from a real Hilbert space.
 Let us illustrate this by the example of the single-particle spin operator
 \[ \op{s}_y = \mm{0 & -\I \\ \I & 0}. \]
 It is easy to see that on the Hilbert space $\C^2$,

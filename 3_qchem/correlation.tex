@@ -11,7 +11,7 @@ approximation to the full Schrödinger problem,
 where up to $99\%$ of the
 \FCI energy~\cite{Jensen2007book} in a respective basis is obtained
 at a fraction of the cost.
-Unfortunately chemistry is about energy differences and not absolute energies.
+Unfortunately chemistry is about energy differences and not about absolute energies.
 For example to a good approximation,
 chemical reactivity can be determined by looking at the
 energy barrier between reactants and products,
@@ -27,7 +27,7 @@ what part of the exact physical picture \HF is missing and how one could improve
 \subsection{What does Hartree-Fock miss?}
 \label{sec:FailureHF}
 Even though the
-Fock operator \eqref{eqn:FockOperator} describes a many-electron system
+Fock operator \eqref{eqn:FockOperator} describes a many-electron system,
 it is a one-particle operator,
 since it only acts on single-electron functions.
 The many-particle aspect is only treated via the Coulomb term \eqref{eqn:OperatorCoulomb}
@@ -126,7 +126,7 @@ A classic example would be a molecule close to bond breaking.
 In such a case the ground state resulting from a full CI treatment
 has relevant contributions from more than one determinant.
 As a result even the best restricted \HF ground state determinant misses a substantial
-part of the full CI ground state and thus represents
+part of the full CI ground state and thus provides
 a wrong description of the physics.
 In the remainder of this discussion about electron correlation
 we will ignore static correlation and assume that a single determinant
@@ -223,8 +223,8 @@ it is a sensible ansatz to
 employ Rayleigh-Schrödinger perturbation theory~\cite{Szabo1996,Helgaker2013}
 and correct perturbatively for the missing correlation contribution
 to the energy as well as the wave function.
-one partitions the electronic Schrödinger Hamlitonian \eqref{eqn:ElectronicHamiltonian}
-into
+The typical perturbation theory ansatz is to
+partition the electronic Schrödinger Hamlitonian \eqref{eqn:ElectronicHamiltonian} into
 \[ \Op{H}_{\Nelec} = \Op{H}^0 + \Op{H}^1, \]
 \ie a zeroth order Hamiltonian $\Op{H}^0$,
 which is easy to compute,
@@ -272,7 +272,7 @@ and writes the {\MP}2 energy as
 	E_0^\text{MP2} = E_0^\text{HF} + \frac14 \sum_{ijab} \cc{\eriAsym{ij}{ab}} t_{ij}^{ab}.
 	\label{eqn:energyMPtwo}
 \end{equation}
-The \MP methods do in general have some issues as well.
+The \MP methods do have some issues as well.
 Most notably the perturbation expansion of energies does in general
 not converge~\cite{Helgaker2013},
 making it hard to properly justify these methods from a mathematical basis.
@@ -396,15 +396,17 @@ a high-dimensional, non-linear problem,
 where products of the individual amplitudes $\{t_\mu\}_{\mu}$ often occur
 in the resulting system of equations.
 
-For this reason one usually employs a different projection approach,
+For this reason one usually employs a different, so-called \textbf{projection} approach,
 which shall only be sketched here%
 \footnote{Notice, that some mathematical rigour is dropped here.
-	Since $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$ is only defined properly
-	if $\Phi_0 \in H^2(\C^{3\Nelec}, \C^{2\Nelec})$,
-	which is not true in general.
-	Even in the discretised case one may choose a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$,
-	where some functions are not members of $H^2(\C^{3\Nelec}, \C)$,
-	such that $\Phi_0 \not\in H^2(\C^{3\Nelec}, \C^{2\Nelec})$ is possible.
+	The expression $\Op{H}_{\Nelec} \exp(\op{T}) \Phi_0$
+	is only defined properly
+	if $\Phi_0 \in H^2(\C^{3\Nelec}, \C^{2\Nelec})$.
+	This is, however, not true in general.
+	Even in the discretised case one may choose
+	a one-particle basis $\{\varphi_\mu\}_{\mu\in\Ibas}$,
+	where some functions are not members of $H^2(\C^{3\Nelec}, \C)$.
+	As a result $\Phi_0 \not\in H^2(\C^{3\Nelec}, \C^{2\Nelec})$.
 }.
 If one plugs the exponential ansatz directly into the electronic Schrödinger equation
 \eqref{eqn:ElectronicSchrödinger} for the ground state one obtains
@@ -508,7 +510,7 @@ Comparing the structure of \eqref{eqn:energyMPtwo} and \eqref{eqn:CCDenergy},
 the name of the expression \eqref{eqn:amplitudesMPtwo} in {\MP}2 finally becomes apparent.
 
 For higher-order methods like CCSD, where $\op{T} = \op{T}_1 + \op{T}_2$,
-or CCSDT, were $\op{T}_3$ is considered on top,
+or CCSDT, where $\op{T}_3$ is considered on top,
 the expressions for the working equations \eqref{eqn:CCresidual}
 are even more involved.
 In turn these methods become rather expensive as well,
@@ -523,7 +525,7 @@ where the triples excitations are perturbatively added on top of CCSD,
 has been named the \emph{gold standard} of chemistry
 as it generally yields highly accurate results with an expensive,
 but an acceptable scaling of $\bigO(\Nbas^7)$,
-where the most costly $\bigO(\Nbas^7)$ is not iterative.
+where the most costly $\bigO(\Nbas^7)$ step is not iterative.
 Recent improvements~\cite{Riplinger2013} within the framework
 of pair-natural orbital approaches,
 has brought down the apparent scaling of CCSD(T) to linear,
@@ -543,11 +545,11 @@ or more generally any photo-activated chemical reaction.
 Whenever this is the case the modelling of multiple electronic states on an equal footing
 is required.
 
-For \FCI or the truncated CI methods,
+For \FCI or truncated CI methods,
 this can be achieved without additional modification
 by solving the respective full or truncated CI matrix
 for more than one eigenpair.
-All but the lowest are excited states.
+All but the lowest-energy eigenpair describe excited states.
 These are not the only excited states methods in existence.
 In fact to each of the other methods we have discussed
 so far one is able to appoint at least one analogue~\cite{Dreuw2005}.
