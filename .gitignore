@@ -5,6 +5,15 @@
 __pycache__
 *.bak
 
+# Build folders
 /build
 /build_png
-/update.sh
+
+# Random stuff
+/00_*
+/*.sh
+/*.bib
+/*.pdf
+!/references.bib
+!/dissertation.pdf
+!/dissertation_pdfa.pdf
