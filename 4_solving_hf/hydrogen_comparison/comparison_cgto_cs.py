@@ -9,8 +9,8 @@ SYSTEM = molsturm.System("H")
 BASES = [
     ("--", "cGTO cc-pVDZ", construct_basis("gaussian", SYSTEM,
                                            basis_set_name="cc-pvdz")),
-    ("--", "cGTO cc-pV6Z", construct_basis("gaussian", SYSTEM,
-                                           basis_set_name="cc-pv6z")),
+    (":", "cGTO cc-pV6Z", construct_basis("gaussian", SYSTEM,
+                                          basis_set_name="cc-pv6z")),
 #    ("", "CS $(3,1,1)$ $k = 1.2$", construct_basis("sturmian/atomic", SYSTEM,
 #                                                   n_max=3, l_max=1, m_max=1,
 #                                                   k_exp=1.2)),
