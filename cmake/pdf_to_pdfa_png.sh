@@ -11,5 +11,5 @@ fi
 
 TEMP=$(mktemp)
 pdftoppm -png $RESOLUTION "$FROM" > "$TEMP"
-convert "$TEMP" -colorspace sRGB -trim -background white -alpha off -alpha remove "$TO"
+convert "$TEMP" -colorspace sRGB -background white -alpha off -alpha remove "$TO"
 rm "$TEMP"
