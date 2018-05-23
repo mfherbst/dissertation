@@ -44,7 +44,7 @@ for example I found core Hamiltonian guesses to often
 converge to stationary points in the \SCF process,
 which are \emph{not} minima of the \HF problem.
 
-Such issues become worse with large basis sets or larger molecules.
+Such issues become worse with larger basis sets or larger molecules.
 An ad-hoc way to fix this is to scale the nuclear attraction
 matrix by a factor $0 < \alpha \leq 1$
 in order to mimic the shielding of the nuclear charge somewhat.
@@ -61,44 +61,48 @@ Ideally as much of the information gained in the crude result
 is used for starting the large calculation.
 
 In the context of the \SCF procedure one would, for example,
-like to use the final coefficients $\tilde{\mat{c}}_0$ from a calculation
+like to use the final coefficients from
+a calculation
 in the small basis $\{\chi_{\tilde{\nu}}\}_{\tilde{\nu}=1,\ldots,N_g}$
 with only $N_g$ functions
 to obtain a guess for the more refined calculation in the basis
 $\{\varphi_\mu\}_{\mu=1,\ldots,N_b}$ with $N_b \geq N_g$.
-Conceptionally this requires to operate on the coefficients
+Conceptionally this requires to operate on the
+(full) coefficient matrix
+$\tilde{\mat{c}}_{0} \in \R^{N_g\times\Norb}$
 with the transformation matrix
 $\mat{U} \in \C^{N_b\times N_g}$
 consisting of elements
-\[ U_{\mu\tilde{\nu}} = \braket{\varphi_\mu}{\chi_{\tilde{\nu}}}_1. \]
+\[ U_{\mu\tilde{\nu}} = \braket{\varphi_\mu}{\chi_{\tilde{\nu}}}_1 \]
+to project the result onto the larger basis.
 Since $U_{\mu\tilde{\nu}}$ is not necessarily unitary,
-the simple matrix-matrix product $\mat{U} \mat{c}_0$
+the simple matrix-matrix product $\mat{U} \tilde{\mat{c}}_0$
 will in general not be orthonormal
-with respect to the overlap matrix of the new basis $\mat{S} \in \R^{N_b \times N_b}$
+with respect to the overlap matrix of the new basis
+$\mat{S} \in \R^{N_b \times N_b}$
 and is thus not directly usable.
 Instead, a more involved treatment is required,
-taking the overlap matrices both in the old and the new basis into account.
-If we use $\tilde{\mat{s}} \in \R^{\N_g \times \N_g}$
-to denote the overlap matrix in the new basis,
-a properly orthonormalised guess would be~\cite{Polly2004}
+which directly leads to a properly orthonormalised guess.
+For example one may compute the guess coefficients as%
+~\cite{Polly2004}
 \begin{align}
-	\mat{C}^{(0)} &= \mat{S}^{-1} \mat{U} \mat{c}_0 \mat{N}^{-1/2} \\
+	\mat{C}^{(0)} &= \mat{S}^{-1} \mat{U} \tilde{\mat{c}}_0 \mat{N}^{-1/2} \\
 	\intertext{where the matrix}
-	\mat{N} &= \tp{\tilde{\mat{c}}_0} \tp{\mat{U}} \mat{S}^{-1} \mat{U} \mat{c}_0
+	\mat{N} &= \tp{\tilde{\mat{c}}_0} \tp{\mat{U}} \mat{S}^{-1} \mat{U} \tilde{\mat{c}}_0
 \end{align}
 takes care of proper normalisation.
 The computation (and diagonalisation) of $\mat{N}$
 can be avoided if other techniques
-for orthogonalising the $\Norb$ column vectors $\mat{S}^{-1} \mat{U} \mat{c}_0$
+for orthogonalising the $\Norb$ column vectors $\mat{S}^{-1} \mat{U} \tilde{\mat{c}}_0$
 are used, like a Gram-Schmidt procedure or a singular-value decomposition.
 
 A modification of this procedure would be to alternatively build
 \begin{align}
 	\label{eqn:GuessMatF}
-	\mat{f} &= \mat{U} \mat{c}_0 \tilde{\mat{E}} \tp{\mat{c}_0} \tp{\mat{U}}, \\
+	\mat{f} &= \mat{U} \tilde{\mat{c}}_0 \widetilde{\mat{E}} \tp{\tilde{\mat{c}}_0} \tp{\mat{U}}, \\
 	\intertext{where (assuming $N_g \geq \Norb$)}
 	\nonumber
-	\tilde{\mat{E}} &= \diag\left(\tilde{\varepsilon}_1, \tilde{\varepsilon}_2,
+	\widetilde{\mat{E}} &= \diag\left(\tilde{\varepsilon}_1, \tilde{\varepsilon}_2,
 			\ldots \tilde{\varepsilon}_{\Norb}\right)
 \end{align}
 are the orbital energies obtained from the \SCF in the old basis.
@@ -167,7 +171,7 @@ The idea of the superposition of atomic densities~(SAD)~\cite{Lenthe2006}
 is that molecules are to a very large extend just a collection of atoms,
 such that the molecular electron density
 can be obtained approximately
-just by adding the densities of all constituting atoms together.
+just by adding up the densities of all constituting atoms.
 If atom-centred basis functions are used this process is almost trivial.
 Let us illustrate the procedure by
 a chemical system made up of $M$ atoms labelled $1, 2, \ldots, M$.

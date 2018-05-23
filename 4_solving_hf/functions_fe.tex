@@ -207,7 +207,7 @@ the finite elements of order $k$ themselves
 can be constructed by applying the affine transformations
 to a set of template polynomials of the same order $k$.
 Typically one defines these so-called
-\newterm{shape function}s ${e_i}_i$
+\newterm{shape function}s $\{e_i\}_i$
 on the reference cell $c_0$
 and uses the affine transformation $\tau_c$
 to generate the finite elements on each cell
@@ -512,7 +512,7 @@ defined by a Poisson equation
 \end{equation}
 with suitable boundary condition on $\partial\Omega$
 --- see discussion below.
-In this case $V^{(n)}_H(\vec{r})$ is called the \newterm{Hartree potential} as well.
+In this case $V^{(n)}_H(\vec{r})$ is called the \newterm{Hartree potential}.
 Assuming \eqref{eqn:PoissionFE} can be solved,
 we can rewrite \eqref{eqn:CoulombFE} to give
 \[
@@ -582,8 +582,8 @@ The options are
 	\item Robin boundary conditions:
 		\begin{align}
 			\label{eqn:PoissonHartreeBCRobin}
-			\alpha(\vec{r}) \tilde{V}_H^{(n)}(\vec{r})
-				&= \partial_n \tilde{V}_H(\vec{r}) \qquad \vec{r} \in \partial\Omega \\
+			\alpha(\vec{r}) V_H^{(n)}(\vec{r})
+				&= \partial_n V_H(\vec{r}) \qquad \vec{r} \in \partial\Omega \\
 		\intertext{where $\alpha(\vec{r})$ is determined from}
 			\nonumber
 			\alpha(\vec{r}) V_P(\vec{r}) &= \partial_n  V_P(\vec{r}) 

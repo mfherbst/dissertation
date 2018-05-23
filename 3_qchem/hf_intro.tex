@@ -79,14 +79,14 @@ $\Phi_0$ the \HF ground state.
 
 The \HF approach is named both
 after Douglas Hartree and Vladimir Fock.
-Historically \citet{Hartree1928} first proposed
+Historically \citet{Hartree1928} proposed
 an ansatz for the electronic problem
 based on symmetric products of one-electron functions, which is algorithmically very similar to the procedure followed
 nowadays~(see remark~\vref{rem:SCFcoeff}).
 \citet{Slater1930a}
 and \citet{Fock1930} then both noted
 the issue arising from the use of symmetric
-products in the context of spin~(see section \vref{sec:ElectronicSchrödinger})
+products in the context of modelling spin-$\sfrac12$ particles like electrons~(see section \vref{sec:ElectronicSchrödinger})
 and subsequently Fock reformulated the procedure
 using Slater determinants.
 
@@ -970,11 +970,11 @@ satisfies exactly the discretised \HF equations \eqref{eqn:HFDiscreteEquations}
 such that
 \newcommand{\matFzfull}{\mat{F}\!\!\left[\mat{C}_0\tp{\mat{C}_0}\right]}
 \[
-	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \widetilde{\mat{E}}
+	\matFzfull \mat{C}_0 = \mat{S} \mat{C}_0 \mat{E}
 \]
 where
 \[
-	\widetilde{\mat{E}} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
+	\mat{E} = \text{diag}(\varepsilon_1, \varepsilon_2, \ldots,
 		\varepsilon_{\Nelec}) \in \R^{\Nelec \times \Nelec}.
 \]
 This condition can be equivalently expressed as~\cite{Pulay1982}
