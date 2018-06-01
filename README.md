@@ -59,3 +59,11 @@ cmake ..
 # Run the build
 make
 ```
+
+# Licence
+Please note, that this code as of now is **not** published as free software.
+The author (Michael F. Herbst) intentionally retains full copyright on this
+repository, since there are a few legal aspects to be clarified first.
+If you wish to use some of the `LaTeX`, `python` or `CMake` code contained
+in here, just [contact me](https://github.com/mfherbst) and I am sure we
+can work something out.
