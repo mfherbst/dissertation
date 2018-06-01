@@ -1,46 +1,47 @@
 # Dissertation
-[![Build Status](https://travis-ci.com/mfherbst/dissertation.svg?token=mMrhPoF738uUamSScbrZ&branch=master)](https://travis-ci.com/mfherbst/dissertation)
+[![Build Status](https://travis-ci.org/mfherbst/dissertation.svg?branch=master)](https://travis-ci.org/mfherbst/dissertation)
 
-This repository contains the `LaTeX` and `python` source code to build by PhD thesis
-titled **Development of a modular
-quantum-chemistry framework
-for the investigation of novel
-basis functions**.  
+This repository contains the `LaTeX` and `python` source code to build my
+[PhD thesis](https://michael-herbst.com/phd-thesis.html)
+titled **Development of a modular quantum-chemistry framework for the investigation
+of novel basis functions**.
+For more details about my PhD thesis see
+[this article on my blog](https://michael-herbst.com/phd-thesis.html).
 
-Either you [build the pdf](#building) for yourself
-or you download the the
-[latest version](https://github.com/mfherbst/dissertation/releases/latest),
-where all known errors have been corrected.
-Alternatively you can download the version
-[printed and published](https://github.com/mfherbst/dissertation/releases/download/v1.0.0/dissertation.pdf)
-and live with the typos and errors,
-which were already discovered by now.
+Either you [build the pdf](#building-the-thesis-for-yourself) for yourself
+or alternatively you directly download the
+[pdf document](https://michael-herbst.com/publications/2018.05_phd_corrected.pdf).
+For citing my work please use the DOI 10.11588/heidok.00024519 or
+[this bibtex file](https://michael-herbst.com/publications/2018.05_phd.bib).
 
-## Building
-Should be as simple as
+## Building the thesis for yourself
+In theory building should be as simple as
 ```sh
 git clone --recursive https://github.com/mfherbst/dissertation
 cd dissertation
 make pdf
 ```
 
-Note, however, that the build process automatically executes
-some `python` scripts during the build, which implicitly rely
-on the presence of
+The build process automatically executes some `python` scripts,
+which implicitly rely on a few packages. This includes `matplotlib`,
+`numpy`, `scipy` and most importantly
 [version 0.0.3 of `molsturm`](https://github.com/molsturm/molsturm/releases/tag/v0.0.3)
-together with [`gint`](https://molsturm.org/gint),
+as well as [`gint`](https://molsturm.org/gint).
+From `gint` the interfaces for
 [`sturmint`](https://molsturm.org/sturmint) and
-[`libint`](https://github.com/evaleev/libint).
-Before trying to build the thesis you should make sure,
+[`libint`](https://github.com/evaleev/libint)
+should be enabled.
+Before trying to build this PhD thesis you should make sure,
 that the aforementioned programs are properly set up
 in your path
 ... or you try what is explained in the next section.
 
-## Build the thesis without `molsturm`
-The continuous integration system, which is employed to build
-the published pdfs does not install `molsturm`.
-Much rather it uses some statically generated data to get around this.
-If you want to do the same, this is roughly what you need to do
+## Building the thesis without `molsturm`
+The Travis continuous integration system, which this repo employs
+does not actually install `molsturm` to build the pdf documents.
+Much rather it relies on some statically generated data to get around
+this dependency. If you want to do the same,
+this is roughly what you need to do
 ```sh
 # Checkout repos
 git clone --recursive https://github.com/mfherbst/dissertation
