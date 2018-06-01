@@ -1,5 +1,6 @@
 # Dissertation
 [![Build Status](https://travis-ci.org/mfherbst/dissertation.svg?branch=master)](https://travis-ci.org/mfherbst/dissertation)
+[![DOI](https://img.shields.io/badge/DOI-10.11588/heidok.00024519-blue.svg)](https://doi.org/10.11588/heidok.00024519)
 
 This repository contains the `LaTeX` and `python` source code to build my
 [PhD thesis](https://michael-herbst.com/phd-thesis.html)
@@ -11,7 +12,8 @@ For more details about my PhD thesis see
 Either you [build the pdf](#building-the-thesis-for-yourself) for yourself
 or alternatively you directly download the
 [pdf document](https://michael-herbst.com/publications/2018.05_phd_corrected.pdf).
-For citing my work please use the DOI 10.11588/heidok.00024519 or
+For citing my work please use the
+[DOI 10.11588/heidok.00024519](https://doi.org/10.11588/heidok.00024519) or
 [this bibtex file](https://michael-herbst.com/publications/2018.05_phd.bib).
 
 ## Building the thesis for yourself
