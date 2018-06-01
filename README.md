@@ -24,7 +24,7 @@ make pdf
 
 The build process automatically executes some `python` scripts,
 which implicitly rely on a few packages. This includes `matplotlib`,
-`numpy`, `scipy` and most importantly
+`numpy`, `scipy`, `pyyaml` and most importantly
 [version 0.0.3 of `molsturm`](https://github.com/molsturm/molsturm/releases/tag/v0.0.3)
 as well as [`gint`](https://molsturm.org/gint).
 From `gint` the interfaces for
@@ -47,6 +47,9 @@ this is roughly what you need to do
 git clone --recursive https://github.com/mfherbst/dissertation
 git clone --recursive https://github.com/mfherbst/dissertation-build-overlay
 
+# Install dependencies (using pip)
+pip install pyyaml matplotlib numpy scipy
+
 # Setup build directory
 mkdir dissertation/build
 cd dissertation/build
@@ -56,3 +59,11 @@ cmake ..
 # Run the build
 make
 ```
+
+# Licence
+Please note, that this code as of now is **not** published as free software.
+The author (Michael F. Herbst) intentionally retains full copyright on this
+repository, since there are a few legal aspects to be clarified first.
+If you wish to use some of the `LaTeX`, `python` or `CMake` code contained
+in here, just [contact me](https://github.com/mfherbst) and I am sure we
+can work something out.
