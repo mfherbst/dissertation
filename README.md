@@ -8,7 +8,7 @@ of novel basis functions**.
 For more details about my PhD thesis see
 [this article on my blog](https://michael-herbst.com/phd-thesis.html).
 
-Either you [build the pdf](#building) for yourself
+Either you [build the pdf](#building-the-thesis-for-yourself) for yourself
 or alternatively you directly download the
 [pdf document](https://michael-herbst.com/publications/2018.05_phd_corrected.pdf).
 For citing my work please use the DOI 10.11588/heidok.00024519 or
