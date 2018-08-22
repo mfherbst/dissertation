@@ -88,7 +88,7 @@ def run_hf(k_exp, n_max, l_max):
                            bra_coeff[:, :na], coeff[:, :na])
     assert np.allclose(trans_fock.diagonal(), res["orben_f"][:na],
                        rtol=tol, atol=tol)
-    assert np.max(np.abs(trans_fock.imag))
+    assert np.max(np.abs(trans_fock.imag)) < 1e-6
     newfock = np.zeros_like(res["fock_ff"])
     newfock[:na, :na] = trans_fock.real
     newfock[na:, na:] = trans_fock.real
