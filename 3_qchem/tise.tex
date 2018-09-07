@@ -173,7 +173,7 @@ we can write it as
 	- \sum_{A=1}^M \sum_{i=1}^{\Nelec} \frac{Z_A}{r_{iA}}
 	+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
 	\  + \  %
-	\sum_{A=1}^{M} \sum_{B=A+1}^{M} \frac{1}{r_{AB}}.
+	\sum_{A=1}^{M} \sum_{B=A+1}^{M} \frac{Z_A Z_B}{r_{AB}}.
 	\label{eqn:ElectronicFullHamiltonian}
 \end{equation}
 Even though $\Op{H}^\text{elec}$ still depends on the nuclear coordinates $\vec{X}$,
@@ -351,7 +351,7 @@ instead of $\Op{H}^\text{elec}$.
 This is possible, since the potential operator governing the Coulombic interaction
 amongst the nuclei
 \[
-	\Op{V}_{nn} = \sum_{A=1}^M \sum_{B=A+1}^M \frac1{r_{AB}}
+	\Op{V}_{nn} = \sum_{A=1}^M \sum_{B=A+1}^M \frac{Z_A Z_B}{r_{AB}}
 \]
 only depends on $\vec{X}$, which makes it a constant value for one particular chemical system.
 In many cases one can therefore work with $\Op{H}_{\Nelec}$
