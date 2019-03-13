@@ -8,8 +8,8 @@ import numpy as np
 def setup():
     # Setup matplotlib
     tex_premable = [
-        r"\usepackage[utf8x]{inputenc}",
         r"\usepackage[T1]{fontenc}",
+        r"\usepackage[utf8]{inputenc}",
         r"\usepackage{lmodern}",
         r"\usepackage{amsmath}",
     ]

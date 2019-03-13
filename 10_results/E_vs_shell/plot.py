@@ -51,8 +51,8 @@ def plot_EHF_vs_shell(systems):
 
 def setup():
     tex_premable = [
-        r"\usepackage[utf8x]{inputenc}",
         r"\usepackage[T1]{fontenc}",
+        r"\usepackage[utf8]{inputenc}",
         r"\usepackage{lmodern}",
         r"\usepackage{amsmath}",
     ]

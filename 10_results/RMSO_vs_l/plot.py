@@ -103,8 +103,8 @@ def plot_rms_lf_overview(orbmaps):
 
 def setup():
     tex_premable = [
-        r"\usepackage[utf8x]{inputenc}",
         r"\usepackage[T1]{fontenc}",
+        r"\usepackage[utf8]{inputenc}",
         r"\usepackage{lmodern}",
         r"\usepackage{amsmath}",
         r"\usepackage[version=3]{mhchem}",
