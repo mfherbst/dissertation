@@ -75,7 +75,7 @@ def prepare_rows(data):
         if system in lit:
             error = (hf - lit[system]["value"]) / abs(lit[system]["value"])
             error = "{:.1e}".format(error)
-            error = re.sub("e(-?[0-9]+)", r"\E{\1}", error)
+            error = re.sub("e(-?[0-9]+)", r"\\E{\1}", error)
             error = ["$" + v + "$" for v in error.split(".")]
         else:
             error = "", ""
