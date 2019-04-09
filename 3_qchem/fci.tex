@@ -370,7 +370,7 @@ and allows only treatment of small systems%
 		\Op{H}_{\Nelec}
 		= \Op{T}_e + \Op{V}_{en} + \Op{V}_{ee}
 		= \sum_{i=1}^{\Nelec}
-		  \left( -\frac12 \Delta_{\vec{r}_i} + \sum_{A=1}^M \frac{Z_A}{r_{iA}} \right)
+		  \left( -\frac12 \Delta_{\vec{r}_i} - \sum_{A=1}^M \frac{Z_A}{r_{iA}} \right)
 		+ \sum_{i=1}^{\Nelec} \sum_{j=i+1}^{\Nelec} \frac{1}{r_{ij}}
 	\]
 	for the electronic Hamiltonian.
@@ -451,8 +451,8 @@ and allows only treatment of small systems%
 			- \eriMu{\psi_j\psi_a}{\psi_i\psi_j}, \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ij}^{ab}}_{\Nelec}
-		&= \eriMu{\psi_i\psi_j}{\psi_a\psi_b}
-		 - \eriMu{\psi_a\psi_j}{\psi_i\psi_b}, \\
+		&= \eriMu{\psi_i\psi_a}{\psi_j\psi_b}
+		 - \eriMu{\psi_j\psi_a}{\psi_i\psi_b}, \\
 		%
 		\braket{\Phi_0}{\Op{V}_{ee}\, \Phi_{ijk}^{abc}}_{\Nelec} &= 0.
 	\end{aligned}
